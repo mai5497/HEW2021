@@ -28,16 +28,14 @@ HRESULT LoadTextureFromFile(const char *pszFileName, ID3D11ShaderResourceView **
 	// ï∂éöïœä∑
 	MultiByteToWideChar(0, 0, pszFileName, -1, wPath, MAX_PATH);
 	// ÉtÉ@ÉCÉãï ì«Ç›çûÇ›
-	if (strstr(pszFileName, ".tga"))
-	{
+	if (strstr(pszFileName, ".tga")){
 		hr = DirectX::LoadFromTGAFile(wPath, &mdata, image);
 	}
 	else
 	{
 		hr = DirectX::LoadFromWICFile(wPath, DirectX::WIC_FLAGS::WIC_FLAGS_NONE, &mdata, image);
 	}
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)){
 		MessageBox(NULL, pszFileName, "Failed to load texture.", MB_OK);
 		return hr;
 	}

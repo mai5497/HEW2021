@@ -119,39 +119,83 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterBase.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="DrawBuffer.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FBX\FBXLoadAnimation.cpp" />
     <ClCompile Include="FBX\FBXLoadBone.cpp" />
     <ClCompile Include="FBX\FBXLoader.cpp" />
     <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
     <ClCompile Include="FBX\FBXLoadMesh.cpp" />
     <ClCompile Include="FBX\FBXPlayer.cpp" />
+    <ClCompile Include="Field.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp">
       <SDLCheck Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</SDLCheck>
       <RuntimeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="MyMath.cpp" />
+    <ClCompile Include="MyVector.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerToEnemy.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TPScamera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterBase.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="DrawBuffer.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="FBX\FBXLoadAnimation.h" />
     <ClInclude Include="FBX\FBXLoadBone.h" />
     <ClInclude Include="FBX\FBXLoader.h" />
     <ClInclude Include="FBX\FBXLoadMaterial.h" />
     <ClInclude Include="FBX\FBXLoadMesh.h" />
     <ClInclude Include="FBX\FBXPlayer.h" />
+    <ClInclude Include="Field.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="MyMath.h" />
+    <ClInclude Include="MyVector.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerToEnemy.h" />
+    <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TPScamera.h" />
     <ClInclude Include="XMFloatHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

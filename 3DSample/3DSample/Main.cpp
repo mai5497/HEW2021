@@ -1,4 +1,4 @@
-
+#include "SceneManager.h"
 #include "Main.h"
 #include "DirectX.h"
 #include "Texture.h"
@@ -11,7 +11,7 @@
 
 //---グローバル変数
 DrawBuffer g_buffer;
-
+SceneManager* g_pSceneManager;
 
 
 
@@ -36,7 +36,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	hr = SHADER->Init();
 	if (FAILED(hr)) { return ErrorBox(hr, "Failed to Shader."); }
 
-	
+	g_pSceneManager = new SceneManager();
+	g_pSceneManager->Init();
 
 	//---ゲームで使うオブジェクトの初期化
 	//頂点の情報を持った構造体
@@ -117,7 +118,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 
 void Uninit()
 {
-	
+	g_pSceneManager->Uninit();
 	SHADER->Uninit();
 	UninitDX();
 	ggfbx::Terminate();
@@ -125,8 +126,7 @@ void Uninit()
 
 void Update()
 {
-	
-
+	g_pSceneManager->Update();
 }
 
 void Draw()
@@ -145,7 +145,7 @@ void Draw()
 	//(シェーダ)を設定する必要がある。
 
 	//シェーダの処理はここで行ってね↓
-
+	g_pSceneManager->Draw();
 	
 
 	EndDrawDX();
