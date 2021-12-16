@@ -16,7 +16,7 @@ public:
 	int GetEnemyNum();
 
 	void SetEnemyTarget(DirectX::XMFLOAT3);
-
+	void DestroyEnemy(int index);
 
 private:
 

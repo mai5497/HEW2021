@@ -3,11 +3,11 @@
 
 #include"Texture.h"
 #include "Scene.h"
+#include "Bullet.h"
 
 class GameScene :public Scene
 {
 public:
-
 	GameScene(void);
 	~GameScene(void);
 
@@ -16,7 +16,6 @@ public:
 	// –ß‚è’l‚ÅƒV[ƒ“‚ğˆÚ“®‚·‚é‚©‚Ç‚¤‚©”»’è
 	SCENE Update();
 	void Draw();
-
 
 	//private:
 		//ID3D11ShaderResourceView* m_pTexture[2];

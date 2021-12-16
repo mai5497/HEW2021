@@ -2,6 +2,8 @@
  * @file EnemyManager.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/10 敵が消滅する関数を追加
+ *					Drawに消滅の処理を追加（ピクミンと当たったら消滅）
  * @brief 敵の管理に関する処理
  */
 #include "EnemyManager.h"
@@ -77,6 +79,9 @@ void EnemyManager::Draw()
 {
 	for (int i = 0; i < m_nEnemyNum; i++)
 	{
+		if (!m_ppEnemys[i]->use) {
+			continue;
+		}
 		m_ppEnemys[i]->Draw();
 	}
 }
@@ -101,4 +106,9 @@ void EnemyManager::SetEnemyTarget(DirectX::XMFLOAT3 pos)
 	{
 		m_ppEnemys[i]->TargetPos(pos);
 	}
+}
+
+void EnemyManager::DestroyEnemy(int index) {
+	m_ppEnemys[index]->use = false;
+
 }

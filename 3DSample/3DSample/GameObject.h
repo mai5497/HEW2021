@@ -38,12 +38,14 @@ public:
 	DirectX::XMFLOAT3 GetMove();
 	DirectX::XMFLOAT3 GetRadius();
 	ObjectCollisionType GetCollisionType();
+	bool GetFollowFlg();
 
 	//’lİ’è
 	void SetMove(DirectX::XMFLOAT3 move);
 	void SetPos(DirectX::XMFLOAT3 pos);
 	void SetSize(DirectX::XMFLOAT3 size);
 	void SetAngle(DirectX::XMFLOAT3 angle);
+	void SetFollowFlg(bool flg);
 
 	bool use;
 
@@ -57,6 +59,7 @@ protected:
 	Cube* m_pCube;
 	ObjectCollisionType m_collisionType;
 
+	bool m_FollowFlg; // ‚Â‚¢‚Ä‚¢‚­‚×‚«‚ªtrue‰Šú’l‚Ífalse
 };
 
 

@@ -2,6 +2,8 @@
  * @file Enemy.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/08	弾への追跡を削除
+ *					追跡の速度を調整
  * @brief 敵に関する処理
  */
 #include "Enemy.h"
@@ -28,7 +30,7 @@ Enemy::Enemy()
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
 
-
+	use = true;
 }
 
 Enemy::~Enemy()
@@ -86,24 +88,28 @@ void Enemy::Uninit()
 
 void Enemy::Update()
 {
-	//// 追従するターゲットの座標
-	//DirectX::XMVECTOR vTarget = DirectX::XMLoadFloat3(&m_targetPos);
+	//----- 変数初期化 -----
+	static int LifeCnt;
 
-	//// Enemyの座標
-	//DirectX::XMVECTOR vEnemyPos = DirectX::XMLoadFloat3(&m_pos);
+	//エネミの速度を調節するためにコメントアウトされていた部分を元に戻した
+	// 追従するターゲットの座標
+	DirectX::XMVECTOR vTarget = DirectX::XMLoadFloat3(&m_targetPos);
 
-	//// 進行方向							　　↓ベクトルの引き算
-	//DirectX::XMVECTOR vDirection = DirectX::XMVectorSubtract(vTarget, vEnemyPos);
+	// Enemyの座標
+	DirectX::XMVECTOR vEnemyPos = DirectX::XMLoadFloat3(&m_pos);
 
-	//// 一定の速度にするために正規化
-	//// 速度を変えるならvDirectonに速度をかける。
-	//vDirection = DirectX::XMVector3Normalize(vDirection);
+	// 進行方向							　　↓ベクトルの引き算
+	DirectX::XMVECTOR vDirection = DirectX::XMVectorSubtract(vTarget, vEnemyPos);
 
-	//// かける関数								  ↓かける数
-	//vDirection = DirectX::XMVectorScale(vDirection, 1.0 / 60);
+	// 一定の速度にするために正規化
+	// 速度を変えるならvDirectonに速度をかける。
+	vDirection = DirectX::XMVector3Normalize(vDirection);
 
-	//// Float3型に変換
-	//DirectX::XMStoreFloat3(&m_move, vDirection);
+	// かける関数								  ↓かける数
+	vDirection = DirectX::XMVectorScale(vDirection, 1.0 / 60);
+
+	// Float3型に変換
+	DirectX::XMStoreFloat3(&m_move, vDirection);
 
 
 	// アークタンジェント(逆正接)
@@ -111,7 +117,6 @@ void Enemy::Update()
 	m_EnemyAngle -= DirectX::XM_PI * 0.5f;
 
 	// 敵のアクション
-
 
 	// 移動
 	m_pos.x += m_move.x;
@@ -146,8 +151,7 @@ void Enemy::Draw()
 
 void Enemy::EnemyStop()
 {
-	m_move.x = 0.0f;
-	m_move.y = 0.0f;
-	m_move.z = 0.0f;
+	m_move.x = 0.6f;
+	m_move.y = 0.6f;
+	m_move.z = 0.6f;
 }
-

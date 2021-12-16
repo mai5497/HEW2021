@@ -19,7 +19,9 @@ public:
 	void Update();
 
 	void Register(GameObject *pA,GameObject *pB);
-	
+	bool CollisionSphere(GameObject *pC, GameObject *pD);	// “–‚½‚Á‚Ä‚½‚çtrue‚ğ•Ô‚·
+	bool CollisionSphere(GameObject *pC, GameObject *pD, float Radius);
+
 private:
 	GameObject *m_pList[MAX_COLLISION_REGISTER][2];
 	int m_registerNum;	//“o˜^‚µ‚½”

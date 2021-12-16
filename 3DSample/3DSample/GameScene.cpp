@@ -2,8 +2,13 @@
  * @file GameScene.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/03 ピクミン追加
+ *		 2021/12/09 エネミーが球に追跡するのを削除
+ *		 2021/12/11 弾の追跡の処理の変更（ピクミンが来て、攻撃を始める）
+ *					敵の追跡の処理の変更（ピクミンに当たったら消える）
  * @brief ゲームシーンに関する処理
  */
+
 #include "GameScene.h"
 #include "Input.h"
 #include "Player.h"
@@ -19,26 +24,31 @@
 #include "PlayerToEnemy.h"
 #include "Enemy.h"
 #include "EnemyManager.h"
+#include "PikminManager.h"
+
 
 #define CONTROL_NUM (5)
 #define RECORD_MARGIN (10)
 
-Cube* g_pCube;
-Model* g_pModel;
-Camera* g_pCamera;
-TPSCamera* g_pTPSCamera;
-Player *g_pPlayer;
-Stage *g_pStage;
-Collision *g_pCollision;
-PlayerToEnemy *g_pPlayerToEnemy;
-//Enemy* g_pEnemy;
-Bullet* g_pBullet;
-EnemyManager* g_pEnemyManager;
+Cube			*g_pCube;
+Model			*g_pModel;
+Camera			*g_pCamera;
+TPSCamera		*g_pTPSCamera;
+Player			*g_pPlayer;
+PikminManager	*g_pPikminManager;
+Stage			*g_pStage;
+Collision		*g_pCollision;
+PlayerToEnemy	*g_pPlayerToEnemy;
+//Enemy			*g_pEnemy;
+EnemyManager	*g_pEnemyManager;
+//Shot			*g_pShot;
 
-//Shot* g_pShot;
 DirectX::XMFLOAT3 g_recPlayerPos;
-
+XMFLOAT3 g_recBulletPos;
 DirectX::XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
+
+int g_LastBulletNun = -1;
+Bullet *g_pBullet[5];
 
 
 GameScene::GameScene(void)
@@ -76,6 +86,10 @@ void GameScene::Init()
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 
 	g_pPlayer->GetCameraPos(g_pTPSCamera);
+
+	// ピクミン管理クラス実体化
+	g_pPikminManager = new PikminManager();
+	g_pPikminManager->Init();
 
 	//敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -116,6 +130,11 @@ void GameScene::Uninit()
 	delete g_pStage;
 	g_pPlayer->Uninit();
 	delete g_pPlayer;
+
+	// ピクミン終了処理
+	g_pPikminManager->Uninit();
+	delete g_pPikminManager;
+
 	//delete g_pEnemy;
 	g_pEnemyManager->Uninit();
 	delete g_pEnemyManager;
@@ -132,9 +151,10 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 
-
 	g_pPlayer->Update();
 
+	// ピクミン更新処理
+	g_pPikminManager->Update();
 
 	//	g_pBullet->Update();
 	//g_pEnemy->Update();
@@ -153,6 +173,10 @@ SCENE GameScene::Update()
 	if(IsTrigger('Z'))
 	{
 		g_pPlayer->CreateBullet(g_pTPSCamera);
+		for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
+			g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
+		}
+		
 	}
 
 
@@ -172,31 +196,66 @@ SCENE GameScene::Update()
 		}
 	}
 
-	if (&PlayerToEnemy::isHitSphere)
+	
+	// エネミーがプレイヤーを追いかける
+	for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
 	{
-		//g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemy);
-		for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
-		{
-			g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
-			g_pEnemyManager->GetEnemy(i)->EnemyStop();
+		if (!g_pEnemyManager->GetEnemy(i)->use) {
+			continue;
 		}
-		//g_pEnemy->EnemyStop();
+		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++) {
+			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pPikminManager->GetPikmin(j),0.3f)) {
+				continue;
+			}
+			g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
+
+			if (g_pPikminManager->GetPikmin(j)->GetAttackFlg()) {
+				g_pEnemyManager->DestroyEnemy(i);
+			}
+		}
+		if (&PlayerToEnemy::isHitSphere){
+	 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
+			//---ここで一番近いやつにターゲットを移したい
+			//g_pEnemyManager->SetEnemyTarget();
+		}
+	 	//g_pEnemy->EnemyStop();
 	}
 
 
+
+	
+
+	// 弾の追跡と当たり判定
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++)
 	{
-		//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pEnemy);
-		for (int j = 0; j < g_pEnemyManager->GetEnemyNum(); j++)
-		{
-			g_pCollision->Register(g_pPlayer->GetBullet(i), g_pEnemyManager->GetEnemy(j));
+		g_pBullet[i] = g_pPlayer->GetBullet(i);	// 弾情報取得
+		if (g_pBullet[i]->use) {	// 最後の指示を通す
+			g_LastBulletNun = i;
 		}
-		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));
-		
+		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++)
+		{
+			if (!g_pBullet[i]->use){	// 弾未使用ならスキップ
+				continue;
+			}
+			if (!g_pPikminManager->GetPikmin(j)->GetFollowFlg()) {	// 追跡フラグが立っていないときは動かない
+				continue;
+			}
+			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
+			//---ピクミンの弾への追尾
+			g_pPikminManager->SetPikminTarget(g_recBulletPos);
+			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pPikminManager->GetPikmin(j));
+
+			if (!g_pCollision->CollisionSphere(g_pPlayer->GetBullet(i), g_pPikminManager->GetPikmin(j))) {
+				continue;
+			}
+			g_pPikminManager->GetPikmin(j)->SetAttackFlg(true);
+
+
+		}
+		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));	// 弾とフィールドの当たり判定
 	}
 	
-	if (IsTrigger('X'))
-	{
+	if (IsTrigger('X')){
 		g_pPlayer->DestroyBullet();
 	}
 
@@ -336,19 +395,23 @@ void GameScene::Draw()
 		));
 	//g_pModel->Draw();
 
-	//プレイヤー描画
+	// プレイヤー描画
 
-	//敵の描画
+	// 敵の描画
 	g_pEnemyManager->Draw();
+
+	// ピクミン描画
+	g_pPikminManager->Draw();
 
 	//g_pEnemy->Draw();
 	SHADER->SetTexture(NULL);
 	//	g_pBullet->Draw();
 
-	//ステージ描画
+	// ステージ描画
 	g_pStage->Draw();
 
-	//	g_pShot->Draw();
+
+	// g_pShot->Draw();
 	g_pPlayer->Draw();
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	

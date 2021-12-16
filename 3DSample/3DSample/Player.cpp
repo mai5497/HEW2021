@@ -194,7 +194,7 @@ void Player::Draw()
 Bullet *Player::GetBullet(int index)
 {
 	if (index < m_nBulletNum)
-	{
+	{ 
 		return m_ppBullets[index];
 	}
 	return NULL;
@@ -285,9 +285,9 @@ void Player::CreateBullet(TPSCamera* pCamera)
 		dir.z = dir.z / L;
 
 		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
-		dir.x = dir.x * 0.5;
-		dir.y = dir.y * 0.5;
-		dir.z = dir.z * 0.5;
+		dir.x = dir.x * 0.2;
+		dir.y = dir.y * 0.2;
+		dir.z = dir.z * 0.2;
 
 		m_ppBullets[i]->SetMove(dir);
 		break;

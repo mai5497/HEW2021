@@ -16,8 +16,11 @@ public:
 	void TargetPos(DirectX::XMFLOAT3);
 	virtual void EnemyStop();
 
+	void SetAttackFlg(bool flg);	// フラグをセット（セットしたい方いれる）
+	bool GetAttackFlg();			// フラグを取得
 protected:
 
 	DirectX::XMFLOAT3 m_targetPos;
+	bool m_AttackFlg;		// 攻撃を開始するかどうか(trueの時に攻撃)
 };
 #endif

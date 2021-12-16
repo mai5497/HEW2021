@@ -224,3 +224,64 @@ void Collision::Push(GameObject *pDynamic,GameObject *pStatic)
 		}
 	}
 }
+
+//球と球の当たり判定
+//(x2-x1)^2 + (y2-y1)^2 + (z2-z1)^2 <= (r1+r2)^2
+bool Collision::CollisionSphere(GameObject *pC, GameObject *pD)
+{
+	DirectX::XMFLOAT3 aPos = pC->GetPos();
+	DirectX::XMFLOAT3 bPos = pD->GetPos();
+	DirectX::XMFLOAT3 aSize = pC->GetRadius();
+	DirectX::XMFLOAT3 bSize = pD->GetRadius();
+
+	//半径
+	float Radius1 = aSize.x;
+	float Radius2 = bSize.x;
+
+	//球1と球2の中心点の距離の2乗
+	float distanceSqu =
+		powf((bPos.x - aPos.x), 2) +
+		powf((bPos.y - aPos.y), 2) +
+		powf((bPos.z - aPos.z), 2);
+	//(bPos.x - aPos.x) * (bPos.x - aPos.x) +
+	//(bPos.y - aPos.y) * (bPos.y - aPos.y) +
+	//(bPos.z - aPos.z) * (bPos.z - aPos.z);
+	
+	return (distanceSqu <= powf((Radius1 + Radius2), 2));
+
+	/*if (distanceSqu <= powf((Radius1 + Radius2), 2))
+	{
+	return true;
+	}
+
+	return false;*/
+}
+
+bool Collision::CollisionSphere(GameObject *pC, GameObject *pD,float Radius) {
+	DirectX::XMFLOAT3 aPos = pC->GetPos();
+	DirectX::XMFLOAT3 bPos = pD->GetPos();
+	DirectX::XMFLOAT3 aSize = pC->GetRadius();
+	DirectX::XMFLOAT3 bSize = pD->GetRadius();
+
+	//半径
+	float Radius1 = Radius;
+	float Radius2 = Radius;
+
+	//球1と球2の中心点の距離の2乗
+	float distanceSqu =
+		powf((bPos.x - aPos.x), 2) +
+		powf((bPos.y - aPos.y), 2) +
+		powf((bPos.z - aPos.z), 2);
+	//(bPos.x - aPos.x) * (bPos.x - aPos.x) +
+	//(bPos.y - aPos.y) * (bPos.y - aPos.y) +
+	//(bPos.z - aPos.z) * (bPos.z - aPos.z);
+
+	return (distanceSqu <= powf((Radius1 + Radius2), 2));
+
+	/*if (distanceSqu <= powf((Radius1 + Radius2), 2))
+	{
+	return true;
+	}
+
+	return false;*/
+}

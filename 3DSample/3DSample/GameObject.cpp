@@ -2,6 +2,9 @@
  * @file GameObject.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/11 追跡フラグをメンバ変数に追加
+ *					追跡フラグ取得関数を追加
+ *					追跡フラグセット関数を追加
  * @brief ゲーム内のオブジェクトに関する処理
  */
 #include "GameObject.h"
@@ -17,6 +20,7 @@ GameObject::GameObject()
 	,m_Angle(0, 0, 0)
 	,m_collisionType(COLLISION_STATIC)
 	,use(false)
+	,m_FollowFlg(false)
 {
 
 }
@@ -103,6 +107,11 @@ ObjectCollisionType GameObject::GetCollisionType()
 {
 	return m_collisionType;
 }
+
+bool GameObject::GetFollowFlg() {
+	return m_FollowFlg;
+}
+
 void GameObject::SetPos(DirectX::XMFLOAT3 pos)
 {
 	m_pos = pos;
@@ -118,4 +127,8 @@ void GameObject::SetMove(DirectX::XMFLOAT3 move)
 void GameObject::SetAngle(DirectX::XMFLOAT3 angle)
 {
 	m_Angle = angle;
+}
+
+void GameObject::SetFollowFlg(bool flg) {
+	m_FollowFlg = flg;
 }
