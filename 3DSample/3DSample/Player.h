@@ -24,7 +24,8 @@ public:
 	Bullet *GetBullet(int index);
 	int GetBulletNum();
 
-	void CreateBullet(TPSCamera*);
+	//void CreateBullet(TPSCamera*);
+	void CreateBullet(Camera*);
 	void GetCameraPos(TPSCamera*);
 	void DestroyBullet();
 

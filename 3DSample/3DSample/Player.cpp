@@ -2,6 +2,7 @@
  * @file Player.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/19 赤青弾をわけて打てるように
  * @brief プレイヤーに関する処理
  */
 #include "Player.h"
@@ -95,6 +96,8 @@ void Player::Update()
 	bool keyR = IsPress('D');
 	bool keyU = IsPress('W');
 	bool keyD = IsPress('S');
+	bool keyBlue = IsPress('E');
+	bool keyRed = IsPress('Q');
 	bool keyJ = IsTrigger(VK_SPACE);
 
 	//１秒間（60FPS）で2M進ことを表す。
@@ -134,6 +137,16 @@ void Player::Update()
 	}
 	if (keyD) { m_move.z -= Move; }
 	if (keyJ) { m_move.y += 0.2f; }
+
+	if (IsTrigger('Z'))
+	{
+		CreateBullet(m_pControllCamera);
+		//for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
+		//	g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
+		//}
+
+	}
+
 
 	//if (Input::instance().getControllerConnection())
 	//{
@@ -252,7 +265,8 @@ void Player::GetCameraPos(TPSCamera* pCamera)
 }
 
 // 手裏剣を生成する関数
-void Player::CreateBullet(TPSCamera* pCamera)
+//void Player::CreateBullet(TPSCamera* pCamera)
+void Player::CreateBullet(Camera* pCamera)
 {
 	DirectX::XMFLOAT3 pCameraPos = pCamera->GetCameraPos();
 	for (int i = 0; i < m_nBulletNum; ++i)

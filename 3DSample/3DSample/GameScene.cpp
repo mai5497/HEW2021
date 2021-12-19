@@ -27,8 +27,8 @@
 #include "PikminManager.h"
 
 
-#define CONTROL_NUM (5)
-#define RECORD_MARGIN (10)
+#define CONTROL_NUM		(5)
+#define RECORD_MARGIN	(10)
 
 Cube			*g_pCube;
 Model			*g_pModel;
@@ -56,10 +56,12 @@ GameScene::GameScene(void)
 
 }
 
+
 GameScene::~GameScene(void)
 {
 
 }
+
 
 void GameScene::Init()
 {
@@ -117,6 +119,7 @@ void GameScene::Init()
 
 }
 
+
 void GameScene::Uninit()
 {
 	g_pCollision->Uninit();
@@ -148,6 +151,8 @@ void GameScene::Uninit()
 	delete g_pModel;
 	delete g_pCube;
 }
+
+
 SCENE GameScene::Update()
 {
 
@@ -170,14 +175,14 @@ SCENE GameScene::Update()
 
 	g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
-	if(IsTrigger('Z'))
-	{
-		g_pPlayer->CreateBullet(g_pTPSCamera);
-		for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
-			g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
-		}
-		
-	}
+	//if(IsTrigger('Z'))
+	//{
+	//	g_pPlayer->CreateBullet(g_pTPSCamera);
+	//	for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
+	//		g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
+	//	}
+	//	
+	//}
 
 
 	//‚·‚×‚Ä‚ÌˆÚ“®(XVˆ—)‚ª‚·‚ñ‚Å‚©‚ç
@@ -203,7 +208,8 @@ SCENE GameScene::Update()
 		if (!g_pEnemyManager->GetEnemy(i)->use) {
 			continue;
 		}
-		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++) {
+		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++) 
+		{
 			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pPikminManager->GetPikmin(j),0.3f)) {
 				continue;
 			}
@@ -285,6 +291,8 @@ SCENE GameScene::Update()
 	
 	return SCENE_GAME;
 }
+
+
 void GameScene::Draw()
 {
 

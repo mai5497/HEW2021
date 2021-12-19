@@ -110,7 +110,7 @@ void AttackPikmin::Update()
 	vDirection = XMVector3Normalize(vDirection);
 
 	// ‚©‚¯‚éŠÖ”								  «‚©‚¯‚é”
-	vDirection = XMVectorScale(vDirection, 1.0 / 60);
+	vDirection = XMVectorScale(vDirection, 1.0f / 60);
 
 	// Float3Œ^‚É•ÏŠ·
 	XMStoreFloat3(&m_move, vDirection * 5);

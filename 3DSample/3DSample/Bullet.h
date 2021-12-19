@@ -16,10 +16,15 @@ public:
 	
 
 	virtual void Update();
+
+	void SetRB(bool flg);	// “Š‚°‚½’e‚ªÔ‚©Â‚©ƒZƒbƒg‚·‚é
+	bool GetRB();
 private:
 
 	int m_sleep;
 	int m_sleep2;
+
+	bool m_rbFlg;	// true‚È‚çÔfalse‚È‚çÂ
 };
 
 
