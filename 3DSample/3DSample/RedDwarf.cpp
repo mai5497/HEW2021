@@ -1,6 +1,6 @@
 //****************************************************
 //
-//	攻撃ピクミン
+//	赤小人
 //	作成者：伊地田真衣
 //	
 //	2021/12/04 : 作成
@@ -10,7 +10,7 @@
 
 
 //========================= インクルード部 ===========================
-#include "AttackPikmin.h"
+#include "RedDwarf.h"
 #include "MyVector.h"
 #include "Collision.h"
 #include "Player.h"
@@ -18,10 +18,10 @@
 #include "Bullet.h"
 #include "GameScene.h"
 
-#define PIKMIN_SIZE (1.0f)
+#define DWARF_SIZE (1.0f)
 
-DrawBuffer *AttackPikmin::m_pBuffer = NULL;
-FBXPlayer *AttackPikmin::m_pFBX = NULL;
+DrawBuffer *RedDwarf::m_pBuffer = NULL;
+FBXPlayer *RedDwarf::m_pFBX = NULL;
 
 
 //====================================================================
@@ -29,10 +29,10 @@ FBXPlayer *AttackPikmin::m_pFBX = NULL;
 //		コンストラクタ
 //
 //====================================================================
-AttackPikmin::AttackPikmin() 
+RedDwarf::RedDwarf() 
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Model/kougeki.png", &m_pAttackPikminTex);
+	LoadTextureFromFile("Assets/Model/kougeki.png", &m_pRedDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
@@ -46,7 +46,7 @@ AttackPikmin::AttackPikmin()
 //		デストラクタ
 //
 //====================================================================
-AttackPikmin:: ~AttackPikmin()
+RedDwarf:: ~RedDwarf()
 {
 
 }
@@ -57,11 +57,11 @@ AttackPikmin:: ~AttackPikmin()
 //		初期化
 //
 //====================================================================
-bool AttackPikmin::Init()
+bool RedDwarf::Init()
 {
 	/* 以下はモデルが来たら使用 */
 	if (m_pBuffer == NULL) {
-		AttackPikmin::LoadPikmin("Assets/Model/kougeki.fbx");
+		RedDwarf::LoadDwarf("Assets/Model/kougeki.fbx");
 	}
 
 	GameObject::Init();
@@ -74,7 +74,7 @@ bool AttackPikmin::Init()
 //		終了処理
 //
 //====================================================================
-void AttackPikmin::Uninit()
+void RedDwarf::Uninit()
 {
 	if (m_pBuffer != NULL) 
 	{
@@ -91,7 +91,7 @@ void AttackPikmin::Uninit()
 //		更新処理
 //
 //====================================================================
-void AttackPikmin::Update()
+void RedDwarf::Update()
 {	
 	//----- 変数初期化 -----
 	static bool jumpFlg;
@@ -99,11 +99,11 @@ void AttackPikmin::Update()
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
 
-	// ピクミンの座標
-	XMVECTOR vAttackPikminPos = XMLoadFloat3(&m_pos);
+	// 小人の座標
+	XMVECTOR vRedDwarfPos = XMLoadFloat3(&m_pos);
 
 	// 進行方向							　　↓ベクトルの引き算
-	XMVECTOR vDirection = XMVectorSubtract(vTarget, vAttackPikminPos);
+	XMVECTOR vDirection = XMVectorSubtract(vTarget, vRedDwarfPos);
 
 	// 一定の速度にするために正規化
 	// 速度を変えるならvDirectonに速度をかける。
@@ -116,8 +116,8 @@ void AttackPikmin::Update()
 	XMStoreFloat3(&m_move, vDirection * 5);
 
 	// アークタンジェント(逆正接)
-	m_PikminAngle = atan2(m_move.z, m_move.x);
-	m_PikminAngle -= DirectX::XM_PI * 0.5f;
+	m_DwarfAngle = atan2(m_move.z, m_move.x);
+	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
 
 	if(m_AttackFlg) {
 		m_move.y += 0.2f;
@@ -144,19 +144,19 @@ void AttackPikmin::Update()
 //		描画処理
 //
 //====================================================================
-void AttackPikmin::Draw()
+void RedDwarf::Draw()
 {
 
-	// ピクミンのテクスチャ
+	// 小人のテクスチャ
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(
-			DirectX::XMMatrixScaling(PIKMIN_SIZE, PIKMIN_SIZE, PIKMIN_SIZE)
-			*DirectX::XMMatrixRotationY(-m_PikminAngle)
+			DirectX::XMMatrixScaling(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE)
+			*DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-		SHADER->SetTexture(m_pAttackPikminTex);
+		SHADER->SetTexture(m_pRedDwarfTex);
 		/*SHADER->SetTexture(
 		m_fbx.GetTexture(i)
 		);*/
@@ -173,7 +173,7 @@ void AttackPikmin::Draw()
 //		攻撃
 //
 //====================================================================
-void AttackPikmin::Attack()
+void RedDwarf::Attack()
 {
 
 
@@ -185,7 +185,7 @@ void AttackPikmin::Attack()
 //		テクスチャ読み込み
 //
 //====================================================================
-bool AttackPikmin::LoadPikmin(const char* pFilePath)
+bool RedDwarf::LoadDwarf(const char* pFilePath)
 {
 	/* 以下はモデルが来たら使用 */
 	HRESULT hr;

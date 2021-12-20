@@ -138,7 +138,7 @@ void Player::Update()
 {
 	//----- 変数初期化 -----
 	XMFLOAT2 Axis = LeftThumbPosition();
-	bool rbFlg = true;
+	static bool rbFlg = true;
 
 	bool keyL = IsPress('A');
 	bool keyR = IsPress('D');
@@ -157,51 +157,54 @@ void Player::Update()
 	
 	//プレイヤー移動
 	m_move.y -= 0.01f;
-	if (keyL) 
-	{
+	if (keyL){
 		m_move.x -= Move;
-		if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f)
-		{
+		if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y -= 0.1f;
 		}
 	}
 
-	if (keyR) 
-	{ 
+	if (keyR){ 
 		m_move.x += Move;
 
-		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f)
-		{
+		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y += 0.1f;
 		}
 	}
-	if (keyU)
-	{
+
+	if (keyU){
 		m_move.z += Move;
-		if (m_Angle.y <= -CameraRad)
+		if (m_Angle.y <= -CameraRad) {
 			m_Angle.y += 0.1f;
-		if (m_Angle.y >= -CameraRad)
+		}
+		if (m_Angle.y >= -CameraRad) {
 			m_Angle.y -= 0.1f;
+		}
 	}
 
-	if (keyRed) {
+	if (keyRed) {	// 赤に切り替え
 		rbFlg = true;	// 赤
 	}
 
-	if (keyBlue) {
+	if (keyBlue) {	// 青に切り替え
 		rbFlg = false;	// 青
 	}
 
 	if (keyD) { m_move.z -= Move; }
 	if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
 
-	if (IsTrigger('Z'))
-	{
+	if (IsPress(VK_UP)) {	// 弾の飛ばす位置伸ばす
+		/*todo 弾の飛距離伸ばす*/
+	}
+	if (IsPress(VK_DOWN)) {	// 弾の飛ばす位置短く
+		/*todo 弾の飛距離落とす*/
+	}
+
+	if (IsTrigger('Z')){	// 弾飛ばす
 		CreateBullet(m_pControllCamera,rbFlg);
 		//for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
 		//	g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
 		//}
-
 	}
 
 
@@ -218,10 +221,6 @@ void Player::Update()
 	direction = direction.GetNormalize();
 
 	////座標を更新
-	//m_pos.x += m_move.x;
-	//m_pos.y += m_move.y;
-	//m_pos.z += m_move.z;
-
 	//m_pos.x += m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
 	//m_pos.y += m_move.y;
 	//m_pos.z += m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);

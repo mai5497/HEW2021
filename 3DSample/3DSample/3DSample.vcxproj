@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AttackPikmin.cpp" />
+    <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterBase.cpp" />
@@ -154,8 +154,8 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="MyVector.cpp" />
-    <ClCompile Include="PikminBase.cpp" />
-    <ClCompile Include="PikminManager.cpp" />
+    <ClCompile Include="DwarfBase.cpp" />
+    <ClCompile Include="DwarfManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerToEnemy.cpp" />
     <ClCompile Include="ResultScene.cpp" />
@@ -169,7 +169,7 @@
     <ClCompile Include="TPScamera.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttackPikmin.h" />
+    <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />
@@ -196,8 +196,8 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="MyVector.h" />
-    <ClInclude Include="PikminBase.h" />
-    <ClInclude Include="PikminManager.h" />
+    <ClInclude Include="DwarfBase.h" />
+    <ClInclude Include="DwarfManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerToEnemy.h" />
     <ClInclude Include="ResultScene.h" />

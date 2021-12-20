@@ -1,20 +1,20 @@
-#ifndef __PIKMINBASE_H__
-#define __PIKMINBASE_H__
+#ifndef __DWARFBASE_H__
+#define __DWARFBASE_H__
 
 //========================= インクルード部 ===========================
 #include "CharacterBase.h"
 using namespace DirectX;
 
 //=========================  定数・マクロ定義===========================
-#define MAX_PIKMIN	(5)		// ピクミン最大値
+#define MAX_DWARF	(5)		// ピクミン最大値
 
 //========================= クラス定義 ===========================
-class PikminBase : public CharacterBase 
+class DwarfBase : public CharacterBase 
 {
 public:
 	//---関数
-	PikminBase();
-	virtual ~PikminBase();
+	DwarfBase();
+	virtual ~DwarfBase();
 	void Update();
 	virtual void Draw();
 

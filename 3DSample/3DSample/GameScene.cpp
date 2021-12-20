@@ -29,7 +29,7 @@
 #include "PlayerToEnemy.h"
 #include "Enemy.h"
 #include "EnemyManager.h"
-#include "PikminManager.h"
+#include "DwarfManager.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -45,7 +45,7 @@ Model			*g_pModel;
 Camera			*g_pCamera;
 TPSCamera		*g_pTPSCamera;
 Player			*g_pPlayer;
-PikminManager	*g_pPikminManager;
+DwarfManager	*g_pDwarfManager;
 Stage			*g_pStage;
 Collision		*g_pCollision;
 PlayerToEnemy	*g_pPlayerToEnemy;
@@ -119,9 +119,9 @@ void GameScene::Init()
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 	g_pPlayer->GetCameraPos(g_pTPSCamera);
 
-	// ピクミン管理クラス実体化
-	g_pPikminManager = new PikminManager();
-	g_pPikminManager->Init();
+	// 小人管理クラス実体化
+	g_pDwarfManager = new DwarfManager();
+	g_pDwarfManager->Init();
 
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -181,9 +181,9 @@ void GameScene::Uninit()
 	g_pPlayer->Uninit();
 	delete g_pPlayer;
 
-	// ピクミン終了処理
-	g_pPikminManager->Uninit();
-	delete g_pPikminManager;
+	// 小人終了処理
+	g_pDwarfManager->Uninit();
+	delete g_pDwarfManager;
 
 	// エネミー終了処理
 	//delete g_pEnemy;
@@ -221,8 +221,8 @@ SCENE GameScene::Update()
 	// プレイヤー更新
 	g_pPlayer->Update();
 
-	// ピクミン更新処理
-	g_pPikminManager->Update();
+	// 小人更新処理
+	g_pDwarfManager->Update();
 
 	// バレット更新
 	//	g_pBullet->Update();
@@ -271,14 +271,14 @@ SCENE GameScene::Update()
 		if (!g_pEnemyManager->GetEnemy(i)->use) {
 			continue;
 		}
-		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++) 
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
 		{
-			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pPikminManager->GetPikmin(j),0.3f)) {
+			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
 				continue;
 			}
 			g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
 
-			if (g_pPikminManager->GetPikmin(j)->GetAttackFlg()) {
+			if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
 				g_pEnemyManager->DestroyEnemy(i);
 			}
 		}
@@ -302,23 +302,23 @@ SCENE GameScene::Update()
 		if (g_pBullet[i]->use) {	// 最後の指示を通す
 			g_LastBulletNun = i;
 		}
-		for (int j = 0; j < g_pPikminManager->GetPikminNum(); j++)
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++)
 		{
 			if (!g_pBullet[i]->use){	// 弾未使用ならスキップ
 				continue;
 			}
-			if (!g_pPikminManager->GetPikmin(j)->GetFollowFlg()) {	// 追跡フラグが立っていないときは動かない
+			if (!g_pDwarfManager->GetDwarf(j)->GetFollowFlg()) {	// 追跡フラグが立っていないときは動かない
 				continue;
 			}
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
 			//---ピクミンの弾への追尾
-			g_pPikminManager->SetPikminTarget(g_recBulletPos);
-			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pPikminManager->GetPikmin(j));
+			g_pDwarfManager->SetDwarfTarget(g_recBulletPos);
+			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j));
 
-			if (!g_pCollision->CollisionSphere(g_pPlayer->GetBullet(i), g_pPikminManager->GetPikmin(j))) {
+			if (!g_pCollision->CollisionSphere(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j))) {
 				continue;
 			}
-			g_pPikminManager->GetPikmin(j)->SetAttackFlg(true);
+			g_pDwarfManager->GetDwarf(j)->SetAttackFlg(true);
 
 
 		}
@@ -491,7 +491,7 @@ void GameScene::Draw()
 	g_pEnemyManager->Draw();
 
 	// ピクミン描画
-	g_pPikminManager->Draw();
+	g_pDwarfManager->Draw();
 
 	//g_pEnemy->Draw();
 	SHADER->SetTexture(NULL);

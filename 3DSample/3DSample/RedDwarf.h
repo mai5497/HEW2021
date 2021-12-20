@@ -1,17 +1,17 @@
-#ifndef __ATTACKPIKMIN_H__
-#define __ATTACKPIKMIN_H__
+#ifndef __REDDWARF_H__
+#define __REDDWARF_H__
 
 //========================= インクルード部 ===========================
-#include "PikminBase.h"
+#include "DwarfBase.h"
 #include "FBX/FBXPlayer.h"
 
 //========================= クラス定義 ===========================
-class AttackPikmin : public PikminBase
+class RedDwarf : public DwarfBase
 {
 public:
 	//---関数
-	AttackPikmin();
-	~AttackPikmin();
+	RedDwarf();
+	~RedDwarf();
 	bool Init();
 	void Uninit();
 	virtual void Update();
@@ -19,15 +19,15 @@ public:
 
 
 	//---変数
-	ID3D11ShaderResourceView *m_pAttackPikminTex;
+	ID3D11ShaderResourceView *m_pRedDwarfTex;
 
 private:
 	//---関数
 	void Attack();
-	bool LoadPikmin(const char *pFilePath);
+	bool LoadDwarf(const char *pFilePath);
 
 	//---変数
-	float m_PikminAngle;
+	float m_DwarfAngle;
 	XMFLOAT3 m_dir;
 	static DrawBuffer *m_pBuffer;
 	static FBXPlayer *m_pFBX;		// FBXファイル操作クラス

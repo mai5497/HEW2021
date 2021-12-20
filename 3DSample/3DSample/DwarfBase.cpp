@@ -1,25 +1,26 @@
 //****************************************************
 //
-//	ピクミン（仮名）ベース
+//	小人ベース
 //	作成者：伊地田真衣
 //	
 //	2021/12/03 : 作成
 //	2021/12/11 : ターゲットの座標いれる関数を追加した気がする
+//	2021/12/21 : ソース名を変更
 //
 //****************************************************
 
 //========================= インクルード部 ===========================
-#include "PikminBase.h"
+#include "DwarfBase.h"
 
 //====================================================================
 //
 //		コンストラクタ
 //
 //====================================================================
-PikminBase::PikminBase():m_hp(10),m_energy(50),m_AttackFlg(false)
+DwarfBase::DwarfBase():m_hp(10),m_energy(50),m_AttackFlg(false)
 {
 	//----- 変数初期化 -----
-	m_collisionType = COLLISION_DYNAMIC;	// ピクミンは動く物体
+	m_collisionType = COLLISION_DYNAMIC;	// 小人は動く物体
 	m_FollowFlg = false;
 }
 
@@ -29,7 +30,7 @@ PikminBase::PikminBase():m_hp(10),m_energy(50),m_AttackFlg(false)
 //		デストラクタ
 //
 //====================================================================
-PikminBase::~PikminBase() 
+DwarfBase::~DwarfBase() 
 {
 
 }
@@ -40,7 +41,7 @@ PikminBase::~PikminBase()
 //		更新処理
 //
 //====================================================================
-void PikminBase::Update() {
+void DwarfBase::Update() {
 
 }
 
@@ -50,7 +51,7 @@ void PikminBase::Update() {
 //		描画処理
 //
 //====================================================================
-void PikminBase::Draw() 
+void DwarfBase::Draw() 
 {
 	/* 以下はテクスチャが来たら使用 */
 	SHADER->SetWorld(
@@ -70,15 +71,15 @@ void PikminBase::Draw()
 //		引数   : ターゲットの座標
 //
 //====================================================================
-void PikminBase::TargetPos(XMFLOAT3 pos) 
+void DwarfBase::TargetPos(XMFLOAT3 pos) 
 {
 	m_targetPos = pos;
 }
 
-void PikminBase::SetAttackFlg(bool flg) {
+void DwarfBase::SetAttackFlg(bool flg) {
 	m_AttackFlg = flg;
 }
 
-bool PikminBase::GetAttackFlg() {
+bool DwarfBase::GetAttackFlg() {
 	return m_AttackFlg;
 }
