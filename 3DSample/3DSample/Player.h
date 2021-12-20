@@ -25,7 +25,7 @@ public:
 	int GetBulletNum();
 
 	//void CreateBullet(TPSCamera*);
-	void CreateBullet(Camera*);
+	void CreateBullet(Camera *pCamera,bool rbFlg);
 	void GetCameraPos(TPSCamera*);
 	void DestroyBullet();
 

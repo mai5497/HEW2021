@@ -242,14 +242,7 @@ SCENE GameScene::Update()
 
 	g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
-	//if(IsTrigger('Z'))
-	//{
-	//	g_pPlayer->CreateBullet(g_pTPSCamera);
-	//	for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
-	//		g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
-	//	}
-	//	
-	//}
+	/* ’e‚Ì”­ŽË‚Íplayer.cpp‚ÉˆÚ“® */
 
 
 	//***************************************************************

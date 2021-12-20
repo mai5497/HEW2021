@@ -2,9 +2,11 @@
  * @file GameObject.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
- *		 2021/12/11 追跡フラグをメンバ変数に追加
- *					追跡フラグ取得関数を追加
- *					追跡フラグセット関数を追加
+ *		 2021/12/11 追跡フラグをメンバ変数に追加（いちだ）
+ *					追跡フラグ取得関数を追加（いちだ）
+ *					追跡フラグセット関数を追加（いちだ）
+ *		 2021/12/20 色情報をいれる変数を追加（いちだ）
+ *					色情報用の変数のセットゲット関数を追加（いちだ）
  * @brief ゲーム内のオブジェクトに関する処理
  */
 #include "GameObject.h"
@@ -21,6 +23,7 @@ GameObject::GameObject()
 	,m_collisionType(COLLISION_STATIC)
 	,use(false)
 	,m_FollowFlg(false)
+	,m_Color(1.0f, 1.0f, 1.0f, 1.0f)
 {
 
 }
@@ -45,6 +48,8 @@ bool GameObject::Init()
 
 	return true;
 }
+
+
 void GameObject::Uninit()
 {
 	if (m_pCube != NULL)
@@ -54,10 +59,14 @@ void GameObject::Uninit()
 	}
 
 }
-void GameObject::Update()
-{
-
+void GameObject::Update() {
+	if (m_Color.w != 1.0f || m_Color.x != 1.0f || m_Color.y != 1.0f || m_Color.z != 1.0f) {
+		m_pCube->SetRGBA(m_Color.w,m_Color.x,m_Color.y,m_Color.z);
+		m_pCube->Update();
+	}
 }
+
+
 void GameObject::Draw()
 {
 	//3Dの座標返還の基本は行列で計算を行う
@@ -87,48 +96,125 @@ void GameObject::CreateObject(DirectX::XMFLOAT3 pos,
 {
 
 }
+
+
+//--------------------- ゲット関数 ----------------------
+//=======================================================
+//
+//		座標取得
+//
+//=======================================================
 DirectX::XMFLOAT3 GameObject::GetPos()
 {
 	return m_pos;
 }
+//=======================================================
+//
+//		サイズ取得
+//
+//=======================================================
 DirectX::XMFLOAT3 GameObject::GetSize()
 {
 	return m_size;
 }
+//=======================================================
+//
+//		移動量取得
+//
+//=======================================================
 DirectX::XMFLOAT3 GameObject::GetMove()
 {
 	return m_move;
 }
+//=======================================================
+//
+//		境界球半径取得
+//
+//=======================================================
 DirectX::XMFLOAT3 GameObject::GetRadius()
 {
 	return m_Radius;
 }
+//=======================================================
+//
+//		オブジェクトの種類取得
+//
+//=======================================================
 ObjectCollisionType GameObject::GetCollisionType()
 {
 	return m_collisionType;
 }
-
-bool GameObject::GetFollowFlg() {
+//=======================================================
+//
+//		追跡フラグ取得
+//
+//=======================================================
+bool GameObject::GetFollowFlg() 
+{
 	return m_FollowFlg;
 }
+//=======================================================
+//
+//		カラー取得
+//
+//=======================================================
+DirectX::XMFLOAT4 GameObject::GetColor() 
+{
+	return m_Color;
+}
 
+
+//--------------------- セット関数 ----------------------
+//=======================================================
+//
+//		座標のセット
+//
+//=======================================================
 void GameObject::SetPos(DirectX::XMFLOAT3 pos)
 {
 	m_pos = pos;
 }
+//=======================================================
+//
+//		サイズのセット
+//
+//=======================================================
 void GameObject::SetSize(DirectX::XMFLOAT3 size)
 {
 	m_size = size;
 }
+//=======================================================
+//
+//		移動距離のセット
+//
+//=======================================================
 void GameObject::SetMove(DirectX::XMFLOAT3 move)
 {
 	m_move = move;
 }
+//=======================================================
+//
+//		角度のセット
+//
+//=======================================================
 void GameObject::SetAngle(DirectX::XMFLOAT3 angle)
 {
 	m_Angle = angle;
 }
-
-void GameObject::SetFollowFlg(bool flg) {
+//=======================================================
+//
+//		追跡フラグのセット
+//
+//=======================================================
+void GameObject::SetFollowFlg(bool flg) 
+{
 	m_FollowFlg = flg;
+}
+//=======================================================
+//
+//		色のセット
+//
+//=======================================================
+void GameObject::SetCollor(DirectX::XMFLOAT4 color) {
+	m_Color = color;
 }

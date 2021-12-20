@@ -16,7 +16,8 @@
 #define WAIT_TIME (1.0 * FPS)		//遅延のための時間
 #define WAIT_TIME2 (0.8f * FPS)		//遅延のための時間
 
-Bullet::Bullet(DirectX::XMFLOAT3 size)
+Bullet::Bullet(DirectX::XMFLOAT3 size):
+	m_rbFlg(true)
 {
 	m_pos.y = 1000.0f;				//初期座標x
 	m_pos.z = 1000.0f;				//初期座標y
@@ -59,6 +60,7 @@ void Bullet::Update()
 
 	m_sleep++;
 	m_sleep2++;
+
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
