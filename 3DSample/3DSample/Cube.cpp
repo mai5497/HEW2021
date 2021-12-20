@@ -9,6 +9,7 @@
 Cube::Cube()
 	:m_posX(0),m_posY(0),m_posZ(0)
 	,m_width(1),m_height(1),m_depth(1)
+	, m_R(1.0f), m_G(1.0f), m_B(1.0f), m_A(1.0f)
 {
 	//頂点バッファ
 	struct Vertex
@@ -20,14 +21,14 @@ Cube::Cube()
 
 	const float l = 0.5f;
 	Vertex vtx[] = {
-		{{ -l, l,-l },{ 1,1,1,1 },{ 0,0 }},
-		{{  l, l,-l },{ 1,1,1,1 },{ 1,0 }},
-		{{ -l,-l,-l },{ 1,1,1,1 },{ 0,1 }},
-		{{  l,-l,-l },{ 1,1,1,1 },{ 1,1 }},
-		{{  l, l, l },{ 1,1,1,1 },{ 0,0 }},
-		{{ -l, l, l },{ 1,1,1,1 },{ 1,0 }},
-		{{  l,-l, l },{ 1,1,1,1 },{ 0,1 }},
-		{{ -l,-l, l },{ 1,1,1,1 },{ 1,1 }},
+		{{ -l, l,-l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
+		{{  l, l,-l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
+		{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
+		{{  l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
+		{{  l, l, l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
+		{{ -l, l, l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
+		{{  l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
+		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
 	};
 	//インデックスデータ
 	long idx[] = {
@@ -52,6 +53,31 @@ Cube::~Cube()
 {
 }
 
+void Cube::Update() {
+	//頂点バッファ
+	struct Vertex {
+		float pos[3];
+		float color[4];
+		float uv[2];
+	};
+	const float l = 0.5f;
+	Vertex vtx[] = {
+		{{ -l, l,-l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
+		{{  l, l,-l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
+		{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
+		{{  l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
+		{{  l, l, l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
+		{{ -l, l, l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
+		{{  l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
+		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
+	};
+
+	m_buffer.CreateVertexBuffer(
+		vtx, sizeof(Vertex),
+		sizeof(vtx) / sizeof(Vertex));
+}
+
+
 void Cube::SetPos(float x, float y, float z)
 {
 	m_posX = x;
@@ -70,6 +96,16 @@ void Cube::SetAngle(float ax, float ay, float az)
 	m_AngleY = ay;
 	m_AngleZ = az;
 }
+
+// 色変更
+void Cube::SetRGBA(float r, float g, float b, float a)
+{
+	m_R = r;
+	m_G = g;
+	m_B = b;
+	m_A = a;
+}
+
 
 void Cube::Draw()
 {

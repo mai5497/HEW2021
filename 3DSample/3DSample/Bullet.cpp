@@ -2,8 +2,7 @@
  * @file Bullet.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
- *		 2021/12/19 赤青玉を判別する変数を追加
- *					赤青玉判別変数のゲッターセッターを追加
+ *		
  * @brief プレイヤーから発射される弾に関する処理
  */
 #include "Bullet.h"
@@ -14,7 +13,8 @@
 #define WAIT_TIME (1.0 * FPS)		//遅延のための時間
 #define WAIT_TIME2 (0.8f * FPS)		//遅延のための時間
 
-Bullet::Bullet(DirectX::XMFLOAT3 size)
+Bullet::Bullet(DirectX::XMFLOAT3 size):
+	m_rbFlg(true)
 {
 	m_pos.y = 1000.0f;				//初期座標x
 	m_pos.z = 1000.0f;				//初期座標y
@@ -57,6 +57,7 @@ void Bullet::Update()
 
 	m_sleep++;
 	m_sleep2++;
+
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;

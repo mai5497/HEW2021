@@ -39,6 +39,7 @@ public:
 	DirectX::XMFLOAT3 GetRadius();
 	ObjectCollisionType GetCollisionType();
 	bool GetFollowFlg();
+	DirectX::XMFLOAT4 GetColor();
 
 	//ílê›íË
 	void SetMove(DirectX::XMFLOAT3 move);
@@ -46,6 +47,7 @@ public:
 	void SetSize(DirectX::XMFLOAT3 size);
 	void SetAngle(DirectX::XMFLOAT3 angle);
 	void SetFollowFlg(bool flg);
+	void SetCollor(DirectX::XMFLOAT4 color);
 
 	bool use;
 
@@ -56,6 +58,7 @@ protected:
 	DirectX::XMFLOAT3 m_move;
 	DirectX::XMFLOAT3 m_Radius;
 	DirectX::XMFLOAT3 m_Angle;
+	DirectX::XMFLOAT4 m_Color;	// êF
 	Cube* m_pCube;
 	ObjectCollisionType m_collisionType;
 

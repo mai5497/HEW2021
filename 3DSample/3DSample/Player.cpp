@@ -64,9 +64,9 @@ bool Player::Init()
 	{
 		m_ppBullets[i] = new Bullet(settings[i].size);
 		m_ppBullets[i]->SetPos(settings[i].pos);
-		m_ppBullets[i]->Init();
+		m_ppBullets[i]->Init();	// 弾用初期化
 	}
-	GameObject::Init();
+	GameObject::Init();	// プレイヤー用初期化？
 	return true;
 }
 
@@ -88,9 +88,9 @@ void Player::Uninit()
 
 void Player::Update()
 {
-
-
+	//----- 変数初期化 -----
 	XMFLOAT2 Axis = LeftThumbPosition();
+	bool rbFlg = true;
 
 	bool keyL = IsPress('A');
 	bool keyR = IsPress('D');
@@ -102,9 +102,7 @@ void Player::Update()
 
 	//１秒間（60FPS）で2M進ことを表す。
 	const float Move = 10.0f / 60;
-
 	m_move = DirectX::XMFLOAT3(Axis.x, m_move.y, Axis.y);
-
 	float CameraRad = m_pControllCamera->GetxzAngle() * 3.14159265359f / 180.0f;
 	
 	//プレイヤー移動
@@ -135,12 +133,21 @@ void Player::Update()
 		if (m_Angle.y >= -CameraRad)
 			m_Angle.y -= 0.1f;
 	}
+
+	if (keyRed) {
+		rbFlg = true;	// 赤
+	}
+
+	if (keyBlue) {
+		rbFlg = false;	// 青
+	}
+
 	if (keyD) { m_move.z -= Move; }
 	if (keyJ) { m_move.y += 0.2f; }
 
 	if (IsTrigger('Z'))
 	{
-		CreateBullet(m_pControllCamera);
+		CreateBullet(m_pControllCamera,rbFlg);
 		//for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
 		//	g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
 		//}
@@ -265,18 +272,23 @@ void Player::GetCameraPos(TPSCamera* pCamera)
 }
 
 // 手裏剣を生成する関数
-//void Player::CreateBullet(TPSCamera* pCamera)
-void Player::CreateBullet(Camera* pCamera)
+void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 {
 	DirectX::XMFLOAT3 pCameraPos = pCamera->GetCameraPos();
 	for (int i = 0; i < m_nBulletNum; ++i)
 	{
-		if (m_ppBullets[i]->use)
-		{
+		if (m_ppBullets[i]->use){
 			continue;
 		}
 
 		m_ppBullets[i]->use = true;
+		m_ppBullets[i]->SetRB(rbFlg);
+		if (m_ppBullets[i]->GetRB()) {	// trueが赤
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));	// 赤をセット
+		} else {
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// 青をセット
+		}
+		m_ppBullets[i]->
 		m_ppBullets[i]->SetPos(m_pos);
 		DirectX::XMFLOAT3 dir;
 
