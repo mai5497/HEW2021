@@ -312,7 +312,14 @@ void Player::SetControllCamera(Camera *pCamera)
 	m_pControllCamera = pCamera;
 }
 
-// PlayerにEnemyが近づいてくる関数
+//==============================================================
+//
+//	Playerクラス::プレイヤーに追跡する処理(エネミーが)
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： ゲームオブジェクト型
+//
+//==============================================================
 void Player::PlayerToEnemy(GameObject* pObj)
 {
 	//敵の位置
@@ -345,15 +352,29 @@ void Player::PlayerToEnemy(GameObject* pObj)
 
 	pObj->SetMove(dir);
 
-
 }
 
+//==============================================================
+//
+//	Playerクラス::カメラ位置を取得
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： TPSCamera型のポジション
+//
+//==============================================================
 void Player::GetCameraPos(TPSCamera* pCamera)
 {
 	pOldCameraPos = pCamera->GetCameraPos();
 }
 
-// 手裏剣を生成する関数
+//==============================================================
+//
+//	Playerクラス::弾を生成する処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： Camera型の位置,色判定
+//
+//==============================================================
 void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 {
 	DirectX::XMFLOAT3 pCameraPos = pCamera->GetCameraPos();
@@ -370,7 +391,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		} else {
 			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// 青をセット
 		}
-		m_ppBullets[i]->
+
 		m_ppBullets[i]->SetPos(m_pos);
 		DirectX::XMFLOAT3 dir;
 
@@ -402,6 +423,14 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 	}
 }
 
+//==============================================================
+//
+//	Playerクラス::弾を破壊する処理
+//	作成者	: 園田翔太
+//	戻り値	: void
+//	引数		: void
+//
+//==============================================================
 void Player::DestroyBullet()
 {
 	for (int i = 0; i < m_nBulletNum; ++i)
