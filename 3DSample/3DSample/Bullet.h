@@ -19,12 +19,15 @@ public:
 
 	void SetRB(bool flg);	// 投げた弾が赤か青かセットする
 	bool GetRB();
+
+	void BulletCollision(bool Setflg);			// フィールドとの当たり判定
 private:
 
 	int m_sleep;
 	int m_sleep2;
 
-	bool m_rbFlg;	// trueなら赤falseなら青
+	bool m_rbFlg;	// true　→　赤			false　→　青
+	bool m_ColFlg;	// true　→　接している		false → 接していない
 };
 
 

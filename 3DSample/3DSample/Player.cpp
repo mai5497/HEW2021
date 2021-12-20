@@ -5,6 +5,10 @@
  *		 2021/12/19 赤青弾をわけて打てるように
  * @brief プレイヤーに関する処理
  */
+
+ //*******************************************************************************
+ // インクルード部
+ //*******************************************************************************
 #include "Player.h"
 #include "Input.h"
 #include "TPSCamera.h"
@@ -14,45 +18,73 @@
 #include "Controller.h"
 #include "MyMath.h"
 
-#define FPS 60
+//*******************************************************************************
+// 定数・マクロ定義
+//*******************************************************************************
+#define FPS		(60)
 
+//*******************************************************************************
+// グローバル宣言
+//*******************************************************************************
 DirectX::XMFLOAT3 pOldCameraPos;
 
-Player::Player()
-	:m_pControllCamera(nullptr)
-	, m_ppBullets(NULL)
-	, m_nBulletNum(0)
+//==============================================================
+//
+//	Playerクラス::コンストラクタ
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
+Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 {
 	m_pos.y = 1.0f;
-	m_Angle = DirectX::XMFLOAT3(0, 0, 0);
+	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
 }
+
+//==============================================================
+//
+//	Playerクラス::デストラクタ
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 Player::~Player()
 {
 	m_pControllCamera = nullptr;
 	Uninit();
 }
 
+//==============================================================
+//
+//	Playerクラス::初期化処理
+//	作成者	： 園田翔太
+//	戻り値	： bool型
+//	引数		： void
+//
+//==============================================================
 bool Player::Init()
 {
 	struct BulletSetting
 	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 size;
+		XMFLOAT3 pos;
+		XMFLOAT3 size;
 	};
 
 
 	BulletSetting settings[] = {
-		{ DirectX::XMFLOAT3(m_pos),
-		DirectX::XMFLOAT3(30,1,30), },
-	{ DirectX::XMFLOAT3(m_pos),
-	DirectX::XMFLOAT3(30,1,30), },
-	{ DirectX::XMFLOAT3(m_pos),
-	DirectX::XMFLOAT3(30,1,30), },
-	{ DirectX::XMFLOAT3(m_pos),
-	DirectX::XMFLOAT3(30,1,30), },
-	{ DirectX::XMFLOAT3(m_pos),
-	DirectX::XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),
+		XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),
+		XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),
+		XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),
+		XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),
+		XMFLOAT3(30,1,30), },
 	};
 
 	//初期データから弾数を計算
@@ -70,6 +102,14 @@ bool Player::Init()
 	return true;
 }
 
+//==============================================================
+//
+//	Playerクラス::終了処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void Player::Uninit()
 {
 	if (m_ppBullets != NULL)
@@ -86,10 +126,16 @@ void Player::Uninit()
 	GameObject::Uninit();
 }
 
+//==============================================================
+//
+//	Playerクラス::更新処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void Player::Update()
 {
-
-
 	XMFLOAT2 Axis = LeftThumbPosition();
 
 	bool keyL = IsPress('A');
@@ -103,7 +149,7 @@ void Player::Update()
 	//１秒間（60FPS）で2M進ことを表す。
 	const float Move = 10.0f / 60;
 
-	m_move = DirectX::XMFLOAT3(Axis.x, m_move.y, Axis.y);
+	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
 
 	float CameraRad = m_pControllCamera->GetxzAngle() * 3.14159265359f / 180.0f;
 	
@@ -136,7 +182,7 @@ void Player::Update()
 			m_Angle.y -= 0.1f;
 	}
 	if (keyD) { m_move.z -= Move; }
-	if (keyJ) { m_move.y += 0.2f; }
+	if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
 
 	if (IsTrigger('Z'))
 	{
@@ -187,6 +233,14 @@ void Player::Update()
 	}
 }
 
+//==============================================================
+//
+//	Playerクラス::描画処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void Player::Draw()
 {
 	DirectX::XMFLOAT3 pPos = m_pos;
@@ -204,6 +258,14 @@ void Player::Draw()
 	CharacterBase::Draw();
 }
 
+//==============================================================
+//
+//	Playerクラス::弾情報取得
+//	作成者	： 園田翔太
+//	戻り値	： Bullet型
+//	引数		： int index	... 弾の数
+//
+//==============================================================
 Bullet *Player::GetBullet(int index)
 {
 	if (index < m_nBulletNum)
@@ -213,11 +275,27 @@ Bullet *Player::GetBullet(int index)
 	return NULL;
 }
 
+//==============================================================
+//
+//	Playerクラス::弾の数の情報取得
+//	作成者	： 園田翔太
+//	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
+//	引数		： void
+//
+//==============================================================
 int Player::GetBulletNum()
 {
 	return m_nBulletNum;
 }
 
+//==============================================================
+//
+//	Playerクラス::
+//	作成者	： 園田翔太
+//	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
+//	引数		： void
+//
+//==============================================================
 void Player::SetControllCamera(Camera *pCamera)
 {
 	m_pControllCamera = pCamera;

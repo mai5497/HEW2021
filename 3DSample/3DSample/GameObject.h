@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include "Cube.h"
 #include "Shader.h"
+using namespace DirectX;
 
 //当たり判定を実施するときの
 //オブジェクトの種類
@@ -29,33 +30,32 @@ public:
 
 	virtual void OnCollision(GameObject*) {}
 	virtual void PlayerToEnemy(GameObject*) {}
-	virtual void CreateObject(DirectX::XMFLOAT3 pos, 
-		DirectX::XMFLOAT3 dir, DirectX::XMFLOAT3 move);
+	virtual void CreateObject(XMFLOAT3 pos, XMFLOAT3 dir,XMFLOAT3 move);
 
 	//値取得
-	DirectX::XMFLOAT3 GetPos();
-	DirectX::XMFLOAT3 GetSize();
-	DirectX::XMFLOAT3 GetMove();
-	DirectX::XMFLOAT3 GetRadius();
+	XMFLOAT3 GetPos();
+	XMFLOAT3 GetSize();
+	XMFLOAT3 GetMove();
+	XMFLOAT3 GetRadius();
 	ObjectCollisionType GetCollisionType();
 	bool GetFollowFlg();
 
 	//値設定
-	void SetMove(DirectX::XMFLOAT3 move);
-	void SetPos(DirectX::XMFLOAT3 pos);
-	void SetSize(DirectX::XMFLOAT3 size);
-	void SetAngle(DirectX::XMFLOAT3 angle);
+	void SetMove(XMFLOAT3 move);
+	void SetPos(XMFLOAT3 pos);
+	void SetSize(XMFLOAT3 size);
+	void SetAngle(XMFLOAT3 angle);
 	void SetFollowFlg(bool flg);
 
 	bool use;
 
 private:
 protected:
-	DirectX::XMFLOAT3 m_pos;
-	DirectX::XMFLOAT3 m_size;
-	DirectX::XMFLOAT3 m_move;
-	DirectX::XMFLOAT3 m_Radius;
-	DirectX::XMFLOAT3 m_Angle;
+	XMFLOAT3 m_pos;
+	XMFLOAT3 m_size;
+	XMFLOAT3 m_move;
+	XMFLOAT3 m_Radius;
+	XMFLOAT3 m_Angle;
 	Cube* m_pCube;
 	ObjectCollisionType m_collisionType;
 
