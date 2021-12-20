@@ -6,6 +6,7 @@
 #include "Bullet.h"
 #include "DrawBuffer.h"
 #include "TPSCamera.h"
+#include "DwarfManager.h"
 
 class Player : public CharacterBase
 {
@@ -29,6 +30,8 @@ public:
 	void GetCameraPos(TPSCamera*);
 	void DestroyBullet();
 
+	void SetDwarfInfo(DwarfManager *pDwarfManager);
+
 private:
 	Camera * m_pControllCamera;
 
@@ -36,6 +39,8 @@ private:
 	int m_nBulletNum;
 
 	DrawBuffer m_Buffer;
+
+	DwarfManager *m_pDwarfManager;
 };
 
 #endif // !_PLAYER_H_

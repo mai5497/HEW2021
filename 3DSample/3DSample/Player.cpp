@@ -2,7 +2,7 @@
  * @file Player.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
- *		 2021/12/19 赤青弾をわけて打てるように
+ *		 2021/12/19 赤青弾をわけて打てるように(伊地田)
  * @brief プレイヤーに関する処理
  */
 
@@ -31,9 +31,9 @@ DirectX::XMFLOAT3 pOldCameraPos;
 //==============================================================
 //
 //	Playerクラス::コンストラクタ
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
-//	引数		： void
+//	引数	： void
 //
 //==============================================================
 Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
@@ -46,7 +46,7 @@ Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 //==============================================================
 //
 //	Playerクラス::デストラクタ
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -60,7 +60,7 @@ Player::~Player()
 //==============================================================
 //
 //	Playerクラス::初期化処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： bool型
 //	引数		： void
 //
@@ -105,7 +105,7 @@ bool Player::Init()
 //==============================================================
 //
 //	Playerクラス::終了処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -129,7 +129,7 @@ void Player::Uninit()
 //==============================================================
 //
 //	Playerクラス::更新処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -149,7 +149,7 @@ void Player::Update()
 	bool keyJ = IsTrigger(VK_SPACE);
 
 	//１秒間（60FPS）で2M進ことを表す。
-	const float Move = 10.0f / 60;
+	const float Move = (10.0f / 60) * 2;
 
 	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
 
@@ -202,9 +202,14 @@ void Player::Update()
 
 	if (IsTrigger('Z')){	// 弾飛ばす
 		CreateBullet(m_pControllCamera,rbFlg);
-		//for (int i = 0; i < g_pPikminManager->GetPikminNum(); i++) {
-		//	g_pPikminManager->GetPikmin(i)->SetFollowFlg(true);
-		//}
+		for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
+		{
+			if (rbFlg == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
+			} else {
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
+			}
+		}
 	}
 
 
@@ -235,8 +240,7 @@ void Player::Update()
 
 	for (int i = 0; i < m_nBulletNum; ++i)
 	{
-		if (!m_ppBullets[i]->use)
-		{
+		if (!m_ppBullets[i]->use){
 			continue;
 		}
 		m_ppBullets[i]->Update();
@@ -246,7 +250,7 @@ void Player::Update()
 //==============================================================
 //
 //	Playerクラス::描画処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -258,8 +262,7 @@ void Player::Draw()
 
 	for (int i = 0; i < m_nBulletNum; ++i)
 	{
-		if (!m_ppBullets[i]->use)
-		{
+		if (!m_ppBullets[i]->use){
 			continue;
 		}
 		m_ppBullets[i]->Draw();
@@ -271,15 +274,14 @@ void Player::Draw()
 //==============================================================
 //
 //	Playerクラス::弾情報取得
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： Bullet型
 //	引数		： int index	... 弾の数
 //
 //==============================================================
 Bullet *Player::GetBullet(int index)
 {
-	if (index < m_nBulletNum)
-	{ 
+	if (index < m_nBulletNum){ 
 		return m_ppBullets[index];
 	}
 	return NULL;
@@ -288,7 +290,7 @@ Bullet *Player::GetBullet(int index)
 //==============================================================
 //
 //	Playerクラス::弾の数の情報取得
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
 //	引数		： void
 //
@@ -314,7 +316,7 @@ void Player::SetControllCamera(Camera *pCamera)
 //==============================================================
 //
 //	Playerクラス::プレイヤーに追跡する処理(エネミーが)
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： ゲームオブジェクト型
 //
@@ -356,7 +358,7 @@ void Player::PlayerToEnemy(GameObject* pObj)
 //==============================================================
 //
 //	Playerクラス::カメラ位置を取得
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： TPSCamera型のポジション
 //
@@ -369,7 +371,8 @@ void Player::GetCameraPos(TPSCamera* pCamera)
 //==============================================================
 //
 //	Playerクラス::弾を生成する処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
+//	編集者	： 伊地田真衣
 //	戻り値	： void
 //	引数		： Camera型の位置,色判定
 //
@@ -425,7 +428,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 //==============================================================
 //
 //	Playerクラス::弾を破壊する処理
-//	作成者	: 園田翔太
+//	作成者	: 園田翔大
 //	戻り値	: void
 //	引数		: void
 //
@@ -441,4 +444,17 @@ void Player::DestroyBullet()
 		m_ppBullets[i]->use = false;
 		break;
 	}
+}
+
+//==============================================================
+//
+//	Playerクラス::小人の情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: 小人管理クラスのポインタ
+//
+//==============================================================
+void Player::SetDwarfInfo(DwarfManager *pDwarfManager)
+{
+	m_pDwarfManager = pDwarfManager;
 }
