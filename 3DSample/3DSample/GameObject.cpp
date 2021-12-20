@@ -61,7 +61,7 @@ void GameObject::Uninit()
 }
 void GameObject::Update() {
 	if (m_Color.w != 1.0f || m_Color.x != 1.0f || m_Color.y != 1.0f || m_Color.z != 1.0f) {
-		m_pCube->SetRGBA(m_Color.w,m_Color.x,m_Color.y,m_Color.z);
+		m_pCube->SetRGBA(m_Color.x,m_Color.y,m_Color.z,m_Color.w);
 		m_pCube->Update();
 	}
 }

@@ -370,7 +370,6 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		} else {
 			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// Â‚ðƒZƒbƒg
 		}
-		m_ppBullets[i]->
 		m_ppBullets[i]->SetPos(m_pos);
 		DirectX::XMFLOAT3 dir;
 
