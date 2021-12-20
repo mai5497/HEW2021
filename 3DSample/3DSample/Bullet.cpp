@@ -66,7 +66,9 @@ void Bullet::Update()
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
+	// オブジェクトの更新(弾の更新)
 	GameObject::Update();
+	
 }
 
 
