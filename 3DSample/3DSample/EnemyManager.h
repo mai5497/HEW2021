@@ -15,7 +15,7 @@ public:
 	EnemyBase *GetEnemy(int index);
 	int GetEnemyNum();
 
-	void SetEnemyTarget(DirectX::XMFLOAT3);
+	void SetEnemyTarget(XMFLOAT3);
 	void DestroyEnemy(int index);
 
 private:

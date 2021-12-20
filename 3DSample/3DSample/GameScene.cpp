@@ -11,12 +11,15 @@
  * @brief ゲームシーンに関する処理
  */
 
+//*******************************************************************************
+// インクルード部
+//*******************************************************************************
 #include "GameScene.h"
 #include "Input.h"
 #include "Player.h"
 #include "stage.h"
 #include "GameObject.h"
-#include "field.h"
+#include "FieldManager.h"
 #include "model.h"
 #include "TPSCamera.h"
 #include "Collision.h"
@@ -28,10 +31,15 @@
 #include "EnemyManager.h"
 #include "PikminManager.h"
 
-
+//*******************************************************************************
+// 定数・マクロ定義
+//*******************************************************************************
 #define CONTROL_NUM		(5)
 #define RECORD_MARGIN	(10)
 
+//*******************************************************************************
+// グローバル宣言
+//*******************************************************************************
 Cube			*g_pCube;
 Model			*g_pModel;
 Camera			*g_pCamera;
@@ -45,57 +53,77 @@ PlayerToEnemy	*g_pPlayerToEnemy;
 EnemyManager	*g_pEnemyManager;
 //Shot			*g_pShot;
 
-DirectX::XMFLOAT3 g_recPlayerPos;
+XMFLOAT3 g_recPlayerPos;
 XMFLOAT3 g_recBulletPos;
-DirectX::XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
+XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
 
 int g_LastBulletNun = -1;
 Bullet *g_pBullet[5];
 
-
+//==============================================================
+//
+//	GameSceneクラス::コンストラクタ
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 GameScene::GameScene(void)
 {
 
 }
 
-
+//==============================================================
+//
+//	GameSceneクラス::デストラクタ
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 GameScene::~GameScene(void)
 {
 
 }
 
-
+//==============================================================
+//
+//	GameSceneクラス::初期化処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void GameScene::Init()
 {
-	//立方体クラスの実体化
+	// 立方体クラスの実体化
 	g_pCube = new Cube();
 
-	//モデルクラスの実体化
+	// モデルクラスの実体化
 	g_pModel = new Model();
 	g_pModel->LoadModel("Assets/Model/tyoutin.fbx");
 
-	//カメラクラスの実体化
-	/*
-	g_pCamera = new Camera();
-	g_pCamera->Init();
-	*/
-	//プレイヤークラス実体化
+	// カメラクラスの実体化
+	//g_pCamera = new Camera();
+	//g_pCamera->Init();
+	
+	// プレイヤークラス実体化
 	g_pPlayer = new Player();
 	g_pPlayer->Init();
+
 	// TPSカメラはプレイヤーより後
 	g_pTPSCamera = new TPSCamera();
 	g_pTPSCamera->SetTargetObj(g_pPlayer);
 	g_pTPSCamera->Init();
 
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
-
 	g_pPlayer->GetCameraPos(g_pTPSCamera);
 
 	// ピクミン管理クラス実体化
 	g_pPikminManager = new PikminManager();
 	g_pPikminManager->Init();
 
-	//敵クラス実体化
+	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
 	//g_pEnemy->LoadEnemy("Assets/Model/tyoutinobake.fbx");
 	//g_pEnemy->Init();
@@ -104,35 +132,52 @@ void GameScene::Init()
 	g_pEnemyManager = new EnemyManager();
 	g_pEnemyManager->Init();
 
+	// 弾クラスの実体
 	//	g_pShot = new Shot();
 	//	g_pShot->Init();
 
-	//ステージクラスの実体化
+	// ステージクラスの実体化
 	g_pStage = new Stage();
 	g_pStage->Init();
 
-	//当たり判定クラス
+	// 当たり判定クラス
 	g_pCollision = new Collision();
 	g_pCollision->Init();
 
+	// プレイヤーtoエネミーの当たり判定クラス
 	g_pPlayerToEnemy = new PlayerToEnemy();
 	g_pPlayerToEnemy->Init();
 
 
 }
 
-
+//==============================================================
+//
+//	GameSceneクラス::終了処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void GameScene::Uninit()
 {
+	// 当たり判定クラスの終了処理
 	g_pCollision->Uninit();
 	delete g_pCollision;
+
+	// プレイヤーtoエネミークラスの終了処理
 	g_pPlayerToEnemy->Uninit();
 	delete g_pPlayerToEnemy;
+
+	// ショットクラスの終了処理
 	//	g_pShot->Uninit();
 	//	delete g_pShot;
 
+	// ステージクラスの終了処理
 	g_pStage->Uninit();
 	delete g_pStage;
+
+	//プレイヤーの終了処理
 	g_pPlayer->Uninit();
 	delete g_pPlayer;
 
@@ -140,37 +185,57 @@ void GameScene::Uninit()
 	g_pPikminManager->Uninit();
 	delete g_pPikminManager;
 
+	// エネミー終了処理
 	//delete g_pEnemy;
+
+	// エネミーマネージャ終了
 	g_pEnemyManager->Uninit();
 	delete g_pEnemyManager;
+
+	// バレット終了
 	//	delete g_pBullet;
 
-
+	// カメラ類終了
 	g_pCamera->Uninit();
 	delete g_pCamera;
 	g_pTPSCamera->Uninit();
 	delete g_pTPSCamera;
+
+	// モデル終了
 	delete g_pModel;
+
+	// キューブ終了
 	delete g_pCube;
 }
 
-
+//==============================================================
+//
+//	GameSceneクラス::更新処理
+//	作成者	： 園田翔太
+//	戻り値	： SCENEの値(入力されないならシーン遷移しない)
+//	引数		： void
+//
+//==============================================================
 SCENE GameScene::Update()
 {
-
+	// プレイヤー更新
 	g_pPlayer->Update();
 
 	// ピクミン更新処理
 	g_pPikminManager->Update();
 
+	// バレット更新
 	//	g_pBullet->Update();
+	
+	// エネミー更新
 	//g_pEnemy->Update();
 	g_pEnemyManager->Update();
 
-
+	// ステージ更新
 	g_pStage->Update();
 
-	//	g_pShot->Update();
+	// ショット更新
+	//g_pShot->Update();
 
 	g_recPlayerPos = g_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
@@ -180,8 +245,10 @@ SCENE GameScene::Update()
 	/* 弾の発射はplayer.cppに移動 */
 
 
-	//すべての移動(更新処理)がすんでから
-	//すべてのオブジェクトの当たり判定を行う
+	//***************************************************************
+	//				すべての移動(更新処理)がすんでから
+	//				すべてのオブジェクトの当たり判定を行う
+	//*************************************************************+*
 	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
 	{
 		g_pCollision->Register(g_pPlayer, g_pStage->GetField(i));
@@ -196,8 +263,9 @@ SCENE GameScene::Update()
 		}
 	}
 
-	
-	// エネミーがプレイヤーを追いかける
+	//***************************************************************
+	//					エネミーがプレイヤーを追跡
+	//***************************************************************
 	for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
 	{
 		if (!g_pEnemyManager->GetEnemy(i)->use) {
@@ -224,8 +292,9 @@ SCENE GameScene::Update()
 
 
 
-	
-
+	//***************************************************************
+	//					エネミーがプレイヤーを追跡
+	//***************************************************************
 	// 弾の追跡と当たり判定
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++)
 	{
@@ -256,21 +325,32 @@ SCENE GameScene::Update()
 		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));	// 弾とフィールドの当たり判定
 	}
 	
-	if (IsTrigger('X')){
+	//***************************************************************
+	//					キー入力で弾削除
+	//***************************************************************	
+	if (IsTrigger('X')){				// Xキー判定
 		g_pPlayer->DestroyBullet();
 	}
 
+	//***************************************************************
+	//						カメラ更新
+	//***************************************************************	
 	g_pTPSCamera->Update();
 	g_pPlayerToEnemy->Update();
 	g_pCollision->Update();
-	//軌跡の更新
+
+	//***************************************************************
+	//						軌跡の更新
+	//***************************************************************		//軌跡の更新
 	for (int i = CONTROL_NUM * RECORD_MARGIN - 1; i > 0; i--)
 	{
 		g_recordPos[i] = g_recordPos[i - 1];
 	}
 	g_recordPos[0] = g_pPlayer->GetPos();
 
-	//軌跡の計算
+	//***************************************************************
+	//						軌跡の計算
+	//***************************************************************	
 	for (int i = 0; i < CONTROL_NUM; i++)
 	{
 		//制御点が対応しているレコードの番号を計算
@@ -282,15 +362,25 @@ SCENE GameScene::Update()
 		//軌跡を表示するときはここに
 		//->SetVerTex(
 	}
-	if (IsTrigger('1')) { return SCENE_RESULT; }
+
+	//***************************************************************
+	//						シーン遷移
+	//***************************************************************	
+	if (IsTrigger('1')) { return SCENE_RESULT; }		// '1'入力
 	
 	return SCENE_GAME;
 }
 
-
+//==============================================================
+//
+//	GameScene描画処理
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
 void GameScene::Draw()
 {
-
 	SHADER->Bind(
 		//頂点シェーダで使用する計算の種類
 		VS_WORLD,
@@ -355,6 +445,7 @@ void GameScene::Draw()
 	SHADER->SetWorld(
 		DirectX::XMMatrixTranslation(0, 0, 0)
 	);
+
 	/*
 	//カメラ座標系に変換
 	//第1引数:カメラの位置
@@ -386,16 +477,12 @@ void GameScene::Draw()
 	///g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
-	SHADER->SetWorld(
-		DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
+	SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
 	//そもそも描画関数コメントアウトしておけばよかった
 	//	g_pCube->Draw();
 
 	//モデルが大きいので小さくする
-	SHADER->SetWorld(
-		DirectX::XMMatrixScaling(
-			0.01f, 0.01f, 0.01f
-		));
+	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
 	//g_pModel->Draw();
 
 	// プレイヤー描画
@@ -418,7 +505,6 @@ void GameScene::Draw()
 	g_pPlayer->Draw();
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	
-
 	//	EnableCulling(false);
 	
 	//	EnableCulling(true);

@@ -1,9 +1,8 @@
 #include "Stage.h"
 
-Stage::Stage()
-	:m_ppFields(NULL)
-	,m_nFieldNum(0)
+Stage::Stage():m_ppFields(NULL),m_nFieldNum(0)
 {
+
 }
 Stage::~Stage()
 {
@@ -17,22 +16,27 @@ bool Stage::Init()
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 size;
 	};
-	FieldSetting settings[] = {
-		{ DirectX::XMFLOAT3(0,-0.5f,0),
-		  DirectX::XMFLOAT3(100,1,100),},
 
+	FieldSetting settings[] =
+	{
+		{ DirectX::XMFLOAT3(0,-0.5f,0),
+		  DirectX::XMFLOAT3(100,1,100),
+		},
 		{ DirectX::XMFLOAT3(10,0.5f,10),
-		DirectX::XMFLOAT3(10,1,10), },
+		 DirectX::XMFLOAT3(10,1,10), 
+		},
 	};
 
 	//初期データからフィールドの数を計算
 	m_nFieldNum = sizeof(settings) / sizeof(settings[0]);
+
 	//ポインタを格納する配列を作成
-	m_ppFields = new Field *[m_nFieldNum];
+	m_ppFields = new FieldManager *[m_nFieldNum];
+
 	//それぞれの配列にフィールドをメモリ確保
 	for (int i = 0; i < m_nFieldNum; i++)
 	{
-		m_ppFields[i] = new Field(settings[i].size);
+		m_ppFields[i] = new FieldManager(settings[i].size);
 		m_ppFields[i]->SetPos(settings[i].pos);
 		m_ppFields[i]->Init();
 	}
@@ -45,14 +49,11 @@ bool Stage::Init()
 	//呼び出すやり方がある。
 
 	return true;
-
 }
 void Stage::Uninit()
 {
-	if (m_ppFields != NULL)
-	{
-		for (int i = 0; i < m_nFieldNum; i++)
-		{
+	if (m_ppFields != NULL){
+		for (int i = 0; i < m_nFieldNum; i++){
 			//個別に削除
 			delete m_ppFields[i];
 		}
@@ -75,7 +76,8 @@ void Stage::Draw()
 		m_ppFields[i]->Draw();
 	}
 }
-Field *Stage::GetField(int index)
+
+FieldManager *Stage::GetField(int index)
 {
 	if (index < m_nFieldNum)
 	{
@@ -83,6 +85,7 @@ Field *Stage::GetField(int index)
 	}
 	return NULL;
 }
+
 int Stage::GetFieldNum()
 {
 	return m_nFieldNum;

@@ -1,7 +1,7 @@
 #ifndef __STAGE_H__
 #define __STAGE_H__
 
-#include "Field.h"
+#include "FieldManager.h"
 
 class Stage
 {
@@ -14,11 +14,11 @@ public:
 	void Update();
 	void Draw();
 
-	Field *GetField(int index);
+	FieldManager *GetField(int index);
 	int GetFieldNum();
 
 private:
-	Field **m_ppFields;
+	FieldManager **m_ppFields;
 	int m_nFieldNum;
 
 };
