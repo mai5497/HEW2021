@@ -2,6 +2,7 @@
  * @file Cube.cpp
  * @Author 園田翔大
  * @date 2021/11/29 作成
+ *		 2021/12/19 キューブの色変えたくてUpdate作成
  * @brief キューブの情報など
  */
 #include "Cube.h"
@@ -54,6 +55,12 @@ Cube::~Cube()
 }
 
 void Cube::Update() {
+	/*
+	 *	ここではifなどで囲んでいないが、毎回呼び出しされて、頂点バッファを作成するわけではなく、
+	 *	呼び出し元のGameObjectのUpdateでカラーの設定が初期値と異なった場合のみこのUpdateが呼ばれる。
+	 *	GameObjectを継承してUpdateを作るときは、仮想関数にすることが必須となる。
+	*/
+
 	//頂点バッファ
 	struct Vertex {
 		float pos[3];

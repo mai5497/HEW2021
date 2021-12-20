@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlueDwarf.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="TPScamera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlueDwarf.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
