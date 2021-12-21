@@ -1,3 +1,4 @@
+#define _CRTDBG_MAP_ALLOC
 #include <windows.h>
 #include "Defines.h"
 #include "Main.h"

@@ -123,16 +123,16 @@ void BlueDwarf::Update()
 	m_DwarfAngle = atan2(m_move.z, m_move.x);
 	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
 
-	if(m_AttackFlg) {
-		m_move.y += 0.2f;
-		jumpFlg = true;
-	} else {
-		jumpFlg = false;
-	}
+	//if(m_AttackFlg) {
+	//	m_move.y += 0.2f;
+	//	jumpFlg = true;
+	//} else {
+	//	jumpFlg = false;
+	//}
 
-	if (jumpFlg) {
-		m_move.y -= 0.21f;
-	}
+	//if (jumpFlg) {
+	//	m_move.y -= 0.21f;
+	//}
 
 	// ˆÚ“®
 	m_pos.x += m_move.x;

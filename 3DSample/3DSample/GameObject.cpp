@@ -7,6 +7,7 @@
  *					追跡フラグセット関数を追加（いちだ）
  *		 2021/12/20 色情報をいれる変数を追加（いちだ）
  *					色情報用の変数のセットゲット関数を追加（いちだ）
+ *		 2021/12/22 Followフラグをdwarfbaseに移動した（伊地田）
  * @brief ゲーム内のオブジェクトに関する処理
  */
 #include "GameObject.h"
@@ -22,7 +23,7 @@ GameObject::GameObject()
 	,m_Angle(0, 0, 0)
 	,m_collisionType(COLLISION_STATIC)
 	,use(false)
-	,m_FollowFlg(false)
+	//,m_FollowFlg(false)
 	,m_Color(1.0f, 1.0f, 1.0f, 1.0f)
 {
 
@@ -145,10 +146,10 @@ ObjectCollisionType GameObject::GetCollisionType()
 //		追跡フラグ取得
 //
 //=======================================================
-bool GameObject::GetFollowFlg() 
-{
-	return m_FollowFlg;
-}
+//bool GameObject::GetFollowFlg() 
+//{
+//	return m_FollowFlg;
+//}
 
 //=======================================================
 //
@@ -207,10 +208,10 @@ void GameObject::SetAngle(XMFLOAT3 angle)
 //		追跡フラグのセット
 //
 //=======================================================
-void GameObject::SetFollowFlg(bool flg) 
-{
-	m_FollowFlg = flg;
-}
+//void GameObject::SetFollowFlg(bool flg) 
+//{
+//	m_FollowFlg = flg;
+//}
 
 //=======================================================
 //

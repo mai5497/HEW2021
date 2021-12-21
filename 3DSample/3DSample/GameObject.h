@@ -38,7 +38,7 @@ public:
 	XMFLOAT3 GetMove();
 	XMFLOAT3 GetRadius();
 	ObjectCollisionType GetCollisionType();
-	bool GetFollowFlg();
+	//bool GetFollowFlg();
 	DirectX::XMFLOAT4 GetColor();
 
 	//値設定
@@ -46,7 +46,7 @@ public:
 	void SetPos(XMFLOAT3 pos);
 	void SetSize(XMFLOAT3 size);
 	void SetAngle(XMFLOAT3 angle);
-	void SetFollowFlg(bool flg);
+	//void SetFollowFlg(bool flg);
 	void SetCollor(XMFLOAT4 color);
 
 	bool use;								// 使用フラグ

@@ -21,10 +21,17 @@ public:
 	virtual void Draw();
 
 	virtual void TargetPos(XMFLOAT3 pos);
-	void SetAttackFlg(bool flg);	// フラグのセット（セットしたい方）
+	void SetAttackFlg(bool flg);	// 攻撃フラグのセット（セットしたい方）
 	bool GetAttackFlg();
-	void SetRBFlg(bool flg);		// フラグのセット(true：赤、false：青)
+	void SetRBFlg(bool flg);		// 赤青フラグのセット(true：赤、false：青)
 	bool GetRBFlg();
+	void SetrunFlg(bool flg);		// 離れるフラグのセットtureで離れる
+	bool GetrunFlg();
+	void SetFollowFlg(bool flg);	// 追跡フラグのセットtrueで追跡
+	bool GetFollowFlg();
+	void SetMoveFlg(bool flg);		// 移動許可フラグのセットtrueで移動可
+	bool GetMoveFlg();
+
 	//---変数
 
 private:
@@ -33,6 +40,10 @@ private:
 	//---変数
 	bool m_rbFlg;				// 赤小人青小人判定　true：赤、false：青
 	bool m_aliveFlg;			// 生死
+	bool m_runFlg;				// 弾から逃げる
+	bool m_FollowFlg;			// 弾に追跡
+	bool m_MoveFlg;				// 移動許可フラグ
+
 
 protected:
 	//---関数

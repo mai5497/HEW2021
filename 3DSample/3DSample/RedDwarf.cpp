@@ -117,22 +117,27 @@ void RedDwarf::Update()
 	vDirection = XMVectorScale(vDirection, 1.0f / 60);
 
 	// Float3型に変換
-	XMStoreFloat3(&m_move, vDirection * 5);
+	if (GetFollowFlg()) {
+		XMStoreFloat3(&m_move, vDirection * 5);
+	}
+	if (GetrunFlg()) {
+		XMStoreFloat3(&m_move, -(vDirection * 5));
+	}
 
 	// アークタンジェント(逆正接)
 	m_DwarfAngle = atan2(m_move.z, m_move.x);
 	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
 
-	if(m_AttackFlg) {
-		m_move.y += 0.2f;
-		jumpFlg = true;
-	} else {
-		jumpFlg = false;
-	}
+	//if(m_AttackFlg) {
+	//	m_move.y += 0.2f;
+	//	jumpFlg = true;
+	//} else {
+	//	jumpFlg = false;
+	//}
 
-	if (jumpFlg) {
-		m_move.y -= 0.21f;
-	}
+	//if (jumpFlg) {
+	//	m_move.y -= 0.21f;
+	//}
 
 	// 移動
 	m_pos.x += m_move.x;

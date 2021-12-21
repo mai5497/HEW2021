@@ -305,7 +305,7 @@ SCENE GameScene::Update()
 			if (!g_pBullet[i]->use){										// 弾未使用ならスキップ
 				continue;
 			}
-			if (!g_pDwarfManager->GetDwarf(j)->GetFollowFlg()) {	// 追跡フラグが立っていないときは動かない
+			if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {	// 移動許可がないときは動かない
 				continue;
 			}
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
