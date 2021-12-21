@@ -43,20 +43,20 @@ void Bullet::Update()
 	if (m_sleep > WAIT_TIME)
 	{
 		//このコメントアウト↓外すと一定時間後に弾がゆっくり落下します
-		m_move.y -= 3.0f / FPS;
+		//m_move.y -= 3.0f / FPS;
 		m_move.x = 0;
 		m_move.y = 0;
 		m_move.z = 0;
 		m_sleep = 0;
 	}
 	
-	if (m_sleep2 > WAIT_TIME2)
-	{
-		if (m_pos.y > 0.1f)
-			m_move.y -= 1.5f / FPS;
+	//if (m_sleep2 > WAIT_TIME2)
+	//{
+	//	if (m_pos.y > 0.1f)
+	//		m_move.y -= 1.5f / FPS;
 
-		m_sleep2 = 0;
-	}
+	//	m_sleep2 = 0;
+	//}
 
 	m_sleep++;
 	m_sleep2++;

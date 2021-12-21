@@ -50,7 +50,7 @@ Stage			*g_pStage;
 Collision		*g_pCollision;
 PlayerToEnemy	*g_pPlayerToEnemy;
 //Enemy			*g_pEnemy;
-EnemyManager	*g_pEnemyManager;
+//EnemyManager	*g_pEnemyManager;
 //Shot			*g_pShot;
 
 XMFLOAT3 g_recPlayerPos;
@@ -129,8 +129,8 @@ void GameScene::Init()
 	//g_pEnemy->Init();
 
 	// 敵の管理クラスの実体
-	g_pEnemyManager = new EnemyManager();
-	g_pEnemyManager->Init();
+	//g_pEnemyManager = new EnemyManager();
+	//g_pEnemyManager->Init();
 
 	// 弾クラスの実体
 	//	g_pShot = new Shot();
@@ -189,8 +189,8 @@ void GameScene::Uninit()
 	//delete g_pEnemy;
 
 	// エネミーマネージャ終了
-	g_pEnemyManager->Uninit();
-	delete g_pEnemyManager;
+	//g_pEnemyManager->Uninit();
+	//delete g_pEnemyManager;
 
 	// バレット終了
 	//	delete g_pBullet;
@@ -229,7 +229,7 @@ SCENE GameScene::Update()
 	
 	// エネミー更新
 	//g_pEnemy->Update();
-	g_pEnemyManager->Update();
+	//g_pEnemyManager->Update();
 
 	// ステージ更新
 	g_pStage->Update();
@@ -240,7 +240,7 @@ SCENE GameScene::Update()
 	g_recPlayerPos = g_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
 
-	g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
+	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
 	/* 弾の発射はplayer.cppに移動 */
 
@@ -257,43 +257,42 @@ SCENE GameScene::Update()
 	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
 	{
 		//g_pCollision->Register(g_pEnemy, g_pStage->GetField(i));
-		for (int j = 0; j < g_pEnemyManager->GetEnemyNum(); j++)
-		{
-			g_pCollision->Register(g_pEnemyManager->GetEnemy(j), g_pStage->GetField(i));
-		}
+		//for (int j = 0; j < g_pEnemyManager->GetEnemyNum(); j++)
+		//{
+		//	g_pCollision->Register(g_pEnemyManager->GetEnemy(j), g_pStage->GetField(i));
+		//}
 	}
 
 	//***************************************************************
 	//					エネミーがプレイヤーを追跡
 	//***************************************************************
-	for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
-	{
-		if (!g_pEnemyManager->GetEnemy(i)->use) {
-			continue;
-		}
-		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
-		{
-			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
-				continue;
-			}
-			g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
+	//for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
+	//{
+	//	if (!g_pEnemyManager->GetEnemy(i)->use) {
+	//		continue;
+	//	}
+	//	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
+	//	{
+	//		if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
+	//			continue;
+	//		}
+	//		g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
 
-			if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
-				g_pEnemyManager->DestroyEnemy(i);
-			}
-		}
-		if (&PlayerToEnemy::isHitSphere){
-	 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
-			//---ここで一番近いやつにターゲットを移したい
-			//g_pEnemyManager->SetEnemyTarget();
-		}
-	 	//g_pEnemy->EnemyStop();
-	}
+	//		if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
+	//			g_pEnemyManager->DestroyEnemy(i);
+	//		}
+	//	}
+	//	if (&PlayerToEnemy::isHitSphere){
+	// 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
+	//		//---ここで一番近いやつにターゲットを移したい
+	//		//g_pEnemyManager->SetEnemyTarget();
+	//	}
+	// 	//g_pEnemy->EnemyStop();
+	//}
 
 	//****************************************************************************
 	//	弾の追跡
 	//****************************************************************************
-	g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++)
 	{
 		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
@@ -302,6 +301,7 @@ SCENE GameScene::Update()
 		}
 		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++)
 		{
+			g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 			if (!g_pBullet[i]->use){										// 弾未使用ならスキップ
 				continue;
 			}
@@ -311,7 +311,7 @@ SCENE GameScene::Update()
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
 
 			//---ピクミンの弾への追尾
-			g_pDwarfManager->SetDwarfTarget(g_recBulletPos);
+			g_pDwarfManager->GetDwarf(j)->TargetPos(g_recBulletPos);
 			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j));
 
 			if (!g_pCollision->CollisionSphere(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j))) {
@@ -323,12 +323,12 @@ SCENE GameScene::Update()
 		//*******************************************************************************
 		//	当たり判定取得
 		//*******************************************************************************
-		//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));				// 弾とフィールドの当たり判定
+		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));				// 弾とフィールドの当たり判定
 
 		// 円での当たり判定(中心点の距離計算は0.5f)
-		if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(0), 1.0f)) {
-			g_pPlayer->GetBullet(i)->SetCollor(XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-		}
+		//if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(1), 1.0f)) {
+		//	g_pPlayer->GetBullet(i)->SetCollor(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+		//}
 
 	}
 	
@@ -488,7 +488,7 @@ void GameScene::Draw()
 	// プレイヤー描画
 
 	// 敵の描画
-	g_pEnemyManager->Draw();
+	//g_pEnemyManager->Draw();
 
 	// ピクミン描画
 	g_pDwarfManager->Draw();

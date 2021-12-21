@@ -140,6 +140,7 @@ void Player::Update()
 	XMFLOAT2 Axis = LeftThumbPosition();
 	static bool rbFlg = true;
 
+
 	bool keyL = IsPress('A');
 	bool keyR = IsPress('D');
 	bool keyU = IsPress('W');
@@ -204,8 +205,7 @@ void Player::Update()
 		CreateBullet(m_pControllCamera,rbFlg);
 		for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
 		{
-			m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
-			if (rbFlg == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+			if (rbFlg == (m_pDwarfManager->GetDwarf(i)->GetRBFlg())) {	// 投げた弾と小人の色が同じだったら
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
 			} else {
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない

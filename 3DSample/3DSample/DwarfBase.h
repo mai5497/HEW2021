@@ -7,8 +7,8 @@ using namespace DirectX;
 
 //=========================  定数・マクロ定義===========================
 #define MAX_RED_DWARF	(6)									// 赤小人最大値
-#define MAX_BULE_DWARF	(6)									// 青小人最大値
-#define MAX_DWARF		(MAX_RED_DWARF + MAX_BULE_DWARF)	// 
+#define MAX_BLUE_DWARF	(6)									// 青小人最大値
+#define MAX_DWARF		(MAX_RED_DWARF + MAX_BLUE_DWARF)	// 小人最大数合計
 
 //========================= クラス定義 ===========================
 class DwarfBase : public CharacterBase 

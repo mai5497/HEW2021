@@ -17,7 +17,7 @@
 #include "Bullet.h"
 #include "GameScene.h"
 
-#define DWARF_SIZE (1.0f)
+#define DWARF_SIZE (0.007f)
 
 DrawBuffer *BlueDwarf::m_pBuffer = NULL;
 FBXPlayer *BlueDwarf::m_pFBX = NULL;
@@ -28,7 +28,7 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 //		コンストラクタ
 //
 //====================================================================
-BlueDwarf::BlueDwarf() 
+BlueDwarf::BlueDwarf()
 {
 	//----- 変数初期化 -----
 	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pBlueDwarfTex);
