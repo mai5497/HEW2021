@@ -6,7 +6,9 @@
 using namespace DirectX;
 
 //=========================  定数・マクロ定義===========================
-#define MAX_DWARF	(5)		// 小人最大値
+#define MAX_RED_DWARF	(6)									// 赤小人最大値
+#define MAX_BULE_DWARF	(6)									// 青小人最大値
+#define MAX_DWARF		(MAX_RED_DWARF + MAX_BULE_DWARF)	// 
 
 //========================= クラス定義 ===========================
 class DwarfBase : public CharacterBase 
@@ -15,7 +17,7 @@ public:
 	//---関数
 	DwarfBase();
 	virtual ~DwarfBase();
-	void Update();
+	virtual void Update();
 	virtual void Draw();
 
 	virtual void TargetPos(XMFLOAT3 pos);

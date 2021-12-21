@@ -31,12 +31,13 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 BlueDwarf::BlueDwarf() 
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Model/kougeki.png", &m_pBlueDwarfTex);
+	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pBlueDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
-
+	
+	SetRBFlg(false);	// 青小人
 }
 
 
@@ -60,7 +61,7 @@ bool BlueDwarf::Init()
 {
 	/* 以下はモデルが来たら使用 */
 	if (m_pBuffer == NULL) {
-		BlueDwarf::LoadDwarf("Assets/Model/kougeki.fbx");
+		BlueDwarf::LoadDwarf("Assets/Model/tyoutinobake.fbx");
 	}
 
 	GameObject::Init();

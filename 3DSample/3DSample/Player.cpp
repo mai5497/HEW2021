@@ -204,6 +204,7 @@ void Player::Update()
 		CreateBullet(m_pControllCamera,rbFlg);
 		for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
 		{
+			m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
 			if (rbFlg == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// ’ÇÕ‚ğn‚ß‚é
 			} else {

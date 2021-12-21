@@ -52,7 +52,7 @@ bool DwarfManager::Init()
 	};
 
 	// キャラクターを設置
-	DwarfSetting AtattckDwarfSet[MAX_DWARF];
+	DwarfSetting DwarfSet[MAX_DWARF];
 
 	XMFLOAT3 basePos = XMFLOAT3(0.0f, 0.0f, 0.0f);		// 指定した位置付近に配置できる
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
@@ -65,14 +65,18 @@ bool DwarfManager::Init()
 	for (int i = 0; i < MAX_DWARF; i++) 
 	{
 		// 小人をランダムで初期配置
-		randomPos.x = (float)rand() / RAND_MAX - 2.0f; //-2.0 ~ 2.0の間の乱数
-		randomPos.z = (float)rand() / RAND_MAX - 2.0f;
+		randomPos.x = (float)(rand() % 80 - 40.0f);	//-40.0 ~ 40.0の間の乱数
+		randomPos.z = (float)(rand() % 80 - 40.0f);
 		// ランダムで算出した値を基準位置に加算して代入
-		AtattckDwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 0.5f, basePos.z + randomPos.z);
+		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 0.5f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
-		m_ppDwarf[i] = new RedDwarf;
-		m_ppDwarf[i]->TargetPos(AtattckDwarfSet[i].pos);
-		m_ppDwarf[i]->SetPos(AtattckDwarfSet[i].pos);
+		if (i < MAX_RED_DWARF) {
+			m_ppDwarf[i] = new RedDwarf;
+		} else {
+			m_ppDwarf[i] = new BlueDwarf;
+		}
+		m_ppDwarf[i]->TargetPos(DwarfSet[i].pos);
+		m_ppDwarf[i]->SetPos(DwarfSet[i].pos);
 		m_ppDwarf[i]->SetSize(XMFLOAT3(1.0f / 2, 1.0f / 2, 1.0f / 2));
 		m_ppDwarf[i]->Init();
 	}
