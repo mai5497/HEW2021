@@ -11,6 +11,7 @@ CharacterBase::CharacterBase()
 	//キャラクターは動くオブジェクト
 	m_collisionType = COLLISION_DYNAMIC;
 }
+
 CharacterBase::~CharacterBase()
 {
 
@@ -19,12 +20,9 @@ CharacterBase::~CharacterBase()
 void CharacterBase::Draw()
 {
 	//ワールド座標変換
-	SHADER->SetWorld(
-		DirectX::XMMatrixScaling(
-			m_size.x, m_size.y, m_size.z)
-		* DirectX::XMMatrixRotationY(m_Angle.y)
-		*DirectX::XMMatrixTranslation(
-			m_pos.x, m_pos.y, m_pos.z)
+	SHADER->SetWorld
+	(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
+	* XMMatrixRotationY(m_Angle.y) * XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
 	);
 	m_pCube->Draw();
 }

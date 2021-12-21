@@ -6,7 +6,7 @@
  *		 2021/12/19 赤青玉を判別する変数を追加
  *					赤青玉判別変数のゲッターセッターを追加
 					フィールドと弾の当たり判定の処理を追加(吉原)
- * @brief プレイヤーから発射される弾に関する処理
+ * @brief			プレイヤーから発射される弾に関する処理
  */
 #include "Bullet.h"
 #include <math.h>
@@ -43,7 +43,7 @@ void Bullet::Update()
 	if (m_sleep > WAIT_TIME)
 	{
 		//このコメントアウト↓外すと一定時間後に弾がゆっくり落下します
-		//m_move.y -= 0.3f / FPS;
+		m_move.y -= 3.0f / FPS;
 		m_move.x = 0;
 		m_move.y = 0;
 		m_move.z = 0;
@@ -53,7 +53,7 @@ void Bullet::Update()
 	if (m_sleep2 > WAIT_TIME2)
 	{
 		if (m_pos.y > 0.1f)
-			m_move.y -= 0.01f / FPS;
+			m_move.y -= 1.5f / FPS;
 
 		m_sleep2 = 0;
 	}
@@ -132,11 +132,12 @@ bool Bullet::GetRB()
 //	弾がフィールドと接しているかの判定処理
 //	作成者	： 吉原飛鳥
 //	戻り値	： void
-//　引数		： フィールドと接している(true)/接していない(false)
+//　引数	： フィールドと接している(true)/接していない(false)
 //
 //=============================================================
 void Bullet::BulletCollision(bool SetFlg)
 {
-
 	m_ColFlg = SetFlg;
 }
+
+

@@ -41,10 +41,7 @@ HRESULT LoadTextureFromFile(const char *pszFileName, ID3D11ShaderResourceView **
 	}
 
 	// シェーダリソースビュー作成
-	hr = CreateShaderResourceView(
-		pDevice,
-		image.GetImages(), image.GetImageCount(),
-		mdata, ppTexture);
+	hr = CreateShaderResourceView(pDevice,image.GetImages(), image.GetImageCount(),mdata, ppTexture);
 
 	return hr;
 }
