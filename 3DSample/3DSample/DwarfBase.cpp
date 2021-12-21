@@ -18,7 +18,7 @@
 //		コンストラクタ
 //
 //====================================================================
-DwarfBase::DwarfBase():m_AttackFlg(false),m_rbFlg(true)
+DwarfBase::DwarfBase():m_AttackFlg(false),m_rbFlg(true),m_aliveFlg(true)
 {
 	//----- 変数初期化 -----
 	m_collisionType = COLLISION_DYNAMIC;	// 小人は動く物体

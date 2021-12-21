@@ -4,6 +4,8 @@
 //	作成者：伊地田真衣
 //	
 //	2021/12/21 : 赤をコピーして作成
+//				 追跡追加
+//				 モデル差し替え
 //
 //****************************************************
 
@@ -17,8 +19,10 @@
 #include "Bullet.h"
 #include "GameScene.h"
 
-#define DWARF_SIZE (0.007f)
+//========================= 定数定義 ===========================
+#define DWARF_SIZE (0.7f)
 
+//========================= グローバル変数定義 ===========================
 DrawBuffer *BlueDwarf::m_pBuffer = NULL;
 FBXPlayer *BlueDwarf::m_pFBX = NULL;
 
@@ -31,7 +35,7 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 BlueDwarf::BlueDwarf()
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pBlueDwarfTex);
+	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
@@ -61,7 +65,7 @@ bool BlueDwarf::Init()
 {
 	/* 以下はモデルが来たら使用 */
 	if (m_pBuffer == NULL) {
-		BlueDwarf::LoadDwarf("Assets/Model/tyoutinobake.fbx");
+		BlueDwarf::LoadDwarf("Assets/Model/kobitoblue.fbx");
 	}
 
 	GameObject::Init();

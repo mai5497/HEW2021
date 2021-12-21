@@ -32,6 +32,7 @@ private:
 
 	//---変数
 	bool m_rbFlg;				// 赤小人青小人判定　true：赤、false：青
+	bool m_aliveFlg;			// 生死
 
 protected:
 	//---関数

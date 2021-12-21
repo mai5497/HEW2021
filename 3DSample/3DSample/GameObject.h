@@ -47,9 +47,9 @@ public:
 	void SetSize(XMFLOAT3 size);
 	void SetAngle(XMFLOAT3 angle);
 	void SetFollowFlg(bool flg);
-	void SetCollor(DirectX::XMFLOAT4 color);
+	void SetCollor(XMFLOAT4 color);
 
-	bool use;
+	bool use;								// 使用フラグ
 
 private:
 protected:

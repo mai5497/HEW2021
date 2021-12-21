@@ -35,7 +35,7 @@ FBXPlayer *RedDwarf::m_pFBX = NULL;
 RedDwarf::RedDwarf() 
 {
 	//----- •Ï”‰Šú‰» -----
-	LoadTextureFromFile("Assets/Model/kougeki.png", &m_pRedDwarfTex);
+	LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
@@ -65,7 +65,7 @@ bool RedDwarf::Init()
 {
 	/* ˆÈ‰º‚Íƒ‚ƒfƒ‹‚ª—ˆ‚½‚çg—p */
 	if (m_pBuffer == NULL) {
-		RedDwarf::LoadDwarf("Assets/Model/kougeki.fbx");
+		RedDwarf::LoadDwarf("Assets/Model/kobitored.fbx");
 	}
 
 	GameObject::Init();

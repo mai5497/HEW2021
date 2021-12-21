@@ -95,7 +95,7 @@ void GameObject::CreateObject(XMFLOAT3 pos,XMFLOAT3 dir,XMFLOAT3 move)
 //		座標取得
 //
 //=======================================================
-DirectX::XMFLOAT3 GameObject::GetPos()
+XMFLOAT3 GameObject::GetPos()
 {
 	return m_pos;
 }
@@ -105,7 +105,7 @@ DirectX::XMFLOAT3 GameObject::GetPos()
 //		サイズ取得
 //
 //=======================================================
-DirectX::XMFLOAT3 GameObject::GetSize()
+XMFLOAT3 GameObject::GetSize()
 {
 	return m_size;
 }
@@ -115,7 +115,7 @@ DirectX::XMFLOAT3 GameObject::GetSize()
 //		移動量取得
 //
 //=======================================================
-DirectX::XMFLOAT3 GameObject::GetMove()
+XMFLOAT3 GameObject::GetMove()
 {
 	return m_move;
 }
@@ -125,7 +125,7 @@ DirectX::XMFLOAT3 GameObject::GetMove()
 //		境界球半径取得
 //
 //=======================================================
-DirectX::XMFLOAT3 GameObject::GetRadius()
+XMFLOAT3 GameObject::GetRadius()
 {
 	return m_Radius;
 }
@@ -155,7 +155,7 @@ bool GameObject::GetFollowFlg()
 //		カラー取得
 //
 //=======================================================
-DirectX::XMFLOAT4 GameObject::GetColor() 
+XMFLOAT4 GameObject::GetColor() 
 {
 	return m_Color;
 }
@@ -167,7 +167,7 @@ DirectX::XMFLOAT4 GameObject::GetColor()
 //		座標のセット
 //
 //=======================================================
-void GameObject::SetPos(DirectX::XMFLOAT3 pos)
+void GameObject::SetPos(XMFLOAT3 pos)
 {
 	m_pos = pos;
 }
@@ -177,7 +177,7 @@ void GameObject::SetPos(DirectX::XMFLOAT3 pos)
 //		サイズのセット
 //
 //=======================================================
-void GameObject::SetSize(DirectX::XMFLOAT3 size)
+void GameObject::SetSize(XMFLOAT3 size)
 {
 	m_size = size;
 }
@@ -187,7 +187,7 @@ void GameObject::SetSize(DirectX::XMFLOAT3 size)
 //		移動距離のセット
 //
 //=======================================================
-void GameObject::SetMove(DirectX::XMFLOAT3 move)
+void GameObject::SetMove(XMFLOAT3 move)
 {
 	m_move = move;
 }
@@ -197,7 +197,7 @@ void GameObject::SetMove(DirectX::XMFLOAT3 move)
 //		角度のセット
 //
 //=======================================================
-void GameObject::SetAngle(DirectX::XMFLOAT3 angle)
+void GameObject::SetAngle(XMFLOAT3 angle)
 {
 	m_Angle = angle;
 }
@@ -217,6 +217,6 @@ void GameObject::SetFollowFlg(bool flg)
 //		色のセット
 //
 //=======================================================
-void GameObject::SetCollor(DirectX::XMFLOAT4 color) {
+void GameObject::SetCollor(XMFLOAT4 color) {
 	m_Color = color;
 }
