@@ -53,16 +53,17 @@ public:
 
 private:
 protected:
-	DirectX::XMFLOAT3 m_pos;
-	DirectX::XMFLOAT3 m_size;
-	DirectX::XMFLOAT3 m_move;
-	DirectX::XMFLOAT3 m_Radius;
-	DirectX::XMFLOAT3 m_Angle;
-	DirectX::XMFLOAT4 m_Color;	// 色
-	Cube* m_pCube;
-	ObjectCollisionType m_collisionType;
+	DirectX::XMFLOAT3 m_pos;				// 座標
+	DirectX::XMFLOAT3 m_size;				// サイズ
+	DirectX::XMFLOAT3 m_move;				// 速さ
+	DirectX::XMFLOAT3 m_Radius;				// 半径
+	DirectX::XMFLOAT3 m_Angle;				// 角度
+	DirectX::XMFLOAT4 m_Color;				// 色
 
-	bool m_FollowFlg; // ついていくべき時がtrue初期値はfalse
+	Cube* m_pCube;							// キューブのポインタ情報
+	ObjectCollisionType m_collisionType;	// 当たり判定の種類
+
+	bool m_FollowFlg;						// ついていくべき時がtrue初期値はfalse
 };
 
 

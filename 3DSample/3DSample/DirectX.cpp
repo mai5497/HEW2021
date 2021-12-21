@@ -234,12 +234,12 @@ HRESULT InitDX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 
 	// ビューポートを設定
 	D3D11_VIEWPORT vp;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
 	vp.Width = (FLOAT)width;
 	vp.Height = (FLOAT)height;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
 	g_pContext->RSSetViewports(1, &vp);
 
 	return S_OK;

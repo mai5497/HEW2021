@@ -36,15 +36,9 @@ bool GameObject::Init()
 {
 	//キューブの生成
 	m_pCube = new Cube();
-	m_pCube->SetSize(
-		m_size.x, m_size.y, m_size.z
-	);
-	m_pCube->SetPos(
-		m_pos.x, m_pos.y, m_pos.z
-	);
-	m_pCube->SetAngle(
-		m_Angle.x, m_Angle.y, m_Angle.z
-	);
+	m_pCube->SetSize(m_size.x, m_size.y, m_size.z);			// 初期サイズ
+	m_pCube->SetPos(m_pos.x, m_pos.y, m_pos.z);				// 初期位置
+	m_pCube->SetAngle(m_Angle.x, m_Angle.y, m_Angle.z);		// 初期角度
 
 	return true;
 }
@@ -60,7 +54,7 @@ void GameObject::Uninit()
 
 }
 void GameObject::Update() {
-	if (m_Color.w != 1.0f || m_Color.x != 1.0f || m_Color.y != 1.0f || m_Color.z != 1.0f) {
+	if (m_Color.w != 1.0f || m_Color.x != 1.0f || m_Color.y != 1.0f || m_Color.z != 1.0f) {		// 色の変更がかかっている場合更新する
 		m_pCube->SetRGBA(m_Color.x,m_Color.y,m_Color.z,m_Color.w);
 		m_pCube->Update();
 	}
@@ -83,16 +77,13 @@ void GameObject::Draw()
 	//順番で計算を行うとよい。DirectXは
 	//左から順番に処理をする
 	SHADER->SetWorld(
-		DirectX::XMMatrixScaling(
-			m_size.x, m_size.y, m_size.z)
+		DirectX::XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 		* DirectX::XMMatrixRotationY(m_Angle.y)
-		* DirectX::XMMatrixTranslation(
-			m_pos.x, m_pos.y, m_pos.z));
+		* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 	m_pCube->Draw();
 }
-void GameObject::CreateObject(DirectX::XMFLOAT3 pos,
-	DirectX::XMFLOAT3 dir, DirectX::XMFLOAT3 move)
+void GameObject::CreateObject(XMFLOAT3 pos,XMFLOAT3 dir,XMFLOAT3 move)
 {
 
 }
@@ -108,6 +99,7 @@ DirectX::XMFLOAT3 GameObject::GetPos()
 {
 	return m_pos;
 }
+
 //=======================================================
 //
 //		サイズ取得
@@ -117,6 +109,7 @@ DirectX::XMFLOAT3 GameObject::GetSize()
 {
 	return m_size;
 }
+
 //=======================================================
 //
 //		移動量取得
@@ -126,6 +119,7 @@ DirectX::XMFLOAT3 GameObject::GetMove()
 {
 	return m_move;
 }
+
 //=======================================================
 //
 //		境界球半径取得
@@ -135,6 +129,7 @@ DirectX::XMFLOAT3 GameObject::GetRadius()
 {
 	return m_Radius;
 }
+
 //=======================================================
 //
 //		オブジェクトの種類取得
@@ -144,6 +139,7 @@ ObjectCollisionType GameObject::GetCollisionType()
 {
 	return m_collisionType;
 }
+
 //=======================================================
 //
 //		追跡フラグ取得
@@ -153,6 +149,7 @@ bool GameObject::GetFollowFlg()
 {
 	return m_FollowFlg;
 }
+
 //=======================================================
 //
 //		カラー取得
@@ -174,6 +171,7 @@ void GameObject::SetPos(DirectX::XMFLOAT3 pos)
 {
 	m_pos = pos;
 }
+
 //=======================================================
 //
 //		サイズのセット
@@ -183,6 +181,7 @@ void GameObject::SetSize(DirectX::XMFLOAT3 size)
 {
 	m_size = size;
 }
+
 //=======================================================
 //
 //		移動距離のセット
@@ -192,6 +191,7 @@ void GameObject::SetMove(DirectX::XMFLOAT3 move)
 {
 	m_move = move;
 }
+
 //=======================================================
 //
 //		角度のセット
@@ -201,6 +201,7 @@ void GameObject::SetAngle(DirectX::XMFLOAT3 angle)
 {
 	m_Angle = angle;
 }
+
 //=======================================================
 //
 //		追跡フラグのセット
@@ -210,6 +211,7 @@ void GameObject::SetFollowFlg(bool flg)
 {
 	m_FollowFlg = flg;
 }
+
 //=======================================================
 //
 //		色のセット

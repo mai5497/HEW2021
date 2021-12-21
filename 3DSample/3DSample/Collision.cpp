@@ -225,7 +225,15 @@ void Collision::Push(GameObject *pDynamic,GameObject *pStatic)
 	}
 }
 
-//球と球の当たり判定
+
+//==============================================================
+//
+//	球と球の当たり判定
+//	作成者	： 園田翔大
+//	戻り値	： bool型	当たっている時 → true
+//	引数	： オブジェクト1とオブジェクト2
+//
+//==============================================================
 //(x2-x1)^2 + (y2-y1)^2 + (z2-z1)^2 <= (r1+r2)^2
 bool Collision::CollisionSphere(GameObject *pC, GameObject *pD)
 {
@@ -239,7 +247,7 @@ bool Collision::CollisionSphere(GameObject *pC, GameObject *pD)
 	float Radius2 = bSize.x;
 
 	//球1と球2の中心点の距離の2乗
-	float distanceSqu =
+	float distanceSqu = 
 		powf((bPos.x - aPos.x), 2) +
 		powf((bPos.y - aPos.y), 2) +
 		powf((bPos.z - aPos.z), 2);

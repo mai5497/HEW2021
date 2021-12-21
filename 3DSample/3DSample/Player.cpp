@@ -389,9 +389,9 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		m_ppBullets[i]->use = true;
 		m_ppBullets[i]->SetRB(rbFlg);
 		if (m_ppBullets[i]->GetRB()) {	// trueが赤
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));	// 赤をセット
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f));	// 赤をセット
 		} else {
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// 青をセット
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f));	// 青をセット
 		}
 
 		m_ppBullets[i]->SetPos(m_pos);

@@ -63,7 +63,7 @@ Bullet *g_pBullet[5];
 //==============================================================
 //
 //	GameSceneクラス::コンストラクタ
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -76,7 +76,7 @@ GameScene::GameScene(void)
 //==============================================================
 //
 //	GameSceneクラス::デストラクタ
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -89,7 +89,7 @@ GameScene::~GameScene(void)
 //==============================================================
 //
 //	GameSceneクラス::初期化処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -154,7 +154,7 @@ void GameScene::Init()
 //==============================================================
 //
 //	GameSceneクラス::終了処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -211,7 +211,7 @@ void GameScene::Uninit()
 //==============================================================
 //
 //	GameSceneクラス::更新処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： SCENEの値(入力されないならシーン遷移しない)
 //	引数		： void
 //
@@ -290,27 +290,26 @@ SCENE GameScene::Update()
 	 	//g_pEnemy->EnemyStop();
 	}
 
-
-
-	//***************************************************************
-	//					弾の追跡と当たり判定
-	//***************************************************************
-	g_pPlayer->SetDwarfInfo(g_pDwarfManager);	// playerのメンバ変数に情報を渡す
+	//****************************************************************************
+	//	弾の追跡
+	//****************************************************************************
+	g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++)
 	{
-		g_pBullet[i] = g_pPlayer->GetBullet(i);	// 弾情報取得
-		if (g_pBullet[i]->use) {	// 最後の指示を通す
+		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
+		if (g_pBullet[i]->use) {											// 最後の指示を通す
 			g_LastBulletNun = i;
 		}
-		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++)
+		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++)
 		{
-			if (!g_pBullet[i]->use){	// 弾未使用ならスキップ
+			if (!g_pBullet[i]->use){										// 弾未使用ならスキップ
 				continue;
 			}
 			if (!g_pDwarfManager->GetDwarf(j)->GetFollowFlg()) {	// 追跡フラグが立っていないときは動かない
 				continue;
 			}
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
+
 			//---ピクミンの弾への追尾
 			g_pDwarfManager->SetDwarfTarget(g_recBulletPos);
 			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j));
@@ -319,28 +318,36 @@ SCENE GameScene::Update()
 				continue;
 			}
 			g_pDwarfManager->GetDwarf(j)->SetAttackFlg(true);
-
-
 		}
-		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));	// 弾とフィールドの当たり判定
+
+		//*******************************************************************************
+		//	当たり判定取得
+		//*******************************************************************************
+		//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));				// 弾とフィールドの当たり判定
+
+		// 円での当たり判定(中心点の距離計算は0.5f)
+		if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(0), 1.0f)) {
+			g_pPlayer->GetBullet(i)->SetCollor(XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+
 	}
 	
-	//***************************************************************
-	//					キー入力で弾削除
-	//***************************************************************	
+	//*******************************************************************************
+	//	キー入力で弾削除
+	//*******************************************************************************
 	if (IsTrigger('X')){				// Xキー判定
 		g_pPlayer->DestroyBullet();
 	}
 
 	//***************************************************************
-	//						カメラ更新
+	//	カメラ更新
 	//***************************************************************	
 	g_pTPSCamera->Update();
 	g_pPlayerToEnemy->Update();
 	g_pCollision->Update();
 
 	//***************************************************************
-	//						軌跡の更新
+	//	軌跡の更新
 	//***************************************************************		//軌跡の更新
 	for (int i = CONTROL_NUM * RECORD_MARGIN - 1; i > 0; i--)
 	{
@@ -374,7 +381,7 @@ SCENE GameScene::Update()
 //==============================================================
 //
 //	GameScene描画処理
-//	作成者	： 園田翔太
+//	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
 //
@@ -438,13 +445,8 @@ void GameScene::Draw()
 	//XMMatrixRotationZ Z軸で回転
 	//XMMatrixScaling 拡縮
 	//それぞれの変換行列をDirectXが計算してくれる
-	SHADER->SetWorld(
-		DirectX::XMMatrixRotationY(
-			a += 3.141592f / 180.0f
-		));
-	SHADER->SetWorld(
-		DirectX::XMMatrixTranslation(0, 0, 0)
-	);
+	SHADER->SetWorld(XMMatrixRotationY(a += 3.141592f / 180.0));
+	SHADER->SetWorld(XMMatrixTranslation(0, 0, 0));
 
 	/*
 	//カメラ座標系に変換
@@ -469,15 +471,13 @@ void GameScene::Draw()
 	1.0f, 1000.0f
 	));*/
 
-
-
 	g_pTPSCamera->Bind();
 	
-
 	///g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
 	SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
+
 	//そもそも描画関数コメントアウトしておけばよかった
 	//	g_pCube->Draw();
 
