@@ -51,7 +51,6 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_sleep = 0;
 	m_sleep2 = 0;
 
-	m_pCollision = new Collision;
 }
 
 //====================================================================
@@ -135,6 +134,8 @@ void Bullet::Update()
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
+
+		SetMove(m_move);
 	}
 
 	//ç¿ïWçXêV

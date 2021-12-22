@@ -427,6 +427,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		dir.y = dir.y * 0.2;
 		dir.z = dir.z * 0.2;
 
+		//m_ppBullets[i]->SetMove(dir);
 		m_ppBullets[i]->SetMove(dir);
 		break;
 	}

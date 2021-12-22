@@ -23,7 +23,8 @@ public:
 	virtual void OnCollision(GameObject*);
 	virtual void Update();
 	void SetRB(bool flg);								// 投げた弾が赤か青かセットする
-	bool GetRB();
+	bool GetRB(); 
+	void SetColFlg(bool flg);
 	void BulletCollision(bool Setflg);				// フィールドとの当たり判定
 
 	// ---変数
