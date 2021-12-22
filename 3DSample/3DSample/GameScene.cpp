@@ -235,6 +235,7 @@ SCENE GameScene::Update()
 	//g_pEnemyManager->Update();
 
 	// ステージ更新
+	g_pPlayer->SetStageInfo(g_pStage);
 	g_pStage->Update();
 
 	// ショット更新

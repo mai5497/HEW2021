@@ -62,10 +62,10 @@ bool DwarfManager::Init()
 	// ポインタを格納する配列を作成
 	m_ppDwarf = new DwarfBase*[MAX_DWARF];
 
-	for (int i = 0; i < MAX_DWARF/*MAX_RED_DWARF*/; i++){
+	for (int i = 0; i < MAX_DWARF; i++){
 			// 小人をランダムで初期配置
-		randomPos.x = (float)(rand() % 80 - 40.0f);	//-40.0 ~ 40.0の間の乱数
-		randomPos.z = (float)(rand() % 80 - 40.0f);
+		randomPos.x = (float)(rand() % 20 - 10.0f);	//-20.0 ~ 20.0の間の乱数
+		randomPos.z = (float)(rand() % 20 - 10.0f);
 		// ランダムで算出した値を基準位置に加算して代入
 		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 0.5f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保

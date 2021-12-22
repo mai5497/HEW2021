@@ -242,6 +242,8 @@ void Player::Update()
 		}
 	}
 
+	BulletFiledCollision();
+
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
