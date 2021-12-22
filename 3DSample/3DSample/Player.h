@@ -7,6 +7,7 @@
 #include "DrawBuffer.h"
 #include "TPSCamera.h"
 #include "DwarfManager.h"
+#include "Collision.h"
 
 class Player : public CharacterBase
 {
@@ -44,6 +45,8 @@ private:
 	DrawBuffer m_Buffer;
 
 	DwarfManager *m_pDwarfManager;
+
+	Collision *m_pCollision;
 };
 
 #endif // !_PLAYER_H_

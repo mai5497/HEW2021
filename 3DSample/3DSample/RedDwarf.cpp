@@ -98,7 +98,8 @@ void RedDwarf::Uninit()
 void RedDwarf::Update()
 {	
 	//----- 変数初期化 -----
-	static bool jumpFlg;
+	//static bool jumpFlg;
+	float Differ;		// 小人と弾の距離の差
 
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
@@ -117,10 +118,10 @@ void RedDwarf::Update()
 	vDirection = XMVectorScale(vDirection, 1.0f / 60);
 
 	// Float3型に変換
-	if (GetFollowFlg()) {
+	if (GetFollowFlg()) {	// 追跡フラグが立っているとき
 		XMStoreFloat3(&m_move, vDirection * 5);
 	}
-	if (GetrunFlg()) {
+	if (GetrunFlg()) {		// 弾から逃げるとき
 		XMStoreFloat3(&m_move, -(vDirection * 5));
 	}
 
@@ -139,12 +140,19 @@ void RedDwarf::Update()
 	//	m_move.y -= 0.21f;
 	//}
 
+	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
+	if (Differ < 10.0f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
+
+	}
+
 	// 移動
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
 	m_currentPos = m_pos;
+
 }
 
 
