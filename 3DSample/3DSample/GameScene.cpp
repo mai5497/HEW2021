@@ -40,14 +40,14 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-Cube			*g_pCube;
-Model			*g_pModel;
-Camera			*g_pCamera;
+Cube					*g_pCube;
+Model				*g_pModel;
+Camera				*g_pCamera;
 TPSCamera		*g_pTPSCamera;
-Player			*g_pPlayer;
+Player				*g_pPlayer;
 DwarfManager	*g_pDwarfManager;
-Stage			*g_pStage;
-Collision		*g_pCollision;
+Stage				*g_pStage;
+Collision				*g_pCollision;
 PlayerToEnemy	*g_pPlayerToEnemy;
 //Enemy			*g_pEnemy;
 //EnemyManager	*g_pEnemyManager;
@@ -323,7 +323,7 @@ SCENE GameScene::Update()
 		//*******************************************************************************
 		//	当たり判定取得
 		//*******************************************************************************
-		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(i));				// 弾とフィールドの当たり判定
+		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(0));				// 弾とフィールドの当たり判定
 
 		// 円での当たり判定(中心点の距離計算は0.5f)
 		//if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(1), 1.0f)) {

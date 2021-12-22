@@ -27,6 +27,7 @@ void Collision::Uninit()
 		m_pList[i][0] = m_pList[i][1] = NULL;
 	}
 }
+
 void Collision::Update()
 {
 	//“–‚½‚è”»’èˆ—

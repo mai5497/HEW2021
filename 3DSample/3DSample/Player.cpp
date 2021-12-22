@@ -408,7 +408,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 
 		//ƒxƒNƒgƒ‹‚Ì‘å‚«‚³
 		float L;
-		L = sqrtf((dir.x * dir.x)  + (dir.y * dir.y) + (dir.z * dir.z));
+		L = sqrtf((dir.x * dir.x)  + (dir.y * dir.y) +(dir.z * dir.z));
 
 		//// dir ‚Ì’·‚³‚ğ1‚É‚·‚é(³‹K‰»)
 		dir.x = dir.x / L;
