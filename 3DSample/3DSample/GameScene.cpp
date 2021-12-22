@@ -219,6 +219,7 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// プレイヤー更新
+	g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 	g_pPlayer->Update();
 
 	// 小人更新処理

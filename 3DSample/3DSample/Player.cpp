@@ -41,6 +41,7 @@ Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 	m_pos.y = 1.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
+	m_pCollision = new Collision;
 }
 
 //==============================================================
@@ -203,18 +204,6 @@ void Player::Update()
 
 	if (IsTrigger('Z')){	// ’e”ò‚Î‚·
 		CreateBullet(m_pControllCamera,rbFlg);
-		for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
-		{
-			if (rbFlg == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚é‚Ì‚ð‚â‚ß‚é
-			} else {
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// ’e‚©‚ç—£‚ê‚é
-			}
-		}
 	}
 
 
@@ -238,6 +227,25 @@ void Player::Update()
 	//“–‚½‚è”»’è
 	m_move.x = direction.x * Move;
 	m_move.z = direction.y * Move;
+
+	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
+		for (int j = 0; j < m_nBulletNum; j++) {
+			if (!m_pCollision->CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// ‹ß‚­‚É‚¢‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚ð‚µ‚È‚¢
+				continue;
+			}
+
+			if (m_ppBullets[j]->GetRB() == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
+				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
+				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚é‚Ì‚ð‚â‚ß‚é
+			} else {
+				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
+				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// ’e‚©‚ç—£‚ê‚é
+			}
+		}
+	}
+
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;

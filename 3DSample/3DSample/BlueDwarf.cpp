@@ -98,7 +98,9 @@ void BlueDwarf::Uninit()
 void BlueDwarf::Update()
 {	
 	//----- 変数初期化 -----
-	static bool jumpFlg;
+	//static bool jumpFlg;
+	float Differ;		// 小人と弾の距離の差
+
 
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
@@ -117,7 +119,12 @@ void BlueDwarf::Update()
 	vDirection = XMVectorScale(vDirection, 1.0f / 60);
 
 	// Float3型に変換
-	XMStoreFloat3(&m_move, vDirection * 5);
+	if (GetFollowFlg()) {	// 追跡フラグが立っているとき
+		XMStoreFloat3(&m_move, vDirection * 5);
+	}
+	if (GetrunFlg()) {		// 弾から逃げるとき
+		XMStoreFloat3(&m_move, -(vDirection * 5));
+	}
 
 	// アークタンジェント(逆正接)
 	m_DwarfAngle = atan2(m_move.z, m_move.x);
