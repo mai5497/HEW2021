@@ -242,6 +242,7 @@ void Player::Update()
 		}
 	}
 
+	BulletFiledCollision();	// ’e‚Æ°‚Ì“–‚½‚è”»’è
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
