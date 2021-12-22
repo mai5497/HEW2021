@@ -219,6 +219,7 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// プレイヤー更新
+	g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 	g_pPlayer->Update();
 
 	// 小人更新処理
@@ -314,7 +315,7 @@ SCENE GameScene::Update()
 			g_pDwarfManager->GetDwarf(j)->TargetPos(g_recBulletPos);
 			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j));
 
-			if (!g_pCollision->CollisionSphere(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j))) {
+			if (!CollisionSphere(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j))) {
 				continue;
 			}
 			g_pDwarfManager->GetDwarf(j)->SetAttackFlg(true);

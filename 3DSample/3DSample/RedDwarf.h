@@ -11,7 +11,7 @@ class RedDwarf : public DwarfBase
 public:
 	//---ä÷êî
 	RedDwarf();
-	~RedDwarf();
+	virtual ~RedDwarf();
 	bool Init();
 	void Uninit();
 	virtual void Update();

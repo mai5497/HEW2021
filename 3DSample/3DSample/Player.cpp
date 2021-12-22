@@ -200,18 +200,6 @@ void Player::Update()
 
 	if (IsTrigger('Z')){	// 弾飛ばす
 		CreateBullet(m_pControllCamera,rbFlg);
-		for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
-		{
-			if (rbFlg == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// 弾から離れるのをやめる
-			} else {
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// 移動許可しない
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// 弾から離れる
-			}
-		}
 	}
 
 
@@ -235,6 +223,25 @@ void Player::Update()
 	//当たり判定
 	m_move.x = direction.x * Move;
 	m_move.z = direction.y * Move;
+
+	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
+		for (int j = 0; j < m_nBulletNum; j++) {
+			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// 近くにいなかったら下の処理をしない
+				continue;
+			}
+
+			if (m_ppBullets[j]->GetRB() == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
+				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// 弾から離れるのをやめる
+			} else {
+				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// 移動許可しない
+				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
+				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// 弾から離れる
+			}
+		}
+	}
+
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
@@ -420,6 +427,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		dir.y = dir.y * 0.2;
 		dir.z = dir.z * 0.2;
 
+		//m_ppBullets[i]->SetMove(dir);
 		m_ppBullets[i]->SetMove(dir);
 		break;
 	}
@@ -462,3 +470,40 @@ void Player::SetDwarfInfo(DwarfManager *pDwarfManager)
 {
 	m_pDwarfManager = pDwarfManager;
 }
+
+//==============================================================
+//
+//	Playerクラス::ステージの情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: ステージ管理クラスのポインタ
+//
+//==============================================================
+void Player::SetStageInfo(Stage *pStage) {
+	m_pStage = pStage;
+}
+
+
+//=============================================================
+//
+//	弾がフィールドと接しているかの判定処理
+//	作成者	： 吉原飛鳥
+//	編集者	： 伊地田真衣
+//	戻り値	： void
+//　引数	： void
+//
+//=============================================================
+void Player::BulletFiledCollision() {
+	for (int i = 0; i < m_nBulletNum; i++) {
+		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
+			continue;
+		}
+		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
+			m_ppBullets[i]->SetColFlg(false);
+			continue;
+		}
+		m_ppBullets[i]->SetColFlg(true);
+	}
+}
+
+

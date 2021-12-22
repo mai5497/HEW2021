@@ -3,6 +3,7 @@
 
 
 #include "CharacterBase.h"
+#include "Collision.h"
 
 // ---モデル描画用の追加
 #include	"FBX/FBXPlayer.h"
@@ -22,7 +23,8 @@ public:
 	virtual void OnCollision(GameObject*);
 	virtual void Update();
 	void SetRB(bool flg);								// 投げた弾が赤か青かセットする
-	bool GetRB();
+	bool GetRB(); 
+	void SetColFlg(bool flg);
 	void BulletCollision(bool Setflg);				// フィールドとの当たり判定
 
 	// ---変数

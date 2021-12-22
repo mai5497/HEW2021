@@ -37,7 +37,8 @@ FBXPlayer* Bullet::m_pFBX = NULL;
 //
 //====================================================================
 Bullet::Bullet(DirectX::XMFLOAT3 size):
-	m_rbFlg(true)
+	m_rbFlg(true),
+	m_ColFlg(false)
 {
 	// ---変数初期化
 	LoadTextureFromFile("Assets/Model/flowerred.png",&m_pBulletTex);
@@ -129,6 +130,14 @@ void Bullet::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY / FPS;
 
+	if (m_ColFlg) {
+		m_move.x = 0.0f;
+		m_move.y = 0.0f;
+		m_move.z = 0.0f;
+
+		SetMove(m_move);
+	}
+
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
@@ -136,7 +145,6 @@ void Bullet::Update()
 
 	// オブジェクトの更新(弾の更新)
 	GameObject::Update();
-	
 }
 
 
@@ -201,17 +209,9 @@ bool Bullet::GetRB()
 	return m_rbFlg;
 }
 
-//=============================================================
-//
-//	弾がフィールドと接しているかの判定処理
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//　引数	： フィールドと接している(true)/接していない(false)
-//
-//=============================================================
-void Bullet::BulletCollision(bool SetFlg)
-{
-	m_ColFlg = SetFlg;
+// 当たり判定フラグセット
+void Bullet::SetColFlg(bool flg) {
+	m_ColFlg = flg;
 }
 
 //=============================================================
