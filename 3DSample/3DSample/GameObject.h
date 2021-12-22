@@ -64,6 +64,7 @@ protected:
 	ObjectCollisionType m_collisionType;	// 当たり判定の種類
 
 	bool m_FollowFlg;						// ついていくべき時がtrue初期値はfalse
+	bool m_BulletFlg;						// 弾の使用フラグ(ture → 使用,flase → 未使用,初期値はfalse)
 };
 
 

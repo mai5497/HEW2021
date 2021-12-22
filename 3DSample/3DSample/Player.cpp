@@ -74,23 +74,21 @@ bool Player::Init()
 	};
 
 
-	BulletSetting settings[] = {
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
+	BulletSetting settings[] = 
+	{
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
 	};
 
 	//初期データから弾数を計算
 	m_nBulletNum = sizeof(settings) / sizeof(settings[0]);
+
 	//ポインタを格納する配列を作成
 	m_ppBullets = new Bullet *[m_nBulletNum];
+
 	//それぞれの配列に弾をメモリ確保
 	for (int i = 0; i < m_nBulletNum; i++)
 	{
@@ -167,7 +165,6 @@ void Player::Update()
 
 	if (keyR){ 
 		m_move.x += Move;
-
 		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y += 0.1f;
 		}
@@ -411,9 +408,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 
 		//ベクトルの大きさ
 		float L;
-		L = sqrtf((dir.x * dir.x) +
-			(dir.y * dir.y) +
-			(dir.z * dir.z));
+		L = sqrtf((dir.x * dir.x)  + (dir.y * dir.y) + (dir.z * dir.z));
 
 		//// dir の長さを1にする(正規化)
 		dir.x = dir.x / L;
@@ -428,6 +423,10 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		m_ppBullets[i]->SetMove(dir);
 		break;
 	}
+}
+void Player::CreateBullet(XMFLOAT3 pos, XMFLOAT3 dir)
+{
+
 }
 
 //==============================================================

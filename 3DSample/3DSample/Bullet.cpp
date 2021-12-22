@@ -12,16 +12,19 @@
 #include <math.h>
 
 //---定数定義
-#define FPS (60)					//フレーム数
-#define WAIT_TIME (1.0 * FPS)		//遅延のための時間
+#define FPS (60)								//フレーム数
+#define WAIT_TIME (1.0 * FPS)			//遅延のための時間
 #define WAIT_TIME2 (0.8f * FPS)		//遅延のための時間
+
+//#define BULLET_FRICITON	(0.5f)		// 弾にかかる摩擦
+#define BULLET_GRAVITY (0.1f)			// 弾にかかる重力
 
 Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_rbFlg(true)
 {
-	m_pos.y = 1000.0f;				//初期座標x
-	m_pos.z = 1000.0f;				//初期座標y
-	m_pos.x = 1000.0f;				//初期座標z
+	m_pos.y = 1000.0f;						//初期座標x
+	m_pos.z = 1000.0f;						//初期座標y
+	m_pos.x = 1000.0f;						//初期座標z
 	m_size.x = 0.25f;				
 	m_size.y = 0.25f;
 	m_size.z = 0.25f;
@@ -40,15 +43,15 @@ void Bullet::Update()
 //	m_move = DirectX::XMFLOAT3(0, m_move.y, 0);
 
 	//一定時間後に重力をかける
-	if (m_sleep > WAIT_TIME)
-	{
-		//このコメントアウト↓外すと一定時間後に弾がゆっくり落下します
-		//m_move.y -= 3.0f / FPS;
-		m_move.x = 0;
-		m_move.y = 0;
-		m_move.z = 0;
-		m_sleep = 0;
-	}
+	//if (m_sleep > WAIT_TIME)
+	//{
+	//	//このコメントアウト↓外すと一定時間後に弾がゆっくり落下します
+	//	//m_move.y -= 3.0f / FPS;
+	//	m_move.x = 0;
+	//	m_move.y = 0;
+	//	m_move.z = 0;
+	//	m_sleep = 0;
+	//}
 	
 	//if (m_sleep2 > WAIT_TIME2)
 	//{
@@ -61,9 +64,13 @@ void Bullet::Update()
 	m_sleep++;
 	m_sleep2++;
 
-	if (use == false || m_pos.y > 0.5f) {
-		m_pos.y -= 3.0f / FPS;
-	}
+	//if (use == true && m_pos.y > 0.5f) {
+	//	
+	//	m_move.y -= BULLET_GRAVITY / FPS;			// 重力追加
+	//}
+
+	// 重力追加
+	m_move.y -= BULLET_GRAVITY / FPS;
 
 	//座標更新
 	m_pos.x += m_move.x;
@@ -83,7 +90,7 @@ void Bullet::OnCollision(GameObject* pObj)
 	if (use == false) { return; }
 
 	DirectX::XMFLOAT3 m_Enemypos = pObj->GetPos();		//敵の座標取得
-	DirectX::XMFLOAT3 Target = m_pos;					//弾の座標を取得（敵との当たり判定でつかう
+	DirectX::XMFLOAT3 Target = m_pos;							//弾の座標を取得（敵との当たり判定でつかう
 
 	DirectX::XMFLOAT3 dir;
 	dir.x = m_pos.x - m_Enemypos.x;

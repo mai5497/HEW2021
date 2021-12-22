@@ -27,6 +27,9 @@ public:
 
 	//void CreateBullet(TPSCamera*);
 	void CreateBullet(Camera *pCamera,bool rbFlg);
+
+	void CreateBullet(XMFLOAT3 pos, XMFLOAT3 dir);
+
 	void GetCameraPos(TPSCamera*);
 	void DestroyBullet();
 
