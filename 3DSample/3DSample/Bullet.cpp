@@ -61,6 +61,10 @@ void Bullet::Update()
 	m_sleep++;
 	m_sleep2++;
 
+	if (use == false || m_pos.y > 0.5f) {
+		m_pos.y -= 3.0f / FPS;
+	}
+
 	//ç¿ïWçXêV
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
