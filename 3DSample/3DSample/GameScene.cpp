@@ -115,6 +115,8 @@ void GameScene::Init()
 	g_pTPSCamera = new TPSCamera();
 	g_pTPSCamera->SetTargetObj(g_pPlayer);
 	g_pTPSCamera->Init();
+	g_pCamera = new Camera();
+	g_pCamera->Init();
 
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 	g_pPlayer->GetCameraPos(g_pTPSCamera);
@@ -472,7 +474,8 @@ void GameScene::Draw()
 	1.0f, 1000.0f
 	));*/
 
-	g_pTPSCamera->Bind();
+	//g_pTPSCamera->Bind();
+	g_pCamera->Bind();
 	
 	///g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
