@@ -103,9 +103,9 @@ void SceneManager::Draw()
 {
 	switch (m_scene)
 	{
-	/*case SCENE_TITLE:
+	case SCENE_TITLE:
 		m_title.Draw();
-		break;*/
+		break;
 	case SCENE_GAME:
 		m_game.Draw();
 		break;

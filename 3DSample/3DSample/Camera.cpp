@@ -5,14 +5,14 @@
 
 
 Camera::Camera()
-	: m_pos(0, 30.0f, -30.0f)
+	: m_pos(0, 12.0f, -12.0f)
 	, m_look(0, 0, 0)
 	, m_up(0, 1, 0)
 	, m_angle(60.0f)
 	, m_near(0.5f)
 	, m_far(1000.0f)
 	, m_xzAngle(0.0f)
-	, m_yAngle(30.0f)
+	, m_yAngle(37.0f)
 	, m_radius(5.0f)
 {
 
