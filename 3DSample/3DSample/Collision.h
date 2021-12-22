@@ -8,6 +8,8 @@
 //※本当はリスト構造で制限がないほうがいい
 #define MAX_COLLISION_REGISTER (1000)
 
+bool CollisionSphere(GameObject *pC, GameObject *pD);	// 当たってたらtrueを返す
+
 class Collision
 {
 public:
@@ -19,8 +21,8 @@ public:
 	void Update();
 
 	void Register(GameObject *pA,GameObject *pB);
-	bool CollisionSphere(GameObject *pC, GameObject *pD);	// 当たってたらtrueを返す
 	bool CollisionSphere(GameObject *pC, GameObject *pD, float Radius);
+
 
 private:
 	GameObject *m_pList[MAX_COLLISION_REGISTER][2];

@@ -20,7 +20,8 @@
 #define BULLET_GRAVITY (0.1f)			// 弾にかかる重力
 
 Bullet::Bullet(DirectX::XMFLOAT3 size):
-	m_rbFlg(true)
+	m_rbFlg(true),
+	m_ColFlg(false)
 {
 	m_pos.y = 1000.0f;						//初期座標x
 	m_pos.z = 1000.0f;						//初期座標y
@@ -31,10 +32,12 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_sleep = 0;
 	m_sleep2 = 0;
 
+	m_pCollision = new Collision;
 }
+
 Bullet::~Bullet()
 {
-
+	delete m_pCollision;
 }
 
 void Bullet::Update()
@@ -72,6 +75,12 @@ void Bullet::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY / FPS;
 
+	if (m_ColFlg) {
+		m_move.x = 0.0f;
+		m_move.y = 0.0f;
+		m_move.z = 0.0f;
+	}
+
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
@@ -79,7 +88,6 @@ void Bullet::Update()
 
 	// オブジェクトの更新(弾の更新)
 	GameObject::Update();
-	
 }
 
 
@@ -138,17 +146,11 @@ bool Bullet::GetRB()
 	return m_rbFlg;
 }
 
-//=============================================================
-//
-//	弾がフィールドと接しているかの判定処理
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//　引数	： フィールドと接している(true)/接していない(false)
-//
-//=============================================================
-void Bullet::BulletCollision(bool SetFlg)
-{
-	m_ColFlg = SetFlg;
+// 当たり判定フラグセット
+void Bullet::SetColFlg(bool flg) {
+	m_ColFlg = flg;
 }
 
-
+bool Bullet::GetColFlg() {
+	return m_ColFlg;
+}

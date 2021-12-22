@@ -8,6 +8,7 @@
 #include "TPSCamera.h"
 #include "DwarfManager.h"
 #include "Collision.h"
+#include "Stage.h"
 
 class Player : public CharacterBase
 {
@@ -34,8 +35,10 @@ public:
 	void GetCameraPos(TPSCamera*);
 	void DestroyBullet();
 
-	void SetDwarfInfo(DwarfManager *pDwarfManager);
+	void BulletFiledCollision();	// íeÇ∆è∞ÇÃìñÇΩÇËîªíË
 
+	void SetDwarfInfo(DwarfManager *pDwarfManager);
+	void SetStageInfo(Stage *pStage);
 private:
 	Camera * m_pControllCamera;
 
@@ -45,8 +48,7 @@ private:
 	DrawBuffer m_Buffer;
 
 	DwarfManager *m_pDwarfManager;
-
-	Collision *m_pCollision;
+	Stage *m_pStage;
 };
 
 #endif // !_PLAYER_H_
