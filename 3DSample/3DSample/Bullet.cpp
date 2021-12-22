@@ -28,8 +28,8 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-DrawBuffer* Bullet::m_pBuffer = NULL;
-FBXPlayer* Bullet::m_pFBX = NULL;
+//DrawBuffer* Bullet::m_pBuffer = NULL;
+//FBXPlayer* Bullet::m_pFBX = NULL;
 
 //====================================================================
 //
@@ -41,7 +41,7 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_ColFlg(false)
 {
 	// ---変数初期化
-	LoadTextureFromFile("Assets/Model/flowerred.png",&m_pBulletTex);
+	//LoadTextureFromFile("Assets/Model/flowerred.png",&m_pBulletTex);
 	m_pos.y = 1000.0f;						//初期座標x
 	m_pos.z = 1000.0f;						//初期座標y
 	m_pos.x = 1000.0f;						//初期座標z
@@ -50,7 +50,7 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_size.z = 0.25f;
 	m_sleep = 0;
 	m_sleep2 = 0;
-	GameObject::m_Radius = (XMFLOAT3(0.1f, 0.1f, 0.1f));
+	//GameObject::m_Radius = (XMFLOAT3(0.1f, 0.1f, 0.1f));
 }
 
 //====================================================================
@@ -71,9 +71,9 @@ Bullet::~Bullet()
 bool Bullet::Init()
 {
 	/* モデル読み込み */
-	if (m_pBuffer == NULL) {
-		Bullet::LoadBullet("Assets/Model/flowerred.fbx");
-	}
+	//if (m_pBuffer == NULL) {
+	//	Bullet::LoadBullet("Assets/Model/flowerred.fbx");
+	//}
 
 	GameObject::Init();
 
@@ -87,13 +87,13 @@ bool Bullet::Init()
 //====================================================================
 void Bullet::Uninit()
 {
-	if (m_pBuffer != NULL) {
-		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+	//if (m_pBuffer != NULL) {
+	//	delete[] m_pBuffer;
+	//	m_pBuffer = NULL;
 
-		delete m_pFBX;
-		m_pFBX = NULL;
-	}
+	//	delete m_pFBX;
+	//	m_pFBX = NULL;
+	//}
 }
 void Bullet::Update()
 {
@@ -223,36 +223,36 @@ void Bullet::SetColFlg(bool flg) {
 //　引数		： ファイルパス 
 //
 //=============================================================
-bool Bullet::LoadBullet(const char* pFilePath)
-{
-	/* 以下はモデルが来たら使用 */
-	HRESULT hr;
-	m_pFBX = new FBXPlayer;
-	hr = m_pFBX->LoadModel(pFilePath);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	//モデルのメッシュの数だけ頂点バッファ作成
-	int meshNum = m_pFBX->GetMeshNum();
-	m_pBuffer = new DrawBuffer[meshNum];
-	for (int i = 0; i < meshNum; i++)
-	{
-		//メッシュごとに頂点バッファ作成
-		m_pBuffer[i].CreateVertexBuffer(
-			m_pFBX->GetVertexData(i),
-			m_pFBX->GetVertexSize(i),
-			m_pFBX->GetVertexCount(i)
-		);
-		//インデックスバッファ作成
-		m_pBuffer[i].CreateIndexBuffer(
-			m_pFBX->GetIndexData(i),
-			m_pFBX->GetIndexCount(i)
-		);
-
-	}
-	return true;
-}
+//bool Bullet::LoadBullet(const char* pFilePath)
+//{
+//	/* 以下はモデルが来たら使用 */
+//	HRESULT hr;
+//	m_pFBX = new FBXPlayer;
+//	hr = m_pFBX->LoadModel(pFilePath);
+//	if (FAILED(hr))
+//	{
+//		return false;
+//	}
+//
+//	//モデルのメッシュの数だけ頂点バッファ作成
+//	int meshNum = m_pFBX->GetMeshNum();
+//	m_pBuffer = new DrawBuffer[meshNum];
+//	for (int i = 0; i < meshNum; i++)
+//	{
+//		//メッシュごとに頂点バッファ作成
+//		m_pBuffer[i].CreateVertexBuffer(
+//			m_pFBX->GetVertexData(i),
+//			m_pFBX->GetVertexSize(i),
+//			m_pFBX->GetVertexCount(i)
+//		);
+//		//インデックスバッファ作成
+//		m_pBuffer[i].CreateIndexBuffer(
+//			m_pFBX->GetIndexData(i),
+//			m_pFBX->GetIndexCount(i)
+//		);
+//
+//	}
+//	return true;
+//}
 
 

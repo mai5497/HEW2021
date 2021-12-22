@@ -25,7 +25,6 @@ public:
 	void SetRB(bool flg);								// 投げた弾が赤か青かセットする
 	bool GetRB(); 
 	void SetColFlg(bool flg);
-	void BulletCollision(bool Setflg);				// フィールドとの当たり判定
 
 	// ---変数
 	// ---モデル描画用の追加
@@ -33,7 +32,7 @@ public:
 
 private:
 	// ---関数
-	bool LoadBullet(const char* pFilePath);		// 　モデル読み込み
+	//bool LoadBullet(const char* pFilePath);		// 　モデル読み込み
 
 	// ---変数
 	int m_sleep;
@@ -41,8 +40,8 @@ private:
 	bool m_rbFlg;	// true　→　赤			false　→　青
 	bool m_ColFlg;	// true　→　接している		false → 接していない
 
-	static DrawBuffer* m_pBuffer;					// バッファクラス
-	static FBXPlayer* m_pFBX;						// FBXファイル操作くらす
+	//static DrawBuffer* m_pBuffer;					// バッファクラス
+	//static FBXPlayer* m_pFBX;						// FBXファイル操作くらす
 };
 
 

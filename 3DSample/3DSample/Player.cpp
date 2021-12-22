@@ -226,6 +226,10 @@ void Player::Update()
 
 	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < m_nBulletNum; j++) {
+			if (!m_ppBullets[j]->use) {
+				continue;
+			}
+
 			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// ‹ß‚­‚É‚¢‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚ğ‚µ‚È‚¢
 				continue;
 			}
