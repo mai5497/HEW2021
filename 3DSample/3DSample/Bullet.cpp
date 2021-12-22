@@ -8,21 +8,40 @@
 					フィールドと弾の当たり判定の処理を追加(吉原)
  * @brief			プレイヤーから発射される弾に関する処理
  */
+
+ //*******************************************************************************
+ // インクルード部
+ //*******************************************************************************
 #include "Bullet.h"
 #include <math.h>
+#include "Texture.h"
 
-//---定数定義
+
+//*******************************************************************************
+// 定数・マクロ定義
+//*******************************************************************************
 #define FPS (60)								//フレーム数
 #define WAIT_TIME (1.0 * FPS)			//遅延のための時間
 #define WAIT_TIME2 (0.8f * FPS)		//遅延のための時間
-
-//#define BULLET_FRICITON	(0.5f)		// 弾にかかる摩擦
 #define BULLET_GRAVITY (0.1f)			// 弾にかかる重力
 
+//*******************************************************************************
+// グローバル宣言
+//*******************************************************************************
+DrawBuffer* Bullet::m_pBuffer = NULL;
+FBXPlayer* Bullet::m_pFBX = NULL;
+
+//====================================================================
+//
+//		コンストラクタ
+//
+//====================================================================
 Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_rbFlg(true),
 	m_ColFlg(false)
 {
+	// ---変数初期化
+	LoadTextureFromFile("Assets/Model/flowerred.png",&m_pBulletTex);
 	m_pos.y = 1000.0f;						//初期座標x
 	m_pos.z = 1000.0f;						//初期座標y
 	m_pos.x = 1000.0f;						//初期座標z
@@ -35,11 +54,48 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_pCollision = new Collision;
 }
 
+//====================================================================
+//
+//		デストラクタ
+//
+//====================================================================
 Bullet::~Bullet()
 {
-	delete m_pCollision;
+
 }
 
+//====================================================================
+//
+//		初期化
+//
+//====================================================================
+bool Bullet::Init()
+{
+	/* モデル読み込み */
+	if (m_pBuffer == NULL) {
+		Bullet::LoadBullet("Assets/Model/flowerred.fbx");
+	}
+
+	GameObject::Init();
+
+	return true;
+}
+
+//====================================================================
+//
+//		終了処理
+//
+//====================================================================
+void Bullet::Uninit()
+{
+	if (m_pBuffer != NULL) {
+		delete[] m_pBuffer;
+		m_pBuffer = NULL;
+
+		delete m_pFBX;
+		m_pFBX = NULL;
+	}
+}
 void Bullet::Update()
 {
 	//毎フレーム初期化
@@ -101,6 +157,7 @@ void Bullet::OnCollision(GameObject* pObj)
 	DirectX::XMFLOAT3 Target = m_pos;							//弾の座標を取得（敵との当たり判定でつかう
 
 	DirectX::XMFLOAT3 dir;
+	/*
 	dir.x = m_pos.x - m_Enemypos.x;
 	dir.y = m_pos.y - m_Enemypos.y;
 	dir.z = m_pos.z - m_Enemypos.z;
@@ -114,6 +171,11 @@ void Bullet::OnCollision(GameObject* pObj)
 	dir.x = dir.x * 0.025f;
 	dir.y = dir.y * 0.025f;
 	dir.z = dir.z * 0.025f;
+	*/
+
+	dir.x = 0.0f;
+	dir.y = 0.0f;
+	dir.z = 0.0f;
 
 	pObj->SetMove(dir);
 }
@@ -151,6 +213,44 @@ void Bullet::SetColFlg(bool flg) {
 	m_ColFlg = flg;
 }
 
-bool Bullet::GetColFlg() {
-	return m_ColFlg;
+//=============================================================
+//
+//	モデル読み込み
+//	作成者	： bool型
+//	戻り値	： void
+//　引数		： ファイルパス 
+//
+//=============================================================
+bool Bullet::LoadBullet(const char* pFilePath)
+{
+	/* 以下はモデルが来たら使用 */
+	HRESULT hr;
+	m_pFBX = new FBXPlayer;
+	hr = m_pFBX->LoadModel(pFilePath);
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	//モデルのメッシュの数だけ頂点バッファ作成
+	int meshNum = m_pFBX->GetMeshNum();
+	m_pBuffer = new DrawBuffer[meshNum];
+	for (int i = 0; i < meshNum; i++)
+	{
+		//メッシュごとに頂点バッファ作成
+		m_pBuffer[i].CreateVertexBuffer(
+			m_pFBX->GetVertexData(i),
+			m_pFBX->GetVertexSize(i),
+			m_pFBX->GetVertexCount(i)
+		);
+		//インデックスバッファ作成
+		m_pBuffer[i].CreateIndexBuffer(
+			m_pFBX->GetIndexData(i),
+			m_pFBX->GetIndexCount(i)
+		);
+
+	}
+	return true;
 }
+
+
