@@ -25,6 +25,7 @@ GameObject::GameObject()
 	,use(false)
 	//,m_FollowFlg(false)
 	,m_Color(1.0f, 1.0f, 1.0f, 1.0f)
+	,m_BulletFlg(false)
 {
 
 }
@@ -206,7 +207,7 @@ void GameObject::SetAngle(XMFLOAT3 angle)
 //=======================================================
 //
 //		追跡フラグのセット
-//
+//	
 //=======================================================
 //void GameObject::SetFollowFlg(bool flg) 
 //{

@@ -41,7 +41,6 @@ Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 	m_pos.y = 1.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
-	m_pCollision = new Collision;
 }
 
 //==============================================================
@@ -75,23 +74,21 @@ bool Player::Init()
 	};
 
 
-	BulletSetting settings[] = {
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),
-		XMFLOAT3(30,1,30), },
+	BulletSetting settings[] = 
+	{
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
 	};
 
 	//初期データから弾数を計算
 	m_nBulletNum = sizeof(settings) / sizeof(settings[0]);
+
 	//ポインタを格納する配列を作成
 	m_ppBullets = new Bullet *[m_nBulletNum];
+
 	//それぞれの配列に弾をメモリ確保
 	for (int i = 0; i < m_nBulletNum; i++)
 	{
@@ -168,7 +165,6 @@ void Player::Update()
 
 	if (keyR){ 
 		m_move.x += Move;
-
 		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y += 0.1f;
 		}
@@ -230,7 +226,7 @@ void Player::Update()
 
 	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < m_nBulletNum; j++) {
-			if (!m_pCollision->CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// 近くにいなかったら下の処理をしない
+			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// 近くにいなかったら下の処理をしない
 				continue;
 			}
 
@@ -419,9 +415,7 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 
 		//ベクトルの大きさ
 		float L;
-		L = sqrtf((dir.x * dir.x) +
-			(dir.y * dir.y) +
-			(dir.z * dir.z));
+		L = sqrtf((dir.x * dir.x)  + (dir.y * dir.y) +(dir.z * dir.z));
 
 		//// dir の長さを1にする(正規化)
 		dir.x = dir.x / L;
@@ -433,9 +427,14 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		dir.y = dir.y * 0.2;
 		dir.z = dir.z * 0.2;
 
+		//m_ppBullets[i]->SetMove(dir);
 		m_ppBullets[i]->SetMove(dir);
 		break;
 	}
+}
+void Player::CreateBullet(XMFLOAT3 pos, XMFLOAT3 dir)
+{
+
 }
 
 //==============================================================
@@ -471,3 +470,40 @@ void Player::SetDwarfInfo(DwarfManager *pDwarfManager)
 {
 	m_pDwarfManager = pDwarfManager;
 }
+
+//==============================================================
+//
+//	Playerクラス::ステージの情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: ステージ管理クラスのポインタ
+//
+//==============================================================
+void Player::SetStageInfo(Stage *pStage) {
+	m_pStage = pStage;
+}
+
+
+//=============================================================
+//
+//	弾がフィールドと接しているかの判定処理
+//	作成者	： 吉原飛鳥
+//	編集者	： 伊地田真衣
+//	戻り値	： void
+//　引数	： void
+//
+//=============================================================
+void Player::BulletFiledCollision() {
+	for (int i = 0; i < m_nBulletNum; i++) {
+		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
+			continue;
+		}
+		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
+			m_ppBullets[i]->SetColFlg(false);
+			continue;
+		}
+		m_ppBullets[i]->SetColFlg(true);
+	}
+}
+
+
