@@ -30,6 +30,8 @@
 #include "Enemy.h"
 #include "EnemyManager.h"
 #include "DwarfManager.h"
+#include "Collector.h"
+#include "CollectionPoint.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -49,6 +51,9 @@ DwarfManager	*g_pDwarfManager;
 Stage				*g_pStage;
 Collision				*g_pCollision;
 PlayerToEnemy	*g_pPlayerToEnemy;
+Collector		*g_pCollector;
+CollectionPoint *g_pCollectionPoint;
+
 //Enemy			*g_pEnemy;
 //EnemyManager	*g_pEnemyManager;
 //Shot			*g_pShot;
@@ -125,6 +130,15 @@ void GameScene::Init()
 	g_pDwarfManager = new DwarfManager();
 	g_pDwarfManager->Init();
 
+	// 回収車
+	g_pCollector = new Collector();
+	g_pCollector->Init();
+
+	g_pCollectionPoint = new CollectionPoint();
+	g_pCollectionPoint->Init();
+
+
+
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
 	//g_pEnemy->LoadEnemy("Assets/Model/tyoutinobake.fbx");
@@ -187,6 +201,14 @@ void GameScene::Uninit()
 	g_pDwarfManager->Uninit();
 	delete g_pDwarfManager;
 
+	// 回収者
+	g_pCollector->Uninit();
+	delete g_pCollector;
+
+	g_pCollectionPoint->Uninit();
+	delete g_pCollectionPoint;
+
+
 	// エネミー終了処理
 	//delete g_pEnemy;
 
@@ -230,6 +252,11 @@ SCENE GameScene::Update()
 	// バレット更新
 	//	g_pBullet->Update();
 	
+		// 回収者
+	g_pCollector->Update();
+	g_pCollectionPoint->Update();
+
+
 	// エネミー更新
 	//g_pEnemy->Update();
 	//g_pEnemyManager->Update();
@@ -266,6 +293,17 @@ SCENE GameScene::Update()
 		//	g_pCollision->Register(g_pEnemyManager->GetEnemy(j), g_pStage->GetField(i));
 		//}
 	}
+
+	//***************************************************************
+	//					小人回収
+	//***************************************************************
+	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
+		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
+			// 小人回収
+
+		}
+	}
+
 
 	//***************************************************************
 	//					エネミーがプレイヤーを追跡
@@ -491,6 +529,12 @@ void GameScene::Draw()
 	//g_pModel->Draw();
 
 	// プレイヤー描画
+
+		// 回収者の描画
+	g_pCollector->Draw();
+	g_pCollectionPoint->Draw();
+
+
 
 	// 敵の描画
 	//g_pEnemyManager->Draw();

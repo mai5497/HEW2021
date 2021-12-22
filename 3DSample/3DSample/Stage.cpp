@@ -19,12 +19,27 @@ bool Stage::Init()
 
 	FieldSetting settings[] =
 	{
+		//大きい床
 		{ DirectX::XMFLOAT3(0,-0.5f,0),
-		  DirectX::XMFLOAT3(100,1,100),
+		  DirectX::XMFLOAT3(50,1,50),
 		},
-		{ DirectX::XMFLOAT3(10,0.5f,10),
-		 DirectX::XMFLOAT3(10,1,10), 
+		//小人のステージ
+		{ DirectX::XMFLOAT3(0,0.5f,0),
+		 DirectX::XMFLOAT3(13,1,13),
 		},
+		//右の壁
+		{DirectX::XMFLOAT3(10,-0.5f,0),
+		DirectX::XMFLOAT3(2.5f,3,20)},
+		//左の壁
+		{DirectX::XMFLOAT3(-10,-0.5f,0),
+		DirectX::XMFLOAT3(2.5f,3,20) },
+		//奥の壁
+		{DirectX::XMFLOAT3(0,-0.5f,10),
+		DirectX::XMFLOAT3(22.5,3,2.5f)},
+		//手前の壁
+		{DirectX::XMFLOAT3(0,-0.5f,-10),
+		DirectX::XMFLOAT3(22.5,3,2.5f)}
+
 	};
 
 	//初期データからフィールドの数を計算

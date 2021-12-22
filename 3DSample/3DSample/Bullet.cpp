@@ -130,8 +130,8 @@ void Bullet::Update()
 	// èdóÕí«â¡
 	m_move.y -= BULLET_GRAVITY / FPS;
 
-	if (m_ColFlg) {
-	//if (m_pos.y < 0.2f) {
+	//if (m_ColFlg) {
+	if (m_pos.y < 1.0f) {
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;

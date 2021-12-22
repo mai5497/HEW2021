@@ -22,6 +22,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS		(60)
+#define BULLET_SPEED	(0.1f)
 
 //*******************************************************************************
 // グローバル宣言
@@ -38,7 +39,9 @@ DirectX::XMFLOAT3 pOldCameraPos;
 //==============================================================
 Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 {
-	m_pos.y = 1.0f;
+	m_pos.x = -10.0f;
+	m_pos.y = 3.0f;
+	m_pos.z = -10.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -425,9 +428,9 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		dir.z = dir.z / L;
 
 		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
-		dir.x = dir.x * 0.2;
-		dir.y = dir.y * 0.2;
-		dir.z = dir.z * 0.2;
+		dir.x = dir.x * BULLET_SPEED;
+		dir.y = dir.y * BULLET_SPEED;
+		dir.z = dir.z * BULLET_SPEED;
 
 		//m_ppBullets[i]->SetMove(dir);
 		m_ppBullets[i]->SetMove(dir);
