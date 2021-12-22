@@ -100,9 +100,9 @@ void Bullet::Update()
 	//毎フレーム初期化
 //	m_move = DirectX::XMFLOAT3(0, m_move.y, 0);
 
-	//一定時間後に重力をかける
-	//if (m_sleep > WAIT_TIME)
-	//{
+	
+	////一定時間後に重力をかける
+	//if (m_sleep > WAIT_TIME){
 	//	//このコメントアウト↓外すと一定時間後に弾がゆっくり落下します
 	//	//m_move.y -= 3.0f / FPS;
 	//	m_move.x = 0;
@@ -110,39 +110,40 @@ void Bullet::Update()
 	//	m_move.z = 0;
 	//	m_sleep = 0;
 	//}
-	
-	//if (m_sleep2 > WAIT_TIME2)
-	//{
+	//
+	//if (m_sleep2 > WAIT_TIME2){
 	//	if (m_pos.y > 0.1f)
 	//		m_move.y -= 1.5f / FPS;
-
 	//	m_sleep2 = 0;
 	//}
+	//
 
-	m_sleep++;
-	m_sleep2++;
+	//m_sleep++;
+	//m_sleep2++;
 
-	//if (use == true && m_pos.y > 0.5f) {
-	//	
-	//	m_move.y -= BULLET_GRAVITY / FPS;			// 重力追加
-	//}
+	/*
+	if (use == true && m_pos.y > 0.5f) {
+		m_move.y -= BULLET_GRAVITY / FPS;			// 重力追加
+	}
+	*/
 
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY / FPS;
 
-	//if (m_ColFlg == true) {
-	if (m_pos.y < 0.5f) {
+	
+	if (m_ColFlg) {					// フィールドとの当たり判定が立っていたら
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
 
-		//SetMove(m_move);
-	}
 
+		SetMove(m_move);
+	}
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
+
 
 	// オブジェクトの更新(弾の更新)
 	GameObject::Update();

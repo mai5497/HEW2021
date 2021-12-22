@@ -39,6 +39,7 @@ public:
 
 	void SetDwarfInfo(DwarfManager *pDwarfManager);
 	void SetStageInfo(Stage *pStage);
+
 private:
 	Camera * m_pControllCamera;
 
