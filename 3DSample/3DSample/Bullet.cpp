@@ -130,18 +130,20 @@ void Bullet::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY / FPS;
 
-	if (m_ColFlg) {
+	
+	if (m_ColFlg) {					// フィールドとの当たり判定が立っていたら
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
 
+
 		SetMove(m_move);
 	}
-
 	//座標更新
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
+
 
 	// オブジェクトの更新(弾の更新)
 	GameObject::Update();
