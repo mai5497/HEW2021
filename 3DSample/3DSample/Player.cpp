@@ -499,10 +499,16 @@ void Player::BulletFiledCollision() {
 		if (!m_ppBullets[i]->use) {	// ’e‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚â‚ç‚ñ
 			continue;
 		}
-		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// “–‚½‚Á‚Ä‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚â‚ç‚ñ
+		//if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// “–‚½‚Á‚Ä‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚â‚ç‚ñ
+		//	m_ppBullets[i]->SetColFlg(false);
+		//	continue;
+		//}
+
+		if (!CollisionAABB(m_ppBullets[i], m_pStage->GetField(0))) {	// “–‚½‚Á‚Ä‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚â‚ç‚ñ
 			m_ppBullets[i]->SetColFlg(false);
 			continue;
 		}
+
 		m_ppBullets[i]->SetColFlg(true);
 	}
 }

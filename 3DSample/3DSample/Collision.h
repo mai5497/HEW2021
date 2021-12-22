@@ -9,6 +9,8 @@
 #define MAX_COLLISION_REGISTER (1000)
 
 bool CollisionSphere(GameObject *pC, GameObject *pD);	// 当たってたらtrueを返す
+bool CollisionAABB(GameObject *pE, GameObject *pF);	// 単純にオブジェクト同士の当たり判定
+
 
 class Collision
 {

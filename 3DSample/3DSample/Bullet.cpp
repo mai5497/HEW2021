@@ -50,7 +50,7 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 	m_size.z = 0.25f;
 	m_sleep = 0;
 	m_sleep2 = 0;
-
+	GameObject::m_Radius = (XMFLOAT3(0.1f, 0.1f, 0.1f));
 }
 
 //====================================================================
@@ -130,12 +130,12 @@ void Bullet::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY / FPS;
 
-	if (m_ColFlg) {
+	if (m_ColFlg == true) {
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
 
-		SetMove(m_move);
+		//SetMove(m_move);
 	}
 
 	//座標更新

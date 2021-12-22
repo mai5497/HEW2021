@@ -62,7 +62,7 @@ bool DwarfManager::Init()
 	// ポインタを格納する配列を作成
 	m_ppDwarf = new DwarfBase*[MAX_DWARF];
 
-	for (int i = 0; i < MAX_DWARF/*MAX_RED_DWARF*/; i++){
+	for (int i = 0; i < MAX_DWARF; i++){
 			// 小人をランダムで初期配置
 		randomPos.x = (float)(rand() % 80 - 40.0f);	//-40.0 ~ 40.0の間の乱数
 		randomPos.z = (float)(rand() % 80 - 40.0f);

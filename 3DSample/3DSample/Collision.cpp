@@ -297,4 +297,27 @@ bool CollisionSphere(GameObject *pC, GameObject *pD)
 	return false;*/
 }
 
+bool CollisionAABB(GameObject *pE, GameObject *pF) {
+	XMFLOAT3 Apos = pE->GetPos();
+	XMFLOAT3 Asize = pE->GetSize();
+	XMFLOAT3 Bpos = pF->GetPos();
+	XMFLOAT3 Bsize = pF->GetSize();
+	
+	//return (Apos.x - Asize.x <= Bpos.x + Bsize.x) &&
+	//	(Bpos.x - Bsize.x <= Apos.x + Asize.x) &&
+	//	(Apos.y - Asize.y <= Bpos.y + Bsize.y) &&
+	//	(Bpos.y - Bsize.y <= Apos.y + Asize.y) &&
+	//	(Apos.z - Asize.z <= Bpos.z + Bsize.z) &&
+	//	(Bpos.z - Bsize.z <= Apos.z + Asize.z);
+	XMFLOAT3 distance(
+		fabsf(Bpos.x - Apos.x),
+		fabsf(Bpos.y - Apos.y),
+		fabsf(Bpos.z - Apos.z)
+	);
+	bool hitX = distance.x < (Asize.x + Bsize.x) * 0.5f;
+	bool hitY = distance.y < (Asize.y + Bsize.y) * 0.5f;
+	bool hitZ = distance.z < (Asize.z + Bsize.z) * 0.5f;
 
+	return (hitX && hitY && hitZ);
+
+}
