@@ -113,6 +113,9 @@ void DwarfManager::Update()
 {
 	for (int i = 0; i < MAX_DWARF; i++) 
 	{
+		if (!m_ppDwarf[i]->use) {
+			continue;
+		}
 		m_ppDwarf[i]->Update();
 	}
 }
@@ -127,6 +130,9 @@ void DwarfManager::Draw()
 {
 	for (int i = 0; i < MAX_DWARF; i++)
 	{
+		if (!m_ppDwarf[i]->use) {
+			continue;
+		}
 		m_ppDwarf[i]->Draw();
 	}
 

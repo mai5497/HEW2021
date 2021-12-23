@@ -30,7 +30,7 @@ ResultScene::~ResultScene(void)
 
 void ResultScene::Init()
 {
-	LoadTextureFromFile("Result.png", &g_pResultTex);
+	LoadTextureFromFile("Assets/Model/Result.png", &g_pResultTex);
 
 	//g_pResultTPSCamera = new TPSCamera();
 	//g_pResultTPSCamera->Init();

@@ -42,6 +42,7 @@ BlueDwarf::BlueDwarf()
 	m_move.z = 0.0f;
 	
 	SetRBFlg(false);	// ê¬è¨êl
+	use = true;
 }
 
 

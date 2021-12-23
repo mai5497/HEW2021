@@ -300,7 +300,7 @@ SCENE GameScene::Update()
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			// ¬l‰ñŽû
-
+			g_pDwarfManager->GetDwarf(i)->use = false;
 		}
 	}
 

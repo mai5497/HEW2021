@@ -42,6 +42,7 @@ RedDwarf::RedDwarf()
 	m_move.z = 0.0f;
 
 	SetRBFlg(true);	// ê‘è¨êl
+	use = true;
 }
 
 

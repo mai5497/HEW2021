@@ -22,6 +22,8 @@ Collector::Collector()
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
 
+	m_Radius = XMFLOAT3(0.1f, 0.1f, 0.1f);
+
 	m_bTimeFlg = true;
 	m_Timer = WAIT_TIME * FPS + 59;
 
