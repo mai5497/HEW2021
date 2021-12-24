@@ -18,7 +18,7 @@ public:
 	Bullet(DirectX::XMFLOAT3 size);
 	virtual ~Bullet();
 	bool Init();
-	void Uninit();
+	virtual void Uninit();
 
 	virtual void OnCollision(GameObject*);
 	virtual void Update();

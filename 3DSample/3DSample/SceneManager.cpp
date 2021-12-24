@@ -47,7 +47,6 @@ void SceneManager::Uninit()
 	{
 	case SCENE_TITLE:
 		m_title.Uninit();
-
 		break;
 	case SCENE_GAME:
 		m_game.Uninit();
@@ -68,7 +67,6 @@ bool SceneManager::Update()
 
 	if (m_scene != m_nextScene)
 	{
-
 		SceneManager::Uninit();
 
 		m_scene = m_nextScene;

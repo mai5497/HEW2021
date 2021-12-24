@@ -14,7 +14,7 @@ public:
 //	bool LoadEnemy(const char* pFilePath);
 
 	bool Init();
-	void Uninit();
+	virtual void Uninit();
 
 	virtual void Update();
 //	void DrawEnemyModel();
@@ -27,7 +27,7 @@ private:
 	static DrawBuffer * m_pBuffer;
 	static FBXPlayer *m_pfbx;	//FBXファイル操作クラス
 
-	DirectX::XMFLOAT3 m_dir;
+	XMFLOAT3 m_dir;
 	float m_EnemyAngle;
 
 };

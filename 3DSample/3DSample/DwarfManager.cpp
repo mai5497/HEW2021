@@ -95,6 +95,7 @@ void DwarfManager::Uninit()
 {
 	for (int i = 0; i < MAX_DWARF; i++)
 	{
+		m_ppDwarf[i]->Uninit();
 		delete m_ppDwarf[i];
 		m_ppDwarf[i] = NULL;
 	}
@@ -172,6 +173,46 @@ void DwarfManager::SetDwarfTarget(XMFLOAT3 pos)
 	for (int i = 0; i < m_DwarfNum; i++) 
 	{
 		m_ppDwarf[i]->TargetPos(pos);
+	}
+}
+
+
+//==============================================================
+//
+//	ステージの情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: ステージ管理クラスのポインタ
+//
+//==============================================================
+void DwarfManager::SetStageInfo(Stage *pStage) {
+	m_pStage = pStage;
+}
+
+
+
+//=============================================================
+//
+//	小人がフィールドと接しているかの判定処理
+//	作成者	： 吉原飛鳥
+//	編集者	： 伊地田真衣
+//	戻り値	： void
+//　引数	： void
+//
+//=============================================================
+void DwarfManager::DwarfFiledCollision() {
+	for (int i = 0; i < m_DwarfNum; i++) {
+		if (!m_ppDwarf[i]->GetAlive()) {	// 死んでたら下の処理やらん
+			continue;
+		}
+		if (!CollisionSphere(m_ppDwarf[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
+			m_ppDwarf[i]->SetColFlg(false);	// 当たっていない
+			continue;
+		}
+		m_ppDwarf[i]->SetColFlg(true);	// 当たっている
+		if (m_ppDwarf[i]->GetOldPos().y > m_ppDwarf[i]->GetCurrentPos().y) {
+
+		}
 	}
 }
 

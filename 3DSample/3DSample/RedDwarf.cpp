@@ -20,7 +20,8 @@
 #include "GameScene.h"
 
 //========================= 定数定義 ===========================
-#define DWARF_SIZE (0.7f)
+#define DWARF_SIZE	(0.7f)
+#define GRAVITY		(0.000003f)
 
 //========================= グローバル変数定義 ===========================
 DrawBuffer *RedDwarf::m_pBuffer = NULL;
@@ -40,6 +41,9 @@ RedDwarf::RedDwarf()
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
+	m_size.x = DWARF_SIZE;
+	m_size.y = DWARF_SIZE;
+	m_size.z = DWARF_SIZE;
 
 	SetRBFlg(true);	// 赤小人
 	use = true;
@@ -53,7 +57,7 @@ RedDwarf::RedDwarf()
 //====================================================================
 RedDwarf:: ~RedDwarf()
 {
-
+	Uninit();
 }
 
 
@@ -81,6 +85,7 @@ bool RedDwarf::Init()
 //====================================================================
 void RedDwarf::Uninit()
 {
+	SAFE_RELEASE(m_pRedDwarfTex);
 	if (m_pBuffer != NULL) 
 	{
 		delete[] m_pBuffer;
@@ -142,10 +147,12 @@ void RedDwarf::Update()
 	//}
 
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (Differ < 10.0f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-		//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
-
+	if (Differ < 0.5f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		//SetMoveFlg(false);		// 移動許可
 	}
+
+	// 重力をかける
+	m_move.y -= GRAVITY;
 
 	// 移動
 	m_pos.x += m_move.x;
@@ -169,8 +176,7 @@ void RedDwarf::Draw()
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
 
-		SHADER->SetWorld(
-			DirectX::XMMatrixScaling(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE)
+		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			*DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
@@ -179,9 +185,7 @@ void RedDwarf::Draw()
 		m_fbx.GetTexture(i)
 		);*/
 
-		m_pBuffer[i].Draw(
-			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-		);
+		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }
 
