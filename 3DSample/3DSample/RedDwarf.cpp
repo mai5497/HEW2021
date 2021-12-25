@@ -21,7 +21,7 @@
 
 //========================= 定数定義 ===========================
 #define DWARF_SIZE	(0.7f)
-#define GRAVITY		(0.000003f)
+#define GRAVITY		(0.3f)
 
 //========================= グローバル変数定義 ===========================
 DrawBuffer *RedDwarf::m_pBuffer = NULL;

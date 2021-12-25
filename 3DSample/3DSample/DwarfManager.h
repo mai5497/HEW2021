@@ -21,13 +21,13 @@ public:
 	void		SetDwarfTarget(XMFLOAT3 pos);
 	void SetStageInfo(Stage *pStage);		// °‚Ìî•ñ‚ğæ“¾
 
-	void DwarfFiledCollision();				// ¬l‚Æ°‚Ì“–‚½‚è”»’è
 
 
 	//---•Ï”
 
 private:
 	//---ŠÖ”
+	void DwarfFiledCollision(int num);				// ¬l‚Æ°‚Ì“–‚½‚è”»’è
 
 	//---•Ï”
 	DwarfBase **m_ppDwarf;

@@ -248,6 +248,7 @@ SCENE GameScene::Update()
 	g_pPlayer->Update();
 
 	// 小人更新処理
+	g_pDwarfManager->SetStageInfo(g_pStage);		// 小人のメンバ変数に情報を渡す
 	g_pDwarfManager->Update();
 
 	// バレット更新
@@ -286,14 +287,13 @@ SCENE GameScene::Update()
 		g_pCollision->Register(g_pPlayer, g_pStage->GetField(i));
 	}
 
-	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
-	{
-		//g_pCollision->Register(g_pEnemy, g_pStage->GetField(i));
-		//for (int j = 0; j < g_pEnemyManager->GetEnemyNum(); j++)
-		//{
-		//	g_pCollision->Register(g_pEnemyManager->GetEnemy(j), g_pStage->GetField(i));
-		//}
-	}
+	//for (int i = 0; i < g_pStage->GetFieldNum(); i++)
+	//{
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
+		{
+			g_pCollision->Register(g_pDwarfManager->GetDwarf(j), g_pStage->GetField(1));
+		}
+	//}
 
 	//***************************************************************
 	//					小人回収

@@ -161,7 +161,7 @@ void DwarfBase::SetAliveFlg(bool flg)
 //		à¯êî   : void
 //
 //====================================================================
-bool DwarfBase::GetAlive() 
+bool DwarfBase::GetAliveFlg() 
 {
 	return m_aliveFlg;
 }
