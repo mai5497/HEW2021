@@ -67,7 +67,7 @@ bool DwarfManager::Init()
 		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0の間の乱数
 		randomPos.z = (float)(rand() % 10 - 5.0f);
 		// ランダムで算出した値を基準位置に加算して代入
-		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 1.0f, basePos.z + randomPos.z);
+		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 2.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
 		if (i < MAX_RED_DWARF) {
 			m_ppDwarf[i] = new RedDwarf;
@@ -114,10 +114,11 @@ void DwarfManager::Update()
 {
 	for (int i = 0; i < MAX_DWARF; i++) 
 	{
-		if (!m_ppDwarf[i]->use) {
+		if (!m_ppDwarf[i]->GetAliveFlg()) {
 			continue;
 		}
 		m_ppDwarf[i]->Update();
+		//DwarfFiledCollision(i);
 	}
 }
 
@@ -131,7 +132,7 @@ void DwarfManager::Draw()
 {
 	for (int i = 0; i < MAX_DWARF; i++)
 	{
-		if (!m_ppDwarf[i]->use) {
+		if (!m_ppDwarf[i]->GetAliveFlg()) {
 			continue;
 		}
 		m_ppDwarf[i]->Draw();
@@ -200,20 +201,17 @@ void DwarfManager::SetStageInfo(Stage *pStage) {
 //　引数	： void
 //
 //=============================================================
-void DwarfManager::DwarfFiledCollision() {
-	for (int i = 0; i < m_DwarfNum; i++) {
-		if (!m_ppDwarf[i]->GetAlive()) {	// 死んでたら下の処理やらん
-			continue;
-		}
-		if (!CollisionSphere(m_ppDwarf[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
-			m_ppDwarf[i]->SetColFlg(false);	// 当たっていない
-			continue;
-		}
-		m_ppDwarf[i]->SetColFlg(true);	// 当たっている
-		if (m_ppDwarf[i]->GetOldPos().y > m_ppDwarf[i]->GetCurrentPos().y) {
-
-		}
+void DwarfManager::DwarfFiledCollision(int num) {
+	if (!m_ppDwarf[num]->GetAliveFlg()) {	// 死んでたら下の処理やらん
+		return;
 	}
+	if (!CollisionAABB(m_ppDwarf[num], m_pStage->GetField(1))) {	// 当たってなかったら下の処理やらん
+		//m_ppDwarf[i]->SetColFlg(false);	// 当たっていない
+		return;
+	}
+	//m_ppDwarf[i]->SetColFlg(true);	// 当たっている
+	Push(m_ppDwarf[num], m_pStage->GetField(1));
+	
 }
 
 

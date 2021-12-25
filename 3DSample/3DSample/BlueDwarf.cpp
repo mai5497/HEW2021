@@ -40,6 +40,10 @@ BlueDwarf::BlueDwarf()
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
+	m_size.x = DWARF_SIZE;
+	m_size.y = DWARF_SIZE;
+	m_size.z = DWARF_SIZE;
+
 	
 	SetRBFlg(false);	// ê¬è¨êl
 	use = true;
@@ -164,7 +168,7 @@ void BlueDwarf::Draw()
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(
-			DirectX::XMMatrixScaling(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE)
+			DirectX::XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			*DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 

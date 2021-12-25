@@ -27,7 +27,7 @@ public:
 	void SetRBFlg(bool flg);				// 赤青フラグのセット(true：赤、false：青)
 	bool GetRBFlg();
 	void SetAliveFlg(bool flg);				// 生存フラグのセットtrueが生falseが死
-	bool GetAlive();
+	bool GetAliveFlg();
 	void SetrunFlg(bool flg);				// 離れるフラグのセットtureで離れる
 	bool GetrunFlg();
 	void SetFollowFlg(bool flg);			// 追跡フラグのセットtrueで追跡

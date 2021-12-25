@@ -9,6 +9,9 @@
 #define MAX_COLLISION_REGISTER (1000)
 
 bool CollisionSphere(GameObject *pC, GameObject *pD);	// “–‚½‚Á‚Ä‚½‚çtrue‚ğ•Ô‚·
+bool CollisionAABB(GameObject *pE, GameObject *pF);		// “–‚½‚Á‚Ä‚¢‚½‚çtrue‚ğ•Ô‚·
+void Push(GameObject *pDynamic,GameObject *pStatic);	// ‰Ÿ‚µo‚µ
+
 
 class Collision
 {
@@ -27,9 +30,6 @@ public:
 private:
 	GameObject *m_pList[MAX_COLLISION_REGISTER][2];
 	int m_registerNum;	//“o˜^‚µ‚½”
-	void Push(
-		GameObject *pDynamic,
-		GameObject *pStatic);
 };
 
 
