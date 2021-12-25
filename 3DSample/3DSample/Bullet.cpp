@@ -20,29 +20,28 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define FPS (60)								//フレーム数
-#define WAIT_TIME (1.0 * FPS)			//遅延のための時間
+#define FPS (60)					//フレーム数
+#define WAIT_TIME (1.0 * FPS)		//遅延のための時間
 #define WAIT_TIME2 (0.8f * FPS)		//遅延のための時間
-#define BULLET_GRAVITY (0.1f)			// 弾にかかる重力
+#define BULLET_GRAVITY (0.1f)		// 弾にかかる重力
 
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-DrawBuffer* Bullet::m_pBuffer = NULL;
-FBXPlayer* Bullet::m_pFBX = NULL;
+DrawBuffer* Bullet::m_pBuffer = NULL;			
+FBXPlayer* Bullet::m_pFBX = NULL;				
 
 //====================================================================
 //
 //		コンストラクタ
 //
 //====================================================================
-Bullet::Bullet(DirectX::XMFLOAT3 size):
-	m_rbFlg(true),
-	m_ColFlg(false)
+Bullet::Bullet(DirectX::XMFLOAT3 size):m_rbFlg(true),m_ColFlg(false)
 {
-	// ---変数初期化
-	LoadTextureFromFile("Assets/Model/flowerred.png",&m_pBulletTex);
-	m_pos.y = 1000.0f;						//初期座標x
+	// テクスチャ読み込み
+	LoadTextureFromFile("Assets/Model/flowerred.png", &m_pBulletTex);
+
+	// ---変数初期化	m_pos.y = 1000.0f;						//初期座標x
 	m_pos.z = 1000.0f;						//初期座標y
 	m_pos.x = 1000.0f;						//初期座標z
 	m_size.x = 0.25f;				
@@ -70,13 +69,12 @@ Bullet::~Bullet()
 //====================================================================
 bool Bullet::Init()
 {
-	/* モデル読み込み */
-	if (m_pBuffer == NULL) {
+	// ---モデル読み込み
+	if (m_pBuffer) {
 		Bullet::LoadBullet("Assets/Model/flowerred.fbx");
 	}
 
 	GameObject::Init();
-
 	return true;
 }
 
@@ -87,15 +85,26 @@ bool Bullet::Init()
 //====================================================================
 void Bullet::Uninit()
 {
-	//if (m_pBuffer != NULL) {
-	//	delete[] m_pBuffer;
-	//	m_pBuffer = NULL;
+	// ---テクスチャ解放
+	SAFE_RELEASE(m_pBulletTex);
 
-	//	delete m_pFBX;
-	//	m_pFBX = NULL;
-	//}
+	if (m_pBuffer != NULL) {
+		delete[] m_pBuffer;
+		m_pBuffer = NULL;
+
+		delete m_pFBX;
+		m_pFBX = NULL;
+	}
+
+	// ---キューブの解放
+	GameObject::Uninit();
 }
 
+//====================================================================
+//
+//		更新処理
+//
+//====================================================================
 void Bullet::Update()
 {
 	//毎フレーム初期化
@@ -120,8 +129,8 @@ void Bullet::Update()
 	//	m_sleep2 = 0;
 	//}
 
-	m_sleep++;
-	m_sleep2++;
+	//m_sleep++;
+	//m_sleep2++;
 
 	//if (use == true && m_pos.y > 0.5f) {
 	//	
@@ -129,10 +138,10 @@ void Bullet::Update()
 	//}
 
 	// 重力追加
-	m_move.y -= BULLET_GRAVITY / FPS;
+	m_move.y -= BULLET_GRAVITY;
 
 	//if (m_ColFlg) {
-	if (m_pos.y < 1.0f) {
+	if (m_pos.y < 1.0f) {							// 今は高さで判定
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
@@ -150,7 +159,34 @@ void Bullet::Update()
 }
 
 
-//弾の当たり判定
+//====================================================================
+//
+//		描画処理
+//
+//====================================================================
+void Bullet::Draw()
+{
+	// 弾のテクスチャ
+	int meshNum = m_pFBX->GetMeshNum();
+	for (int  i = 0; i < meshNum; ++i){
+		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
+			* DirectX::XMMatrixRotationY(-m_BulletAngle)
+			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+		SHADER->SetTexture(m_pBulletTex);
+
+		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	}
+}
+
+//=============================================================
+//
+//	弾の当たり判定処理
+//	作成者	： 園田翔大
+//	戻り値	： オブジェクト情報
+//　引数		： なし 
+//
+//=============================================================
 void Bullet::OnCollision(GameObject* pObj)
 {
 	// 弾が使われてないときは終了する
@@ -186,16 +222,32 @@ void Bullet::OnCollision(GameObject* pObj)
 
 //=============================================================
 //
+//	当たり判定のセット
+//	作成者	： 園田翔大
+//	戻り値	： フラグ
+//　引数		： なし 
+//
+//=============================================================
+void Bullet::SetColFlg(bool flg) {
+	m_ColFlg = flg;
+}
+
+
+//=============================================================
+//
 //	投げた弾が赤か青かセットする
 //	作成者	： 伊地田真衣
 //	戻り値	： void
 //　引数	： 赤か青かセットtrueが赤falseが青
 //
 //=============================================================
-void Bullet::SetRB(bool flg) 
+void Bullet::SetRB(bool flg)
 {
 	m_rbFlg = flg;
 }
+
+
+
 
 
 //=============================================================
@@ -211,10 +263,7 @@ bool Bullet::GetRB()
 	return m_rbFlg;
 }
 
-// 当たり判定フラグセット
-void Bullet::SetColFlg(bool flg) {
-	m_ColFlg = flg;
-}
+
 
 //=============================================================
 //
