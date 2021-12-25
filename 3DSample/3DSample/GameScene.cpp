@@ -254,7 +254,7 @@ SCENE GameScene::Update()
 	// バレット更新
 	//	g_pBullet->Update();
 	
-		// 回収者
+	// 回収者
 	g_pCollector->Update();
 	g_pCollectionPoint->Update();
 
@@ -282,18 +282,24 @@ SCENE GameScene::Update()
 	//				すべての移動(更新処理)がすんでから
 	//				すべてのオブジェクトの当たり判定を行う
 	//*************************************************************+*
+	//----- プレイヤーと床 -----
 	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
 	{
 		g_pCollision->Register(g_pPlayer, g_pStage->GetField(i));
 	}
 
-	//for (int i = 0; i < g_pStage->GetFieldNum(); i++)
-	//{
-		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
-		{
-			g_pCollision->Register(g_pDwarfManager->GetDwarf(j), g_pStage->GetField(1));
-		}
+	//----- 小人と床 -----
+	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
+	{
+		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStage->GetField(1));
+	}
+
+
+	//----- 弾と床 -----
+	//for (int i = 0; i < g_pPlayer->GetBulletNum(); i++) {
+	//	g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(1));
 	//}
+
 
 	//***************************************************************
 	//					小人回収

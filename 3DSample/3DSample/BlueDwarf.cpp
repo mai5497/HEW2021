@@ -26,7 +26,6 @@
 DrawBuffer *BlueDwarf::m_pBuffer = NULL;
 FBXPlayer *BlueDwarf::m_pFBX = NULL;
 
-
 //====================================================================
 //
 //		コンストラクタ
@@ -92,6 +91,7 @@ void BlueDwarf::Uninit()
 		delete m_pFBX;
 		m_pFBX = NULL;
 	}
+	GameObject::Uninit();
 }
 
 

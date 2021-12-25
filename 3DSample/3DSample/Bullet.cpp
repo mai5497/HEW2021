@@ -87,6 +87,8 @@ bool Bullet::Init()
 //====================================================================
 void Bullet::Uninit()
 {
+	GameObject::Uninit();
+
 	//if (m_pBuffer != NULL) {
 	//	delete[] m_pBuffer;
 	//	m_pBuffer = NULL;
