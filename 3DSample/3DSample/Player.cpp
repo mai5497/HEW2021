@@ -9,24 +9,32 @@
  //*******************************************************************************
  // インクルード部
  //*******************************************************************************
-#include "Player.h"
-#include "Input.h"
-#include "TPSCamera.h"
-#include "MyVector.h"
-#include <math.h>
-#include "Controller.h"
-#include "MyMath.h"
+#include	"Player.h"
+#include	"Input.h"
+#include	"TPSCamera.h"
+#include	"MyVector.h"
+#include	<math.h>
+#include	"Controller.h"
+#include	"MyMath.h"
+
+// モデル描画用
+#include	"Texture.h"
+#include	"FBX//FBXPlayer.h"
+#include	"DrawBuffer.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS		(60)
-#define BULLET_SPEED	(0.1f)
+#define BULLET_SPEED	(0.2f)
 
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
 DirectX::XMFLOAT3 pOldCameraPos;
+
+
+
 
 //==============================================================
 //
@@ -38,11 +46,14 @@ DirectX::XMFLOAT3 pOldCameraPos;
 //==============================================================
 Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 {
+	// ---変数初期化
 	m_pos.x = -10.0f;
 	m_pos.y = 3.0f;
 	m_pos.z = -10.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
+
+
 }
 
 //==============================================================
@@ -98,6 +109,7 @@ bool Player::Init()
 		m_ppBullets[i]->SetPos(settings[i].pos);
 		m_ppBullets[i]->Init();	// 弾用初期化
 	}
+
 	GameObject::Init();	// プレイヤー用初期化？
 	return true;
 }
@@ -260,8 +272,7 @@ void Player::Update()
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
-	for (int i = 0; i < m_nBulletNum; ++i)
-	{
+	for (int i = 0; i < m_nBulletNum; ++i){
 		if (!m_ppBullets[i]->use){
 			continue;
 		}
@@ -282,8 +293,7 @@ void Player::Draw()
 	DirectX::XMFLOAT3 pPos = m_pos;
 	DirectX::XMFLOAT3 pSize = m_size;
 
-	for (int i = 0; i < m_nBulletNum; ++i)
-	{
+	for (int i = 0; i < m_nBulletNum; ++i){
 		if (!m_ppBullets[i]->use){
 			continue;
 		}
@@ -317,11 +327,10 @@ void Player::PlayerToEnemy(GameObject* pObj)
 
 	//ベクトルの大きさ
 	float L;
-	L = sqrtf((dir.x * dir.x) +
-		(dir.y * dir.y) +
-		(dir.z * dir.z));
+	L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));			// 平方根で値算出
 
-	//// dir の長さを1にする(正規化)
+	// dir の長さを1にする(正規化)
+	// 正規化 ... ベクトルの方向は維持したまま、大きさは1の値にすること
 	dir.x = dir.x / L;
 	dir.y = dir.y / L;
 	dir.z = dir.z / L;
@@ -466,7 +475,6 @@ void Player::CreateBullet(bool rbFlg)
 		if (m_ppBullets[i]->use) {
 			continue;
 		}
-
 		m_ppBullets[i]->use = true;
 		m_ppBullets[i]->SetRB(rbFlg);
 		if (m_ppBullets[i]->GetRB()) {	// trueが赤
@@ -483,9 +491,9 @@ void Player::CreateBullet(bool rbFlg)
 		float dirY;
 		dirY = 1.0f;
 
-		dir.x = -(m_pos.x - m_Angle.x);
-		dir.y = dirY;
-		dir.z = -(m_pos.z - m_Angle.z);
+		dir.x = -m_pos.x;
+		dir.y = m_pos.y;
+		dir.z = -m_pos.z;
 
 		//ベクトルの大きさ
 		float L;

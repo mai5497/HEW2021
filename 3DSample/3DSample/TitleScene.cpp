@@ -25,7 +25,7 @@ TitleScene::~TitleScene(void)
 
 void TitleScene::Init()
 {
-	LoadTextureFromFile("Assets/Model/Title.png", &g_pTitleTex);
+	LoadTextureFromFile("Assets/Texture/Title.png", &g_pTitleTex);
 
 	//g_pTitleTPSCamera = new TPSCamera();
 	//g_pTitleTPSCamera->Init();

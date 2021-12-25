@@ -30,6 +30,7 @@ public:
 	void SetControllCamera(Camera *pCamera);
 	void GetCameraPos(TPSCamera*);
 
+
 	// ---バレット関連
 	Bullet *GetBullet(int index);
 	int GetBulletNum();
@@ -48,15 +49,17 @@ public:
 
 private:
 
-	Camera * m_pControllCamera;
+	Camera * m_pControllCamera;				// カメラ座標操作
 
-	Bullet **m_ppBullets;
-	int m_nBulletNum;
+	Bullet **m_ppBullets;					// 弾の情報
+	int m_nBulletNum;						// バレット数を取得
 
-	DrawBuffer m_Buffer;
+	DrawBuffer m_Buffer;					// バッファ情報操作
 
 	DwarfManager *m_pDwarfManager;
 	Stage *m_pStage;
+
+
 };
 
 #endif // !_PLAYER_H_

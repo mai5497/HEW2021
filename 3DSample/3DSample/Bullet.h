@@ -14,22 +14,26 @@ class Bullet : public CharacterBase
 {
 public:
 	
-	// ---関数
+	// ---4大処理関数
 	Bullet(DirectX::XMFLOAT3 size);
 	virtual ~Bullet();
 	bool Init();
 	virtual void Uninit();
-
-	virtual void OnCollision(GameObject*);
 	virtual void Update();
-	void SetRB(bool flg);								// 投げた弾が赤か青かセットする
-	bool GetRB(); 
-	void SetColFlg(bool flg);
-	void BulletCollision(bool Setflg);				// フィールドとの当たり判定
+	virtual void Draw();
 
-	// ---変数
+	// ---当たり判定処理
+	virtual void OnCollision(GameObject*);
+	void SetColFlg(bool flg);
+	//void BulletCollision(bool Setflg);		// フィールドとの当たり判定
+
+	// ---2色の弾の処理
+	void SetRB(bool flg);						// 投げた弾が赤か青かセットする
+	bool GetRB(); 
+
 	// ---モデル描画用の追加
 	ID3D11ShaderResourceView* m_pBulletTex;
+
 
 private:
 	// ---関数
@@ -38,11 +42,15 @@ private:
 	// ---変数
 	int m_sleep;
 	int m_sleep2;
-	bool m_rbFlg;	// true　→　赤			false　→　青
-	bool m_ColFlg;	// true　→　接している		false → 接していない
+	float m_BulletAngle;						// 角度
+	XMFLOAT3 m_dir;								// 向き
 
-	static DrawBuffer* m_pBuffer;					// バッファクラス
-	static FBXPlayer* m_pFBX;						// FBXファイル操作くらす
+	bool m_rbFlg;								// true　→　赤			false　→　青
+	bool m_ColFlg;								// true　→　接している		false → 接していない
+
+	// ---モデル描画関連
+	static DrawBuffer* m_pBuffer;				// バッファクラス
+	static FBXPlayer* m_pFBX;					// FBXファイル操作くらす
 };
 
 

@@ -34,7 +34,7 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 BlueDwarf::BlueDwarf()
 {
 	//----- •Ï”‰Šú‰» -----
-	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
+	LoadTextureFromFile("Assets/Texture/kobitoblue.png", &m_pBlueDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;

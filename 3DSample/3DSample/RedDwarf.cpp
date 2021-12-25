@@ -19,6 +19,8 @@
 #include "Bullet.h"
 #include "GameScene.h"
 
+
+
 //========================= íËêîíËã` ===========================
 #define DWARF_SIZE	(0.7f)
 #define GRAVITY		(0.3f)
@@ -36,7 +38,8 @@ FBXPlayer *RedDwarf::m_pFBX = NULL;
 RedDwarf::RedDwarf() 
 {
 	//----- ïœêîèâä˙âª -----
-	LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
+	//LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
+	LoadTextureFromFile("Assets/Texture/kobitored.png", &m_pRedDwarfTex);
 
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
@@ -86,13 +89,15 @@ bool RedDwarf::Init()
 void RedDwarf::Uninit()
 {
 	SAFE_RELEASE(m_pRedDwarfTex);
-	if (m_pBuffer != NULL) 
-	{
+	if (m_pBuffer != NULL) {
 		delete[] m_pBuffer;
 		m_pBuffer = NULL;
 		delete m_pFBX;
 		m_pFBX = NULL;
 	}
+
+	GameObject::Uninit();
+	
 }
 
 

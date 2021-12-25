@@ -19,7 +19,7 @@ FBXPlayer *Enemy::m_pfbx = NULL;
 
 Enemy::Enemy()
 {
-	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pEnemyTex);
+	LoadTextureFromFile("Assets/Texture/tyoutingazou.png", &m_pEnemyTex);
 
 
 	m_pos.x = 11.0f;

@@ -8,6 +8,8 @@
  *					敵の追跡の処理の変更（ピクミンに当たったら消える）(伊地田)
  *		 2021/12/17 ぷっしゅてすと(伊地田)
  *		 2021/12/17 ぷっしゅ(吉原)
+ *		 2021/12/25 小人フィールドから落ちる(伊地田)
+ *		 2021/12/25 整理！(吉原)
  * @brief ゲームシーンに関する処理
  */
 
@@ -42,21 +44,21 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-Cube					*g_pCube;
+Cube				*g_pCube;
 Model				*g_pModel;
 Camera				*g_pCamera;
-TPSCamera		*g_pTPSCamera;
+TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
-DwarfManager	*g_pDwarfManager;
+DwarfManager		*g_pDwarfManager;
 Stage				*g_pStage;
-Collision				*g_pCollision;
-PlayerToEnemy	*g_pPlayerToEnemy;
-Collector		*g_pCollector;
-CollectionPoint *g_pCollectionPoint;
+Collision			*g_pCollision;
+PlayerToEnemy		*g_pPlayerToEnemy;
+Collector			*g_pCollector;
+CollectionPoint		*g_pCollectionPoint;
 
-//Enemy			*g_pEnemy;
-//EnemyManager	*g_pEnemyManager;
-//Shot			*g_pShot;
+//Enemy				*g_pEnemy;
+//EnemyManager		*g_pEnemyManager;
+//Shot				*g_pShot;
 
 XMFLOAT3 g_recPlayerPos;
 XMFLOAT3 g_recBulletPos;
@@ -93,7 +95,7 @@ GameScene::~GameScene(void)
 
 //==============================================================
 //
-//	GameSceneクラス::初期化処理
+//	GameSceneクラス::Init
 //	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
@@ -169,7 +171,7 @@ void GameScene::Init()
 
 //==============================================================
 //
-//	GameSceneクラス::終了処理
+//	GameSceneクラス::Uninit
 //	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
@@ -235,7 +237,7 @@ void GameScene::Uninit()
 
 //==============================================================
 //
-//	GameSceneクラス::更新処理
+//	GameSceneクラス::Update
 //	作成者	： 園田翔大
 //	戻り値	： SCENEの値(入力されないならシーン遷移しない)
 //	引数		： void
@@ -279,8 +281,8 @@ SCENE GameScene::Update()
 
 
 	//***************************************************************
-	//				すべての移動(更新処理)がすんでから
-	//				すべてのオブジェクトの当たり判定を行う
+	// すべての移動(更新処理)がすんでから
+	// すべてのオブジェクトの当たり判定を行う
 	//*************************************************************+*
 	//----- プレイヤーと床 -----
 	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
@@ -302,7 +304,7 @@ SCENE GameScene::Update()
 
 
 	//***************************************************************
-	//					小人回収
+	// 小人回収
 	//***************************************************************
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
@@ -313,48 +315,46 @@ SCENE GameScene::Update()
 
 
 	//***************************************************************
-	//					エネミーがプレイヤーを追跡
+	// エネミーがプレイヤーを追跡
 	//***************************************************************
-	//for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
-	//{
-	//	if (!g_pEnemyManager->GetEnemy(i)->use) {
-	//		continue;
-	//	}
-	//	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
-	//	{
-	//		if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
-	//			continue;
-	//		}
-	//		g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
+	/*for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
+	{
+		if (!g_pEnemyManager->GetEnemy(i)->use) {
+			continue;
+		}
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
+		{
+			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
+				continue;
+			}
+			g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
 
-	//		if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
-	//			g_pEnemyManager->DestroyEnemy(i);
-	//		}
-	//	}
-	//	if (&PlayerToEnemy::isHitSphere){
-	// 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
-	//		//---ここで一番近いやつにターゲットを移したい
-	//		//g_pEnemyManager->SetEnemyTarget();
-	//	}
-	// 	//g_pEnemy->EnemyStop();
-	//}
+			if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
+				g_pEnemyManager->DestroyEnemy(i);
+			}
+		}
+		if (&PlayerToEnemy::isHitSphere){
+	 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
+			//---ここで一番近いやつにターゲットを移したい
+			//g_pEnemyManager->SetEnemyTarget();
+		}
+	 	//g_pEnemy->EnemyStop();
+	} */
 
 	//****************************************************************************
 	//	弾の追跡
 	//****************************************************************************
-	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++)
-	{
+	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++){
 		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
 		if (g_pBullet[i]->use) {											// 最後の指示を通す
 			g_LastBulletNun = i;
 		}
-		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++)
-		{
+		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++){
 			g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 			if (!g_pBullet[i]->use){										// 弾未使用ならスキップ
 				continue;
 			}
-			if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {	// 移動許可がないときは動かない
+			if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {		// 移動許可がないときは動かない
 				continue;
 			}
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
@@ -420,7 +420,7 @@ SCENE GameScene::Update()
 	}
 
 	//***************************************************************
-	//						シーン遷移
+	// シーン遷移
 	//***************************************************************	
 	if (IsTrigger('1')) { return SCENE_RESULT; }		// '1'入力
 	
