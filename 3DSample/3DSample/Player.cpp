@@ -62,7 +62,7 @@ Player::~Player()
 
 //==============================================================
 //
-//	Playerクラス::初期化処理
+//	Playerクラス::Init
 //	作成者	： 園田翔大
 //	戻り値	： bool型
 //	引数		： void
@@ -105,7 +105,7 @@ bool Player::Init()
 
 //==============================================================
 //
-//	Playerクラス::終了処理
+//	Playerクラス::Uninit
 //	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
@@ -129,7 +129,7 @@ void Player::Uninit()
 
 //==============================================================
 //
-//	Playerクラス::更新処理
+//	Playerクラス::Update
 //	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
@@ -202,7 +202,14 @@ void Player::Update()
 	}
 
 	if (IsTrigger('Z')){	// 弾飛ばす
+		//CreateBullet(m_pControllCamera,rbFlg);
+		CreateBullet(rbFlg);
+	}
+
+	if (IsTrigger('F')) {	// 弾飛ばす
+
 		CreateBullet(m_pControllCamera,rbFlg);
+
 	}
 
 
@@ -263,7 +270,7 @@ void Player::Update()
 
 //==============================================================
 //
-//	Playerクラス::描画処理
+//	Playerクラス::Draw
 //	作成者	： 園田翔大
 //	戻り値	： void
 //	引数		： void
@@ -283,48 +290,6 @@ void Player::Draw()
 	}
 
 	CharacterBase::Draw();
-}
-
-//==============================================================
-//
-//	Playerクラス::弾情報取得
-//	作成者	： 園田翔大
-//	戻り値	： Bullet型
-//	引数		： int index	... 弾の数
-//
-//==============================================================
-Bullet *Player::GetBullet(int index)
-{
-	if (index < m_nBulletNum){ 
-		return m_ppBullets[index];
-	}
-	return NULL;
-}
-
-//==============================================================
-//
-//	Playerクラス::弾の数の情報取得
-//	作成者	： 園田翔大
-//	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
-//	引数		： void
-//
-//==============================================================
-int Player::GetBulletNum()
-{
-	return m_nBulletNum;
-}
-
-//==============================================================
-//
-//	Playerクラス::カメラをプレイヤーの位置にセット？
-//	作成者	： 園田翔太
-//	戻り値	： void
-//	引数		： カメラクラス型
-//
-//==============================================================
-void Player::SetControllCamera(Camera *pCamera)
-{
-	m_pControllCamera = pCamera;
 }
 
 //==============================================================
@@ -369,6 +334,21 @@ void Player::PlayerToEnemy(GameObject* pObj)
 
 }
 
+
+//==============================================================
+//
+//	Playerクラス::カメラをプレイヤーの位置にセット？
+//	作成者	： 園田翔太
+//	戻り値	： void
+//	引数		： カメラクラス型
+//
+//==============================================================
+void Player::SetControllCamera(Camera* pCamera)
+{
+	m_pControllCamera = pCamera;
+}
+
+
 //==============================================================
 //
 //	Playerクラス::カメラ位置を取得
@@ -381,6 +361,37 @@ void Player::GetCameraPos(TPSCamera* pCamera)
 {
 	pOldCameraPos = pCamera->GetCameraPos();
 }
+
+
+//==============================================================
+//
+//	Playerクラス::弾情報取得
+//	作成者	： 園田翔大
+//	戻り値	： Bullet型
+//	引数		： int index	... 弾の数
+//
+//==============================================================
+Bullet *Player::GetBullet(int index)
+{
+	if (index < m_nBulletNum){ 
+		return m_ppBullets[index];
+	}
+	return NULL;
+}
+
+//==============================================================
+//
+//	Playerクラス::弾の数の情報取得
+//	作成者	： 園田翔大
+//	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
+//	引数		： void
+//
+//==============================================================
+int Player::GetBulletNum()
+{
+	return m_nBulletNum;
+}
+
 
 //==============================================================
 //
@@ -437,9 +448,62 @@ void Player::CreateBullet(Camera* pCamera , bool rbFlg)
 		break;
 	}
 }
-void Player::CreateBullet(XMFLOAT3 pos, XMFLOAT3 dir)
-{
 
+//==============================================================
+//
+//	Playerクラス::弾を生成する処理(プレイヤー座標を元に)
+//	作成者	： 園田翔大
+//	編集者	： 伊地田真衣
+//	戻り値	： void
+//	引数		： 色判定
+//
+//==============================================================
+void Player::CreateBullet(bool rbFlg)
+{
+	DirectX::XMFLOAT3 pPlayerPos = m_pos;
+	for (int i = 0; i < m_nBulletNum; ++i){
+		if (m_ppBullets[i]->use) {
+			continue;
+		}
+
+		m_ppBullets[i]->use = true;
+		m_ppBullets[i]->SetRB(rbFlg);
+		if (m_ppBullets[i]->GetRB()) {	// trueが赤
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f));	// 赤をセット
+		}
+		else {
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f));	// 青をセット
+		}
+
+		m_ppBullets[i]->SetPos(m_pos);
+		DirectX::XMFLOAT3 dir;
+
+		
+		float dirY;
+		dirY = 1.0f;
+
+		dir.x = -(m_pos.x - m_Angle.x);
+		dir.y = dirY;
+		dir.z = -(m_pos.z - m_Angle.z);
+
+		//ベクトルの大きさ
+		float L;
+		L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
+
+		//// dir の長さを1にする(正規化)
+		dir.x = dir.x / L;
+		dir.y = dir.y / L;
+		dir.z = dir.z / L;
+
+		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
+		dir.x = dir.x * BULLET_SPEED;
+		dir.y = dir.y * BULLET_SPEED;
+		dir.z = dir.z * BULLET_SPEED;
+
+		//m_ppBullets[i]->SetMove(dir);
+		m_ppBullets[i]->SetMove(dir);
+		break;
+	}
 }
 
 //==============================================================
@@ -462,6 +526,30 @@ void Player::DestroyBullet()
 		break;
 	}
 }
+
+
+//=============================================================
+//
+//	弾がフィールドと接しているかの判定処理
+//	作成者	： 吉原飛鳥
+//	編集者	： 伊地田真衣
+//	戻り値	： void
+//　引数	： void
+//
+//=============================================================
+void Player::BulletFiledCollision() {
+	for (int i = 0; i < m_nBulletNum; i++) {
+		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
+			continue;
+		}
+		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
+			m_ppBullets[i]->SetColFlg(false);
+			continue;
+		}
+		m_ppBullets[i]->SetColFlg(true);
+	}
+}
+
 
 //==============================================================
 //
@@ -489,26 +577,6 @@ void Player::SetStageInfo(Stage *pStage) {
 }
 
 
-//=============================================================
-//
-//	弾がフィールドと接しているかの判定処理
-//	作成者	： 吉原飛鳥
-//	編集者	： 伊地田真衣
-//	戻り値	： void
-//　引数	： void
-//
-//=============================================================
-void Player::BulletFiledCollision() {
-	for (int i = 0; i < m_nBulletNum; i++) {
-		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
-			continue;
-		}
-		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
-			m_ppBullets[i]->SetColFlg(false);
-			continue;
-		}
-		m_ppBullets[i]->SetColFlg(true);
-	}
-}
+
 
 
