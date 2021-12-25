@@ -21,7 +21,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS		(60)
-#define BULLET_SPEED	(0.1f)
+#define BULLET_SPEED	(0.2f)
 
 //*******************************************************************************
 // グローバル宣言
@@ -483,9 +483,9 @@ void Player::CreateBullet(bool rbFlg)
 		float dirY;
 		dirY = 1.0f;
 
-		dir.x = -(m_pos.x - m_Angle.x);
-		dir.y = dirY;
-		dir.z = -(m_pos.z - m_Angle.z);
+		dir.x = -m_pos.x;
+		dir.y = m_pos.y;
+		dir.z = -m_pos.z;
 
 		//ベクトルの大きさ
 		float L;
