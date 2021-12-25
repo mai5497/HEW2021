@@ -60,6 +60,7 @@ void EnemyManager::Uninit()
 {
 	for (int i = 0; i < m_nEnemyNum; i++)
 	{
+		m_ppEnemys[i]->Uninit();
 		delete m_ppEnemys[i];
 		m_ppEnemys[i] = NULL;
 	}

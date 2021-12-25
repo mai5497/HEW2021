@@ -13,7 +13,6 @@
 #include "Input.h"
 #include "TPSCamera.h"
 #include "MyVector.h"
-#include "Collision.h"
 #include <math.h>
 #include "Controller.h"
 #include "MyMath.h"
@@ -117,8 +116,10 @@ void Player::Uninit()
 	{
 		for (int i = 0; i < m_nBulletNum; i++)
 		{
+			m_ppBullets[i]->Uninit();
 			//ŒÂ•Ê‚Éíœ
 			delete m_ppBullets[i];
+			m_ppBullets[i] = NULL;
 		}
 		//”z—ñ‚ğíœ
 		delete[] m_ppBullets;

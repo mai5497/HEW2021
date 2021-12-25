@@ -60,7 +60,7 @@ Bullet::Bullet(DirectX::XMFLOAT3 size):
 //====================================================================
 Bullet::~Bullet()
 {
-
+	Uninit();
 }
 
 //====================================================================
@@ -87,14 +87,15 @@ bool Bullet::Init()
 //====================================================================
 void Bullet::Uninit()
 {
-	if (m_pBuffer != NULL) {
-		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+	//if (m_pBuffer != NULL) {
+	//	delete[] m_pBuffer;
+	//	m_pBuffer = NULL;
 
-		delete m_pFBX;
-		m_pFBX = NULL;
-	}
+	//	delete m_pFBX;
+	//	m_pFBX = NULL;
+	//}
 }
+
 void Bullet::Update()
 {
 	//ñàÉtÉåÅ[ÉÄèâä˙âª

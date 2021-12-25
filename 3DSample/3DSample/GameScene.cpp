@@ -75,7 +75,7 @@ Bullet *g_pBullet[5];
 //==============================================================
 GameScene::GameScene(void)
 {
-
+	
 }
 
 //==============================================================
@@ -180,6 +180,7 @@ void GameScene::Uninit()
 	// 当たり判定クラスの終了処理
 	g_pCollision->Uninit();
 	delete g_pCollision;
+
 
 	// プレイヤーtoエネミークラスの終了処理
 	g_pPlayerToEnemy->Uninit();

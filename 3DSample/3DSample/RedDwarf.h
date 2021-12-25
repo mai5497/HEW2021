@@ -13,7 +13,7 @@ public:
 	RedDwarf();
 	virtual ~RedDwarf();
 	bool Init();
-	void Uninit();
+	virtual void Uninit();
 	virtual void Update();
 	void Draw();
 

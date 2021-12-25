@@ -60,6 +60,7 @@ SCENE TitleScene::Update()
 }
 void TitleScene::Draw()
 {
+
 	SHADER->Bind(VS_WORLD, PS_PHONG);
 
 	g_pTitleCamera->Bind2D();
