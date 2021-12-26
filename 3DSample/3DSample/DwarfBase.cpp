@@ -22,12 +22,12 @@
 //====================================================================
 DwarfBase::DwarfBase():
 	m_AttackFlg(false),
-	m_rbFlg(true),
 	m_aliveFlg(true),
 	m_FollowFlg(false),
 	m_runFlg(false),
 	m_MoveFlg(false),
-	m_colFlg(false)
+	m_colFlg(false),
+	m_CollectionFlg(false)
 {
 	//----- 変数初期化 -----
 	m_collisionType = COLLISION_DYNAMIC;	// 小人は動く物体
@@ -152,6 +152,7 @@ void DwarfBase::SetAliveFlg(bool flg)
 {
 	m_aliveFlg = flg;
 }
+
 
 //====================================================================
 //
@@ -305,6 +306,34 @@ XMFLOAT3 DwarfBase::GetOldPos()
 XMFLOAT3 DwarfBase::GetCurrentPos() 
 {
 	return m_currentPos;
+}
+
+
+//====================================================================
+//
+//		回収フラグセット
+//		作成者：伊地田真衣
+//		戻り値 : void
+//		引数   : 回収フラグtrue:回収された false:回収されていない
+//
+//====================================================================
+void DwarfBase::SetCollectionFlg(bool flg)
+{
+	m_CollectionFlg = flg;
+}
+
+
+//====================================================================
+//
+//		回収フラグ取得
+//		作成者：伊地田真衣
+//		戻り値 : 回収フラグtrue:回収された false:回収されていない
+//		引数   : void
+//
+//====================================================================
+bool DwarfBase::GetCollectionFlg()
+{
+	return m_CollectionFlg;
 }
 
 

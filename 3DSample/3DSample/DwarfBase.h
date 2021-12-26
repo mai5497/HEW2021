@@ -38,7 +38,8 @@ public:
 	bool GetColFlg();
 	XMFLOAT3 GetOldPos();					// 過去の座標取得
 	XMFLOAT3 GetCurrentPos();				// 現在の座標取得
-
+	void SetCollectionFlg(bool flg);		// 回収フラグセットtrueで回収された
+	bool GetCollectionFlg();				
 
 	//---変数
 
@@ -52,6 +53,7 @@ private:
 	bool m_FollowFlg;			// 弾に追跡
 	bool m_MoveFlg;				// 移動許可フラグ
 	bool m_colFlg;				// 当たり判定フラグ
+	bool m_CollectionFlg;		// 回収　true：回収された
 
 protected:
 	//---関数

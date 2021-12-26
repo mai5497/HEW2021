@@ -5,6 +5,7 @@
 //	
 //	2021/12/04 : 作成(伊地田)
 //	2021/12/09 : 仮素材導入(伊地田)
+//	2021/12/21 : 新素材
 //
 //
 //****************************************************
@@ -38,15 +39,13 @@ FBXPlayer *RedDwarf::m_pFBX = NULL;
 RedDwarf::RedDwarf() 
 {
 	//----- 変数初期化 -----
-	//LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
-	LoadTextureFromFile("Assets/Texture/kobitored.png", &m_pRedDwarfTex);
+	LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
 
-	m_move.x = 0.0f;
-	m_move.y = 0.0f;
-	m_move.z = 0.0f;
-	m_size.x = DWARF_SIZE;
-	m_size.y = DWARF_SIZE;
-	m_size.z = DWARF_SIZE;
+	m_move = XMFLOAT3(0.0f,0.0f,0.0f);
+
+	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
+
+	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
 
 	SetRBFlg(true);	// 赤小人
 	use = true;
@@ -186,24 +185,12 @@ void RedDwarf::Draw()
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pRedDwarfTex);
-		/*SHADER->SetTexture(
-		m_fbx.GetTexture(i)
-		);*/
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }
 
 
-//====================================================================
-//
-//		攻撃
-//
-//====================================================================
-void RedDwarf::Attack()
-{
-	/* 処理なし */
-}
 
 
 //====================================================================

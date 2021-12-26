@@ -23,7 +23,6 @@ public:
 
 private:
 	//---ŠÖ”
-	void Attack();
 	bool LoadDwarf(const char *pFilePath);
 
 	//---•Ï”

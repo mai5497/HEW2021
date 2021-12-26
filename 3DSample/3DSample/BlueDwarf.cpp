@@ -21,6 +21,8 @@
 
 //========================= 定数定義 ===========================
 #define DWARF_SIZE (0.7f)
+#define GRAVITY		(0.3f)
+
 
 //========================= グローバル変数定義 ===========================
 DrawBuffer *BlueDwarf::m_pBuffer = NULL;
@@ -34,14 +36,13 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 BlueDwarf::BlueDwarf()
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Texture/kobitoblue.png", &m_pBlueDwarfTex);
+	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
 
-	m_move.x = 0.0f;
-	m_move.y = 0.0f;
-	m_move.z = 0.0f;
-	m_size.x = DWARF_SIZE;
-	m_size.y = DWARF_SIZE;
-	m_size.z = DWARF_SIZE;
+	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
+
+	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
 
 	
 	SetRBFlg(false);	// 青小人
@@ -145,6 +146,9 @@ void BlueDwarf::Update()
 	//if (jumpFlg) {
 	//	m_move.y -= 0.21f;
 	//}
+		// 重力をかける
+	m_move.y -= GRAVITY;
+
 
 	// 移動
 	m_pos.x += m_move.x;
@@ -173,27 +177,12 @@ void BlueDwarf::Draw()
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pBlueDwarfTex);
-		/*SHADER->SetTexture(
-		m_fbx.GetTexture(i)
-		);*/
 
-		m_pBuffer[i].Draw(
-			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-		);
+		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }
 
 
-//====================================================================
-//
-//		攻撃
-//
-//====================================================================
-void BlueDwarf::Attack()
-{
-
-
-}
 
 
 //====================================================================
