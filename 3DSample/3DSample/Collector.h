@@ -1,11 +1,14 @@
 #pragma once
 
+//========================= インクルード部 ===========================
 #include "GameObject.h"
 #include "FBX/FBXPlayer.h"
 #include "DrawBuffer.h"
 
+//========================= クラス定義 ===========================
 class Collector : public GameObject
 {
+	//---関数
 public:
 	Collector();
 	~Collector();
@@ -15,20 +18,23 @@ public:
 	void Update();
 	void Draw();
 
+	int GetTimer();
+
 private:
 	bool LoadFBX(const char* pFilePath);
 
+	//---変数
 public:
-	ID3D11ShaderResourceView *m_pCollectorTex;
+	ID3D11ShaderResourceView* m_pCollectorTex;
 
 private:
-	static DrawBuffer * m_pBuffer;
-	static FBXPlayer *m_pfbx;	//FBXファイル操作クラス
+	static DrawBuffer* m_pBuffer;
+	static FBXPlayer* m_pfbx;		//FBXファイル操作クラス
 
-	DirectX::XMFLOAT3 m_dir;
-	float m_Angle;
+	DirectX::XMFLOAT3	m_dir;
 
-	bool m_bTimeFlg;
-	int m_Timer;
+	float	m_angle;
+	int		m_timer;
+	bool	m_timeFlg;
 };
 
