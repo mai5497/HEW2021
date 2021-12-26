@@ -20,7 +20,8 @@ public:
 	bool Init();
 	virtual void Uninit();
 	virtual void Update();
-	virtual void Draw();
+	//virtual void Draw();
+	void Draw();
 
 	// ---“–‚½‚è”»’èˆ—
 	virtual void OnCollision(GameObject*);
