@@ -5,6 +5,7 @@
 #include "TitleScene.h"
 #include "ResultScene.h"
 #include "GameScene.h"
+#include "SelectScene.h"
 
 // シーンを完了するクラス
 class SceneManager
@@ -23,6 +24,7 @@ private:
 	SCENE m_nextScene;		// 次のシーン(予約)
 	TitleScene m_title;		// タイトルの処理全般
 	GameScene m_game;			// ゲームシーン
+	SelectScene m_select;
 	//TitleSceneMenu m_titleMenu;	// タイトルメニュー
 	//ScenePause m_pause;			// ポーズ画面
 	ResultScene m_result;		// リザルト画面

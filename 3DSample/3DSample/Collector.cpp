@@ -1,7 +1,7 @@
 #include "Collector.h"
 #include "Texture.h"
 
-#define ENEMY_SIZE (0.007f)
+#define ENEMY_SIZE (0.5f)
 
 DrawBuffer *Collector::m_pBuffer = NULL;
 FBXPlayer *Collector::m_pfbx = NULL;
@@ -11,7 +11,7 @@ FBXPlayer *Collector::m_pfbx = NULL;
 
 Collector::Collector()
 {
-	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pCollectorTex);
+	LoadTextureFromFile("Assets/Model/ufo.png", &m_pCollectorTex);
 
 
 	m_pos.x = 10.0f;
@@ -66,7 +66,7 @@ bool Collector::Init()
 {
 	if (m_pBuffer == NULL)
 	{
-		Collector::LoadFBX("Assets/Model/tyoutinobake.fbx");
+		Collector::LoadFBX("Assets/Model/ufo.fbx");
 	}
 	return true;
 }

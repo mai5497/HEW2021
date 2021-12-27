@@ -55,7 +55,7 @@ SCENE TitleScene::Update()
 
 	//g_pTitleTPSCamera->Update();
 
-	if (IsTrigger('1')) { return SCENE_GAME; }
+	if (IsTrigger('1')) { return SCENE_SELECT; }
 	return SCENE_TITLE;
 }
 void TitleScene::Draw()

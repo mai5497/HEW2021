@@ -24,6 +24,9 @@ HRESULT SceneManager::Init()
 		// タイトルメニューの初期化
 		m_title.Init();
 		break;
+	case SCENE_SELECT:
+		m_select.Init();
+		break;
 	case SCENE_GAME:
 		//--- ゲーム内のオブジェクトの初期化 ---
 		m_game.Init();
@@ -47,6 +50,9 @@ void SceneManager::Uninit()
 	{
 	case SCENE_TITLE:
 		m_title.Uninit();
+		break;
+	case SCENE_SELECT:
+		m_select.Uninit();
 		break;
 	case SCENE_GAME:
 		m_game.Uninit();
@@ -80,6 +86,9 @@ bool SceneManager::Update()
 	case SCENE_TITLE:
 		m_nextScene = m_title.Update();
 		break;
+	case SCENE_SELECT:
+		m_nextScene = m_select.Update();
+		break;
 	case SCENE_GAME:
 		m_nextScene = m_game.Update();
 		break;
@@ -103,6 +112,9 @@ void SceneManager::Draw()
 	{
 	case SCENE_TITLE:
 		m_title.Draw();
+		break;
+	case SCENE_SELECT:
+		m_select.Draw();
 		break;
 	case SCENE_GAME:
 		m_game.Draw();
