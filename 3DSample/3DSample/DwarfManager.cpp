@@ -193,7 +193,7 @@ void DwarfManager::SetDwarfTarget(XMFLOAT3 pos)
 //	引数	: ステージ管理クラスのポインタ
 //
 //==============================================================
-void DwarfManager::SetStageInfo(Stage *pStage) {
+void DwarfManager::SetStageInfo(StageManager *pStage) {
 	m_pStage = pStage;
 }
 
@@ -212,12 +212,12 @@ void DwarfManager::DwarfFiledCollision(int num) {
 	if (!m_ppDwarf[num]->GetAliveFlg()) {	// 死んでたら下の処理やらん
 		return;
 	}
-	if (!CollisionAABB(m_ppDwarf[num], m_pStage->GetField(1))) {	// 当たってなかったら下の処理やらん
+	if (!CollisionAABB(m_ppDwarf[num], m_pStage->GetStage(1))) {	// 当たってなかったら下の処理やらん
 		//m_ppDwarf[i]->SetColFlg(false);	// 当たっていない
 		return;
 	}
 	//m_ppDwarf[i]->SetColFlg(true);	// 当たっている
-	Push(m_ppDwarf[num], m_pStage->GetField(1));
+	Push(m_ppDwarf[num], m_pStage->GetStage(1));
 	
 }
 

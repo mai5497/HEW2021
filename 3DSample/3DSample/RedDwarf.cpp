@@ -19,6 +19,9 @@
 #include "Texture.h"
 #include "Bullet.h"
 #include "GameScene.h"
+#include "FBX//FBXPlayer.h"
+#include "DrawBuffer.h"
+
 
 
 

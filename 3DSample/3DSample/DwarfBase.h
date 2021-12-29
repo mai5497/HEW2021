@@ -4,7 +4,7 @@
 //========================= インクルード部 ===========================
 #include "CharacterBase.h"
 #include "Collision.h"
-#include "Stage.h"
+#include "StageManager.h"
 
 //=========================  定数・マクロ定義===========================
 #define MAX_RED_DWARF	(6)									// 赤小人最大値

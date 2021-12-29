@@ -19,9 +19,9 @@
 #include "GameScene.h"
 #include "Input.h"
 #include "Player.h"
-#include "stage.h"
+#include "StageManager.h"
 #include "GameObject.h"
-#include "FieldManager.h"
+#include "Stage.h"
 #include "model.h"
 #include "TPSCamera.h"
 #include "Collision.h"
@@ -50,7 +50,7 @@ Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
 DwarfManager		*g_pDwarfManager;
-Stage				*g_pStage;
+StageManager		*g_pStageManager;
 Collision			*g_pCollision;
 PlayerToEnemy		*g_pPlayerToEnemy;
 Collector			*g_pCollector;
@@ -155,8 +155,8 @@ void GameScene::Init()
 	//	g_pShot->Init();
 
 	// ステージクラスの実体化
-	g_pStage = new Stage();
-	g_pStage->Init();
+	g_pStageManager = new StageManager();
+	g_pStageManager->Init();
 
 	// 当たり判定クラス
 	g_pCollision = new Collision();
@@ -193,8 +193,8 @@ void GameScene::Uninit()
 	//	delete g_pShot;
 
 	// ステージクラスの終了処理
-	g_pStage->Uninit();
-	delete g_pStage;
+	g_pStageManager->Uninit();
+	delete g_pStageManager;
 
 	//プレイヤーの終了処理
 	g_pPlayer->Uninit();
@@ -250,7 +250,7 @@ SCENE GameScene::Update()
 	g_pPlayer->Update();
 
 	// 小人更新処理
-	g_pDwarfManager->SetStageInfo(g_pStage);		// 小人のメンバ変数に情報を渡す
+	g_pDwarfManager->SetStageInfo(g_pStageManager);		// 小人のメンバ変数に情報を渡す
 	g_pDwarfManager->Update();
 
 	// バレット更新
@@ -266,8 +266,8 @@ SCENE GameScene::Update()
 	//g_pEnemyManager->Update();
 
 	// ステージ更新
-	g_pPlayer->SetStageInfo(g_pStage);
-	g_pStage->Update();
+	g_pPlayer->SetStageInfo(g_pStageManager);
+	g_pStageManager->Update();
 
 	// ショット更新
 	//g_pShot->Update();
@@ -285,15 +285,15 @@ SCENE GameScene::Update()
 	// すべてのオブジェクトの当たり判定を行う
 	//*************************************************************+*
 	//----- プレイヤーと床 -----
-	for (int i = 0; i < g_pStage->GetFieldNum(); i++)
+	for (int i = 0; i < g_pStageManager->GetStageNum(); i++)
 	{
-		g_pCollision->Register(g_pPlayer, g_pStage->GetField(i));
+		g_pCollision->Register(g_pPlayer, g_pStageManager->GetStage(i));
 	}
 
 	//----- 小人と床 -----
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
 	{
-		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStage->GetField(1));
+		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(1));
 	}
 
 
@@ -372,7 +372,7 @@ SCENE GameScene::Update()
 		//*******************************************************************************
 		//	当たり判定取得
 		//*******************************************************************************
-		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(0));				// 弾とフィールドの当たり判定
+		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStageManager->GetStage(0));				// 弾とフィールドの当たり判定
 
 		// 円での当たり判定(中心点の距離計算は0.5f)
 		//if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(1), 1.0f)) {
@@ -554,7 +554,7 @@ void GameScene::Draw()
 	//	g_pBullet->Draw();
 
 	// ステージ描画
-	g_pStage->Draw();
+	g_pStageManager->Draw();
 
 
 	// g_pShot->Draw();

@@ -42,22 +42,29 @@ public:
 
 	// ---小人関連
 	void SetDwarfInfo(DwarfManager *pDwarfManager);
-	void SetStageInfo(Stage *pStage);
+	void SetStageInfo(StageManager *pStage);
 
 	// ---プレイヤー関連
+	ID3D11ShaderResourceView *m_pPlayerTex;
 
 
 private:
+	bool LoadPlayer(const char *pFilePath);
+
 
 	Camera * m_pControllCamera;				// カメラ座標操作
 
 	Bullet **m_ppBullets;					// 弾の情報
 	int m_nBulletNum;						// バレット数を取得
 
-	DrawBuffer m_Buffer;					// バッファ情報操作
+	static DrawBuffer *m_pBuffer;			// バッファ情報操作
+	static FBXPlayer *m_pFBX;				// FBXファイル操作クラス
+
+	float m_DrawAngle;
+
 
 	DwarfManager *m_pDwarfManager;
-	Stage *m_pStage;
+	StageManager *m_pStage;
 
 
 };

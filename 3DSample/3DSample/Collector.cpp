@@ -14,8 +14,6 @@
 #include "Collector.h"
 #include "Texture.h"
 
-#define ENEMY_SIZE (0.5f)
-
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
@@ -28,9 +26,8 @@
 #define COLLECT_POS_X		(0.0f)					// 回収地点 X
 #define COLLECT_POS_Y		(1.0f)					// 回収地点 Y
 
-Collector::Collector()
-{
-	LoadTextureFromFile("Assets/Model/tyoutingazou.png", &m_pCollectorTex);
+#define MOVE_SPEED			(1.5f)					// 移動速度
+
 
 //*******************************************************************************
 // グローバル宣言
@@ -115,7 +112,7 @@ bool Collector::Init()
 {
 	if (m_pBuffer == NULL)
 	{
-		Collector::LoadFBX("Assets/Model/tyoutinobake.fbx");
+		Collector::LoadFBX("Assets/Model/ufo.fbx");
 	}
 	return true;
 }

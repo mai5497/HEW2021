@@ -19,7 +19,7 @@ public:
 	DwarfBase *GetDwarf(int index);
 	int			GetDwarfNum();
 	void		SetDwarfTarget(XMFLOAT3 pos);
-	void SetStageInfo(Stage *pStage);		// 床の情報を取得
+	void SetStageInfo(StageManager *pStage);		// 床の情報を取得
 
 
 
@@ -32,7 +32,7 @@ private:
 	//---変数
 	DwarfBase **m_ppDwarf;
 	int			 m_DwarfNum;
-	Stage *m_pStage;		// 当たり判定用ステージクラスポインタ
+	StageManager *m_pStage;		// 当たり判定用ステージクラスポインタ
 
 };
 

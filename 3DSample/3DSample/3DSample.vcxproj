@@ -146,7 +146,7 @@
     <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
     <ClCompile Include="FBX\FBXLoadMesh.cpp" />
     <ClCompile Include="FBX\FBXPlayer.cpp" />
-    <ClCompile Include="FieldManager.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp">
@@ -166,7 +166,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -195,7 +195,7 @@
     <ClInclude Include="FBX\FBXLoadMaterial.h" />
     <ClInclude Include="FBX\FBXLoadMesh.h" />
     <ClInclude Include="FBX\FBXPlayer.h" />
-    <ClInclude Include="FieldManager.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
@@ -212,7 +212,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="Stage.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TPScamera.h" />

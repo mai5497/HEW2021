@@ -27,11 +27,14 @@
 //*******************************************************************************
 #define FPS				(60)
 #define BULLET_SPEED	(0.2f)
+#define PLAYER_SIZE		(0.25f)
 
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-DirectX::XMFLOAT3 pOldCameraPos;
+XMFLOAT3 pOldCameraPos;
+DrawBuffer *Player::m_pBuffer = NULL;
+FBXPlayer *Player::m_pFBX = NULL;
 
 
 
@@ -46,12 +49,20 @@ DirectX::XMFLOAT3 pOldCameraPos;
 //==============================================================
 Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 {
+	//----- 変数初期化 -----
+	LoadTextureFromFile("Assets/Model/princess.png", &m_pPlayerTex);
+
 	// ---変数初期化
 	m_pos.x = -10.0f;
 	m_pos.y = 3.0f;
 	m_pos.z = -10.0f;
+
+	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+
+
 	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
+
 
 
 }
@@ -67,6 +78,7 @@ Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 Player::~Player()
 {
 	m_pControllCamera = nullptr;
+	SAFE_RELEASE(m_pPlayerTex);
 	Uninit();
 }
 
@@ -80,6 +92,7 @@ Player::~Player()
 //==============================================================
 bool Player::Init()
 {
+	//----- 弾の処理 -----
 	struct BulletSetting
 	{
 		XMFLOAT3 pos;
@@ -110,7 +123,12 @@ bool Player::Init()
 		m_ppBullets[i]->Init();	// 弾用初期化
 	}
 
+	//----- プレイヤー処理 -----
 	GameObject::Init();	// プレイヤー用初期化？
+	if (m_pBuffer == NULL) {
+		Player::LoadPlayer("Assets/Model/princess.fbx");
+	}
+
 	return true;
 }
 
@@ -153,7 +171,7 @@ void Player::Update()
 	//----- 変数初期化 -----
 	XMFLOAT2 Axis = LeftThumbPosition();
 	static bool rbFlg = true;
-
+	bool moveFlg = false;
 
 	bool keyL = IsPress('A');
 	bool keyR = IsPress('D');
@@ -173,6 +191,7 @@ void Player::Update()
 	//プレイヤー移動
 	m_move.y -= 0.01f;
 	if (keyL){
+		moveFlg = true;
 		m_move.x -= Move;
 		if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y -= 0.1f;
@@ -180,6 +199,7 @@ void Player::Update()
 	}
 
 	if (keyR){ 
+		moveFlg = true;
 		m_move.x += Move;
 		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f){
 			m_Angle.y += 0.1f;
@@ -187,6 +207,7 @@ void Player::Update()
 	}
 
 	if (keyU){
+		moveFlg = true;
 		m_move.z += Move;
 		if (m_Angle.y <= -CameraRad) {
 			m_Angle.y += 0.1f;
@@ -244,8 +265,13 @@ void Player::Update()
 	//m_pos.z += m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
 
 	//当たり判定
+	if (moveFlg = true) {
+		m_DrawAngle = atan2(m_move.z, m_move.x);
+		m_DrawAngle -= XM_PI * 0.5f;
+	}
 	m_move.x = direction.x * Move;
 	m_move.z = direction.y * Move;
+
 
 	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < m_nBulletNum; j++) {
@@ -300,7 +326,18 @@ void Player::Draw()
 		m_ppBullets[i]->Draw();
 	}
 
-	CharacterBase::Draw();
+	int meshNum = m_pFBX->GetMeshNum();
+	for (int i = 0; i < meshNum; ++i) {
+
+		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
+			*DirectX::XMMatrixRotationY(-m_DrawAngle)
+			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+
+		SHADER->SetTexture(m_pPlayerTex);
+
+		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	}
+	//CharacterBase::Draw();
 }
 
 //==============================================================
@@ -551,7 +588,7 @@ void Player::BulletFiledCollision() {
 		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
 			continue;
 		}
-		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetField(0))) {	// 当たってなかったら下の処理やらん
+		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetStage(0))) {	// 当たってなかったら下の処理やらん
 			m_ppBullets[i]->SetColFlg(false);
 			continue;
 		}
@@ -581,11 +618,43 @@ void Player::SetDwarfInfo(DwarfManager *pDwarfManager)
 //	引数	: ステージ管理クラスのポインタ
 //
 //==============================================================
-void Player::SetStageInfo(Stage *pStage) {
+void Player::SetStageInfo(StageManager *pStage) {
 	m_pStage = pStage;
 }
 
 
+//====================================================================
+//
+//		テクスチャ読み込み
+//
+//====================================================================
+bool Player::LoadPlayer(const char* pFilePath) {
+	/* 以下はモデルが来たら使用 */
+	HRESULT hr;
+	m_pFBX = new FBXPlayer;
+	hr = m_pFBX->LoadModel(pFilePath);
+	if (FAILED(hr)) {
+		return false;
+	}
 
+	//モデルのメッシュの数だけ頂点バッファ作成
+	int meshNum = m_pFBX->GetMeshNum();
+	m_pBuffer = new DrawBuffer[meshNum];
+	for (int i = 0; i < meshNum; i++) {
+		//メッシュごとに頂点バッファ作成
+		m_pBuffer[i].CreateVertexBuffer(
+			m_pFBX->GetVertexData(i),
+			m_pFBX->GetVertexSize(i),
+			m_pFBX->GetVertexCount(i)
+		);
+		//インデックスバッファ作成
+		m_pBuffer[i].CreateIndexBuffer(
+			m_pFBX->GetIndexData(i),
+			m_pFBX->GetIndexCount(i)
+		);
+
+	}
+	return true;
+}
 
 

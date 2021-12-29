@@ -6,7 +6,7 @@
 
 Camera::Camera()
 	// ---Œ©‰º‚ë‚µ
-	: m_pos(0, 12.0f, -20.0f)
+	: m_pos(0, 12.0f, -22.5f)
 	, m_look(0, 0, 0)
 	, m_up(0, 1, 0)
 	, m_angle(60.0f)
