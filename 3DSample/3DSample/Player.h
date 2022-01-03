@@ -60,8 +60,7 @@ private:
 	static DrawBuffer *m_pBuffer;			// バッファ情報操作
 	static FBXPlayer *m_pFBX;				// FBXファイル操作クラス
 
-	float m_DrawAngle;
-
+	float m_DrawAngle;						// 描画角度
 
 	DwarfManager *m_pDwarfManager;
 	StageManager *m_pStage;

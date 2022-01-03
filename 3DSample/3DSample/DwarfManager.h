@@ -33,7 +33,7 @@ private:
 	DwarfBase **m_ppDwarf;
 	int			 m_DwarfNum;
 	StageManager *m_pStage;		// 当たり判定用ステージクラスポインタ
-
+	
 };
 
 #endif

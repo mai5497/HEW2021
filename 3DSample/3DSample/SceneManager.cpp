@@ -29,7 +29,7 @@ HRESULT SceneManager::Init()
 		break;
 	case SCENE_GAME:
 		//--- ゲーム内のオブジェクトの初期化 ---
-		m_game.Init();
+		m_game.Init(m_StageNum);
 		break;
 
 	case SCENE_RESULT:
@@ -52,6 +52,7 @@ void SceneManager::Uninit()
 		m_title.Uninit();
 		break;
 	case SCENE_SELECT:
+		m_StageNum = m_select.GetStageNum();
 		m_select.Uninit();
 		break;
 	case SCENE_GAME:
@@ -70,7 +71,6 @@ void SceneManager::Uninit()
 }
 bool SceneManager::Update()
 {
-
 	if (m_scene != m_nextScene)
 	{
 		SceneManager::Uninit();

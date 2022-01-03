@@ -9,7 +9,7 @@ public:
 	StageManager();
 	~StageManager();
 
-	bool Init();
+	bool Init(int SelectStageNum);
 	void Uninit();
 	void Update();
 	void Draw();
@@ -20,6 +20,7 @@ public:
 private:
 	Stage **m_ppStages;
 	int m_nStageNum;
+	int m_SelectStageNum;		// 選択されたステージ番号
 
 };
 

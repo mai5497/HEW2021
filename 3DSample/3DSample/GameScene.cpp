@@ -10,6 +10,7 @@
  *		 2021/12/17 ぷっしゅ(吉原)
  *		 2021/12/25 小人フィールドから落ちる(伊地田)
  *		 2021/12/25 整理！(吉原)
+ *		 2022/01/02 ステージ選択できるようにした（伊地田）
  * @brief ゲームシーンに関する処理
  */
 
@@ -34,6 +35,7 @@
 #include "DwarfManager.h"
 #include "Collector.h"
 #include "CollectionPoint.h"
+#include "SelectScene.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -55,6 +57,7 @@ Collision			*g_pCollision;
 PlayerToEnemy		*g_pPlayerToEnemy;
 Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
+SelectScene			*g_pSelectScene;
 
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
@@ -77,7 +80,7 @@ Bullet *g_pBullet[5];
 //==============================================================
 GameScene::GameScene(void)
 {
-	
+
 }
 
 //==============================================================
@@ -101,7 +104,7 @@ GameScene::~GameScene(void)
 //	引数		： void
 //
 //==============================================================
-void GameScene::Init()
+void GameScene::Init(int StageNum)
 {
 	// 立方体クラスの実体化
 	g_pCube = new Cube();
@@ -156,7 +159,7 @@ void GameScene::Init()
 
 	// ステージクラスの実体化
 	g_pStageManager = new StageManager();
-	g_pStageManager->Init();
+	g_pStageManager->Init(StageNum);
 
 	// 当たり判定クラス
 	g_pCollision = new Collision();
@@ -565,3 +568,4 @@ void GameScene::Draw()
 	
 	//	EnableCulling(true);
 }
+

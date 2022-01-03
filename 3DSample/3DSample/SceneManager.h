@@ -30,6 +30,8 @@ private:
 	ResultScene m_result;		// リザルト画面
 	//Fade m_fade;				// フェード処理
 	//Tutorial m_tutorial;		// チュートリアル
+
+	int m_StageNum;				// セレクトシーンで選択されたステージ番号
 };
 #endif // !__SCENE_MANEGER_H__
 

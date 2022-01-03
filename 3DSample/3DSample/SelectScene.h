@@ -14,6 +14,11 @@ public:
 	SCENE Update();
 	void Draw();
 
+	int GetStageNum();	// ƒV[ƒ“”Ô†æ“¾
+
+private:
+	int m_StageNum;
+
 };
 
 

@@ -129,6 +129,7 @@ bool Player::Init()
 		Player::LoadPlayer("Assets/Model/princess.fbx");
 	}
 
+
 	return true;
 }
 
@@ -155,6 +156,9 @@ void Player::Uninit()
 		delete[] m_ppBullets;
 		m_ppBullets = NULL;
 	}
+
+	SAFE_RELEASE(m_pPlayerTex);
+
 	GameObject::Uninit();
 }
 

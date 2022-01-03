@@ -11,13 +11,14 @@ public:
 	GameScene(void);
 	~GameScene(void);
 
-	void Init();
+	void Init(int StageNum);
 	void Uninit();
 	// –ß‚è’l‚ÅƒV[ƒ“‚ğˆÚ“®‚·‚é‚©‚Ç‚¤‚©”»’è
 	SCENE Update();
 	void Draw();
 
-	//private:
+private:
+	int m_StageNum;
 		//ID3D11ShaderResourceView* m_pTexture[2];
 
 

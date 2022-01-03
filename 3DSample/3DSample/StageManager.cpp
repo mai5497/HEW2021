@@ -1,16 +1,53 @@
+//****************************************************
+//
+//	ステージ管理
+//	作成者：園田翔大
+//	
+//	2021/12/01 : 作成
+//	2022/01/02 : コメント追加（伊地田）
+//				 ステージ番号の変数を追加（伊地田）
+//
+//****************************************************
+
+//========================= インクルード部 ===========================
 #include "StageManager.h"
 
+//====================================================================
+//
+//		コンストラクタ
+//
+//====================================================================
 StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 {
 
 }
+
+
+//====================================================================
+//
+//		デストラクタ
+//
+//====================================================================
 StageManager::~StageManager()
 {
 	Uninit();
 }
 
-bool StageManager::Init()
+
+//====================================================================
+//
+//		初期化
+//		引数　：選択されたステージ
+//		戻り値：初期化できたかどうか
+//
+//====================================================================
+bool StageManager::Init(int SelectStageNum)
 {
+	//----- メンバ変数初期化 -----
+	m_SelectStageNum = SelectStageNum;
+
+
+	//----- ステージ設定 -----
 	struct StageSetting
 	{
 		DirectX::XMFLOAT3 pos;
@@ -20,32 +57,60 @@ bool StageManager::Init()
 	StageSetting settings[] =
 	{
 		//大きい床
-		{ DirectX::XMFLOAT3( 0.0f,-0.5f, 0.0f),
-		  DirectX::XMFLOAT3(50.0f, 1.0f,50.0f),
+		{ XMFLOAT3(0.0f,-0.5f, 0.0f),
+		  XMFLOAT3(50.0f, 1.0f,50.0f),
 		},
 		//小人のステージ
-		{ DirectX::XMFLOAT3( 0.0f,0.5f, 0.0f),
-		 DirectX::XMFLOAT3( 19.0f,1.0f,19.0f),
+		{ XMFLOAT3(0.0f,0.5f, 0.0f),
+		  XMFLOAT3(19.0f,1.0f,19.0f),
 		},
 		//右の壁
-		{DirectX::XMFLOAT3(12.5f,0.0f,0.0f),
-		DirectX::XMFLOAT3(2.0f,3.0f,27.0f)
+		{ XMFLOAT3(12.5f,0.0f,0.0f),
+		 XMFLOAT3(2.0f,3.0f,27.0f)
 		},
 		//左の壁
-		{DirectX::XMFLOAT3(-12.5f,0.0f,0.0f),
-		DirectX::XMFLOAT3(2.0f,3.0f,27.0f)
+		{ XMFLOAT3(-12.5f,0.0f,0.0f),
+		  XMFLOAT3(2.0f,3.0f,27.0f)
 		},
 		//奥の壁
-		{DirectX::XMFLOAT3(0.0f,0.0f,12.5f),
-		DirectX::XMFLOAT3(27.0f,3.0f,2.0f)
+		{ XMFLOAT3(0.0f,0.0f,12.5f),
+		  XMFLOAT3(27.0f,3.0f,2.0f)
 		},
 		//手前の壁
-		{DirectX::XMFLOAT3(0.0f,0.0f,-12.5f),
-		DirectX::XMFLOAT3(27.0f,3.0f,2.0f)
+		{ XMFLOAT3(0.0f,0.0f,-12.5f),
+		  XMFLOAT3(27.0f,3.0f,2.0f)
 		}
-
 	};
 
+
+	switch (m_SelectStageNum) {
+		case 1:
+			settings[1] =
+			{
+				//小人のステージ
+				XMFLOAT3(0.0f,0.5f, 0.0f),
+				XMFLOAT3(20.0f,1.0f,20.0f),
+			};
+			break;
+		case 2:
+			settings[1] =
+			{
+				//小人のステージ
+				XMFLOAT3(0.0f,0.5f, 0.0f),
+				XMFLOAT3(20.0f,1.0f,20.0f),
+			};
+			break;
+		case 3:
+			settings[1] =
+			{
+				//小人のステージ
+				XMFLOAT3(0.0f,0.5f, 0.0f),
+				XMFLOAT3(19.0f,1.0f,19.0f),
+			};
+			break;
+		default:
+			break;
+	}
 	//初期データからフィールドの数を計算
 	m_nStageNum = sizeof(settings) / sizeof(settings[0]);
 
@@ -67,8 +132,16 @@ bool StageManager::Init()
 	//行うことで引数付きのコンストラクタを
 	//呼び出すやり方がある。
 
+
 	return true;
 }
+
+
+//====================================================================
+//
+//		終了処理
+//
+//====================================================================
 void StageManager::Uninit()
 {
 	if (m_ppStages != NULL){
@@ -81,6 +154,13 @@ void StageManager::Uninit()
 		m_ppStages = NULL;
 	}
 }
+
+
+//====================================================================
+//
+//		更新処理
+//
+//====================================================================
 void StageManager::Update()
 {
 	for (int i = 0; i < m_nStageNum; ++i)
@@ -88,6 +168,13 @@ void StageManager::Update()
 		m_ppStages[i]->Update();
 	}
 }
+
+
+//====================================================================
+//
+//		描画処理
+//
+//====================================================================
 void StageManager::Draw()
 {
 	for (int i = 0; i < m_nStageNum; ++i)
@@ -96,6 +183,12 @@ void StageManager::Draw()
 	}
 }
 
+
+//====================================================================
+//
+//		ステージの取得
+//
+//====================================================================
 Stage *StageManager::GetStage(int index)
 {
 	if (index < m_nStageNum)
@@ -105,6 +198,11 @@ Stage *StageManager::GetStage(int index)
 	return NULL;
 }
 
+//====================================================================
+//
+//		何個目のステージかを返す
+//
+//====================================================================
 int StageManager::GetStageNum()
 {
 	return m_nStageNum;
