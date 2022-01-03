@@ -92,6 +92,8 @@ void BlueDwarf::Uninit()
 		delete m_pFBX;
 		m_pFBX = NULL;
 	}
+
+	SAFE_RELEASE(m_pBlueDwarfTex);
 	GameObject::Uninit();
 }
 
@@ -146,7 +148,8 @@ void BlueDwarf::Update()
 	//if (jumpFlg) {
 	//	m_move.y -= 0.21f;
 	//}
-		// 重力をかける
+
+	// 重力をかける
 	m_move.y -= GRAVITY;
 
 
@@ -166,7 +169,6 @@ void BlueDwarf::Update()
 //====================================================================
 void BlueDwarf::Draw()
 {
-
 	// 小人のテクスチャ
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
@@ -192,12 +194,10 @@ void BlueDwarf::Draw()
 //====================================================================
 bool BlueDwarf::LoadDwarf(const char* pFilePath)
 {
-	/* 以下はモデルが来たら使用 */
 	HRESULT hr;
 	m_pFBX = new FBXPlayer;
 	hr = m_pFBX->LoadModel(pFilePath);
-	if (FAILED(hr))
-	{
+	if (FAILED(hr)){
 		return false;
 	}
 
