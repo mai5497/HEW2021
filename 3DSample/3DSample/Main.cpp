@@ -9,6 +9,9 @@
 #include "DrawBuffer.h"
 
 
+using namespace DirectX;
+
+
 //---ƒOƒ[ƒoƒ‹•Ï”
 DrawBuffer g_buffer;
 SceneManager* g_pSceneManager;

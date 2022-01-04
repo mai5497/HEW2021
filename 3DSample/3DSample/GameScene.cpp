@@ -36,6 +36,7 @@
 #include "Collector.h"
 #include "CollectionPoint.h"
 #include "SelectScene.h"
+#include "Clear.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -106,6 +107,11 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
+	// メンバ変数初期化
+	m_StageNum = StageNum;			// 現在のステージ番号保存
+	m_NextStageNum = m_StageNum;	// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
+	m_IsClear = false;				// クリアフラグ
+
 	// 立方体クラスの実体化
 	g_pCube = new Cube();
 
@@ -170,6 +176,8 @@ void GameScene::Init(int StageNum)
 	g_pPlayerToEnemy->Init();
 
 
+	// ゲームクリア初期化
+	InitClear();
 }
 
 //==============================================================
@@ -236,6 +244,9 @@ void GameScene::Uninit()
 
 	// キューブ終了
 	delete g_pCube;
+
+	// ゲームクリア終了
+	UninitClear();
 }
 
 //==============================================================
@@ -384,12 +395,19 @@ SCENE GameScene::Update()
 
 	}
 	
+#ifdef _DEBUG
 	//*******************************************************************************
-	//	キー入力で弾削除
+	//	デバッグ用キー処理
 	//*******************************************************************************
-	if (IsTrigger('X')){				// Xキー判定
+	if (IsTrigger('X')){				// Xキーで弾消去
 		g_pPlayer->DestroyBullet();
 	}
+	if (IsTrigger('0')) {				// 0キーでゲームクリア
+		m_IsClear = true;
+	}
+
+
+#endif
 
 	//***************************************************************
 	//	カメラ更新
@@ -425,7 +443,17 @@ SCENE GameScene::Update()
 	//***************************************************************
 	// シーン遷移
 	//***************************************************************	
-	if (IsTrigger('1')) { return SCENE_RESULT; }		// '1'入力
+	//if (IsTrigger('1')) { return SCENE_RESULT; }		// '1'入力
+	int sceneState = -1;
+	if (m_IsClear) {
+		sceneState = UpdateClear();
+		if (sceneState == NEXTSTAGE) {
+			/* todo：次のステージへ */
+		}
+		if (sceneState == GO_SELECT) {
+			return SCENE_SELECT;
+		}
+	}
 	
 	return SCENE_GAME;
 }
@@ -524,6 +552,11 @@ void GameScene::Draw()
 	));*/
 
 	//g_pTPSCamera->Bind();
+
+	if (m_IsClear) {
+		DrawClear();
+	}
+
 	g_pCamera->Bind();
 	
 	///g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -538,9 +571,8 @@ void GameScene::Draw()
 	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
 	//g_pModel->Draw();
 
-	// プレイヤー描画
 
-		// 回収者の描画
+	// 回収者の描画
 	g_pCollector->Draw();
 	g_pCollectionPoint->Draw();
 
@@ -561,6 +593,7 @@ void GameScene::Draw()
 
 
 	// g_pShot->Draw();
+	// プレイヤー描画
 	g_pPlayer->Draw();
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	

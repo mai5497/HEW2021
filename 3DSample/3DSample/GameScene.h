@@ -18,7 +18,9 @@ public:
 	void Draw();
 
 private:
-	int m_StageNum;
+	int m_StageNum;			// 現在のステージ番号
+	int m_NextStageNum;		// 次のステージ番号
+	bool m_IsClear;			// クリアフラグ
 		//ID3D11ShaderResourceView* m_pTexture[2];
 
 
