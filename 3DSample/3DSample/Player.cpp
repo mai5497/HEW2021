@@ -174,7 +174,7 @@ void Player::Update()
 {
 	//----- 変数初期化 -----
 	XMFLOAT2 Axis = LeftThumbPosition();
-	static bool rbFlg = true;
+	static bool rbFlg;
 	bool moveFlg = false;
 
 	bool keyL = IsPress('A');
@@ -250,12 +250,6 @@ void Player::Update()
 
 	}
 
-
-	//if (Input::instance().getControllerConnection())
-	//{
-
-	//}
-
 	MyVector2 direction(0, 0);
 
 	// 極座標を使ったTPS視点
@@ -279,14 +273,14 @@ void Player::Update()
 
 	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < m_nBulletNum; j++) {
-			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {	// 近くにいなかったら下の処理をしない
+			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {		// 近くにいなかったら下の処理をしない
 				continue;
 			}
 
 			if (m_ppBullets[j]->GetRB() == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
 				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// 弾から離れるのをやめる
+				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// 弾から離れない
 			} else {
 				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// 移動許可しない
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
@@ -519,10 +513,10 @@ void Player::CreateBullet(bool rbFlg)
 		m_ppBullets[i]->use = true;
 		m_ppBullets[i]->SetRB(rbFlg);
 		if (m_ppBullets[i]->GetRB()) {	// trueが赤
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f));	// 赤をセット
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));	// 赤をセット
 		}
 		else {
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f));	// 青をセット
+			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// 青をセット
 		}
 
 		m_ppBullets[i]->SetPos(m_pos);

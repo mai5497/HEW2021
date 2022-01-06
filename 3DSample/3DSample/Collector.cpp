@@ -131,6 +131,7 @@ void Collector::Uninit()
 		delete m_pfbx;
 		m_pfbx = NULL;
 	}
+	SAFE_RELEASE(m_pCollectorTex);
 }
 
 

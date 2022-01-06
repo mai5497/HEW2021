@@ -58,11 +58,10 @@ void UninitClear() {
 //===========================================================
 int	UpdateClear() {
 	// タイマーカウントダウン
-	/* todo：タイマーカウントダウンで自動的にセレクトへ移行*/
-	//g_nTimer--;
-	//if (g_nTimer < 0) {
-	//	return GO_SELECT;
-	//}
+	g_nTimer--;
+	if (g_nTimer < 0) {
+		return GO_SELECT;	// 一定時間たったらステージ選択へ戻る
+	}
 
 	// とりあえず１で次のステージ
 	if (IsTrigger('1')) {

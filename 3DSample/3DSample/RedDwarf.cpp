@@ -116,26 +116,21 @@ void RedDwarf::Update()
 
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
-
 	// 小人の座標
 	XMVECTOR vRedDwarfPos = XMLoadFloat3(&m_pos);
-
 	// 進行方向							　　↓ベクトルの引き算
 	XMVECTOR vDirection = XMVectorSubtract(vTarget, vRedDwarfPos);
-
 	// 一定の速度にするために正規化
 	// 速度を変えるならvDirectonに速度をかける。
 	vDirection = XMVector3Normalize(vDirection);
-
 	// かける関数								  ↓かける数
 	vDirection = XMVectorScale(vDirection, 1.0f / 60);
-
 	// Float3型に変換
 	if (GetFollowFlg()) {	// 追跡フラグが立っているとき
 		XMStoreFloat3(&m_move, vDirection * 5);
 	}
 	if (GetrunFlg()) {		// 弾から逃げるとき
-		XMStoreFloat3(&m_move, -(vDirection * 5));
+		XMStoreFloat3(&m_move, -(vDirection * 2.5));
 	}
 
 	// アークタンジェント(逆正接)
@@ -153,10 +148,10 @@ void RedDwarf::Update()
 	//	m_move.y -= 0.21f;
 	//}
 
-	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (Differ < 0.5f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-		//SetMoveFlg(false);		// 移動許可
-	}
+	//Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
+	//if (Differ < 0.3f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+	//	//SetMoveFlg(false);		// 移動許可おろす
+	//}
 
 	// 重力をかける
 	m_move.y -= GRAVITY;

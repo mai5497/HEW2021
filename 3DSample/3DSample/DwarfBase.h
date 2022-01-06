@@ -63,9 +63,6 @@ protected:
 	XMFLOAT3	m_oldPos;		// 過去の座標
 	XMFLOAT3	m_targetPos;	// ターゲット座標
 
-	bool m_AttackFlg;
-
-
 };
 
 

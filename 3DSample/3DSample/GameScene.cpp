@@ -194,14 +194,9 @@ void GameScene::Uninit()
 	g_pCollision->Uninit();
 	delete g_pCollision;
 
-
 	// プレイヤーtoエネミークラスの終了処理
 	g_pPlayerToEnemy->Uninit();
 	delete g_pPlayerToEnemy;
-
-	// ショットクラスの終了処理
-	//	g_pShot->Uninit();
-	//	delete g_pShot;
 
 	// ステージクラスの終了処理
 	g_pStageManager->Uninit();
@@ -218,10 +213,10 @@ void GameScene::Uninit()
 	// 回収者
 	g_pCollector->Uninit();
 	delete g_pCollector;
-
+	
+	// 回収ポイント
 	g_pCollectionPoint->Uninit();
 	delete g_pCollectionPoint;
-
 
 	// エネミー終了処理
 	//delete g_pEnemy;
@@ -282,9 +277,6 @@ SCENE GameScene::Update()
 	// ステージ更新
 	g_pPlayer->SetStageInfo(g_pStageManager);
 	g_pStageManager->Update();
-
-	// ショット更新
-	//g_pShot->Update();
 
 	g_recPlayerPos = g_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
@@ -360,12 +352,12 @@ SCENE GameScene::Update()
 	//****************************************************************************
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++){
 		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
-		if (g_pBullet[i]->use) {											// 最後の指示を通す
+		if (g_pBullet[i]->use) {									// 最後の指示を通す
 			g_LastBulletNun = i;
 		}
 		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++){
-			g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
-			if (!g_pBullet[i]->use){										// 弾未使用ならスキップ
+			g_pPlayer->SetDwarfInfo(g_pDwarfManager);				// playerのメンバ変数に情報を渡す
+			if (!g_pBullet[i]->use){								// 弾未使用ならスキップ
 				continue;
 			}
 			if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {		// 移動許可がないときは動かない
@@ -375,12 +367,7 @@ SCENE GameScene::Update()
 
 			//---ピクミンの弾への追尾
 			g_pDwarfManager->GetDwarf(j)->TargetPos(g_recBulletPos);
-			//g_pCollision->Register(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j));
 
-			if (!CollisionSphere(g_pPlayer->GetBullet(i), g_pDwarfManager->GetDwarf(j))) {
-				continue;
-			}
-			g_pDwarfManager->GetDwarf(j)->SetAttackFlg(true);
 		}
 
 		//*******************************************************************************

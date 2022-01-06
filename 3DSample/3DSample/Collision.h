@@ -24,8 +24,6 @@ public:
 	void Update();
 
 	void Register(GameObject *pA,GameObject *pB);
-	bool CollisionSphere(GameObject *pC, GameObject *pD, float Radius);
-
 
 private:
 	GameObject *m_pList[MAX_COLLISION_REGISTER][2];

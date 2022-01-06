@@ -227,37 +227,6 @@ void Push(GameObject *pDynamic,GameObject *pStatic)
 }
 
 
-
-/* «íœ—\’è */
-bool Collision::CollisionSphere(GameObject *pC, GameObject *pD, float Radius) {
-	DirectX::XMFLOAT3 aPos = pC->GetPos();
-	DirectX::XMFLOAT3 bPos = pD->GetPos();
-	DirectX::XMFLOAT3 aSize = pC->GetRadius();
-	DirectX::XMFLOAT3 bSize = pD->GetRadius();
-
-	//”¼Œa
-	float Radius1 = Radius;
-	float Radius2 = Radius;
-
-	//‹…1‚Æ‹…2‚Ì’†S“_‚Ì‹——£‚Ì2æ
-	float distanceSqu =
-		powf((bPos.x - aPos.x), 2) +
-		powf((bPos.y - aPos.y), 2) +
-		powf((bPos.z - aPos.z), 2);
-	//(bPos.x - aPos.x) * (bPos.x - aPos.x) +
-	//(bPos.y - aPos.y) * (bPos.y - aPos.y) +
-	//(bPos.z - aPos.z) * (bPos.z - aPos.z);
-
-	return (distanceSqu <= powf((Radius1 + Radius2), 2));
-
-	/*if (distanceSqu <= powf((Radius1 + Radius2), 2))
-	{
-	return true;
-	}
-
-	return false;*/
-}
-
 //==============================================================
 //
 //	‹…‚Æ‹…‚Ì“–‚½‚è”»’è
@@ -283,18 +252,8 @@ bool CollisionSphere(GameObject *pC, GameObject *pD)
 		powf((bPos.x - aPos.x), 2) +
 		powf((bPos.y - aPos.y), 2) +
 		powf((bPos.z - aPos.z), 2);
-	//(bPos.x - aPos.x) * (bPos.x - aPos.x) +
-	//(bPos.y - aPos.y) * (bPos.y - aPos.y) +
-	//(bPos.z - aPos.z) * (bPos.z - aPos.z);
 	
 	return (distanceSqu <= powf((Radius1 + Radius2), 2));
-
-	/*if (distanceSqu <= powf((Radius1 + Radius2), 2))
-	{
-	return true;
-	}
-
-	return false;*/
 }
 
 bool CollisionAABB(GameObject *pE, GameObject *pF) {
@@ -303,12 +262,6 @@ bool CollisionAABB(GameObject *pE, GameObject *pF) {
 	XMFLOAT3 Bpos = pF->GetPos();
 	XMFLOAT3 Bsize = pF->GetSize();
 
-	//return (Apos.x - Asize.x <= Bpos.x + Bsize.x) &&
-	//	(Bpos.x - Bsize.x <= Apos.x + Asize.x) &&
-	//	(Apos.y - Asize.y <= Bpos.y + Bsize.y) &&
-	//	(Bpos.y - Bsize.y <= Apos.y + Asize.y) &&
-	//	(Apos.z - Asize.z <= Bpos.z + Bsize.z) &&
-	//	(Bpos.z - Bsize.z <= Apos.z + Asize.z);
 	XMFLOAT3 distance(
 		fabsf(Bpos.x - Apos.x),
 		fabsf(Bpos.y - Apos.y),
