@@ -278,11 +278,11 @@ void Player::Update()
 			}
 
 			if (m_ppBullets[j]->GetRB() == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
+				//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
 				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚È‚¢
 			} else {
-				m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
+				//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
 				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
 				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// ’e‚©‚ç—£‚ê‚é
 			}

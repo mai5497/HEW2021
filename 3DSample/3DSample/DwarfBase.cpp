@@ -61,7 +61,6 @@ void DwarfBase::Update() {
 //====================================================================
 void DwarfBase::Draw() 
 {
-	/* 以下はテクスチャが来たら使用 */
 	SHADER->SetWorld(
 		DirectX::XMMatrixScaling(
 			m_size.x, m_size.y, m_size.z)

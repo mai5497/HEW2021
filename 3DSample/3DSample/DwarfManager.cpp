@@ -63,9 +63,9 @@ bool DwarfManager::Init()
 	m_ppDwarf = new DwarfBase*[MAX_DWARF];
 
 	for (int i = 0; i < MAX_DWARF; i++){
-			// 小人をランダムで初期配置
-		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0の間の乱数
-		randomPos.z = (float)(rand() % 10 - 5.0f);
+		// 小人をランダムで初期配置
+		randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
+		randomPos.z = (float)(rand() % 20 - 10.0f);
 		// ランダムで算出した値を基準位置に加算して代入
 		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 2.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保

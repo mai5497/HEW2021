@@ -347,9 +347,13 @@ SCENE GameScene::Update()
 	 	//g_pEnemy->EnemyStop();
 	} */
 
+
+
+
 	//****************************************************************************
-	//	弾の追跡
+	//	小人の追跡処理
 	//****************************************************************************
+	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++){
 		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
 		if (g_pBullet[i]->use) {									// 最後の指示を通す
@@ -357,6 +361,11 @@ SCENE GameScene::Update()
 		}
 		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++){
 			g_pPlayer->SetDwarfInfo(g_pDwarfManager);				// playerのメンバ変数に情報を渡す
+			//----- 乱数で目的地を設定 -----
+			randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 20 - 10.0f);
+			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+
 			if (!g_pBullet[i]->use){								// 弾未使用ならスキップ
 				continue;
 			}
