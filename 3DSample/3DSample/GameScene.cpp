@@ -43,6 +43,7 @@
 //*******************************************************************************
 #define CONTROL_NUM		(5)
 #define RECORD_MARGIN	(10)
+#define TARGETSET_TIME	(300)
 
 //*******************************************************************************
 // グローバル宣言
@@ -347,13 +348,23 @@ SCENE GameScene::Update()
 	 	//g_pEnemy->EnemyStop();
 	} */
 
-
+	static int Timer;
+	if (Timer < 0) {
+		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
+			//----- 乱数で目的地を設定 -----
+			randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 20 - 10.0f);
+			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+		}
+		Timer = TARGETSET_TIME;
+	}
+	Timer--;
 
 
 	//****************************************************************************
 	//	小人の追跡処理
 	//****************************************************************************
-	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
 	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++){
 		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
 		if (g_pBullet[i]->use) {									// 最後の指示を通す
@@ -361,17 +372,13 @@ SCENE GameScene::Update()
 		}
 		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++){
 			g_pPlayer->SetDwarfInfo(g_pDwarfManager);				// playerのメンバ変数に情報を渡す
-			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
-			randomPos.z = (float)(rand() % 20 - 10.0f);
-			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 
 			if (!g_pBullet[i]->use){								// 弾未使用ならスキップ
 				continue;
 			}
-			if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {		// 移動許可がないときは動かない
-				continue;
-			}
+			//if (!g_pDwarfManager->GetDwarf(j)->GetMoveFlg()) {		// 移動許可がないときは動かない
+			//	continue;
+			//}
 			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
 
 			//---ピクミンの弾への追尾

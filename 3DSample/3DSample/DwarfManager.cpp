@@ -173,10 +173,10 @@ int DwarfManager::GetDwarfNum()
 
 //====================================================================
 //
-//		小人情報取得
+//		ターゲットセット
 //
 //====================================================================
-void DwarfManager::SetDwarfTarget(XMFLOAT3 pos) 
+void DwarfManager::SetAllDwarfTarget(XMFLOAT3 pos) 
 {
 	for (int i = 0; i < m_DwarfNum; i++) 
 	{

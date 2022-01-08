@@ -22,8 +22,6 @@ public:
 	virtual void Draw();
 
 	virtual void TargetPos(XMFLOAT3 pos);	// 追跡相手の座標をセット
-	void SetAttackFlg(bool flg);			// 攻撃フラグのセット（セットしたい方）
-	bool GetAttackFlg();
 	void SetRBFlg(bool flg);				// 赤青フラグのセット(true：赤、false：青)
 	bool GetRBFlg();
 	void SetAliveFlg(bool flg);				// 生存フラグのセットtrueが生falseが死

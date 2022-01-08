@@ -18,7 +18,7 @@ public:
 
 	DwarfBase *GetDwarf(int index);
 	int			GetDwarfNum();
-	void		SetDwarfTarget(XMFLOAT3 pos);
+	void		SetAllDwarfTarget(XMFLOAT3 pos);
 	void SetStageInfo(StageManager *pStage);		// °‚Ìî•ñ‚ğæ“¾
 
 

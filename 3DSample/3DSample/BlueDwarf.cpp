@@ -121,6 +121,8 @@ void BlueDwarf::Update()
 	// ‚©‚¯‚éŠÖ”							«‚©‚¯‚é”
 	vDirection = XMVectorScale(vDirection, 1.0f / 60);
 
+	XMStoreFloat3(&m_move, vDirection);
+
 	// Float3Œ^‚É•ÏŠ·
 	if (GetFollowFlg()) {	// ’ÇÕƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚Æ‚«
 		XMStoreFloat3(&m_move, vDirection * 5);
