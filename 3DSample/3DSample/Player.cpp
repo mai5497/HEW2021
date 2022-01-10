@@ -56,11 +56,11 @@ Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
 	m_pos.x = -10.0f;
 	m_pos.y = 3.0f;
 	m_pos.z = -10.0f;
+	m_Angle = XMFLOAT3(0, 0, 0);
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
 
-	m_Angle = XMFLOAT3(0, 0, 0);
 	m_collisionType = COLLISION_DYNAMIC;
 
 
@@ -93,35 +93,35 @@ Player::~Player()
 bool Player::Init()
 {
 	//----- 弾の処理 -----
-	struct BulletSetting
-	{
-		XMFLOAT3 pos;
-		XMFLOAT3 size;
-	};
+	//struct BulletSetting
+	//{
+	//	XMFLOAT3 pos;
+	//	XMFLOAT3 size;
+	//};
 
 
-	BulletSetting settings[] = 
-	{
-		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-		{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	};
+	//BulletSetting settings[] = 
+	//{
+	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
+	//};
 
-	//初期データから弾数を計算
-	m_nBulletNum = sizeof(settings) / sizeof(settings[0]);
+	////初期データから弾数を計算
+	//m_nBulletNum = sizeof(settings) / sizeof(settings[0]);
 
-	//ポインタを格納する配列を作成
-	m_ppBullets = new Bullet *[m_nBulletNum];
+	////ポインタを格納する配列を作成
+	//m_ppBullets = new Bullet *[m_nBulletNum];
 
-	//それぞれの配列に弾をメモリ確保
-	for (int i = 0; i < m_nBulletNum; i++)
-	{
-		m_ppBullets[i] = new Bullet(settings[i].size);
-		m_ppBullets[i]->SetPos(settings[i].pos);
-		m_ppBullets[i]->Init();	// 弾用初期化
-	}
+	////それぞれの配列に弾をメモリ確保
+	//for (int i = 0; i < m_nBulletNum; i++)
+	//{
+	//	m_ppBullets[i] = new Bullet(settings[i].size);
+	//	m_ppBullets[i]->SetPos(settings[i].pos);
+	//	m_ppBullets[i]->Init();	// 弾用初期化
+	//}
 
 	//----- プレイヤー処理 -----
 	GameObject::Init();	// プレイヤー用初期化？
@@ -143,19 +143,19 @@ bool Player::Init()
 //==============================================================
 void Player::Uninit()
 {
-	if (m_ppBullets != NULL)
-	{
-		for (int i = 0; i < m_nBulletNum; i++)
-		{
-			m_ppBullets[i]->Uninit();
-			//個別に削除
-			delete m_ppBullets[i];
-			m_ppBullets[i] = NULL;
-		}
-		//配列を削除
-		delete[] m_ppBullets;
-		m_ppBullets = NULL;
-	}
+	//if (m_ppBullets != NULL)
+	//{
+	//	for (int i = 0; i < m_nBulletNum; i++)
+	//	{
+	//		m_ppBullets[i]->Uninit();
+	//		//個別に削除
+	//		delete m_ppBullets[i];
+	//		m_ppBullets[i] = NULL;
+	//	}
+	//	//配列を削除
+	//	delete[] m_ppBullets;
+	//	m_ppBullets = NULL;
+	//}
 
 	SAFE_RELEASE(m_pPlayerTex);
 
@@ -181,8 +181,8 @@ void Player::Update()
 	bool keyR = IsPress('D');
 	bool keyU = IsPress('W');
 	bool keyD = IsPress('S');
-	bool keyBlue = IsPress('E');
-	bool keyRed = IsPress('Q');
+	//bool keyBlue = IsPress('E');
+	//bool keyRed = IsPress('Q');
 	bool keyJ = IsTrigger(VK_SPACE);
 
 	//１秒間（60FPS）で2M進ことを表す。
@@ -221,13 +221,13 @@ void Player::Update()
 		}
 	}
 
-	if (keyRed) {	// 赤に切り替え
-		rbFlg = true;	// 赤
-	}
+	//if (keyRed) {	// 赤に切り替え
+	//	rbFlg = true;	// 赤
+	//}
 
-	if (keyBlue) {	// 青に切り替え
-		rbFlg = false;	// 青
-	}
+	//if (keyBlue) {	// 青に切り替え
+	//	rbFlg = false;	// 青
+	//}
 
 	if (keyD) { m_move.z -= Move; }
 	if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
@@ -239,16 +239,16 @@ void Player::Update()
 		/*todo 弾の飛距離落とす*/
 	}
 
-	if (IsTrigger('Z')){	// 弾飛ばす
-		//CreateBullet(m_pControllCamera,rbFlg);
-		CreateBullet(rbFlg);
-	}
+	//if (IsTrigger('Z')){	// 弾飛ばす
+	//	//CreateBullet(m_pControllCamera,rbFlg);
+	//	CreateBullet(rbFlg);
+	//}
 
-	if (IsTrigger('F')) {	// 弾飛ばす
+	//if (IsTrigger('F')) {	// 弾飛ばす
 
-		CreateBullet(m_pControllCamera,rbFlg);
+	//	CreateBullet(m_pControllCamera,rbFlg);
 
-	}
+	//}
 
 	MyVector2 direction(0, 0);
 
@@ -655,4 +655,26 @@ bool Player::LoadPlayer(const char* pFilePath) {
 	return true;
 }
 
+//==============================================================
+//
+//	Playerクラス::プレイヤーの座標を取得
+//	作成者	: 吉原飛鳥
+//	戻り値	: XMFLOAT3
+//	引数		: なし 
+//==============================================================
+XMFLOAT3 Player::GetPlayerPos()
+{
+	return m_pos;
+}
 
+//==============================================================
+//
+//	Playerクラス::プレイヤーの角度を取得
+//	作成者	: 吉原飛鳥
+//	戻り値	: XMFLOAT3
+//	引数		: なし 
+//==============================================================
+XMFLOAT3 Player::GetPlayerAngle()
+{
+	return m_Angle;
+}
