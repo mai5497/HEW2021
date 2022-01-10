@@ -217,6 +217,8 @@ void Collector::Draw()
 			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 		);
 	}
+
+	SHADER->SetTexture(NULL);
 }
 
 int Collector::GetTimer()
