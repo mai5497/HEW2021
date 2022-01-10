@@ -51,8 +51,6 @@ Bullet::Bullet(DirectX::XMFLOAT3 size) :m_rbFlg(true), m_ColFlg(false)
 	m_sleep = 0;
 	m_sleep2 = 0;
 
-	m_Radius = XMFLOAT3(10.0f, 1.0f, 10.0f);
-
 }
 
 //====================================================================
@@ -88,16 +86,16 @@ bool Bullet::Init()
 //====================================================================
 void Bullet::Uninit()
 {
-	// ---テクスチャ解放
-	SAFE_RELEASE(m_pBulletTex);
+	//// ---テクスチャ解放
+	//SAFE_RELEASE(m_pBulletTex);
 
-	if (m_pBuffer != NULL) {
-		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+	//if (m_pBuffer != NULL) {
+	//	delete[] m_pBuffer;
+	//	m_pBuffer = NULL;
 
-		delete m_pFBX;
-		m_pFBX = NULL;
-	}
+	//	delete m_pFBX;
+	//	m_pFBX = NULL;
+	//}
 
 	// ---キューブの解放
 	GameObject::Uninit();

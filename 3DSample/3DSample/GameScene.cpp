@@ -11,6 +11,7 @@
  *		 2021/12/25 小人フィールドから落ちる(伊地田)
  *		 2021/12/25 整理！(吉原)
  *		 2022/01/02 ステージ選択できるようにした（伊地田）
+ *		 2022/01/10 バレットの使用変更～
  * @brief ゲームシーンに関する処理
  */
 
@@ -37,8 +38,10 @@
 #include "CollectionPoint.h"
 #include "SelectScene.h"
 #include "Clear.h"
+#include "BulletManager.h"
 #include "Score.h"
 #include "Tutorial.h"
+
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -62,6 +65,8 @@ PlayerToEnemy		*g_pPlayerToEnemy;
 Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
+BulletManager		*g_pBulletManger;
+
 Score				*g_pScore;
 Tutorial			*g_pTutorial;
 
@@ -147,6 +152,10 @@ void GameScene::Init(int StageNum)
 	g_pDwarfManager = new DwarfManager();
 	g_pDwarfManager->Init();
 
+	// 弾の管理クラス
+	g_pBulletManger = new BulletManager();
+	g_pBulletManger->Init();
+
 	// 回収車
 	g_pCollector = new Collector();
 	g_pCollector->Init();
@@ -227,6 +236,10 @@ void GameScene::Uninit()
 	g_pDwarfManager->Uninit();
 	delete g_pDwarfManager;
 
+	// 弾のクラス解放
+	g_pBulletManger->Uninit();
+	delete g_pBulletManger;
+
 	// 回収者
 	g_pCollector->Uninit();
 	delete g_pCollector;
@@ -279,8 +292,10 @@ SCENE GameScene::Update()
 	g_pDwarfManager->SetStageInfo(g_pStageManager);		// 小人のメンバ変数に情報を渡す
 	g_pDwarfManager->Update();
 
-	// バレット更新
-	//	g_pBullet->Update();
+	// 弾更新
+	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());
+	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
+	g_pBulletManger->Update();
 	
 	// 回収者
 	g_pCollector->Update();
@@ -610,6 +625,9 @@ void GameScene::Draw()
 
 	// ピクミン描画
 	g_pDwarfManager->Draw();
+
+	// 弾の描画
+	g_pBulletManger->Draw();
 
 	//g_pEnemy->Draw();
 	SHADER->SetTexture(NULL);

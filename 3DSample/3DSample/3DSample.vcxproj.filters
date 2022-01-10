@@ -168,6 +168,18 @@
     <ClCompile Include="Clear.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="BulletBase.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBlue.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletManager.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletRed.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
@@ -310,6 +322,18 @@
     </ClInclude>
     <ClInclude Include="Clear.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBase.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBlue.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletManager.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletRed.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル\Game</Filter>

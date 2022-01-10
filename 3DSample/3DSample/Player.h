@@ -45,7 +45,9 @@ public:
 	void SetStageInfo(StageManager *pStage);
 
 	// ---プレイヤー関連
-	ID3D11ShaderResourceView *m_pPlayerTex;
+	ID3D11ShaderResourceView *m_pPlayerTex;			
+	XMFLOAT3 GetPlayerPos();
+	XMFLOAT3 GetPlayerAngle();
 
 
 private:
