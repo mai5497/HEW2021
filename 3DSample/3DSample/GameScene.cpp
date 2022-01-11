@@ -18,29 +18,49 @@
 //*******************************************************************************
 // インクルード部
 //*******************************************************************************
-#include "GameScene.h"
+
+//---システム関連
 #include "Input.h"
-#include "Player.h"
-#include "StageManager.h"
-#include "GameObject.h"
-#include "Stage.h"
-#include "model.h"
 #include "TPSCamera.h"
 #include "Collision.h"
 #include "Shader.h"
 #include "Defines.h"
+
+// ---シーン関連
+#include "GameScene.h"
+#include "SelectScene.h"
+#include "Tutorial.h"
+#include "Clear.h"
+#include "GameOver.h"
+
+// ---ステージ関連
+#include "Stage.h"
+#include "StageManager.h"
+
+// ---ゲーム関連-プレイヤー
+#include "Player.h"
+#include "GameObject.h"
+#include "model.h"
 #include "Cube.h"
 #include "PlayerToEnemy.h"
+
+// ---ゲーム関連-エネミー
 #include "Enemy.h"
 #include "EnemyManager.h"
+
+// ---ゲーム関連-小人
 #include "DwarfManager.h"
+
+// ---ゲーム関連-弾
+#include "BulletManager.h"
+
+// ---ゲーム関連-回収
 #include "Collector.h"
 #include "CollectionPoint.h"
-#include "SelectScene.h"
-#include "Clear.h"
-#include "BulletManager.h"
+
+// ---ゲーム関連-UI
 #include "Score.h"
-#include "Tutorial.h"
+
 
 
 //*******************************************************************************
@@ -121,7 +141,8 @@ void GameScene::Init(int StageNum)
 	// メンバ変数初期化
 	m_StageNum = StageNum;			// 現在のステージ番号保存
 	m_NextStageNum = m_StageNum;	// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
-	m_IsClear = false;				// クリアフラグ
+	m_IsClear = false;							// クリアフラグ
+	m_IsGameOver = false;					// ゲームオーバーフラグ
 
 	// 立方体クラスの実体化
 	g_pCube = new Cube();
@@ -190,15 +211,21 @@ void GameScene::Init(int StageNum)
 	g_pPlayerToEnemy = new PlayerToEnemy();
 	g_pPlayerToEnemy->Init();
 
+	// スコアクラス
 	g_pScore = new Score();
 	g_pScore->Init();
 
+	// チュートリアルクラス
 	g_pTutorial = new Tutorial();
 	g_pTutorial->Init();
 
 	// ゲームクリア初期化
 	InitClear();
 
+	// ゲームオーバー初期化
+	InitGameOver();
+
+	// BGM再生
 	CSound::Play(GAME_BGM);
 
 }
@@ -213,9 +240,11 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
+	// スコアクラスの終了処理
 	g_pScore->Uninit();
 	delete g_pScore;
 
+	// チュートリアルシーンの終了処理
 	g_pTutorial->Uninit();
 	delete g_pTutorial;
 
@@ -276,7 +305,10 @@ void GameScene::Uninit()
 	// ゲームクリア終了
 	UninitClear();
 
+	// ゲームオーバー終了
+	UninitGameOver();
 
+	// BGM停止
 	CSound::Stop(GAME_BGM);
 }
 
@@ -441,6 +473,9 @@ SCENE GameScene::Update()
 	if (IsTrigger('0')) {				// 0キーでゲームクリア
 		m_IsClear = true;
 	}
+	if (IsTrigger('9')) {				// ９キーでゲームオーバー
+		m_IsGameOver = true;
+	}
 
 
 #endif
@@ -490,7 +525,17 @@ SCENE GameScene::Update()
 			return SCENE_SELECT;
 		}
 	}
+	else if (m_IsGameOver) {
+		sceneState = UpdateGameOver();
+		if (sceneState == STATE_RETRY){
+			/* todo : リトライ */
+		}
+		if (sceneState == STATE_SELECT) {
+			return SCENE_SELECT;
+		}
+	}
 	
+
 	return SCENE_GAME;
 }
 
@@ -637,10 +682,14 @@ void GameScene::Draw()
 	
 	//	EnableCulling(true);
 
+	// 
 	if (m_IsClear) {
 		DrawClear();
 	}
 
+	if (m_IsGameOver) {
+		DrawGameOver();
+	}
 	g_pScore->Draw();
 
 	g_pTutorial->Draw();

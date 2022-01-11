@@ -167,7 +167,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 
 		float dirY;
-		dirY = 30.0f / FPS;
+		dirY = 10;
 
 		dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
 		dir.y = dirY;
