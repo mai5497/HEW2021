@@ -22,10 +22,11 @@
 //		コンストラクタ
 //
 //====================================================================
-DwarfManager::DwarfManager() : m_ppDwarf(nullptr),m_DwarfNum(MAX_DWARF)
+DwarfManager::DwarfManager() : 
+	m_ppDwarf(nullptr),
+	m_DwarfNum(MAX_DWARF)
 {
-
-
+	m_collectionSum = 0;
 }
 
 //====================================================================
@@ -213,6 +214,19 @@ void DwarfManager::SetAllDwarfTarget(XMFLOAT3 pos)
 void DwarfManager::SetBulletInfo(BulletManager *pBullet)
 {
 	m_pBullet = pBullet;
+}
+
+//==============================================================
+//
+//	弾の情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: 弾管理クラスのポインタ
+//
+//==============================================================
+void DwarfManager::AddCollectionSum() 
+{
+	m_collectionSum++;
 }
 
 

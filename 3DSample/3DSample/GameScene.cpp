@@ -385,11 +385,15 @@ SCENE GameScene::Update()
 	// 小人回収
 	//***************************************************************
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
+		if (!g_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {
+			continue;
+		}
+
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			// 小人回収
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
-
+			g_pDwarfManager->AddCollectionSum();
 		}
 	}
 
@@ -426,6 +430,7 @@ SCENE GameScene::Update()
 	//	小人の追跡処理（ランダムで移動先決めてうろうろさせる）
 	//****************************************************************************
 	static int Timer;
+	Timer--;
 	if (Timer < 0) {
 		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
 		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
@@ -436,7 +441,6 @@ SCENE GameScene::Update()
 		}
 		Timer = TARGETSET_TIME;
 	}
-	Timer--;
 
 
 	//****************************************************************************
@@ -476,8 +480,6 @@ SCENE GameScene::Update()
 	if (IsTrigger('9')) {				// ９キーでゲームオーバー
 		m_IsGameOver = true;
 	}
-
-
 #endif
 
 	//***************************************************************
@@ -525,7 +527,7 @@ SCENE GameScene::Update()
 			return SCENE_SELECT;
 		}
 	}
-	else if (m_IsGameOver) {
+	if (m_IsGameOver) {
 		sceneState = UpdateGameOver();
 		if (sceneState == STATE_RETRY){
 			/* todo : リトライ */
