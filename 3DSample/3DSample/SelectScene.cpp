@@ -19,13 +19,23 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
+#define MAX_OBJ		5
 
 //========================= グローバル変数定義 ===========================
-ID3D11ShaderResourceView* g_pSelectTex;
-//DrawBuffer g_pBuffer;
-//TPSCamera* g_pSelectTPSCamera;
+ID3D11ShaderResourceView* g_pSelectTex[MAX_OBJ];
 Camera* g_pSelectCamera;
-GameObject* g_pSelectObject;
+GameObject g_pSelectObject[MAX_OBJ];
+
+const char* g_pTexFName[MAX_OBJ] = {
+	"Assets/Model/Select000.png",
+	"Assets/Model/Select001.jpg",
+	"Assets/Model/Select002.jpg",
+	"Assets/Model/Select003.jpg",
+	"Assets/Model/arrow_down.png",
+};
+
+float g_arrowPosX;
+XMFLOAT3 g_pos;
 
 //====================================================================
 //
@@ -56,19 +66,40 @@ SelectScene::~SelectScene(void)
 //====================================================================
 void SelectScene::Init()
 {
-	LoadTextureFromFile("Assets/Model/Select.png", &g_pSelectTex);
+	for (int i = 0; i < MAX_OBJ; ++i)
+	{
+		LoadTextureFromFile(g_pTexFName[i], &g_pSelectTex[i]);
 
-	//g_pSelectTPSCamera = new TPSCamera();
-	//g_pSelectTPSCamera->Init();
-	//g_pSelectTPSCamera->SetTargetObj(g_pSelectBG);
-	g_pSelectObject = new GameObject;
-	g_pSelectObject->Init();
-	g_pSelectObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
-	g_pSelectObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
+	}
+
+
+
+	g_pSelectObject[0].Init();
+	g_pSelectObject[0].SetPos(DirectX::XMFLOAT3(0, 11, -18));
+	g_pSelectObject[0].SetSize(DirectX::XMFLOAT3(4, 2, 0));
+
+	g_pSelectObject[1].Init();
+	g_pSelectObject[1].SetPos(DirectX::XMFLOAT3(-4, 8, -18));
+	g_pSelectObject[1].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[2].Init();
+	g_pSelectObject[2].SetPos(DirectX::XMFLOAT3(0, 8, -18));
+	g_pSelectObject[2].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[3].Init();
+	g_pSelectObject[3].SetPos(DirectX::XMFLOAT3(4, 8, -18));
+	g_pSelectObject[3].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	// 矢印
+	g_pSelectObject[4].Init();
+	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(-4, 9, -18));
+	g_pSelectObject[4].SetSize(DirectX::XMFLOAT3(1, 1, 0));
 
 	g_pSelectCamera = new Camera;
 	g_pSelectCamera->Init();
+	
 
+	g_arrowPosX = 0;
 }
 
 
@@ -79,12 +110,15 @@ void SelectScene::Init()
 //====================================================================
 void SelectScene::Uninit()
 {
-	SAFE_RELEASE(g_pSelectTex);
+	for (int i = 0; i < MAX_OBJ; ++i)
+	{
+		SAFE_RELEASE(g_pSelectTex[i]);
+		g_pSelectObject[i].Uninit();
+	}
 	g_pSelectCamera->Uninit();
-	//delete g_pSelectTPSCamera;
+
 	delete g_pSelectCamera;
-	g_pSelectObject->Uninit();
-	delete g_pSelectObject;
+
 
 
 }
@@ -97,20 +131,39 @@ void SelectScene::Uninit()
 //====================================================================
 SCENE SelectScene::Update()
 {
-	//g_pSelectTPSCamera->Update();
 
 	if (IsTrigger('1')) {	// ステージ１
 		m_StageNum = 1;
-		return SCENE_GAME;
+		g_arrowPosX = -4;
+
 	}
 	if (IsTrigger('2')) {	// ステージ２
 		m_StageNum = 2;
-		return SCENE_GAME;
+		g_arrowPosX = 0;
+
 	}
 	if (IsTrigger('3')) {	// ステージ３
 		m_StageNum = 3;
-		return SCENE_GAME;
+		g_arrowPosX = 4;
+
 	}
+	// 選択されたステージに矢印を移動
+	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(g_arrowPosX, 9, -18));
+
+	if (IsTrigger(VK_RETURN)) {
+		switch (m_StageNum)
+		{
+		case 1:
+			return SCENE_GAME;
+		case 2:
+			return SCENE_GAME;
+		case 3:
+			return SCENE_GAME;
+		default:
+			break;
+		}
+	}
+
 
 
 	return SCENE_SELECT;
@@ -126,13 +179,21 @@ void SelectScene::Draw()
 {
 	SHADER->Bind(VS_WORLD, PS_PHONG);
 
-	g_pSelectCamera->Bind2D();
 
-	SHADER->SetTexture(g_pSelectTex);
 
-	//g_pBuffer.Draw(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	g_pSelectObject->Draw();
+	g_pSelectCamera->Bind();
+
+
+
+	for (int i = 0; i < MAX_OBJ; ++i)
+	{
+		SHADER->SetTexture(g_pSelectTex[i]);
+		g_pSelectObject[i].Draw();
+	}
+	
+
+
 
 	SHADER->SetTexture(NULL);
 

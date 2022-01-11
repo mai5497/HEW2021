@@ -39,6 +39,8 @@
 #include "SelectScene.h"
 #include "Clear.h"
 #include "BulletManager.h"
+#include "Score.h"
+#include "Tutorial.h"
 
 
 //*******************************************************************************
@@ -64,6 +66,9 @@ CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
 DwarfManager		*g_pDwarfManager;
 BulletManager		*g_pBulletManger;
+
+Score				*g_pScore;
+Tutorial			*g_pTutorial;
 
 
 //Enemy				*g_pEnemy;
@@ -108,7 +113,7 @@ GameScene::~GameScene(void)
 //	GameSceneクラス::Init
 //	作成者	： 園田翔大
 //	戻り値	： void
-//	引数		： void
+//	引数	： void
 //
 //==============================================================
 void GameScene::Init(int StageNum)
@@ -185,6 +190,11 @@ void GameScene::Init(int StageNum)
 	g_pPlayerToEnemy = new PlayerToEnemy();
 	g_pPlayerToEnemy->Init();
 
+	g_pScore = new Score();
+	g_pScore->Init();
+
+	g_pTutorial = new Tutorial();
+	g_pTutorial->Init();
 
 	// ゲームクリア初期化
 	InitClear();
@@ -200,6 +210,12 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
+	g_pScore->Uninit();
+	delete g_pScore;
+
+	g_pTutorial->Uninit();
+	delete g_pTutorial;
+
 	// 当たり判定クラスの終了処理
 	g_pCollision->Uninit();
 	delete g_pCollision;
@@ -299,6 +315,10 @@ SCENE GameScene::Update()
 
 	/* 弾の発射はplayer.cppに移動 */
 
+	g_pScore->Update();
+
+	g_pTutorial->Update();
+
 
 	//***************************************************************
 	// すべての移動(更新処理)がすんでから
@@ -330,6 +350,8 @@ SCENE GameScene::Update()
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			// 小人回収
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+			g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+
 		}
 	}
 
@@ -400,6 +422,8 @@ SCENE GameScene::Update()
 			g_pDwarfManager->GetDwarf(j)->TargetPos(g_recBulletPos);
 		}
 	}
+
+
 	
 #ifdef _DEBUG
 	//*******************************************************************************
@@ -609,5 +633,10 @@ void GameScene::Draw()
 	//	EnableCulling(false);
 	
 	//	EnableCulling(true);
+
+	g_pScore->Draw();
+
+	g_pTutorial->Draw();
+
 }
 
