@@ -121,22 +121,22 @@ void DwarfManager::Update()
 			continue;
 		}
 	
-		//for (int j = 0; j < MAX_BULLET; j++) 
-		//{
-		//	if (!CollisionSphere(m_ppDwarf[i], m_pBullet->GetBullet(j))) {		// 近くにいなかったら下の処理をしない
-		//		continue;
-		//	}
+		for (int j = 0; j < MAX_BULLET; j++) 
+		{
+			if (!CollisionSphere(m_ppDwarf[i], m_pBullet->GetBullet(j))) {		// 近くにいなかったら下の処理をしない
+				continue;
+			}
 
-		//	if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
-		//		//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
-		//		m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
-		//		m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
-		//	} else {
-		//		//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
-		//		m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
-		//		m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
-		//	}
-		//}
+			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+				//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
+				m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
+				m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
+			} else {
+				//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
+				m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
+				m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
+			}
+		}
 
 		m_ppDwarf[i]->Update();
 	}
@@ -210,9 +210,9 @@ void DwarfManager::SetAllDwarfTarget(XMFLOAT3 pos)
 //	引数	: 弾管理クラスのポインタ
 //
 //==============================================================
-//void DwarfManager::SetBulletInfo(BulletManager *pBullet)
-//{
-//	m_pBullet = pBullet;
-//}
+void DwarfManager::SetBulletInfo(BulletManager *pBullet)
+{
+	m_pBullet = pBullet;
+}
 
 

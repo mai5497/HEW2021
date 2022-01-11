@@ -293,7 +293,7 @@ SCENE GameScene::Update()
 	g_pBulletManger->Update();
 
 	// ¬lXVˆ—
-	//g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// ’e‚Ìî•ñ‚ð¬l‚Ìƒƒ“ƒo•Ï”‚É“n‚·
+	g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// ’e‚Ìî•ñ‚ð¬l‚Ìƒƒ“ƒo•Ï”‚É“n‚·
 	g_pDwarfManager->Update();
 	
 	// ‰ñŽûŽÒ
@@ -583,9 +583,6 @@ void GameScene::Draw()
 
 	//g_pTPSCamera->Bind();
 
-	if (m_IsClear) {
-		DrawClear();
-	}
 
 	g_pCamera->Bind();
 	
@@ -633,6 +630,10 @@ void GameScene::Draw()
 	//	EnableCulling(false);
 	
 	//	EnableCulling(true);
+
+	if (m_IsClear) {
+		DrawClear();
+	}
 
 	g_pScore->Draw();
 

@@ -7,6 +7,7 @@
 #include "Defines.h"
 #include "FBX/FBXLoader.h"
 #include "DrawBuffer.h"
+#include "Sound.h"
 
 
 using namespace DirectX;
@@ -38,6 +39,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	// シェーダ
 	hr = SHADER->Init();
 	if (FAILED(hr)) { return ErrorBox(hr, "Failed to Shader."); }
+
+	CSound::Init();
 
 	g_pSceneManager = new SceneManager();
 	g_pSceneManager->Init();
@@ -122,6 +125,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 void Uninit()
 {
 	g_pSceneManager->Uninit();
+	CSound::Fin();
 	SHADER->Uninit();
 	UninitDX();
 	ggfbx::Terminate();

@@ -13,6 +13,7 @@
 #include	"FBX//FBXPlayer.h"
 #include	"DrawBuffer.h"
 
+class DwarfManager;
 
 class Player : public CharacterBase
 {

@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "TPSCamera.h"
 #include "Defines.h"
+#include "Sound.h"
 
 ID3D11ShaderResourceView* g_pTitleTex;
 DrawBuffer g_pBuffer;
@@ -37,6 +38,8 @@ void TitleScene::Init()
 	g_pTitleCamera = new Camera;
 	g_pTitleCamera->Init();
 
+	// BGMÄ¶
+	CSound::Play(TITLE_BGM);
 }
 
 void TitleScene::Uninit()
@@ -48,7 +51,7 @@ void TitleScene::Uninit()
 	g_pTitleObject->Uninit();
 	delete g_pTitleObject;
 
-
+	CSound::Stop(TITLE_BGM);
 }
 SCENE TitleScene::Update()
 {

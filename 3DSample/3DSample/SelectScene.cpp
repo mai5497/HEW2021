@@ -19,7 +19,7 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
-#define MAX_OBJ		5
+#define MAX_OBJ		(5)
 
 //========================= グローバル変数定義 ===========================
 ID3D11ShaderResourceView* g_pSelectTex[MAX_OBJ];
