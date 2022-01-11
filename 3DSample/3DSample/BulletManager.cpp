@@ -21,7 +21,7 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define BULLET_SPEED		(0.5f)								// 弾の速度
+#define BULLET_SPEED		(0.1f)								// 弾の速度
 
 
 //==============================================================
@@ -166,16 +166,23 @@ void BulletManager::CreateBullet(bool rbFlg)
 		m_ppBullets[i]->use = true;
 
 		m_ppBullets[i]->SetPos(m_PlayerPos);
-		XMFLOAT3 dir;
 
+		XMFLOAT3 dir;		// 射出方向
 
-		float dirY;
-		dirY = 10;
+		float dirY;			// 打ち出す角度(Y軸方向)
+		dirY = 90.0f;
 
-		dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
-		dir.y = dirY;
-		dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
+		//---射出方向
+		//dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
+		//dir.y = dirY;
+		//dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
 
+		//---射出方向
+		dir.x = -m_PlayerPos.x;
+		dir.y = dirY / FPS;
+		dir.z = -m_PlayerPos.z;
+		 
+		 
 		//ベクトルの大きさ
 		float L;
 		L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
@@ -187,7 +194,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
 		dir.x = dir.x * BULLET_SPEED;
-		dir.y = dir.y * BULLET_SPEED;
+		dir.y = dir.y;
 		dir.z = dir.z * BULLET_SPEED;
 
 		//m_ppBullets[i]->SetMove(dir);

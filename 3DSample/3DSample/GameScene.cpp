@@ -139,9 +139,9 @@ GameScene::~GameScene(void)
 void GameScene::Init(int StageNum)
 {
 	// メンバ変数初期化
-	m_StageNum = StageNum;			// 現在のステージ番号保存
-	m_NextStageNum = m_StageNum;	// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
-	m_IsClear = false;							// クリアフラグ
+	m_StageNum = StageNum;					// 現在のステージ番号保存
+	m_NextStageNum = m_StageNum;			// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
+	m_IsClear = false;						// クリアフラグ
 	m_IsGameOver = false;					// ゲームオーバーフラグ
 
 	// 立方体クラスの実体化
@@ -502,7 +502,7 @@ SCENE GameScene::Update()
 	g_recordPos[0] = g_pPlayer->GetPos();
 
 	//***************************************************************
-	//						軌跡の計算
+	//	軌跡の計算
 	//***************************************************************	
 	for (int i = 0; i < CONTROL_NUM; i++)
 	{
