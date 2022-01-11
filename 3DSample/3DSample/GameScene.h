@@ -19,7 +19,8 @@ public:
 private:
 	int m_StageNum;			// 現在のステージ番号
 	int m_NextStageNum;		// 次のステージ番号
-	bool m_IsClear;			// クリアフラグ
+	bool m_IsClear;					// クリアフラグ
+	bool m_IsGameOver;			// ゲームオーバーフラグ
 		//ID3D11ShaderResourceView* m_pTexture[2];
 
 

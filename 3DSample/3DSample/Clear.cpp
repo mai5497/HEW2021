@@ -6,8 +6,6 @@
 #include "Camera.h"
 #include "Defines.h"
 
-
-
 //============== ’è”’è‹` ======================
 #define CLEAR_CNT			(600)
 
@@ -45,8 +43,10 @@ void InitClear() {
 //===========================================================
 void UninitClear() {
 	SAFE_RELEASE(g_pClearTex);
+
 	g_pClearCamera->Uninit();
 	delete g_pClearCamera;
+
 	g_pClearObject->Uninit();
 	delete g_pClearObject;
 }

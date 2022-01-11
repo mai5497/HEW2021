@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BFDA2DF7-0AD0-4925-8152-0319C59E1BCF}</ProjectGuid>
     <RootNamespace>My3DSample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -133,6 +133,7 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="CollectionPoint.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterBase.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Clear.h" />
     <ClInclude Include="CollectionPoint.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />

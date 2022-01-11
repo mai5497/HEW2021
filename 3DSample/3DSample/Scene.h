@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "Sound.h"
 
-
+// シーン遷移
 typedef enum
 {
 
@@ -17,6 +17,18 @@ typedef enum
 	SCENE_MAX,
 
 }SCENE;
+
+// ゲームシーン上のステート
+typedef enum
+{
+	STATE_NEXT,
+	STATE_SELECT,
+	STATE_RETRY,
+
+	STATE_MAX
+}GAMESCENE_STATE;
+
+
 // シーンを完了するクラス
 class Scene
 {
