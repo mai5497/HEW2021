@@ -100,6 +100,8 @@ void SelectScene::Init()
 	
 
 	g_arrowPosX = 0;
+
+	CSound::Play(SELECT_BGM);
 }
 
 
@@ -119,8 +121,7 @@ void SelectScene::Uninit()
 
 	delete g_pSelectCamera;
 
-
-
+	CSound::Stop(SELECT_BGM);
 }
 
 
@@ -151,6 +152,7 @@ SCENE SelectScene::Update()
 	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(g_arrowPosX, 9, -18));
 
 	if (IsTrigger(VK_RETURN)) {
+		CSound::Play(SE_ENTER_1);
 		switch (m_StageNum)
 		{
 		case 1:

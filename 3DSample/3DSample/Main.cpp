@@ -133,6 +133,7 @@ void Uninit()
 
 void Update()
 {
+	CSound::Update();
 	g_pSceneManager->Update();
 }
 

@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "TPSCamera.h"
 #include "Defines.h"
-#include "Sound.h"
 
 ID3D11ShaderResourceView* g_pTitleTex;
 DrawBuffer g_pBuffer;
@@ -58,7 +57,10 @@ SCENE TitleScene::Update()
 
 	//g_pTitleTPSCamera->Update();
 
-	if (IsTrigger('1')) { return SCENE_SELECT; }
+	if (IsTrigger('1')) { 
+		CSound::Play(SE_ENTER_1);
+		return SCENE_SELECT;
+	}
 	return SCENE_TITLE;
 }
 void TitleScene::Draw()

@@ -12,7 +12,7 @@
 #define CLEAR_CNT			(600)
 
 //============== グローバル変数定義 ======================
-static int g_nTimer;			// タイマー
+static int g_nTimer;					// タイマー
 ID3D11ShaderResourceView* g_pClearTex;	// テクスチャ
 static DrawBuffer g_pBuffer;			// 頂点バッファ
 GameObject* g_pClearObject;				// ゲームオブジェクト

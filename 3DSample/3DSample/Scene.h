@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "Scene.h"
+#include "Sound.h"
+
 
 typedef enum
 {

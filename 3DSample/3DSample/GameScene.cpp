@@ -198,6 +198,9 @@ void GameScene::Init(int StageNum)
 
 	// ゲームクリア初期化
 	InitClear();
+
+	CSound::Play(GAME_BGM);
+
 }
 
 //==============================================================
@@ -272,6 +275,9 @@ void GameScene::Uninit()
 
 	// ゲームクリア終了
 	UninitClear();
+
+
+	CSound::Stop(GAME_BGM);
 }
 
 //==============================================================
