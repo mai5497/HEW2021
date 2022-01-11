@@ -17,16 +17,11 @@
 #include	"Controller.h"
 #include	"MyMath.h"
 
-// モデル描画用
-#include	"Texture.h"
-#include	"FBX//FBXPlayer.h"
-#include	"DrawBuffer.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS				(60)
-#define BULLET_SPEED	(0.2f)
 #define PLAYER_SIZE		(0.25f)
 
 //*******************************************************************************
@@ -47,7 +42,7 @@ FBXPlayer *Player::m_pFBX = NULL;
 //	引数	： void
 //
 //==============================================================
-Player::Player():m_pControllCamera(nullptr),m_ppBullets(NULL),m_nBulletNum(0)
+Player::Player():m_pControllCamera(nullptr)
 {
 	//----- 変数初期化 -----
 	LoadTextureFromFile("Assets/Model/princess.png", &m_pPlayerTex);
@@ -92,37 +87,6 @@ Player::~Player()
 //==============================================================
 bool Player::Init()
 {
-	//----- 弾の処理 -----
-	//struct BulletSetting
-	//{
-	//	XMFLOAT3 pos;
-	//	XMFLOAT3 size;
-	//};
-
-
-	//BulletSetting settings[] = 
-	//{
-	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	//	{XMFLOAT3(m_pos),XMFLOAT3(30,1,30), },
-	//};
-
-	////初期データから弾数を計算
-	//m_nBulletNum = sizeof(settings) / sizeof(settings[0]);
-
-	////ポインタを格納する配列を作成
-	//m_ppBullets = new Bullet *[m_nBulletNum];
-
-	////それぞれの配列に弾をメモリ確保
-	//for (int i = 0; i < m_nBulletNum; i++)
-	//{
-	//	m_ppBullets[i] = new Bullet(settings[i].size);
-	//	m_ppBullets[i]->SetPos(settings[i].pos);
-	//	m_ppBullets[i]->Init();	// 弾用初期化
-	//}
-
 	//----- プレイヤー処理 -----
 	GameObject::Init();	// プレイヤー用初期化？
 	if (m_pBuffer == NULL) {
@@ -143,20 +107,12 @@ bool Player::Init()
 //==============================================================
 void Player::Uninit()
 {
-	//if (m_ppBullets != NULL)
-	//{
-	//	for (int i = 0; i < m_nBulletNum; i++)
-	//	{
-	//		m_ppBullets[i]->Uninit();
-	//		//個別に削除
-	//		delete m_ppBullets[i];
-	//		m_ppBullets[i] = NULL;
-	//	}
-	//	//配列を削除
-	//	delete[] m_ppBullets;
-	//	m_ppBullets = NULL;
-	//}
-
+	if (m_pBuffer != NULL) {
+		delete[] m_pBuffer;
+		m_pBuffer = NULL;
+		delete m_pFBX;
+		m_pFBX = NULL;
+	}
 	SAFE_RELEASE(m_pPlayerTex);
 
 	GameObject::Uninit();
@@ -181,8 +137,6 @@ void Player::Update()
 	bool keyR = IsPress('D');
 	bool keyU = IsPress('W');
 	bool keyD = IsPress('S');
-	//bool keyBlue = IsPress('E');
-	//bool keyRed = IsPress('Q');
 	bool keyJ = IsTrigger(VK_SPACE);
 
 	//１秒間（60FPS）で2M進ことを表す。
@@ -221,14 +175,6 @@ void Player::Update()
 		}
 	}
 
-	//if (keyRed) {	// 赤に切り替え
-	//	rbFlg = true;	// 赤
-	//}
-
-	//if (keyBlue) {	// 青に切り替え
-	//	rbFlg = false;	// 青
-	//}
-
 	if (keyD) { m_move.z -= Move; }
 	if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
 
@@ -238,17 +184,6 @@ void Player::Update()
 	if (IsPress(VK_DOWN)) {	// 弾の飛ばす位置短く
 		/*todo 弾の飛距離落とす*/
 	}
-
-	//if (IsTrigger('Z')){	// 弾飛ばす
-	//	//CreateBullet(m_pControllCamera,rbFlg);
-	//	CreateBullet(rbFlg);
-	//}
-
-	//if (IsTrigger('F')) {	// 弾飛ばす
-
-	//	CreateBullet(m_pControllCamera,rbFlg);
-
-	//}
 
 	MyVector2 direction(0, 0);
 
@@ -271,37 +206,9 @@ void Player::Update()
 	m_move.z = direction.y * Move;
 
 
-	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) {
-		for (int j = 0; j < m_nBulletNum; j++) {
-			if (!CollisionSphere(m_pDwarfManager->GetDwarf(i), m_ppBullets[j])) {		// 近くにいなかったら下の処理をしない
-				continue;
-			}
-
-			if (m_ppBullets[j]->GetRB() == m_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
-				//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(true);		// 移動許可
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(true);	// 追跡を始める
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(false);		// 弾から離れない
-			} else {
-				//m_pDwarfManager->GetDwarf(i)->SetMoveFlg(false);	// 移動許可しない
-				m_pDwarfManager->GetDwarf(i)->SetFollowFlg(false);	// 追跡しない
-				m_pDwarfManager->GetDwarf(i)->SetrunFlg(true);		// 弾から離れる
-			}
-		}
-	}
-
-	BulletFiledCollision();
-
-
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
-
-	for (int i = 0; i < m_nBulletNum; ++i){
-		if (!m_ppBullets[i]->use){
-			continue;
-		}
-		m_ppBullets[i]->Update();
-	}
 }
 
 //==============================================================
@@ -317,12 +224,6 @@ void Player::Draw()
 	DirectX::XMFLOAT3 pPos = m_pos;
 	DirectX::XMFLOAT3 pSize = m_size;
 
-	for (int i = 0; i < m_nBulletNum; ++i){
-		if (!m_ppBullets[i]->use){
-			continue;
-		}
-		m_ppBullets[i]->Draw();
-	}
 
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
@@ -407,227 +308,12 @@ void Player::GetCameraPos(TPSCamera* pCamera)
 	pOldCameraPos = pCamera->GetCameraPos();
 }
 
-
-//==============================================================
-//
-//	Playerクラス::弾情報取得
-//	作成者	： 園田翔大
-//	戻り値	： Bullet型
-//	引数		： int index	... 弾の数
-//
-//==============================================================
-Bullet *Player::GetBullet(int index)
-{
-	if (index < m_nBulletNum){ 
-		return m_ppBullets[index];
-	}
-	return NULL;
-}
-
-//==============================================================
-//
-//	Playerクラス::弾の数の情報取得
-//	作成者	： 園田翔大
-//	戻り値	： int型	... 弾の数(m_nBUlletNum)を返す
-//	引数		： void
-//
-//==============================================================
-int Player::GetBulletNum()
-{
-	return m_nBulletNum;
-}
-
-
-//==============================================================
-//
-//	Playerクラス::弾を生成する処理
-//	作成者	： 園田翔大
-//	編集者	： 伊地田真衣
-//	戻り値	： void
-//	引数		： Camera型の位置,色判定
-//
-//==============================================================
-void Player::CreateBullet(Camera* pCamera , bool rbFlg)
-{
-	DirectX::XMFLOAT3 pCameraPos = pCamera->GetCameraPos();
-	for (int i = 0; i < m_nBulletNum; ++i)
-	{
-		if (m_ppBullets[i]->use){
-			continue;
-		}
-
-		m_ppBullets[i]->use = true;
-		m_ppBullets[i]->SetRB(rbFlg);
-		if (m_ppBullets[i]->GetRB()) {	// trueが赤
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f));	// 赤をセット
-		} else {
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f));	// 青をセット
-		}
-
-		m_ppBullets[i]->SetPos(m_pos);
-		DirectX::XMFLOAT3 dir;
-
-		float dirY;
-		dirY = pCameraPos.y - pOldCameraPos.y;
-		
-		dir.x = m_pos.x - pCameraPos.x;
-		dir.y = m_pos.y - dirY;
-		dir.z = m_pos.z - pCameraPos.z;
-
-		//ベクトルの大きさ
-		float L;
-		L = sqrtf((dir.x * dir.x)  + (dir.y * dir.y) +(dir.z * dir.z));
-
-		//// dir の長さを1にする(正規化)
-		dir.x = dir.x / L;
-		dir.y = dir.y / L;
-		dir.z = dir.z / L;
-
-		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
-		dir.x = dir.x * BULLET_SPEED;
-		dir.y = dir.y * BULLET_SPEED;
-		dir.z = dir.z * BULLET_SPEED;
-
-		//m_ppBullets[i]->SetMove(dir);
-		m_ppBullets[i]->SetMove(dir);
-		break;
-	}
-}
-
-//==============================================================
-//
-//	Playerクラス::弾を生成する処理(プレイヤー座標を元に)
-//	作成者	： 園田翔大
-//	編集者	： 伊地田真衣
-//	戻り値	： void
-//	引数		： 色判定
-//
-//==============================================================
-void Player::CreateBullet(bool rbFlg)
-{
-	DirectX::XMFLOAT3 pPlayerPos = m_pos;
-	for (int i = 0; i < m_nBulletNum; ++i){
-		if (m_ppBullets[i]->use) {
-			continue;
-		}
-		m_ppBullets[i]->use = true;
-		m_ppBullets[i]->SetRB(rbFlg);
-		if (m_ppBullets[i]->GetRB()) {	// trueが赤
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));	// 赤をセット
-		}
-		else {
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));	// 青をセット
-		}
-
-		m_ppBullets[i]->SetPos(m_pos);
-		DirectX::XMFLOAT3 dir;
-
-		
-		float dirY;
-		dirY = 1.0f / FPS;
-
-		dir.x = -(m_pos.x - m_Angle.x);
-		dir.y = dirY;
-		dir.z = -(m_pos.z - m_Angle.z);
-
-		//ベクトルの大きさ
-		float L;
-		L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
-
-		//// dir の長さを1にする(正規化)
-		dir.x = dir.x / L;
-		dir.y = dir.y / L;
-		dir.z = dir.z / L;
-
-		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
-		dir.x = dir.x * BULLET_SPEED;
-		dir.y = dir.y * BULLET_SPEED;
-		dir.z = dir.z * BULLET_SPEED;
-
-		//m_ppBullets[i]->SetMove(dir);
-		m_ppBullets[i]->SetMove(dir);
-		break;
-	}
-}
-
-//==============================================================
-//
-//	Playerクラス::弾を破壊する処理
-//	作成者	: 園田翔大
-//	戻り値	: void
-//	引数		: void
-//
-//==============================================================
-void Player::DestroyBullet()
-{
-	for (int i = 0; i < m_nBulletNum; ++i)
-	{
-		if (!m_ppBullets[i]->use)
-		{
-			continue;
-		}
-		m_ppBullets[i]->use = false;
-		break;
-	}
-}
-
-
-//=============================================================
-//
-//	弾がフィールドと接しているかの判定処理
-//	作成者	： 吉原飛鳥
-//	編集者	： 伊地田真衣
-//	戻り値	： void
-//　引数	： void
-//
-//=============================================================
-void Player::BulletFiledCollision() {
-	for (int i = 0; i < m_nBulletNum; i++) {
-		if (!m_ppBullets[i]->use) {	// 弾なかったら下の処理やらん
-			continue;
-		}
-		if (!CollisionSphere(m_ppBullets[i], m_pStage->GetStage(0))) {	// 当たってなかったら下の処理やらん
-			m_ppBullets[i]->SetColFlg(false);
-			continue;
-		}
-		m_ppBullets[i]->SetColFlg(true);
-	}
-}
-
-
-//==============================================================
-//
-//	Playerクラス::小人の情報の取得
-//	作成者	: 伊地田真衣
-//	戻り値	: void
-//	引数	: 小人管理クラスのポインタ
-//
-//==============================================================
-void Player::SetDwarfInfo(DwarfManager *pDwarfManager)
-{
-	m_pDwarfManager = pDwarfManager;
-}
-
-//==============================================================
-//
-//	Playerクラス::ステージの情報の取得
-//	作成者	: 伊地田真衣
-//	戻り値	: void
-//	引数	: ステージ管理クラスのポインタ
-//
-//==============================================================
-void Player::SetStageInfo(StageManager *pStage) {
-	m_pStage = pStage;
-}
-
-
 //====================================================================
 //
 //		テクスチャ読み込み
 //
 //====================================================================
 bool Player::LoadPlayer(const char* pFilePath) {
-	/* 以下はモデルが来たら使用 */
 	HRESULT hr;
 	m_pFBX = new FBXPlayer;
 	hr = m_pFBX->LoadModel(pFilePath);

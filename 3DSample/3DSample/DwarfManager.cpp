@@ -81,7 +81,6 @@ bool DwarfManager::Init()
 		m_ppDwarf[i]->Init();
 	}
 
-
 	return true;
 }
 
@@ -121,8 +120,27 @@ void DwarfManager::Update()
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;
 		}
+	
+		//for (int j = 0; j < MAX_BULLET; j++) 
+		//{
+		//	if (!CollisionSphere(m_ppDwarf[i], m_pBullet->GetBullet(j))) {		// 近くにいなかったら下の処理をしない
+		//		continue;
+		//	}
+
+		//	if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+		//		//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
+		//		m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
+		//		m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
+		//	} else {
+		//		//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
+		//		m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
+		//		m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
+		//	}
+		//}
+
 		m_ppDwarf[i]->Update();
 	}
+
 }
 
 
@@ -184,41 +202,17 @@ void DwarfManager::SetAllDwarfTarget(XMFLOAT3 pos)
 	}
 }
 
-
 //==============================================================
 //
-//	ステージの情報の取得
+//	弾の情報の取得
 //	作成者	: 伊地田真衣
 //	戻り値	: void
-//	引数	: ステージ管理クラスのポインタ
+//	引数	: 弾管理クラスのポインタ
 //
 //==============================================================
-void DwarfManager::SetStageInfo(StageManager *pStage) {
-	m_pStage = pStage;
-}
-
-
-
-//=============================================================
-//
-//	小人がフィールドと接しているかの判定処理
-//	作成者	： 吉原飛鳥
-//	編集者	： 伊地田真衣
-//	戻り値	： void
-//　引数	： void
-//
-//=============================================================
-void DwarfManager::DwarfFiledCollision(int num) {
-	if (!m_ppDwarf[num]->GetAliveFlg()) {	// 死んでたら下の処理やらん
-		return;
-	}
-	if (!CollisionAABB(m_ppDwarf[num], m_pStage->GetStage(1))) {	// 当たってなかったら下の処理やらん
-		//m_ppDwarf[i]->SetColFlg(false);	// 当たっていない
-		return;
-	}
-	//m_ppDwarf[i]->SetColFlg(true);	// 当たっている
-	Push(m_ppDwarf[num], m_pStage->GetStage(1));
-	
-}
+//void DwarfManager::SetBulletInfo(BulletManager *pBullet)
+//{
+//	m_pBullet = pBullet;
+//}
 
 

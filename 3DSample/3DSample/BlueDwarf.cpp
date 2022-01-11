@@ -16,7 +16,6 @@
 #include "Collision.h"
 #include "Player.h"
 #include "Texture.h"
-#include "Bullet.h"
 #include "GameScene.h"
 
 //========================= ’è”’è‹` ===========================

@@ -3,6 +3,7 @@
 
 //========================= インクルード部 ===========================
 #include "DwarfBase.h"
+#include "BulletManager.h"
 
 //========================= クラス定義 ===========================
 class DwarfManager 
@@ -19,21 +20,17 @@ public:
 	DwarfBase *GetDwarf(int index);
 	int			GetDwarfNum();
 	void		SetAllDwarfTarget(XMFLOAT3 pos);
-	void SetStageInfo(StageManager *pStage);		// 床の情報を取得
-
-
+	//void SetBulletInfo(BulletManager *pBullet);
 
 	//---変数
 
 private:
 	//---関数
-	void DwarfFiledCollision(int num);				// 小人と床の当たり判定
 
 	//---変数
 	DwarfBase **m_ppDwarf;
-	int			 m_DwarfNum;
-	StageManager *m_pStage;		// 当たり判定用ステージクラスポインタ
-	
+	int m_DwarfNum;
+	//BulletManager *m_pBullet;
 };
 
 #endif

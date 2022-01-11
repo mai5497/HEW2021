@@ -56,13 +56,13 @@ Model				*g_pModel;
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
-DwarfManager		*g_pDwarfManager;
 StageManager		*g_pStageManager;
 Collision			*g_pCollision;
 PlayerToEnemy		*g_pPlayerToEnemy;
 Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
+DwarfManager		*g_pDwarfManager;
 BulletManager		*g_pBulletManger;
 
 
@@ -75,7 +75,7 @@ XMFLOAT3 g_recBulletPos;
 XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
 
 int g_LastBulletNun = -1;
-Bullet *g_pBullet[5];
+BulletBase *g_pBullet[MAX_BULLET];
 
 //==============================================================
 //
@@ -129,6 +129,14 @@ void GameScene::Init(int StageNum)
 	//g_pCamera = new Camera();
 	//g_pCamera->Init();
 	
+	// 弾の管理クラス
+	g_pBulletManger = new BulletManager();
+	g_pBulletManger->Init();
+
+	// 小人管理クラス実体化
+	g_pDwarfManager = new DwarfManager();
+	g_pDwarfManager->Init();
+
 	// プレイヤークラス実体化
 	g_pPlayer = new Player();
 	g_pPlayer->Init();
@@ -142,14 +150,6 @@ void GameScene::Init(int StageNum)
 
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 	g_pPlayer->GetCameraPos(g_pTPSCamera);
-
-	// 小人管理クラス実体化
-	g_pDwarfManager = new DwarfManager();
-	g_pDwarfManager->Init();
-
-	// 弾の管理クラス
-	g_pBulletManger = new BulletManager();
-	g_pBulletManger->Init();
 
 	// 回収車
 	g_pCollector = new Collector();
@@ -195,7 +195,7 @@ void GameScene::Init(int StageNum)
 //	GameSceneクラス::Uninit
 //	作成者	： 園田翔大
 //	戻り値	： void
-//	引数		： void
+//	引数	： void
 //
 //==============================================================
 void GameScene::Uninit()
@@ -269,17 +269,16 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// プレイヤー更新
-	g_pPlayer->SetDwarfInfo(g_pDwarfManager);						// playerのメンバ変数に情報を渡す
 	g_pPlayer->Update();
-
-	// 小人更新処理
-	g_pDwarfManager->SetStageInfo(g_pStageManager);		// 小人のメンバ変数に情報を渡す
-	g_pDwarfManager->Update();
 
 	// 弾更新
 	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());
 	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
 	g_pBulletManger->Update();
+
+	// 小人更新処理
+	//g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
+	g_pDwarfManager->Update();
 	
 	// 回収者
 	g_pCollector->Update();
@@ -291,7 +290,6 @@ SCENE GameScene::Update()
 	//g_pEnemyManager->Update();
 
 	// ステージ更新
-	g_pPlayer->SetStageInfo(g_pStageManager);
 	g_pStageManager->Update();
 
 	g_recPlayerPos = g_pPlayer->GetPos();
@@ -363,6 +361,10 @@ SCENE GameScene::Update()
 	 	//g_pEnemy->EnemyStop();
 	} */
 
+
+	//****************************************************************************
+	//	小人の追跡処理（ランダムで移動先決めてうろうろさせる）
+	//****************************************************************************
 	static int Timer;
 	if (Timer < 0) {
 		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
@@ -380,14 +382,12 @@ SCENE GameScene::Update()
 	//****************************************************************************
 	//	小人の追跡処理
 	//****************************************************************************
-	for (int i = 0; i < g_pPlayer->GetBulletNum(); i++){
-		g_pBullet[i] = g_pPlayer->GetBullet(i);						// 弾情報取得
+	for (int i = 0; i < MAX_BULLET; i++){
+		g_pBullet[i] = g_pBulletManger->GetBullet(i);						// 弾情報取得
 		if (g_pBullet[i]->use) {									// 最後の指示を通す
 			g_LastBulletNun = i;
 		}
 		for (int j = 0; j  <  g_pDwarfManager->GetDwarfNum(); j++){
-			g_pPlayer->SetDwarfInfo(g_pDwarfManager);				// playerのメンバ変数に情報を渡す
-
 			if (!g_pBullet[i]->use){								// 弾未使用ならスキップ
 				continue;
 			}
@@ -398,19 +398,7 @@ SCENE GameScene::Update()
 
 			//---ピクミンの弾への追尾
 			g_pDwarfManager->GetDwarf(j)->TargetPos(g_recBulletPos);
-
 		}
-
-		//*******************************************************************************
-		//	当たり判定取得
-		//*******************************************************************************
-		g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStageManager->GetStage(0));				// 弾とフィールドの当たり判定
-
-		// 円での当たり判定(中心点の距離計算は0.5f)
-		//if (g_pCollision->CollisionSphere(g_pBullet[i], g_pStage->GetField(1), 1.0f)) {
-		//	g_pPlayer->GetBullet(i)->SetCollor(XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-		//}
-
 	}
 	
 #ifdef _DEBUG
@@ -418,7 +406,7 @@ SCENE GameScene::Update()
 	//	デバッグ用キー処理
 	//*******************************************************************************
 	if (IsTrigger('X')){				// Xキーで弾消去
-		g_pPlayer->DestroyBullet();
+		g_pBulletManger->DestroyBullet();
 	}
 	if (IsTrigger('0')) {				// 0キーでゲームクリア
 		m_IsClear = true;

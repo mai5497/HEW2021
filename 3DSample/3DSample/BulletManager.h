@@ -14,6 +14,14 @@
  //*******************************************************************************
 #include	"BulletBase.h"
 #include	"Player.h"
+
+//*******************************************************************************
+// 定数・マクロ定義
+//*******************************************************************************
+#define	MAX_RED_BULLET		(5)									// 赤弾の最大値
+#define	MAX_BLUE_BULLET		(5)									// 青弾の最大値
+#define	MAX_BULLET			(MAX_RED_BULLET + MAX_BLUE_BULLET)	// 弾の最大値(赤弾 + 青弾)
+
 //*******************************************************************************
 // クラス宣言															
 //*******************************************************************************
@@ -34,6 +42,7 @@ public:
 	//virtual void CreateBullet(XMFLOAT3 Pos, bool rbFlg);	// 弾の生成
 	//virtual void OnCollision(GameObject*);
 	void DestroyBullet();									// 弾の破壊
+	BulletBase* GetBullet(int index);						// 弾の情報を渡す
 
 	// ---プレイヤー処理
 	void SetPlayePos(XMFLOAT3 Pos);							// プレイヤーの座標を設定

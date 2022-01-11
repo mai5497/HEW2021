@@ -3,7 +3,6 @@
 
 #include"Texture.h"
 #include "Scene.h"
-#include "Bullet.h"
 
 class GameScene :public Scene
 {

@@ -4,6 +4,7 @@
 // 作成者:吉原飛鳥
 // 
 // 更新日:2021/12/26	作成
+//		 :2022/01/10	定数定義の一部をヘッダへ移動
 //====================================================================
 
  //*******************************************************************************
@@ -18,17 +19,15 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define	MAX_RED_BULLET		(5)									// 赤弾の最大値
-#define	MAX_BLUE_BULLET		(5)									// 青弾の最大値
-#define	MAX_BULET			(MAX_RED_BULLET + MAX_BLUE_BULLET)	// 弾の最大値(赤弾 + 青弾)
 #define BULLET_SPEED		(0.5f)								// 弾の速度
+
 
 //==============================================================
 //
 //	BulletManager::コンストラクタ
 // 
 //==============================================================
-BulletManager::BulletManager():m_ppBullets(nullptr),m_BulletNum(MAX_BULET)
+BulletManager::BulletManager():m_ppBullets(nullptr),m_BulletNum(MAX_BULLET)
 {
 
 }
@@ -59,18 +58,17 @@ bool BulletManager::Init()
 	// 弾の初期化...BulletBaseのコンストラクタで行うためここではとりあえず行わない。-2021/01/09時点
 
 	// ポインタを格納する配列を作成
-	m_ppBullets = new BulletBase * [MAX_BULET];
+	m_ppBullets = new BulletBase * [MAX_BULLET];
 
 	// 弾の最大数分メモリ確保
-	for (int i = 0; i < MAX_BULET; ++i){
-		// それぞれの配列に小人をメモリ確保
+	for (int i = 0; i < MAX_BULLET; ++i){
+		// それぞれの配列に弾をメモリ確保
 		if (i < MAX_RED_BULLET){						// 赤弾のメモリ確保
 			m_ppBullets[i] = new BulletRed;
 		}else{											// 青弾のメモリ確保
 			m_ppBullets[i] = new BulletBlue;
 
 		}
-
 		m_ppBullets[i]->Init();
 	}
 
@@ -85,7 +83,7 @@ bool BulletManager::Init()
 void BulletManager::Uninit()
 {
 	// 弾の最大数メモリ開放
-	for (int i = 0; i < MAX_BULET; i++)
+	for (int i = 0; i < MAX_BULLET; i++)
 	{
 		m_ppBullets[i]->Uninit();
 		delete m_ppBullets[i];
@@ -113,7 +111,7 @@ void BulletManager::Update()
 		CreateBullet(rbflg);
 	}
 	// 弾の最大数更新処理
-	for (int i = 0; i < MAX_BULET; i++) {
+	for (int i = 0; i < MAX_BULLET; i++) {
 		if (!m_ppBullets[i]->use) {
 			continue;
 		}
@@ -129,7 +127,7 @@ void BulletManager::Update()
 void BulletManager::Draw()
 {
 	//　弾の最大数描画処理
-	for (int i = 0; i < MAX_BULET; i++){
+	for (int i = 0; i < MAX_BULLET; i++){
 		if (!m_ppBullets[i]->use){
 			continue;
 		}
@@ -150,18 +148,19 @@ void BulletManager::Draw()
 //==============================================================
 void BulletManager::CreateBullet(bool rbFlg)
 {
-	for (int i = 0; i < MAX_BULET; ++i) {
+	for (int i = 0; i < MAX_BULLET; ++i) {
 		if (m_ppBullets[i]->use) {
 			continue;
 		}
-		m_ppBullets[i]->use = true;
 		m_ppBullets[i]->SetRBFlg(rbFlg);
-		if (m_ppBullets[i]->GetRBFlg()) {	// trueが赤
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f));	// 赤をセット
+		if (rbFlg == true) {	// trueが赤
+			m_ppBullets[i] = new BulletRed;
+			m_ppBullets[i]->Init();
+		} else {
+			m_ppBullets[i] = new BulletBlue;
+			m_ppBullets[i]->Init();
 		}
-		else {
-			m_ppBullets[i]->SetCollor(DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f));	// 青をセット
-		}
+		m_ppBullets[i]->use = true;
 
 		m_ppBullets[i]->SetPos(m_PlayerPos);
 		XMFLOAT3 dir;
@@ -205,7 +204,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 //==============================================================
 void BulletManager::DestroyBullet()
 {
-	for (int i = 0; i < MAX_BULET; ++i)
+	for (int i = 0; i < MAX_BULLET; ++i)
 	{
 		if (!m_ppBullets[i]->use)
 		{
@@ -241,4 +240,16 @@ void BulletManager::SetPlayePos(XMFLOAT3 pos)
 void BulletManager::SetPlayerAngle(XMFLOAT3 angle)
 {
 	m_PlayerAngle = angle;
+}
+
+//====================================================================
+//
+//		弾情報取得
+//
+//====================================================================
+BulletBase* BulletManager::GetBullet(int index) {
+	if (index < MAX_BULLET) {
+		return m_ppBullets[index];
+	}
+	return NULL;
 }
