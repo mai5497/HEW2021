@@ -221,6 +221,8 @@ void Player::Update()
 //==============================================================
 void Player::Draw()
 {
+	SHADER->Bind(VS_WORLD, PS_PHONG);
+
 	DirectX::XMFLOAT3 pPos = m_pos;
 	DirectX::XMFLOAT3 pSize = m_size;
 
