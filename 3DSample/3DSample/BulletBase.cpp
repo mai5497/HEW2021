@@ -16,6 +16,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define BULLET_GRAVITY						(0.1f / FPS)
+#define BULLET_DESTOROY_CNT			(180)							// 弾が消えるまでの時間
 
 //==============================================================
 //
@@ -33,6 +34,10 @@ BulletBase::BulletBase() : m_rbFlg(true),m_ColFlg(false)
 	m_size.z = 0.25f;
 	m_sleep = 0;
 	m_sleep2 = 0;
+
+	m_BulletAngle = 0.0f;								// 角度の初期化
+	m_dir = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 向き
+	m_AliveTime = BULLET_DESTOROY_CNT;	// 生存時間
 }
 
 
@@ -56,6 +61,12 @@ void BulletBase::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY;
 
+
+	// 弾の時間経過での破壊処理
+	m_AliveTime--;					// 生存時間のカウントダウン
+	if (m_AliveTime < 0){			// 0
+		use = false;					// 使用フラグを変更
+	}
 	//if (m_ColFlg) {
 	if (m_pos.y < 1.0f) {							// 今は高さで判定
 		m_move.x = 0.0f;

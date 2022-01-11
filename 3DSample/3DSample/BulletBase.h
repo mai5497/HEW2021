@@ -52,9 +52,11 @@ private:
 	int m_sleep;
 	int m_sleep2;
 	float m_BulletAngle;						// 角度
-	XMFLOAT3 m_dir;								// 向き
+	XMFLOAT3 m_dir;							// 向き
+	int m_AliveTime;							// 弾の生存時間
 
-	bool m_rbFlg;								// true　→　赤			false　→　青
+	bool m_rbFlg;									// true　→　赤			false　→　青
 	bool m_ColFlg;								// true　→　接している		false → 接していない
+
 
 };
