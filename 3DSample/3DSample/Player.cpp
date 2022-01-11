@@ -110,6 +110,7 @@ void Player::Uninit()
 	if (m_pBuffer != NULL) {
 		delete[] m_pBuffer;
 		m_pBuffer = NULL;
+
 		delete m_pFBX;
 		m_pFBX = NULL;
 	}

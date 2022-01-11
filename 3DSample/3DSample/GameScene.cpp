@@ -522,6 +522,8 @@ SCENE GameScene::Update()
 		sceneState = UpdateClear();
 		if (sceneState == NEXTSTAGE) {
 			/* todo：次のステージへ */
+			GameScene::Uninit();
+			GameScene::Init(m_StageNum + 1);
 		}
 		if (sceneState == GO_SELECT) {
 			return SCENE_SELECT;
@@ -531,6 +533,8 @@ SCENE GameScene::Update()
 		sceneState = UpdateGameOver();
 		if (sceneState == STATE_RETRY){
 			/* todo : リトライ */
+			GameScene::Uninit();
+			GameScene::Init(m_StageNum);
 		}
 		if (sceneState == STATE_SELECT) {
 			return SCENE_SELECT;
@@ -656,8 +660,6 @@ void GameScene::Draw()
 	g_pCollector->Draw();
 	g_pCollectionPoint->Draw();
 
-
-
 	// 敵の描画
 	//g_pEnemyManager->Draw();
 
@@ -685,6 +687,9 @@ void GameScene::Draw()
 	//	EnableCulling(true);
 
 	// 
+
+
+
 	if (m_IsClear) {
 		DrawClear();
 	}
@@ -692,6 +697,7 @@ void GameScene::Draw()
 	if (m_IsGameOver) {
 		DrawGameOver();
 	}
+
 	g_pScore->Draw();
 
 	g_pTutorial->Draw();
