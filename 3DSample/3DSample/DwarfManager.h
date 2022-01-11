@@ -33,6 +33,7 @@ private:
 	DwarfBase **m_ppDwarf;
 	int m_DwarfNum;
 	BulletManager *m_pBullet;
+	static int m_collectionSum;
 };
 
 #endif

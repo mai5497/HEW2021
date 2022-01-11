@@ -50,7 +50,7 @@ Player::Player():m_pControllCamera(nullptr)
 	// ---ïœêîèâä˙âª
 	m_pos.x = -10.0f;
 	m_pos.y = 3.0f;
-	m_pos.z = -10.0f;
+	m_pos.z = -13.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
