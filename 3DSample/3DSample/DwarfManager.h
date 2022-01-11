@@ -24,7 +24,7 @@ public:
 	void		SetAllDwarfTarget(XMFLOAT3 pos);
 	void SetBulletInfo(BulletManager *pBullet);
 	void AddCollectionSum();
-
+	int GetCollectionSum();
 	//---ïœêî
 
 private:
@@ -34,7 +34,7 @@ private:
 	DwarfBase **m_ppDwarf;
 	int m_DwarfNum;
 	BulletManager *m_pBullet;
-	static int m_collectionSum;
+	int m_collectionSum;
 };
 
 #endif

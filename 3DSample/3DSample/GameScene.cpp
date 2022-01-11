@@ -396,6 +396,9 @@ SCENE GameScene::Update()
 			g_pDwarfManager->AddCollectionSum();
 		}
 	}
+	if (g_pDwarfManager->GetCollectionSum() == MAX_DWARF) {		// ¬l‘S‰ñû‚Å
+		m_IsClear = true;
+	}
 
 
 	//***************************************************************
