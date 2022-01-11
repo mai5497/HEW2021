@@ -5,6 +5,7 @@
 #include "DwarfBase.h"
 #include "BulletManager.h"
 
+
 class BulletManager;
 
 //========================= ƒNƒ‰ƒX’è‹` ===========================
@@ -34,7 +35,7 @@ private:
 	DwarfBase **m_ppDwarf;
 	int m_DwarfNum;
 	BulletManager *m_pBullet;
-	static int m_collectionSum;
+	 int m_collectionSum;
 };
 
 #endif
