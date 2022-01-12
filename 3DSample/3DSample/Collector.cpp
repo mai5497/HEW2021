@@ -154,7 +154,6 @@ void Collector::Update()
 		}
 		// ‰ñŽû’n“_‚ÖˆÚ“®
 		else {
-			CSound::Play(SE_COLLECTOR_1);
 			m_move.x = -(MOVE_SPEED / FPS);
 		}
 		if (m_pos.x < COLLECT_POS_X) {

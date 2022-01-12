@@ -88,12 +88,12 @@ int UpdateGameOver()
 	}
 
 	// 1ボタンでリトライ
-	if (IsTrigger('1')) {
+	if (IsRelease('1')) {
 		return STATE_RETRY;						
 	}
 
 	// 2ボタンでステージ選択
-	if (IsTrigger('2')) {
+	if (IsRelease('2')) {
 		return STATE_SELECT;
 	}
 

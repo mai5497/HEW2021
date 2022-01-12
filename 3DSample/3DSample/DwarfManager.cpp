@@ -115,8 +115,7 @@ void DwarfManager::Update()
 	for (int i = 0; i < MAX_DWARF; i++) 
 	{
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
-			continue;
-			//return // 一体でも死んだらゲームオーバーの為
+			return; // 一体でも死んだらゲームオーバーの為
 		}
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;
@@ -155,8 +154,7 @@ void DwarfManager::Draw()
 	for (int i = 0; i < MAX_DWARF; i++)
 	{
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
-			continue;
-			//return // 一体でも死んだらゲームオーバーの為
+			return; // 一体でも死んだらゲームオーバーの為
 		}
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;

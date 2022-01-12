@@ -33,7 +33,7 @@ void InitClear() {
 	g_pClearObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
 	g_pClearCamera = new Camera;
 	g_pClearCamera->Init();
-	//g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
+	g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
 }
 
 //===========================================================
@@ -61,18 +61,20 @@ int	UpdateClear() {
 	// タイマーカウントダウン
 	g_nTimer--;
 	if (g_nTimer < 0) {
-		return GO_SELECT;	// 一定時間たったらステージ選択へ戻る
+		return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
 	}
 
 	// とりあえず１で次のステージ
-	if (IsTrigger('1')) {
-		return NEXTSTAGE;
+	if (IsRelease('1')) {
+		return STATE_NEXT;
 	}
 	// ２でステージ選択
-	if (IsTrigger('2')) {
-		return GO_SELECT;
+	if (IsRelease('2')) {
+		return STATE_SELECT;
 	}
 	//g_pClearObject->Update();
+
+	return -1;
 }
 
 //===================
