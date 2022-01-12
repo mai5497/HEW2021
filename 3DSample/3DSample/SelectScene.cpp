@@ -19,7 +19,7 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
-#define MAX_OBJ		(5)
+#define MAX_OBJ		(10)
 
 //========================= グローバル変数定義 ===========================
 ID3D11ShaderResourceView* g_pSelectTex[MAX_OBJ];
@@ -27,6 +27,11 @@ Camera* g_pSelectCamera;
 GameObject g_pSelectObject[MAX_OBJ];
 
 const char* g_pTexFName[MAX_OBJ] = {
+	"Assets/Model/Select000.png",
+	"Assets/Model/Select001.jpg",
+	"Assets/Model/Select002.jpg",
+	"Assets/Model/Select003.jpg",
+	"Assets/Model/arrow_down.png",
 	"Assets/Model/Select000.png",
 	"Assets/Model/Select001.jpg",
 	"Assets/Model/Select002.jpg",
@@ -72,9 +77,7 @@ void SelectScene::Init()
 
 	}
 
-
-
-	g_pSelectObject[0].Init();
+	g_pSelectObject[0].Init();	// 背景
 	g_pSelectObject[0].SetPos(DirectX::XMFLOAT3(0, 11, -18));
 	g_pSelectObject[0].SetSize(DirectX::XMFLOAT3(4, 2, 0));
 
@@ -89,6 +92,33 @@ void SelectScene::Init()
 	g_pSelectObject[3].Init();
 	g_pSelectObject[3].SetPos(DirectX::XMFLOAT3(4, 8, -18));
 	g_pSelectObject[3].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[4].Init();
+	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(0, 11, -18));
+	g_pSelectObject[4].SetSize(DirectX::XMFLOAT3(4, 2, 0));
+
+	g_pSelectObject[5].Init();
+	g_pSelectObject[5].SetPos(DirectX::XMFLOAT3(-4, 8, -18));
+	g_pSelectObject[5].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[6].Init();
+	g_pSelectObject[6].SetPos(DirectX::XMFLOAT3(0, 8, -18));
+	g_pSelectObject[6].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[7].Init();
+	g_pSelectObject[7].SetPos(DirectX::XMFLOAT3(4, 8, -18));
+	g_pSelectObject[7].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+	g_pSelectObject[8].Init();
+	g_pSelectObject[8].SetPos(DirectX::XMFLOAT3(0, 11, -18));
+	g_pSelectObject[8].SetSize(DirectX::XMFLOAT3(4, 2, 0));
+
+	g_pSelectObject[9].Init();
+	g_pSelectObject[9].SetPos(DirectX::XMFLOAT3(-4, 8, -18));
+	g_pSelectObject[9].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+
+
+
 
 	// 矢印
 	g_pSelectObject[4].Init();

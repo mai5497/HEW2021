@@ -7,11 +7,18 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
-ID3D11ShaderResourceView* g_pTitleTex;
-DrawBuffer g_pBuffer;
-//TPSCamera* g_pTitleTPSCamera;
+#define MAX_TITLE_TEX	(3)
+
+ID3D11ShaderResourceView* g_pTitleTex[MAX_TITLE_TEX];
 Camera* g_pTitleCamera;
-GameObject* g_pTitleObject;
+GameObject g_pTitleObject[MAX_TITLE_TEX];
+
+const char* g_pTitleTexFName[MAX_TITLE_TEX] = {
+	"Assets/Model/Select000.png",
+	"Assets/Model/Select001.jpg",
+	"Assets/Model/Select002.jpg",
+};
+
 
 TitleScene::TitleScene(void)
 {
@@ -25,15 +32,23 @@ TitleScene::~TitleScene(void)
 
 void TitleScene::Init()
 {
-	LoadTextureFromFile("Assets/Texture/Title.png", &g_pTitleTex);
+	for (int i = 0; i < MAX_TITLE_TEX; i++) {
+		LoadTextureFromFile(g_pTitleTexFName[i], &g_pTitleTex[i]);
+	}
+	g_pTitleObject[0].Init();
+	g_pTitleObject[0].SetPos(XMFLOAT3(0, 0, -18));
+	g_pTitleObject[0].SetSize(XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 0));
+	
+	g_pTitleObject[1].Init();
+	g_pTitleObject[1].SetPos(XMFLOAT3(0, 11, -18));
+	g_pTitleObject[1].SetSize(XMFLOAT3(4, 2, 0));
 
-	//g_pTitleTPSCamera = new TPSCamera();
-	//g_pTitleTPSCamera->Init();
-	//g_pTitleTPSCamera->SetTargetObj(g_pTitleBG);
-	g_pTitleObject = new GameObject;
-	g_pTitleObject->Init();
-	g_pTitleObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
-	g_pTitleObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
+	g_pTitleObject[2].Init();
+	g_pTitleObject[2].SetPos(XMFLOAT3(0, 8, -18));
+	g_pTitleObject[2].SetSize(XMFLOAT3(2, 1, 0));
+
+	
+	
 	g_pTitleCamera = new Camera;
 	g_pTitleCamera->Init();
 
@@ -43,12 +58,12 @@ void TitleScene::Init()
 
 void TitleScene::Uninit()
 {
-	SAFE_RELEASE(g_pTitleTex);
+	for (int i = 0; i < MAX_TITLE_TEX; i++) {
+		SAFE_RELEASE(g_pTitleTex[i]);
+		g_pTitleObject[i].Uninit();
+	}
 	g_pTitleCamera->Uninit();
-	//delete g_pTitleTPSCamera;
 	delete g_pTitleCamera;
-	g_pTitleObject->Uninit();
-	delete g_pTitleObject;
 
 	CSound::Stop(TITLE_BGM);
 }
@@ -68,14 +83,12 @@ void TitleScene::Draw()
 
 	SHADER->Bind(VS_WORLD, PS_PHONG);
 
-	g_pTitleCamera->Bind2D();
+	g_pTitleCamera->Bind();
 	
-	SHADER->SetTexture(g_pTitleTex);
+	for (int i = 0; i < MAX_TITLE_TEX; i++) {
+		SHADER->SetTexture(g_pTitleTex[i]);
+		g_pTitleObject[i].Draw();
+	}
 	
-	//g_pBuffer.Draw(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	
-	g_pTitleObject->Draw();
-
 	SHADER->SetTexture(NULL);
-
 }	
