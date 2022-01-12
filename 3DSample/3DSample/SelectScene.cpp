@@ -27,16 +27,16 @@ Camera* g_pSelectCamera;
 GameObject g_pSelectObject[MAX_OBJ];
 
 const char* g_pTexFName[MAX_OBJ] = {
-	"Assets/Model/Select000.png",
-	"Assets/Model/Select001.jpg",
-	"Assets/Model/Select002.jpg",
-	"Assets/Model/Select003.jpg",
-	"Assets/Model/arrow_down.png",
-	"Assets/Model/Select000.png",
-	"Assets/Model/Select001.jpg",
-	"Assets/Model/Select002.jpg",
-	"Assets/Model/Select003.jpg",
-	"Assets/Model/arrow_down.png",
+	"Assets/Texture/SceneTexture/Select000.png",
+	"Assets/Texture/SceneTexture/Select001.jpg",
+	"Assets/Texture/SceneTexture/Select002.jpg",
+	"Assets/Texture/SceneTexture/Select003.jpg",
+	"Assets/Texture/SceneTexture/arrow_down.png",
+	"Assets/Texture/SceneTexture/Select000.png",
+	"Assets/Texture/SceneTexture/Select001.jpg",
+	"Assets/Texture/SceneTexture/Select002.jpg",
+	"Assets/Texture/SceneTexture/Select003.jpg",
+	"Assets/Texture/SceneTexture/arrow_down.png",
 };
 
 float g_arrowPosX;
