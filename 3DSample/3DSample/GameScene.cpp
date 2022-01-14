@@ -170,9 +170,9 @@ void GameScene::Init(int StageNum)
 	// TPSカメラはプレイヤーより後
 	g_pTPSCamera = new TPSCamera();
 	g_pTPSCamera->SetTargetObj(g_pPlayer);
-	g_pTPSCamera->Init();
+	g_pTPSCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
 	g_pCamera = new Camera();
-	g_pCamera->Init();
+	g_pCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
 
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 	g_pPlayer->GetCameraPos(g_pTPSCamera);

@@ -32,7 +32,7 @@ void InitClear() {
 	g_pClearObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
 	g_pClearObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
 	g_pClearCamera = new Camera;
-	g_pClearCamera->Init();
+	g_pClearCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
 	g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// ”¼“§–¾
 }
 

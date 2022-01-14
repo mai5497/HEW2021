@@ -50,7 +50,7 @@ void TitleScene::Init()
 	
 	
 	g_pTitleCamera = new Camera;
-	g_pTitleCamera->Init();
+	g_pTitleCamera->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
 	// BGMçƒê∂
 	CSound::Play(TITLE_BGM);

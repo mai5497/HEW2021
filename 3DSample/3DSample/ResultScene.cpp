@@ -40,7 +40,7 @@ void ResultScene::Init()
 	g_pResultObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
 	g_pResultObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
 	g_pResultCamera = new Camera;
-	g_pResultCamera->Init();
+	g_pResultCamera->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
 }
 
 void ResultScene::Uninit()
