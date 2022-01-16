@@ -35,9 +35,13 @@ Camera::~Camera()
 
 }
 
-void Camera::Init()
-{
+void Camera::Init() {
+	
+}
 
+void Camera::Init(DirectX::XMFLOAT3 pos)
+{
+	m_pos = pos;
 }
 
 void Camera::Uninit()

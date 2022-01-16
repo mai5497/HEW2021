@@ -150,7 +150,7 @@ void Player::Update()
 	//プレイヤー移動
 	m_move.y -= 0.01f;	// 重力
 	if (m_pos.z == -13.0f) {
-		if (keyL) {
+		if (keyL ) {
 			moveFlg = true;
 			m_move.x -= Move;
 			if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f) {

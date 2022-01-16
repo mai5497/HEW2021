@@ -5,6 +5,7 @@
 // 
 // 更新日:2022/01/03	作成
 //		 :2022/01/11	サウンド追加
+//		 :2022/01/16	着地SEうるせえから静かにした
 //====================================================================
 
  //*******************************************************************************
@@ -25,7 +26,10 @@
 //	BulletBase::コンストラクタ
 // 
 //==============================================================
-BulletBase::BulletBase() : m_rbFlg(true),m_ColFlg(false)
+BulletBase::BulletBase() :
+	m_rbFlg(true),
+	m_ColFlg(false),
+	m_LandingFlg(false)
 {
 	// ---変数初期化	
 	m_pos.x = 1000.0f;						//初期座標x
@@ -63,23 +67,28 @@ void BulletBase::Update()
 	// 重力追加
 	m_move.y -= BULLET_GRAVITY;
 
-
-	// 弾の時間経過での破壊処理
-	m_AliveTime--;					// 生存時間のカウントダウン
-	if (m_AliveTime < 0){			// 0
-		use = false;					// 使用フラグを変更
-	}
 	//if (m_ColFlg) {
 	if (m_pos.y < 1.0f) {							// 今は高さで判定
-
-		// サウンド
-		CSound::Play(SE_BULLET_2);
-
+		m_LandingFlg = true;
+		
 		m_move.x = 0.0f;
 		m_move.y = 0.0f;
 		m_move.z = 0.0f;
 
 		SetMove(m_move);
+	}
+
+	if (m_LandingFlg) {
+		if (m_AliveTime == BULLET_DESTOROY_CNT) {
+			// サウンド
+			CSound::Play(SE_BULLET_2);
+		}
+
+		// 弾の時間経過での破壊処理
+		m_AliveTime--;					// 生存時間のカウントダウン
+		if (m_AliveTime < 0) {			// 0以下になったら
+			use = false;					// 使用フラグを変更
+		}
 	}
 
 	//座標更新

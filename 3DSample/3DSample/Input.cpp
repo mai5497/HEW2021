@@ -1,5 +1,4 @@
 #include "Input.h"
-#include <Xinput.h>
 #include <map>
 #include <stdexcept>
 #include "Defines.h"

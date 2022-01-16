@@ -103,13 +103,14 @@ void BulletManager::Update()
 {
 	static bool rbflg;
 
-	if (IsPress('E')){		
+	if (IsRelease('E') || IsRelease(JPadButton::X)){
 		rbflg = false;		// 青弾セット
+		CSound::Play(SE_BULLET_1);
+		CreateBullet(rbflg);
+
 	}
-	if (IsPress('Q')) {
+	if (IsRelease('Q') || IsRelease(JPadButton::B)) {
 		rbflg = true;		// 赤弾セット
-	}
-	if (IsTrigger('Z')) {
 		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);
 	}

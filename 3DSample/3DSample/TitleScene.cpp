@@ -50,7 +50,7 @@ void TitleScene::Init()
 	
 	
 	g_pTitleCamera = new Camera;
-	g_pTitleCamera->Init();
+	g_pTitleCamera->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
 	// BGMÄ¶
 	CSound::Play(TITLE_BGM);
@@ -72,7 +72,7 @@ SCENE TitleScene::Update()
 
 	//g_pTitleTPSCamera->Update();
 
-	if (IsTrigger('1')) { 
+	if (IsRelease('1') || IsRelease(JPadButton::B)) {
 		CSound::Play(SE_ENTER_1);
 		return SCENE_SELECT;
 	}

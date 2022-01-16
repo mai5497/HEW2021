@@ -8,6 +8,8 @@
 #define NOMINMAX
 #include <Windows.h>
 #include <DirectXMath.h>
+#include <Xinput.h>
+
 
 enum class JPadButton {
 	DPAD_UP			= 0x1,

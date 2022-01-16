@@ -34,7 +34,7 @@ void Score::Init()
 	m_pObjectScore->SetPos(DirectX::XMFLOAT3(0, 10, -10));
 	m_pObjectScore->SetSize(DirectX::XMFLOAT3(8, 6, 1));
 	m_pCameraScore = new Camera;
-	m_pCameraScore->Init();
+	m_pCameraScore->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));;
 
 	m_nScore = 0;
 }

@@ -55,7 +55,7 @@ void InitGameOver()
 	g_pGameOverObject->SetSize(XMFLOAT3(LOGO_SIZE_X, LOGO_SIZE_Y, LOGO_SIZE_Z));
 
 	g_pGameOverCamera = new Camera;
-	g_pGameOverCamera->Init();
+	g_pGameOverCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
 }
 
 //=========================================================
