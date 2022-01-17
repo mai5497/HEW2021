@@ -215,7 +215,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 		//---制御点
 		XMFLOAT3 CenterPos = XMFLOAT3((StartPos.x + EndPos.x) / 2.0f,		// X座標 ... 発射地点と落下地点の中点
 			5.0f / FPS,								// Y座標 ... 高さは任意の値
-			(StartPos.z + EndPos.y) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
+			(StartPos.z + EndPos.z) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
 
 		XMFLOAT3 CurrentPos;
 

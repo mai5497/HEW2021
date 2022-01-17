@@ -72,8 +72,9 @@ void BulletBase::Update()
 	//---放物線をベジェ曲線の計算で処理を行う
 	// ベジェ曲線で算出した値を各座標に格納
 	// CurrentPos = m_pos となる
-	m_ThrowTimer += 1.0f / FPS * 10.0f;
+	m_ThrowTimer += 1.0f / FPS * 120.0f;
 
+	/*
 	m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
 		m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x +
 		m_ThrowTimer * m_ThrowTimer + m_EndPos.x;
@@ -85,13 +86,17 @@ void BulletBase::Update()
 	m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
 		m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z +
 		m_ThrowTimer * m_ThrowTimer + m_EndPos.z;
+		*/
+	m_pos.x = 0.0f;
+	m_pos.y = 3.0f;
+	m_pos.z = 0.0f;
 
 
 
 	//if (m_ColFlg) {
-	if (m_pos.y < 1.0f) {							// 今は高さで判定
-	//if(m_ThrowTimer < 1.0f){
-		m_LandingFlg = true;
+	//if (m_pos.y < 1.0f) {							// 今は高さで判定
+	if(m_ThrowTimer > 1.0f){
+		m_ColFlg = true;
 		//m_move.x = 0.0f;
 		//m_move.y = 0.0f;
 		//m_move.z = 0.0f;
@@ -101,10 +106,14 @@ void BulletBase::Update()
 		use = false;
 	}
 
-	if (m_LandingFlg) {
+	if (m_ColFlg) {
 		if (m_AliveTime == BULLET_DESTOROY_CNT) {
 			// サウンド
 			CSound::Play(SE_BULLET_2);
+			m_LandingFlg = true;
+		}
+		else {
+			m_LandingFlg = false;
 		}
 
 
