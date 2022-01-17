@@ -11,6 +11,15 @@
 
 //========================= インクルード部 ===========================
 #include "StageManager.h"
+#include "Texture.h"
+
+#define STAGE_SIZE (0.007f)
+
+ID3D11ShaderResourceView *m_pStageTex[3];
+
+DrawBuffer *StageManager::m_pBuffer = NULL;
+FBXPlayer *StageManager::m_pfbx = NULL;
+
 
 //====================================================================
 //
@@ -19,7 +28,10 @@
 //====================================================================
 StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 {
-
+	LoadTextureFromFile("Assets/Model/woodground.jpg", &m_pStageTex[0]);
+	LoadTextureFromFile("Assets/Model/ground.png", &m_pStageTex[1]);
+	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[2]);
+	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[3]);
 }
 
 
@@ -33,6 +45,35 @@ StageManager::~StageManager()
 	Uninit();
 }
 
+bool StageManager::LoadStage(const char* pFilePath) {
+	HRESULT hr;
+	m_pfbx = new FBXPlayer;
+	hr = m_pfbx->LoadModel(pFilePath);
+	if (FAILED(hr)) {
+		return false;
+	}
+
+	//モデルのメッシュの数だけ頂点バッファ作成
+	int meshNum = m_pfbx->GetMeshNum();
+	m_pBuffer = new DrawBuffer[meshNum];
+	for (int i = 0; i < meshNum; i++) {
+		//メッシュごとに頂点バッファ作成
+		m_pBuffer[i].CreateVertexBuffer(
+			m_pfbx->GetVertexData(i),
+			m_pfbx->GetVertexSize(i),
+			m_pfbx->GetVertexCount(i)
+		);
+		//インデックスバッファ作成
+		m_pBuffer[i].CreateIndexBuffer(
+			m_pfbx->GetIndexData(i),
+			m_pfbx->GetIndexCount(i)
+		);
+
+	}
+	return true;
+}
+
+
 
 //====================================================================
 //
@@ -45,6 +86,10 @@ bool StageManager::Init(int SelectStageNum)
 {
 	//----- メンバ変数初期化 -----
 	m_SelectStageNum = SelectStageNum;
+	if (m_pBuffer == NULL) {
+		StageManager::LoadStage("Assets/Model/dekoboko.fbx");
+	}
+
 
 
 	//----- ステージ設定 -----
@@ -79,7 +124,22 @@ bool StageManager::Init(int SelectStageNum)
 		//手前の壁
 		{ XMFLOAT3(0.0f,0.0f,-12.5f),
 		  XMFLOAT3(27.0f,3.0f,2.0f)
-		}
+		},
+		//大きい壁右
+		{ XMFLOAT3(25,0.0f,0),
+		  XMFLOAT3(1,30,50),
+		},
+
+		//大きい壁左
+		{ XMFLOAT3(-25,0.0f,0),
+		  XMFLOAT3(1,30,50),
+		},
+
+		//大きい壁奥
+		{ XMFLOAT3(0,0.0f,25),
+		  XMFLOAT3(50,30,1),
+		},
+
 	};
 
 
@@ -144,6 +204,18 @@ bool StageManager::Init(int SelectStageNum)
 //====================================================================
 void StageManager::Uninit()
 {
+	if (m_pBuffer != NULL) {
+		delete[] m_pBuffer;
+		m_pBuffer = NULL;
+		delete m_pfbx;
+		m_pfbx = NULL;
+	}
+
+	SAFE_RELEASE(m_pStageTex[0]);
+	SAFE_RELEASE(m_pStageTex[1]);
+	SAFE_RELEASE(m_pStageTex[2]);
+
+
 	if (m_ppStages != NULL){
 		for (int i = 0; i < m_nStageNum; i++){
 			//個別に削除
@@ -177,10 +249,44 @@ void StageManager::Update()
 //====================================================================
 void StageManager::Draw()
 {
-	for (int i = 0; i < m_nStageNum; ++i)
-	{
-		m_ppStages[i]->Draw();
-	}
+	int meshNum = m_pfbx->GetMeshNum();
+
+	SHADER->SetTexture(m_pStageTex[2]);
+	m_ppStages[0]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[1]);
+	m_ppStages[1]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[0]);
+	m_ppStages[2]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[0]);
+	m_ppStages[3]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[0]);
+	m_ppStages[4]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[0]);
+	m_ppStages[5]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[3]);
+	m_ppStages[6]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[3]);
+	m_ppStages[7]->Draw();
+
+	SHADER->SetTexture(m_pStageTex[3]);
+	m_ppStages[8]->Draw();
+
+	SHADER->SetTexture(NULL);
+
+
+
+
+	//for (int i = 0; i < m_nStageNum; ++i)
+	//{
+	//	m_ppStages[i]->Draw();
+	//}
 }
 
 
