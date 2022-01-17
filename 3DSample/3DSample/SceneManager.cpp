@@ -5,9 +5,15 @@
 // 他の関数は各シーンごとの処理を行えないので
 // シーン管理クラス自体の初期化が行えない
 
-SceneManager::SceneManager(void) :m_scene(SCENE_TITLE), m_nextScene(SCENE_TITLE)
+SceneManager::SceneManager(void)
 {
+#ifdef _DEBUG
+	m_scene = SCENE_GAME;
+	m_nextScene = SCENE_GAME;
 
+#endif
+	m_scene = SCENE_TITLE;
+	m_nextScene = SCENE_TITLE;
 }
 
 SceneManager::~SceneManager(void)

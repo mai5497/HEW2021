@@ -172,7 +172,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 		}
 		m_ppBullets[i]->use = true;
 
-		m_ppBullets[i]->SetPos(m_PlayerPos);
+		//m_ppBullets[i]->SetPos(m_PlayerPos);
 
 
 		//XMFLOAT3 dir;		// 射出方向
@@ -213,7 +213,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		//---制御点
 		XMFLOAT3 CenterPos = XMFLOAT3((StartPos.x + EndPos.x) / 2.0f,		// X座標 ... 発射地点と落下地点の中点
-			5.0f,								// Y座標 ... 高さは任意の値
+			5.0f / FPS,								// Y座標 ... 高さは任意の値
 			(StartPos.z + EndPos.y) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
 
 		XMFLOAT3 CurrentPos;

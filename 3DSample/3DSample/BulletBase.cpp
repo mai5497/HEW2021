@@ -65,7 +65,7 @@ BulletBase::~BulletBase()
 void BulletBase::Update()
 {
 	// èdóÕí«â¡
-	m_move.y -= BULLET_GRAVITY;
+	//m_move.y -= BULLET_GRAVITY;
 
 	//if (m_ColFlg) {
 	if (m_pos.y < 1.0f) {							// ç°ÇÕçÇÇ≥Ç≈îªíË

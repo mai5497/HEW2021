@@ -14,9 +14,9 @@ Camera* g_pTitleCamera;
 GameObject g_pTitleObject[MAX_TITLE_TEX];
 
 const char* g_pTitleTexFName[MAX_TITLE_TEX] = {
-	"Assets/Model/Select000.png",
-	"Assets/Model/Select001.jpg",
-	"Assets/Model/Select002.jpg",
+	"Assets/Texture/SceneTexture/Title_BG.png",
+	"Assets/Texture/SceneTexture/Title_Logo.png",
+	"Assets/Texture/SceneTexture/Press_A.png",
 };
 
 

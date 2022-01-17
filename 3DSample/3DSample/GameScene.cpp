@@ -137,6 +137,9 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
+	g_pCamera = new Camera();
+	g_pCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
+
 	// メンバ変数初期化
 	m_StageNum = StageNum;					// 現在のステージ番号保存
 	m_NextStageNum = m_StageNum;			// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
@@ -153,7 +156,7 @@ void GameScene::Init(int StageNum)
 
 	// 小人管理クラス実体化
 	g_pDwarfManager = new DwarfManager();
-	g_pDwarfManager->Init();
+	//g_pDwarfManager->Init();
 
 	// プレイヤークラス実体化
 	g_pPlayer = new Player();
@@ -163,8 +166,7 @@ void GameScene::Init(int StageNum)
 	g_pTPSCamera = new TPSCamera();
 	g_pTPSCamera->SetTargetObj(g_pPlayer);
 	g_pTPSCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
-	g_pCamera = new Camera();
-	g_pCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
+
 
 	g_pPlayer->SetControllCamera(g_pTPSCamera);
 	g_pPlayer->GetCameraPos(g_pTPSCamera);

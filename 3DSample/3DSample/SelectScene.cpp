@@ -125,7 +125,7 @@ void SelectScene::Init()
 	g_pSelectCamera->Init();
 
 
-	g_arrowPosX = -4;
+	g_arrowPosX = -0.3f;
 	m_StageNum = 1;
 	CSound::Play(SELECT_BGM);
 
@@ -162,20 +162,23 @@ void SelectScene::Uninit()
 SCENE SelectScene::Update()
 {
 
-	if (IsTrigger('1')) {	// ステージ１
-		m_StageNum = 1;
-		g_arrowPosX = -0.3f;
-
+	if (IsTrigger(VK_RIGHT) || IsRelease(JPadButton::DPAD_RIGHT)) {
+		CSound::Play(SE_SELECT_1);
+		m_StageNum++;
+		g_arrowPosX += 0.3f;
+		if (m_StageNum > 3) {
+			m_StageNum = 3;
+			g_arrowPosX = 0.3f;
+		}
 	}
-	if (IsTrigger('2')) {	// ステージ２
-		m_StageNum = 2;
-		g_arrowPosX = 0.0f;
-
-	}
-	if (IsTrigger('3')) {	// ステージ３
-		m_StageNum = 3;
-		g_arrowPosX = 0.3f;
-
+	if (IsRelease(VK_LEFT) || IsRelease(JPadButton::DPAD_LEFT)) {
+		CSound::Play(SE_SELECT_1);
+		m_StageNum--;
+		g_arrowPosX -= 0.3f;
+		if (m_StageNum < 1) {
+			m_StageNum = 0;
+			g_arrowPosX = -0.3f;
+		}
 	}
 	// 選択されたステージに矢印を移動
 	g_pSelectObject[SELECT_ARROW].SetPos(DirectX::XMFLOAT3(g_arrowPosX, -0.05f, 1));

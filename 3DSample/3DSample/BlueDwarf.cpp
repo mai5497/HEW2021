@@ -34,18 +34,7 @@ FBXPlayer *BlueDwarf::m_pFBX = NULL;
 //====================================================================
 BlueDwarf::BlueDwarf()
 {
-	//----- ïœêîèâä˙âª -----
-	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
-
-	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
-
-	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
-
-	
-	SetRBFlg(false);	// ê¬è¨êl
-	
+	Init();
 }
 
 
@@ -67,8 +56,19 @@ BlueDwarf:: ~BlueDwarf()
 //====================================================================
 bool BlueDwarf::Init()
 {
+	//----- ïœêîèâä˙âª -----
+	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
+
+	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
+
+	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
+
+	SetRBFlg(false);	// ê¬è¨êl
+
 	if (m_pBuffer == NULL) {
-		BlueDwarf::LoadDwarf("Assets/Model/kobitoblue.fbx");
+		LoadDwarf("Assets/Model/kobitoblue.fbx");
 	}
 
 	GameObject::Init();
