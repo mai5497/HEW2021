@@ -7,13 +7,12 @@
 
 SceneManager::SceneManager(void)
 {
+	m_scene = SCENE_TITLE;
+	m_nextScene = SCENE_TITLE;
 #ifdef _DEBUG
 	m_scene = SCENE_GAME;
 	m_nextScene = SCENE_GAME;
-
 #endif
-	m_scene = SCENE_TITLE;
-	m_nextScene = SCENE_TITLE;
 }
 
 SceneManager::~SceneManager(void)

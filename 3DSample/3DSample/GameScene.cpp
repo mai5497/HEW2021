@@ -479,8 +479,7 @@ SCENE GameScene::Update()
 	if (m_IsClear) {
 		sceneState = UpdateClear();
 		if (sceneState == STATE_NEXT) {
-			/* todo：次のステージへ */
-			//GameScene::Uninit();
+			GameScene::Uninit();
 			GameScene::Init(m_StageNum + 1);
 		}
 		if (sceneState == STATE_SELECT) {
@@ -490,8 +489,7 @@ SCENE GameScene::Update()
 	if (m_IsGameOver) {
 		sceneState = UpdateGameOver();
 		if (sceneState == STATE_RETRY){
-			/* todo : リトライ */
-			//GameScene::Uninit();
+			GameScene::Uninit();
 			GameScene::Init(m_StageNum);
 		}
 		if (sceneState == STATE_SELECT) {

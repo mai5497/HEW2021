@@ -48,9 +48,9 @@ Player::Player():m_pControllCamera(nullptr)
 	LoadTextureFromFile("Assets/Model/princess.png", &m_pPlayerTex);
 
 	// ---変数初期化
-	m_pos.x = -10.0f;
+	m_pos.x = 0.0f;
 	m_pos.y = 3.0f;
-	m_pos.z = -13.0f;
+	m_pos.z = -14.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
@@ -148,53 +148,53 @@ void Player::Update()
 	float CameraRad = m_pControllCamera->GetxzAngle() * 3.14159265359f / 180.0f;
 	
 	//プレイヤー移動
-	m_move.y -= 0.01f;	// 重力
-	if (m_pos.z == -13.0f) {
-		if (keyL ) {
-			moveFlg = true;
-			m_move.x -= Move;
-			if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f) {
-				m_Angle.y -= 0.1f;
-			}
-		}
+	//m_move.y -= 0.01f;	// 重力
+	//if (m_pos.z == -13.0f) {
+	//	if (keyL ) {
+	//		moveFlg = true;
+	//		m_move.x -= Move;
+	//		if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f) {
+	//			m_Angle.y -= 0.1f;
+	//		}
+	//	}
 
-		if (keyR) {
-			moveFlg = true;
-			m_move.x += Move;
-			if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f) {
-				m_Angle.y += 0.1f;
-			}
-		}
-	} else if (m_pos.z < -13.0f) {
-		m_pos.z = -13.0f;
-	}
+	//	if (keyR) {
+	//		moveFlg = true;
+	//		m_move.x += Move;
+	//		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f) {
+	//			m_Angle.y += 0.1f;
+	//		}
+	//	}
+	//} else if (m_pos.z < -13.0f) {
+	//	m_pos.z = -13.0f;
+	//}
 
-	if (m_pos.x == 12.5f) {
-		if (keyU) {
-			moveFlg = true;
-			m_move.z += Move;
-			if (m_Angle.y <= -CameraRad) {
-				m_Angle.y += 0.1f;
-			}
-			if (m_Angle.y >= -CameraRad) {
-				m_Angle.y -= 0.1f;
-			}
-		}
-		if (keyD) {
-			m_move.z -= Move;
-		}
-	} else if (m_pos.x > 12.5f) {
-		m_pos.x = 12.5f;
-	}
+	//if (m_pos.x == 12.5f) {
+	//	if (keyU) {
+	//		moveFlg = true;
+	//		m_move.z += Move;
+	//		if (m_Angle.y <= -CameraRad) {
+	//			m_Angle.y += 0.1f;
+	//		}
+	//		if (m_Angle.y >= -CameraRad) {
+	//			m_Angle.y -= 0.1f;
+	//		}
+	//	}
+	//	if (keyD) {
+	//		m_move.z -= Move;
+	//	}
+	//} else if (m_pos.x > 12.5f) {
+	//	m_pos.x = 12.5f;
+	//}
 
-	if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
+	//if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
 
-	if (IsPress(VK_UP)) {	// 弾の飛ばす位置伸ばす
-		/*todo 弾の飛距離伸ばす*/
-	}
-	if (IsPress(VK_DOWN)) {	// 弾の飛ばす位置短く
-		/*todo 弾の飛距離落とす*/
-	}
+	//if (IsPress(VK_UP)) {	// 弾の飛ばす位置伸ばす
+	//	/*todo 弾の飛距離伸ばす*/
+	//}
+	//if (IsPress(VK_DOWN)) {	// 弾の飛ばす位置短く
+	//	/*todo 弾の飛距離落とす*/
+	//}
 
 	MyVector2 direction(0, 0);
 
@@ -216,20 +216,9 @@ void Player::Update()
 	m_move.x = direction.x * Move;
 	m_move.z = direction.y * Move;
 
-	m_pos.x += m_move.x;
-	m_pos.y += m_move.y;
-	m_pos.z += m_move.z;
-
-	// あたり判定
-	if (m_pos.y < 1.5f) {
-		m_pos.y = 1.5f;
-	}
-	if (m_pos.x < -10.0f) {
-		m_pos.x = -10.0f;
-	}
-	if (m_pos.z > 10.0f) {
-		m_pos.z = 10.0f;
-	}
+	//m_pos.x += m_move.x;
+	//m_pos.y = 1.5f;
+	//m_pos.z += m_move.z;
 }
 
 //==============================================================

@@ -65,7 +65,7 @@ public:
 		{
 			if (it->first == model)
 			{
-				return it - m_modelLibrary.end();
+				return it - m_modelLibrary.begin();
 			}
 			++it;
 		}
