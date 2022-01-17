@@ -6,15 +6,27 @@
 
 Camera::Camera()
 	// ---å©â∫ÇÎÇµ
-	: m_pos(0, 12.0f, -20.5f)
-	, m_look(0, 0, 0)
-	, m_up(0, 1, 0)
+	//: m_pos(0, 12.0f, -20.5f)
+	//, m_look(0, 0, 0)
+	//, m_up(0, 1, 0)
+	//, m_angle(60.0f)
+	//, m_near(0.5f)
+	//, m_far(1000.0f)
+	//, m_xzAngle(0.0f)
+	//, m_yAngle(30.0f)
+	//, m_radius(5.0f)
+
+	// ---å©â∫ÇÎÇµ - í≤êÆ
+	: m_pos(0.0f, 25.0f, -15.0f)
+	, m_look(0.0f, 0.0f, 0.0f)
+	, m_up(0.0f, 0.1f, 0.0f)
 	, m_angle(60.0f)
 	, m_near(0.5f)
 	, m_far(1000.0f)
-	, m_xzAngle(0.0f)
-	, m_yAngle(30.0f)
+	, m_xzAngle(30.0f)
+	, m_yAngle(60.0f)
 	, m_radius(5.0f)
+
 
 	// ---TPSéãì_
 	//: m_pos(0, 2.5f, -5)
@@ -27,7 +39,11 @@ Camera::Camera()
 	//, m_yAngle(30.0f)
 	//, m_radius(5.0f)
 {
-
+	//float xzRad = m_xzAngle * 3.141592f / 180.0f;
+	//float yRad = m_yAngle * 3.141592f / 180.0f;
+	//m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
+	//m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
+	//m_pos.y = sin(yRad) * m_radius;
 }
 
 Camera::~Camera()
@@ -36,12 +52,14 @@ Camera::~Camera()
 }
 
 void Camera::Init() {
-	
+
 }
 
 void Camera::Init(DirectX::XMFLOAT3 pos)
 {
 	m_pos = pos;
+
+
 }
 
 void Camera::Uninit()
