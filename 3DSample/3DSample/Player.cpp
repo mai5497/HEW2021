@@ -16,7 +16,6 @@
 #include	<math.h>
 #include	"Controller.h"
 #include	"MyMath.h"
-#include "Camera.h"
 
 
 //*******************************************************************************
@@ -32,7 +31,6 @@ XMFLOAT3 pOldCameraPos;
 DrawBuffer *Player::m_pBuffer = NULL;
 FBXPlayer *Player::m_pFBX = NULL;
 
-Camera *g_pPlayerCamera;
 
 
 //==============================================================
@@ -59,7 +57,6 @@ Player::Player():m_pControllCamera(nullptr)
 
 	m_collisionType = COLLISION_DYNAMIC;
 
-	g_pPlayerCamera = new Camera;
 
 
 }
@@ -74,7 +71,6 @@ Player::Player():m_pControllCamera(nullptr)
 //==============================================================
 Player::~Player()
 {
-	delete g_pPlayerCamera;
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
 	Uninit();
@@ -234,7 +230,6 @@ void Player::Update()
 void Player::Draw()
 {
 	SHADER->Bind(VS_WORLD, PS_PHONG);
-	g_pPlayerCamera->Bind();
 
 	DirectX::XMFLOAT3 pPos = m_pos;
 	DirectX::XMFLOAT3 pSize = m_size;
