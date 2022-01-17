@@ -556,12 +556,8 @@ void GameScene::Draw()
 	//SetLight～　光源の色を設定
 	//Set～　光が当たった物体の反射しやすい色
 
-	/*SHADER->SetLightAmbient(
-		DirectX::XMFLOAT4(0.6f, 0.6f, 0.6f, 0.6f)
-	);
-	SHADER->SetLightSpecular(
-		DirectX::XMFLOAT4(1, 1, 1, 1),
-		20);*/
+	SHADER->SetLightAmbient(XMFLOAT4(0.6f, 0.6f, 0.6f, 0.6f));
+	SHADER->SetLightSpecular(XMFLOAT4(1, 1, 1, 1),20);
 
 	//①オブジェクトごとに
 	//　ローカル座標を持つ(頂点)
@@ -661,7 +657,7 @@ void GameScene::Draw()
 	g_pScore->Draw();
 
 	// チュートリアル描画
-	g_pTutorial->Draw();
+	//g_pTutorial->Draw();
 
 }
 

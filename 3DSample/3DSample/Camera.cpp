@@ -1,3 +1,10 @@
+//====================================================================
+//
+// カメラ[Camera.cpp]
+// 
+// 更新日:2022/01/17	TPS準拠だったのをなくした	by伊地田
+//====================================================================
+
 #include "Camera.h"
 #include "Input.h"
 #include "Shader.h"
@@ -5,16 +12,27 @@
 
 
 Camera::Camera()
-	// ---見下ろし
-	: m_pos(0, 12.0f, -20.5f)
-	, m_look(0, 0, 0)
-	, m_up(0, 1, 0)
-	, m_angle(60.0f)
-	, m_near(0.5f)
-	, m_far(1000.0f)
-	, m_xzAngle(0.0f)
-	, m_yAngle(30.0f)
-	, m_radius(5.0f)
+	// ---見下ろし →　中心どあっぷになってる
+	//: m_pos(0, 12.0f, -20.5f)
+	//, m_look(0, 0, 0)
+	//, m_up(0, 1, 0)
+	//, m_angle(60.0f)
+	//, m_near(0.5f)
+	//, m_far(1000.0f)
+	//, m_xzAngle(0.0f)
+	//, m_yAngle(30.0f)
+	//, m_radius(5.0f)
+
+	//---真上からの見下ろし
+	: m_pos(0.0f,5.0f,0.0f)				// カメラの座標
+	, m_look(0.0f, 1.0f, 0.0f)			// カメラの注視点
+	, m_up(0.0f, 1.0f, 0.0f)			// カメラの上方向
+	, m_angle(45.0f)					// 視野角
+	, m_near(0.5f)						// 手前の面の描画範囲(とりあえずはこの値)
+	, m_far(1000.0f)					// 奥行の面の範囲描画(とりあえずはこの値)
+	, m_xzAngle(0.0f)					// カメラのXとZ軸の回転を行う
+	, m_yAngle(85.0f)					// カメラのY軸回転
+	, m_radius(30.0f)					// 焦点までの距離
 
 	// ---見下ろし - 調整
 	//: m_pos(0.0f, 25.0f, -15.0f)
@@ -94,53 +112,52 @@ void Camera::Update()
 
 
 
-	//カメラの角度変更
-	if (IsPress(VK_LEFT))
-	{
-		m_xzAngle += 1.0f;
-	}
-	if (IsPress(VK_RIGHT))
-	{
-		m_xzAngle -= 1.0f;
-	}
-	if (IsPress(VK_UP))
-	{
-		if (IsPress(VK_SHIFT))
-		{
-			m_radius -= 10.0f / 60.0f;
-			if (m_radius <= 1.0f)
-				m_radius = 1.0f;
-		}
-		else
-		{
-			m_yAngle += 1.0f;
-		}
+	////カメラの角度変更
+	//if (IsPress(VK_LEFT))
+	//{
+	//	m_xzAngle += 1.0f;
+	//}
+	//if (IsPress(VK_RIGHT))
+	//{
+	//	m_xzAngle -= 1.0f;
+	//}
+	//if (IsPress(VK_UP))
+	//{
+	//	if (IsPress(VK_SHIFT))
+	//	{
+	//		m_radius -= 10.0f / 60.0f;
+	//		if (m_radius <= 1.0f)
+	//			m_radius = 1.0f;
+	//	}
+	//	else
+	//	{
+	//		m_yAngle += 1.0f;
+	//	}
 
-		//カメラの上方ベクトルが常に上を向いているのでひっくり絵は取れない
-		//※常にまっすぐ立った状態の絵が取れる
-		//通常、３Dのツールではカメラが真上から見下ろす、真下から見上げる絵にならないように移動の制限をかけている
-		if (m_yAngle >= 90.0f)
-		{
-			m_yAngle = 89.0f;
-		}
+	//	//カメラの上方ベクトルが常に上を向いているのでひっくり絵は取れない
+	//	//※常にまっすぐ立った状態の絵が取れる
+	//	//通常、３Dのツールではカメラが真上から見下ろす、真下から見上げる絵にならないように移動の制限をかけている
+	//	if (m_yAngle >= 90.0f)
+	//	{
+	//		m_yAngle = 89.0f;
+	//	}
 
-	}
-	if (IsPress(VK_DOWN))
-	{
-		if (IsPress(VK_SHIFT))
-		{
-			m_radius += 10.0f / 60.0f;
-		}
-		else
-		{
-			m_yAngle -= 1.0f;
-		}
-		if (m_yAngle <= -90.0f)
-		{
-			m_yAngle = -89.0f;
-		}
-	}
-
+	//}
+	//if (IsPress(VK_DOWN))
+	//{
+	//	if (IsPress(VK_SHIFT))
+	//	{
+	//		m_radius += 10.0f / 60.0f;
+	//	}
+	//	else
+	//	{
+	//		m_yAngle -= 1.0f;
+	//	}
+	//	if (m_yAngle <= -90.0f)
+	//	{
+	//		m_yAngle = -89.0f;
+	//	}
+	//}
 
 	//カメラ位置計算
 	float xzRad = m_xzAngle * 3.141592f / 180.0f;
@@ -148,6 +165,7 @@ void Camera::Update()
 	m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
 	m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
 	m_pos.y = sin(yRad) * m_radius;
+
 }
 
 void Camera::Bind()
