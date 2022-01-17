@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -131,6 +131,7 @@
     <ClCompile Include="BulletBlue.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="BulletRed.cpp" />
+    <ClCompile Include="BulletTarget.cpp" />
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="CollectionPoint.cpp" />
     <ClCompile Include="Collector.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="BulletBlue.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="BulletRed.h" />
+    <ClInclude Include="BulletTarget.h" />
     <ClInclude Include="Clear.h" />
     <ClInclude Include="CollectionPoint.h" />
     <ClInclude Include="Collector.h" />

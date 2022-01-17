@@ -23,6 +23,11 @@
 //*******************************************************************************
 #define BULLET_SPEED		(0.1f)								// 弾の速度
 
+//*******************************************************************************
+// グローバル変数
+//*******************************************************************************
+float g_ThrowTimer = 0.0f;				// 投げる時間
+
 
 //==============================================================
 //
@@ -160,7 +165,8 @@ void BulletManager::CreateBullet(bool rbFlg)
 		if (rbFlg == true) {	// trueが赤
 			m_ppBullets[i] = new BulletRed;
 			m_ppBullets[i]->Init();
-		} else {
+		}
+		else {
 			m_ppBullets[i] = new BulletBlue;
 			m_ppBullets[i]->Init();
 		}
@@ -168,42 +174,71 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		m_ppBullets[i]->SetPos(m_PlayerPos);
 
-		XMFLOAT3 dir;		// 射出方向
 
-		float dirY;			// 打ち出す角度(Y軸方向)
-		dirY = 90.0f;
+		//XMFLOAT3 dir;		// 射出方向
 
-		//---射出方向
-		//dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
-		//dir.y = dirY;
-		//dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
+		//float dirY;			// 打ち出す角度(Y軸方向)
+		//dirY = 90.0f;
 
-		//---射出方向
-		dir.x = -m_PlayerPos.x;
-		dir.y = dirY / FPS;
-		dir.z = -m_PlayerPos.z;
-		 
-		 
-		//ベクトルの大きさ
-		float L;
-		L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
+		////---射出方向
+		////dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
+		////dir.y = dirY;
+		////dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
 
-		//// dir の長さを1にする(正規化)
-		dir.x = dir.x / L;
-		dir.y = dir.y / L;
-		dir.z = dir.z / L;
+		////---射出方向
+		//dir.x = -m_PlayerPos.x;
+		//dir.y = dirY / FPS;
+		//dir.z = -m_PlayerPos.z;
+		// 
+		// 
+		////ベクトルの大きさ
+		//float L;
+		//L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
 
-		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
-		dir.x = dir.x * BULLET_SPEED;
-		dir.y = dir.y;
-		dir.z = dir.z * BULLET_SPEED;
+		////// dir の長さを1にする(正規化)
+		//dir.x = dir.x / L;
+		//dir.y = dir.y / L;
+		//dir.z = dir.z / L;
 
+		//// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
+		//dir.x = dir.x * BULLET_SPEED;
+		//dir.y = dir.y;
+		//dir.z = dir.z * BULLET_SPEED;
+
+		////m_ppBullets[i]->SetMove(dir);
 		//m_ppBullets[i]->SetMove(dir);
-		m_ppBullets[i]->SetMove(dir);
+
+		XMFLOAT3 StartPos = m_PlayerPos;									// 発射地点(プレイヤーの座標)
+		XMFLOAT3 EndPos = m_TargetPos;										// 落下地点(ターゲットの座標)
+
+		//---制御点
+		XMFLOAT3 CenterPos = XMFLOAT3((StartPos.x + EndPos.x) / 2.0f,		// X座標 ... 発射地点と落下地点の中点
+			5.0f,								// Y座標 ... 高さは任意の値
+			(StartPos.z + EndPos.y) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
+
+		XMFLOAT3 CurrentPos;
+
+		g_ThrowTimer = 0.0f;												// 投擲時間をリセット
+
+		//---放物線をベジェ曲線の計算で処理を行う
+		// ベジェ曲線で算出した値を各座標に格納
+		CurrentPos.x = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
+			StartPos.x + 2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.x +
+			g_ThrowTimer * g_ThrowTimer + EndPos.x;
+
+		CurrentPos.y = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
+			StartPos.y + 2 * (1 - g_ThrowTimer) * g_ThrowTimer * CenterPos.y +
+			g_ThrowTimer * g_ThrowTimer + EndPos.y;
+
+		CurrentPos.z = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
+			StartPos.z + 2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.z +
+			g_ThrowTimer * g_ThrowTimer + EndPos.z;
+
+		m_ppBullets[i]->SetPos(CurrentPos);
+
 		break;
 	}
 }
-
 
 //==============================================================
 //
@@ -250,7 +285,7 @@ void BulletManager::SetPlayePos(XMFLOAT3 pos)
 //==============================================================
 void BulletManager::SetPlayerAngle(XMFLOAT3 angle)
 {
-	m_PlayerAngle = angle;
+	//m_PlayerAngle = angle;
 }
 
 //====================================================================

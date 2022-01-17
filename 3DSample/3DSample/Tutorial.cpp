@@ -27,11 +27,11 @@ Tutorial::~Tutorial()
 //====================================================================
 void Tutorial::Init()
 {
-	LoadTextureFromFile("Assets/Model/Tutorial000.jpg", &m_pTexTutorial);
+	LoadTextureFromFile("Assets/Texture/Tutorial000.jpg", &m_pTexTutorial);
 	m_pObjectTutorial = new GameObject;
 	m_pObjectTutorial->Init();
-	m_pObjectTutorial->SetPos(DirectX::XMFLOAT3(4, 8, -18));
-	m_pObjectTutorial->SetSize(DirectX::XMFLOAT3(2, 1, 0));
+	m_pObjectTutorial->SetPos(DirectX::XMFLOAT3(0.2f, -0.2f, 1));
+	m_pObjectTutorial->SetSize(DirectX::XMFLOAT3(0.2f, 0.1f, 1));
 	m_pCameraTutorial = new Camera;
 	m_pCameraTutorial->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
@@ -70,9 +70,9 @@ void Tutorial::Update()
 //====================================================================
 void Tutorial::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
-
+	m_pCameraTutorial->Bind2D();
 
 	SHADER->SetTexture(m_pTexTutorial);
 
