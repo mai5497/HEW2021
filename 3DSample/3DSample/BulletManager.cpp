@@ -214,8 +214,8 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		//---制御点
 		XMFLOAT3 CenterPos = XMFLOAT3((StartPos.x + EndPos.x) / 2.0f,		// X座標 ... 発射地点と落下地点の中点
-			5.0f / FPS,								// Y座標 ... 高さは任意の値
-			(StartPos.z + EndPos.y) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
+			7.0f,								// Y座標 ... 高さは任意の値
+			(StartPos.z + EndPos.z) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
 
 		XMFLOAT3 CurrentPos;
 
@@ -223,17 +223,17 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		////---放物線をベジェ曲線の計算で処理を行う
 		// ベジェ曲線で算出した値を各座標に格納
-		CurrentPos.x = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
-			StartPos.x + 2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.x +
-			g_ThrowTimer * g_ThrowTimer + EndPos.x;
+		CurrentPos.x = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) * StartPos.x +
+			2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.x +
+			g_ThrowTimer * g_ThrowTimer * EndPos.x;
 
-		CurrentPos.y = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
-			StartPos.y + 2 * (1 - g_ThrowTimer) * g_ThrowTimer * CenterPos.y +
-			g_ThrowTimer * g_ThrowTimer + EndPos.y;
+		CurrentPos.y = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) * StartPos.y +
+			2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.y +
+			g_ThrowTimer * g_ThrowTimer * EndPos.y;
 
-		CurrentPos.z = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
-			StartPos.z + 2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.z +
-			g_ThrowTimer * g_ThrowTimer + EndPos.z;
+		CurrentPos.z = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) *StartPos.z +
+			2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.z +
+			g_ThrowTimer * g_ThrowTimer * EndPos.z;
 
 		m_ppBullets[i]->SetPos(CurrentPos);
 		m_ppBullets[i]->SetBezierInfo(StartPos, EndPos, CenterPos,g_ThrowTimer);
