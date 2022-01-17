@@ -28,11 +28,11 @@ Score::~Score()
 //====================================================================
 void Score::Init()
 {
-	LoadTextureFromFile("Assets/Model/good.png", &m_pTexScore);
+	LoadTextureFromFile("Assets/Texture/good.png", &m_pTexScore);
 	m_pObjectScore = new GameObject;
 	m_pObjectScore->Init();
-	m_pObjectScore->SetPos(DirectX::XMFLOAT3(0, 10, -10));
-	m_pObjectScore->SetSize(DirectX::XMFLOAT3(8, 6, 1));
+	m_pObjectScore->SetPos(DirectX::XMFLOAT3(-0.2f, 0.2f, 1));
+	m_pObjectScore->SetSize(DirectX::XMFLOAT3(0.3f, 0.2f, 1));
 	m_pCameraScore = new Camera;
 	m_pCameraScore->Init();
 
@@ -70,9 +70,9 @@ void Score::Update()
 //====================================================================
 void Score::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
-
+	m_pCameraScore->Bind2D();
 
 	SHADER->SetTexture(m_pTexScore);
 

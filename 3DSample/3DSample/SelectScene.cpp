@@ -19,19 +19,44 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
-#define MAX_OBJ		(5)
+
+typedef enum
+{
+
+	SELECT_BG = 0,
+	SELECT_ROGO,
+	
+	SELECT_TITLE_1,
+	SELECT_TITLE_2,
+	SELECT_TITLE_3,
+	
+	SELECT_BLOCK_0,
+	SELECT_BLOCK_1,
+	SELECT_BLOCK_2,
+	SELECT_BLOCK_3,
+	
+	SELECT_ARROW,
+
+	SELECT_MAX,
+}Selct;
+
 
 //========================= グローバル変数定義 ===========================
-ID3D11ShaderResourceView* g_pSelectTex[MAX_OBJ];
+ID3D11ShaderResourceView* g_pSelectTex[SELECT_MAX];
 Camera* g_pSelectCamera;
-GameObject g_pSelectObject[MAX_OBJ];
+GameObject g_pSelectObject[SELECT_MAX];
 
-const char* g_pTexFName[MAX_OBJ] = {
-	"Assets/Model/Select000.png",
-	"Assets/Model/Select001.jpg",
-	"Assets/Model/Select002.jpg",
-	"Assets/Model/Select003.jpg",
-	"Assets/Model/arrow_down.png",
+const char* g_pTexFName[SELECT_MAX] = {
+	"Assets/Texture/StageSelect_BG.png",
+	"Assets/Texture/StageSelect.png",
+	"Assets/Texture/Stage_1.png",
+	"Assets/Texture/Stage_2.png",
+	"Assets/Texture/Stage_3.png",
+	"Assets/Texture/SelectObj_Block0.png",
+	"Assets/Texture/SelectObj_Block1.png",
+	"Assets/Texture/SelectObj_Block2.png",
+	"Assets/Texture/SelectObj_Block3.png",
+	"Assets/Texture/arrow_down.png",
 };
 
 float g_arrowPosX;
@@ -66,34 +91,37 @@ SelectScene::~SelectScene(void)
 //====================================================================
 void SelectScene::Init()
 {
-	for (int i = 0; i < MAX_OBJ; ++i)
+	for (int i = 0; i < SELECT_MAX; ++i)
 	{
 		LoadTextureFromFile(g_pTexFName[i], &g_pSelectTex[i]);
-
+		g_pSelectObject[i].Init();
 	}
 
+	g_pSelectObject[SELECT_BG].SetSize(DirectX::XMFLOAT3(1.0f, 0.6f, 0.1f));
+	g_pSelectObject[SELECT_BG].SetPos (DirectX::XMFLOAT3(0, 0, 1));
 
+	g_pSelectObject[SELECT_ROGO].SetSize(DirectX::XMFLOAT3(0.35f, 0.15f, 1));
+	g_pSelectObject[SELECT_ROGO].SetPos (DirectX::XMFLOAT3(0.0f, 0.18f, 1));
 
-	g_pSelectObject[0].Init();
-	g_pSelectObject[0].SetPos(DirectX::XMFLOAT3(0, 11, -18));
-	g_pSelectObject[0].SetSize(DirectX::XMFLOAT3(4, 2, 0));
+	g_pSelectObject[SELECT_TITLE_1].SetSize(DirectX::XMFLOAT3( 0.15f, 0.1f, 1));
+	g_pSelectObject[SELECT_TITLE_1].SetPos (DirectX::XMFLOAT3(-0.3f,  0.02f, 1));
+	g_pSelectObject[SELECT_TITLE_2].SetSize(DirectX::XMFLOAT3( 0.15f, 0.1f, 1));
+	g_pSelectObject[SELECT_TITLE_2].SetPos (DirectX::XMFLOAT3( 0.0f,  0.02f, 1));
+	g_pSelectObject[SELECT_TITLE_3].SetSize(DirectX::XMFLOAT3( 0.15f, 0.1f, 1));
+	g_pSelectObject[SELECT_TITLE_3].SetPos (DirectX::XMFLOAT3( 0.3f,  0.02f, 1));
 
-	g_pSelectObject[1].Init();
-	g_pSelectObject[1].SetPos(DirectX::XMFLOAT3(-4, 8, -18));
-	g_pSelectObject[1].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+	g_pSelectObject[SELECT_BLOCK_0].SetSize(DirectX::XMFLOAT3(0.15f,  0.2f, 1));
+	g_pSelectObject[SELECT_BLOCK_0].SetPos (DirectX::XMFLOAT3(-0.42f, -0.18f, 1));
 
-	g_pSelectObject[2].Init();
-	g_pSelectObject[2].SetPos(DirectX::XMFLOAT3(0, 8, -18));
-	g_pSelectObject[2].SetSize(DirectX::XMFLOAT3(2, 1, 0));
+	g_pSelectObject[SELECT_BLOCK_1].SetSize(DirectX::XMFLOAT3( 0.12f, 0.12f, 1));
+	g_pSelectObject[SELECT_BLOCK_1].SetPos (DirectX::XMFLOAT3(-0.3f, -0.15f, 1));
+	g_pSelectObject[SELECT_BLOCK_2].SetSize(DirectX::XMFLOAT3( 0.12f, 0.12f, 1));
+	g_pSelectObject[SELECT_BLOCK_2].SetPos (DirectX::XMFLOAT3( 0.0f, -0.15f, 1));
+	g_pSelectObject[SELECT_BLOCK_3].SetSize(DirectX::XMFLOAT3( 0.12f, 0.12f, 1));
+	g_pSelectObject[SELECT_BLOCK_3].SetPos (DirectX::XMFLOAT3( 0.3f, -0.15f, 1));
 
-	g_pSelectObject[3].Init();
-	g_pSelectObject[3].SetPos(DirectX::XMFLOAT3(4, 8, -18));
-	g_pSelectObject[3].SetSize(DirectX::XMFLOAT3(2, 1, 0));
-
-	// 矢印
-	g_pSelectObject[4].Init();
-	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(-4, 9, -18));
-	g_pSelectObject[4].SetSize(DirectX::XMFLOAT3(1, 1, 0));
+	g_pSelectObject[SELECT_ARROW].SetPos (DirectX::XMFLOAT3(-0.3f, -0.02f, 1));
+	g_pSelectObject[SELECT_ARROW].SetSize(DirectX::XMFLOAT3(0.05f, 0.05f, 1));
 
 	g_pSelectCamera = new Camera;
 	g_pSelectCamera->Init();
@@ -112,7 +140,7 @@ void SelectScene::Init()
 //====================================================================
 void SelectScene::Uninit()
 {
-	for (int i = 0; i < MAX_OBJ; ++i)
+	for (int i = 0; i < SELECT_MAX; ++i)
 	{
 		SAFE_RELEASE(g_pSelectTex[i]);
 		g_pSelectObject[i].Uninit();
@@ -135,21 +163,21 @@ SCENE SelectScene::Update()
 
 	if (IsTrigger('1')) {	// ステージ１
 		m_StageNum = 1;
-		g_arrowPosX = -4;
+		g_arrowPosX = -0.3f;
 
 	}
 	if (IsTrigger('2')) {	// ステージ２
 		m_StageNum = 2;
-		g_arrowPosX = 0;
+		g_arrowPosX = 0.0f;
 
 	}
 	if (IsTrigger('3')) {	// ステージ３
 		m_StageNum = 3;
-		g_arrowPosX = 4;
+		g_arrowPosX = 0.3f;
 
 	}
 	// 選択されたステージに矢印を移動
-	g_pSelectObject[4].SetPos(DirectX::XMFLOAT3(g_arrowPosX, 9, -18));
+	g_pSelectObject[SELECT_ARROW].SetPos(DirectX::XMFLOAT3(g_arrowPosX, -0.05f, 1));
 
 	if (IsTrigger(VK_RETURN)) {
 		CSound::Play(SE_ENTER_1);
@@ -179,23 +207,15 @@ SCENE SelectScene::Update()
 //====================================================================
 void SelectScene::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
+	g_pSelectCamera->Bind2D();
 
-
-
-	g_pSelectCamera->Bind();
-
-
-
-	for (int i = 0; i < MAX_OBJ; ++i)
+	for (int i = 0; i < SELECT_MAX; ++i)
 	{
 		SHADER->SetTexture(g_pSelectTex[i]);
 		g_pSelectObject[i].Draw();
 	}
-	
-
-
 
 	SHADER->SetTexture(NULL);
 
