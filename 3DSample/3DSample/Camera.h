@@ -11,6 +11,7 @@ public:
 	Camera();
 	~Camera();
 
+	void Init(DirectX::XMFLOAT3 pos);
 	void Init();
 	void Uninit();
 	virtual void Update();

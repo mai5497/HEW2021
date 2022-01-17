@@ -22,10 +22,11 @@
 //		コンストラクタ
 //
 //====================================================================
-DwarfManager::DwarfManager() : m_ppDwarf(nullptr),m_DwarfNum(MAX_DWARF)
+DwarfManager::DwarfManager() : 
+	m_ppDwarf(nullptr),
+	m_DwarfNum(MAX_DWARF)
 {
-
-
+	m_collectionSum = 0;
 }
 
 //====================================================================
@@ -114,8 +115,7 @@ void DwarfManager::Update()
 	for (int i = 0; i < MAX_DWARF; i++) 
 	{
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
-			continue;
-			//return // 一体でも死んだらゲームオーバーの為
+			return; // 一体でも死んだらゲームオーバーの為
 		}
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;
@@ -154,8 +154,7 @@ void DwarfManager::Draw()
 	for (int i = 0; i < MAX_DWARF; i++)
 	{
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
-			continue;
-			//return // 一体でも死んだらゲームオーバーの為
+			return; // 一体でも死んだらゲームオーバーの為
 		}
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;
@@ -215,4 +214,29 @@ void DwarfManager::SetBulletInfo(BulletManager *pBullet)
 	m_pBullet = pBullet;
 }
 
+//==============================================================
+//
+//	回収数カウントアップ
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: void
+//
+//==============================================================
+void DwarfManager::AddCollectionSum() 
+{
+	m_collectionSum++;
+}
 
+
+//==============================================================
+//
+//	弾の情報の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: void
+//
+//==============================================================
+int DwarfManager::GetCollectionSum()
+{
+	return m_collectionSum;
+}

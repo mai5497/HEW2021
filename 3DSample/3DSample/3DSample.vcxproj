@@ -133,6 +133,7 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="CollectionPoint.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterBase.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Clear.h" />
     <ClInclude Include="CollectionPoint.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />

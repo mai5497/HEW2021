@@ -13,6 +13,7 @@
 //========================= インクルード部 ===========================
 #include "Collector.h"
 #include "Texture.h"
+#include "Sound.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -21,7 +22,7 @@
 #define FPS					(60)					// フレーム数
 #define WAIT_TIME			(10)					// 待機時間
 
-#define START_POS_X			(22.0f)					// 開始地点 X
+#define START_POS_X			(25.0f)					// 開始地点 X
 #define START_POS_Y			(10.0f)					// 開始地点 Y
 #define COLLECT_POS_X		(0.0f)					// 回収地点 X
 #define COLLECT_POS_Y		(1.0f)					// 回収地点 Y
@@ -161,6 +162,7 @@ void Collector::Update()
 				m_move.y = -(MOVE_SPEED / FPS);
 			}
 			else {
+				CSound::Stop(SE_COLLECTOR_1);
 				m_move.y = 0;
 				m_timeFlg = false;
 				m_timer = WAIT_TIME * FPS + 59;

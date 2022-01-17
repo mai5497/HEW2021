@@ -67,8 +67,7 @@ XMFLOAT3 g_pos;
 //		コンストラクタ
 //
 //====================================================================
-SelectScene::SelectScene(void)
-{
+SelectScene::SelectScene(void) {
 
 }
 
@@ -78,8 +77,7 @@ SelectScene::SelectScene(void)
 //		デストラクタ
 //
 //====================================================================
-SelectScene::~SelectScene(void)
-{
+SelectScene::~SelectScene(void) {
 
 }
 
@@ -125,11 +123,12 @@ void SelectScene::Init()
 
 	g_pSelectCamera = new Camera;
 	g_pSelectCamera->Init();
-	
 
-	g_arrowPosX = 0;
 
+	g_arrowPosX = -4;
+	m_StageNum = 1;
 	CSound::Play(SELECT_BGM);
+
 }
 
 
@@ -150,6 +149,8 @@ void SelectScene::Uninit()
 	delete g_pSelectCamera;
 
 	CSound::Stop(SELECT_BGM);
+
+
 }
 
 
@@ -179,10 +180,10 @@ SCENE SelectScene::Update()
 	// 選択されたステージに矢印を移動
 	g_pSelectObject[SELECT_ARROW].SetPos(DirectX::XMFLOAT3(g_arrowPosX, -0.05f, 1));
 
-	if (IsTrigger(VK_RETURN)) {
+	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::B)) {
 		CSound::Play(SE_ENTER_1);
-		switch (m_StageNum)
-		{
+
+		switch (m_StageNum) {
 		case 1:
 			return SCENE_GAME;
 		case 2:
@@ -227,7 +228,6 @@ void SelectScene::Draw()
 //		シーン番号取得
 //
 //====================================================================
-int SelectScene::GetStageNum()
-{
+int SelectScene::GetStageNum() {
 	return m_StageNum;
 }

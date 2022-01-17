@@ -6,8 +6,6 @@
 #include "Camera.h"
 #include "Defines.h"
 
-
-
 //============== 定数定義 ======================
 #define CLEAR_CNT			(600)
 
@@ -34,8 +32,8 @@ void InitClear() {
 	g_pClearObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
 	g_pClearObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
 	g_pClearCamera = new Camera;
-	g_pClearCamera->Init();
-	//g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
+	g_pClearCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
+	g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
 }
 
 //===========================================================
@@ -45,8 +43,10 @@ void InitClear() {
 //===========================================================
 void UninitClear() {
 	SAFE_RELEASE(g_pClearTex);
+
 	g_pClearCamera->Uninit();
 	delete g_pClearCamera;
+
 	g_pClearObject->Uninit();
 	delete g_pClearObject;
 }
@@ -61,18 +61,20 @@ int	UpdateClear() {
 	// タイマーカウントダウン
 	g_nTimer--;
 	if (g_nTimer < 0) {
-		return GO_SELECT;	// 一定時間たったらステージ選択へ戻る
+		return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
 	}
 
 	// とりあえず１で次のステージ
-	if (IsTrigger('1')) {
-		return NEXTSTAGE;
+	if (IsRelease('1')) {
+		return STATE_NEXT;
 	}
 	// ２でステージ選択
-	if (IsTrigger('2')) {
-		return GO_SELECT;
+	if (IsRelease('2')) {
+		return STATE_SELECT;
 	}
 	//g_pClearObject->Update();
+
+	return -1;
 }
 
 //===================

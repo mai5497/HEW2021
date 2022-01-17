@@ -45,7 +45,7 @@ BlueDwarf::BlueDwarf()
 
 	
 	SetRBFlg(false);	// ê¬è¨êl
-	use = true;
+	
 }
 
 
@@ -152,6 +152,10 @@ void BlueDwarf::Update()
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
+
+	if (m_pos.y < 0.8f) {
+		BlueDwarf::SetAliveFlg(false);
+	}
 
 	m_currentPos = m_pos;
 }

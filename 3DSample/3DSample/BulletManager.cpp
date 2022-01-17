@@ -4,7 +4,8 @@
 // 作成者:吉原飛鳥
 // 
 // 更新日:2021/12/26	作成
-//		 :2022/01/10	定数定義の一部をヘッダへ移動
+//		 :2022/01/10	定数定義の一部をヘッダへ移動(いちだ)
+//		 :2022/01/11	サウンド追加
 //====================================================================
 
  //*******************************************************************************
@@ -15,11 +16,12 @@
 #include	"BulletRed.h"
 #include	"BulletBlue.h"
 #include	"Input.h"
+#include	"Sound.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define BULLET_SPEED		(0.5f)								// 弾の速度
+#define BULLET_SPEED		(0.1f)								// 弾の速度
 
 
 //==============================================================
@@ -101,13 +103,15 @@ void BulletManager::Update()
 {
 	static bool rbflg;
 
-	if (IsPress('E')){		
+	if (IsRelease('E') || IsRelease(JPadButton::X)){
 		rbflg = false;		// 青弾セット
+		CSound::Play(SE_BULLET_1);
+		CreateBullet(rbflg);
+
 	}
-	if (IsPress('Q')) {
+	if (IsRelease('Q') || IsRelease(JPadButton::B)) {
 		rbflg = true;		// 赤弾セット
-	}
-	if (IsTrigger('Z')) {
+		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);
 	}
 	// 弾の最大数更新処理
@@ -163,16 +167,23 @@ void BulletManager::CreateBullet(bool rbFlg)
 		m_ppBullets[i]->use = true;
 
 		m_ppBullets[i]->SetPos(m_PlayerPos);
-		XMFLOAT3 dir;
 
+		XMFLOAT3 dir;		// 射出方向
 
-		float dirY;
-		dirY = 30.0f / FPS;
+		float dirY;			// 打ち出す角度(Y軸方向)
+		dirY = 90.0f;
 
-		dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
-		dir.y = dirY;
-		dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
+		//---射出方向
+		//dir.x = -(m_PlayerPos.x - m_PlayerAngle.x);
+		//dir.y = dirY;
+		//dir.z = -(m_PlayerPos.z - m_PlayerAngle.z);
 
+		//---射出方向
+		dir.x = -m_PlayerPos.x;
+		dir.y = dirY / FPS;
+		dir.z = -m_PlayerPos.z;
+		 
+		 
 		//ベクトルの大きさ
 		float L;
 		L = sqrtf((dir.x * dir.x) + (dir.y * dir.y) + (dir.z * dir.z));
@@ -184,7 +195,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		// 長さが1になったベクトルに移動させたい速度をかける(手裏剣の速度)
 		dir.x = dir.x * BULLET_SPEED;
-		dir.y = dir.y * BULLET_SPEED;
+		dir.y = dir.y;
 		dir.z = dir.z * BULLET_SPEED;
 
 		//m_ppBullets[i]->SetMove(dir);

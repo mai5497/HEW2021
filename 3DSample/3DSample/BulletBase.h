@@ -57,6 +57,6 @@ private:
 
 	bool m_rbFlg;									// true　→　赤			false　→　青
 	bool m_ColFlg;								// true　→　接している		false → 接していない
-
+	bool m_LandingFlg;				// 着地フラグ（着地したん瞬間をとりたい）
 
 };

@@ -33,7 +33,7 @@ void Tutorial::Init()
 	m_pObjectTutorial->SetPos(DirectX::XMFLOAT3(0.2f, -0.2f, 1));
 	m_pObjectTutorial->SetSize(DirectX::XMFLOAT3(0.2f, 0.1f, 1));
 	m_pCameraTutorial = new Camera;
-	m_pCameraTutorial->Init();
+	m_pCameraTutorial->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
 
 	g_nCnt = 3;
 

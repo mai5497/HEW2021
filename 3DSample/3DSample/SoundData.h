@@ -18,6 +18,7 @@ enum eSE {
 	SE_COLLECTOR_3,	// 回収２（回収成功）
 	SE_ENTER_1,		// 決定１
 	SE_PLAYER_1,	// プレイヤー１（足音）
+	SE_SELECT_1,	// 選択音
 
 	MAX_SE
 };

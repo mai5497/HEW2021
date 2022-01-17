@@ -16,4 +16,5 @@ LPCWSTR g_pszFileSE[MAX_SE] = {
 	L"Collector_03.mp3",	// 回収３（回収成功）
 	L"Enter_01.mp3",		// 決定１
 	L"Player_01.mp3",		// プレイヤー１(足音)
+	L"Select_01.mp3",		// 選択音
 };
