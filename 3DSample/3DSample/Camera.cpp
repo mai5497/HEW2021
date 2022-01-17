@@ -112,7 +112,7 @@ void Camera::Update()
 
 
 
-	////カメラの角度変更
+	//カメラの角度変更
 	//if (IsPress(VK_LEFT))
 	//{
 	//	m_xzAngle += 1.0f;
@@ -141,6 +141,23 @@ void Camera::Update()
 	//	{
 	//		m_yAngle = 89.0f;
 	//	}
+
+	//}
+	//if (IsPress(VK_DOWN))
+	//{
+	//	if (IsPress(VK_SHIFT))
+	//	{
+	//		m_radius += 10.0f / 60.0f;
+	//	}
+	//	else
+	//	{
+	//		m_yAngle -= 1.0f;
+	//	}
+	//	if (m_yAngle <= -90.0f)
+	//	{
+	//		m_yAngle = -89.0f;
+	//	}
+	//}
 
 	//}
 	//if (IsPress(VK_DOWN))
