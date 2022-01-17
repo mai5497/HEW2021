@@ -21,6 +21,7 @@
 //*******************************************************************************
 #define BULLET_GRAVITY				(0.1f / FPS)
 #define BULLET_DESTOROY_CNT			(300)							// 弾が消えるまでの時間
+#define BULLET_THROW_CNT			(120)
 
 //==============================================================
 //
@@ -73,29 +74,19 @@ void BulletBase::Update()
 	//---放物線をベジェ曲線の計算で処理を行う
 	// ベジェ曲線で算出した値を各座標に格納
 	// CurrentPos = m_pos となる
-	m_ThrowTimer += 1.0f / FPS * 120.0f;
+	//m_ThrowTimer += 1.0f / FPS * 500.0f;
+	m_ThrowTimer += 1.0 / BULLET_THROW_CNT;
 
-	/*
-	m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
-		m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x +
-		m_ThrowTimer * m_ThrowTimer + m_EndPos.x;
+	m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x + m_ThrowTimer * m_ThrowTimer * m_EndPos.x;
 
-	m_pos.y = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
-		m_StarPos.y + 2 * (1 - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.y +
-		m_ThrowTimer * m_ThrowTimer + m_EndPos.y;
+	m_pos.y = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.y + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.y + m_ThrowTimer * m_ThrowTimer * m_EndPos.y;
 
-	m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
-		m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z +
-		m_ThrowTimer * m_ThrowTimer + m_EndPos.z;
-		*/
-	m_pos.x = 0.0f;
-	m_pos.y = 3.0f;
-	m_pos.z = 0.0f;
+	m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z + m_ThrowTimer * m_ThrowTimer * m_EndPos.z;
 
 	//---描画座標実験
-	//m_pos.x = 0.0f;
-	//m_pos.y = 5.0f;
-	//m_pos.z = 0.0f;
+	//m_pos.x = m_CenterPos.x;
+	//m_pos.y = m_CenterPos.y;
+	//m_pos.z = m_CenterPos.z;
 
 
 	//if (m_ColFlg) {

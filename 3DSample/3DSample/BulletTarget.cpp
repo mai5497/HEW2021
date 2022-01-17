@@ -22,7 +22,7 @@
  // 定数・マクロ定義
  //*******************************************************************************
 #define TARGET_POS_X	(10.0f)
-#define TARGET_POS_Y	(  5.0f)
+#define TARGET_POS_Y	(  1.1f)
 #define TARGET_POS_Z	(-13.0f)
 
 #define TARGET_SIZE_X	(1.0f)

@@ -39,7 +39,7 @@ Camera::Camera()
 	//, m_radius(5.0f)
 
 	// ---TPSŽ‹“_
-	//: m_pos(0, 2.5f, -5)
+	//: m_pos(0, 2.5f, -20.0f)
 	//, m_look(0, 0, 0)
 	//, m_up(0, 1, 0)
 	//, m_angle(60.0f)
