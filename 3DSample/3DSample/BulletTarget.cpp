@@ -147,60 +147,45 @@ void BulletTarget::Update()
 	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
 
 	//---カメラの向きを取得(ラジアンに変換)
-	float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
+	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
 
 	if (IsPress(VK_LEFT)) {			// 左
 		moveFlg = true;
 		m_move.x -= Move;
-		//if (m_Angle.y >= -CameraRad - 90.0f * TRANS_RADIAN) {
-		//	m_Angle.y -= 0.1f;
-		//}
 	}
-
 	if (IsPress(VK_RIGHT)) {		// 右
 		moveFlg = true;
 		m_move.x += Move;
-		//if (m_Angle.x <= -CameraRad + 90.0f * TRANS_RADIAN) {
-		//	m_Angle.y += 0.1f;
-		//}
-	}
-		
+	}	
 	if (IsPress(VK_UP)) {			// 上
 		moveFlg = true;
 		m_move.z += Move;
-		//if (m_Angle.y <= -CameraRad) {
-		//	m_Angle.y += 0.1f;
-		//}
 	}
-
 	if (IsPress(VK_DOWN)) {			// 下
 		moveFlg = true;
 		m_move.z -= Move;
-		//if (m_Angle.y >= -CameraRad) {
-		//	m_Angle.y -= 0.1f;
-		//}
 	}
 
-	MyVector2 Direction(0.0f, 0.0f);
+	//MyVector2 Direction(0.0f, 0.0f);
 
 	// 極座標を使ったTPS視点
-	Direction.x = m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
-	Direction.y = m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
-	Direction = Direction.GetNormalize();
+	//Direction.x = m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
+	//Direction.y = m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
+	//Direction = Direction.GetNormalize();
 	//Direction.x = m_move.x - m_move.z;
 	//Direction.y = m_move.x + m_move.z;
 
-	// 当たり判定？
+	// 描画用角度変更だよ
 	// atan ... アークタンジェントの関数
 	if (moveFlg == true) {
 		m_DrawAngle  = atan2(m_move.z, m_move.x);
 		m_DrawAngle -= XM_PI * 0.5f;
 	}
 
-	m_move.x = Direction.x * Move;
-	m_move.z = Direction.y * Move;
+	//m_move.x = Direction.x * Move;
+	//m_move.z = Direction.y * Move;
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;

@@ -164,13 +164,13 @@ void GameScene::Init(int StageNum)
 	g_pPlayer->Init();
 
 	// TPSカメラはプレイヤーより後
-	g_pTPSCamera = new TPSCamera();
-	g_pTPSCamera->SetTargetObj(g_pPlayer);
-	g_pTPSCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
+	//g_pTPSCamera = new TPSCamera();
+	//g_pTPSCamera->SetTargetObj(g_pPlayer);
+	//g_pTPSCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
 
 
-	g_pPlayer->SetControllCamera(g_pTPSCamera);
-	g_pPlayer->GetCameraPos(g_pTPSCamera);
+	//g_pPlayer->SetControllCamera(g_pTPSCamera);
+	//g_pPlayer->GetCameraPos(g_pTPSCamera);
 
 	// 回収車
 	g_pCollector = new Collector();
@@ -273,8 +273,8 @@ void GameScene::Uninit()
 	// カメラ類終了
 	g_pCamera->Uninit();
 	delete g_pCamera;
-	g_pTPSCamera->Uninit();
-	delete g_pTPSCamera;
+	//g_pTPSCamera->Uninit();
+	//delete g_pTPSCamera;
 
 	// ゲームクリア終了
 	UninitClear();
@@ -389,11 +389,9 @@ SCENE GameScene::Update()
 			if (!g_pBullet[j]->use) {								// 弾未用ならスキップ
 				continue;
 			}
-			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {		// 移動許可がないときは動かない
-			//	continue;
-			//}
-			g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
-
+			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
+				g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
+			}
 			//---ピクミンの弾への追尾
 			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
 		}
@@ -454,7 +452,8 @@ SCENE GameScene::Update()
 	//***************************************************************
 	//	カメラ更新
 	//***************************************************************	
-	g_pTPSCamera->Update();
+	//g_pTPSCamera->Update();
+	g_pCamera->Update();
 	g_pCollision->Update();
 
 	//***************************************************************
