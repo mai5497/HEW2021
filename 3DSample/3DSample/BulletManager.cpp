@@ -107,18 +107,19 @@ void BulletManager::Uninit()
 void BulletManager::Update()
 {
 	static bool rbflg;
-
-	if (IsRelease('E') || IsRelease(JPadButton::X)){
+	if (IsRelease('E') || IsRelease(JPadButton::X)) {
 		rbflg = false;		// 青弾セット
 		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);
 
 	}
+
 	if (IsRelease('Q') || IsRelease(JPadButton::B)) {
 		rbflg = true;		// 赤弾セット
 		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);
 	}
+
 	// 弾の最大数更新処理
 	for (int i = 0; i < MAX_BULLET; i++) {
 		if (!m_ppBullets[i]->use) {
@@ -220,7 +221,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		g_ThrowTimer = 0.0f;												// 投擲時間をリセット
 
-		//---放物線をベジェ曲線の計算で処理を行う
+		////---放物線をベジェ曲線の計算で処理を行う
 		// ベジェ曲線で算出した値を各座標に格納
 		CurrentPos.x = (1.0f - g_ThrowTimer) * (1.0f - g_ThrowTimer) +
 			StartPos.x + 2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.x +
@@ -235,6 +236,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 			g_ThrowTimer * g_ThrowTimer + EndPos.z;
 
 		m_ppBullets[i]->SetPos(CurrentPos);
+		m_ppBullets[i]->SetBezierInfo(StartPos, EndPos, CenterPos,g_ThrowTimer);
 
 		break;
 	}
@@ -298,4 +300,17 @@ BulletBase* BulletManager::GetBullet(int index) {
 		return m_ppBullets[index];
 	}
 	return NULL;
+}
+
+//==============================================================
+//
+//	BulletManager::ターゲット座標を設定
+//	作成者	: 吉原飛鳥
+//	戻り値	: void
+//	引数		: XMFLOAT3型
+//
+//==============================================================
+void BulletManager::SetTargetPos(XMFLOAT3 Pos)
+{
+	m_TargetPos = Pos;
 }

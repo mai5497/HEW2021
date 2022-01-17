@@ -301,7 +301,8 @@ SCENE GameScene::Update()
 	g_pBulletTarget->Update();
 
 	// 弾更新
-	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());
+	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());						// プレイヤーの座標を設定
+	g_pBulletManger->SetTargetPos(g_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
 	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
 	g_pBulletManger->Update();
 
