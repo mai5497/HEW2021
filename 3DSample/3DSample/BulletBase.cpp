@@ -91,6 +91,10 @@ void BulletBase::Update()
 	m_pos.y = 3.0f;
 	m_pos.z = 0.0f;
 
+	//---描画座標実験
+	//m_pos.x = 0.0f;
+	//m_pos.y = 5.0f;
+	//m_pos.z = 0.0f;
 
 
 	//if (m_ColFlg) {
@@ -110,9 +114,8 @@ void BulletBase::Update()
 		if (m_AliveTime == BULLET_DESTOROY_CNT) {
 			// サウンド
 			CSound::Play(SE_BULLET_2);
-			m_LandingFlg = true;
-		}
-		else {
+			m_LandingFlg = true;	// 弾が地面についた瞬間
+		} else {
 			m_LandingFlg = false;
 		}
 

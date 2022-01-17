@@ -54,17 +54,17 @@ private:
 	//---変数
 	int m_sleep;
 	int m_sleep2;
-	float m_BulletAngle;						// 角度
-	XMFLOAT3 m_dir;							// 向き
-	int m_AliveTime;							// 弾の生存時間
+	float m_BulletAngle;			// 角度
+	XMFLOAT3 m_dir;					// 向き
+	int m_AliveTime;				// 弾の生存時間
 
-	XMFLOAT3 m_StarPos;					// 開始地点
-	XMFLOAT3 m_EndPos;					// 着地点
-	XMFLOAT3 m_CenterPos;				// 制御点
+	XMFLOAT3 m_StarPos;				// 開始地点
+	XMFLOAT3 m_EndPos;				// 着地点
+	XMFLOAT3 m_CenterPos;			// 制御点
 	float m_ThrowTimer;				// 投げる時間
 
-	bool m_rbFlg;									// true　→　赤			false　→　青
-	bool m_ColFlg;								// true　→　接している		false → 接していない
-	bool m_LandingFlg;				// 着地フラグ（着地したん瞬間をとりたい）
+	bool m_rbFlg;					// true　→　赤			false　→　青
+	bool m_ColFlg;					// true　→　地面と接している	false → 地面と接していない
+	bool m_LandingFlg;				// 着地フラグ（着地した瞬間）
 
 };

@@ -11,9 +11,10 @@
  *		 2021/12/25 小人フィールドから落ちる(伊地田)
  *		 2021/12/25 整理！(吉原)
  *		 2022/01/02 ステージ選択できるようにした（伊地田）
- *		 2022/01/10 バレットの使用変更～
- *  	 2021/01/16 バレットの落下地点のオブジェクト追加(吉原)
-
+ *		 2022/01/10 バレットの使用変更～(吉原)
+ *  	 2022/01/16 バレットの落下地点のオブジェクト追加(吉原)
+ *		 2022/01/17 ゲームオーバークリアが同時に出るのなおした（伊地田）
+ *
  * @brief ゲームシーンに関する処理
  */
 
@@ -156,7 +157,7 @@ void GameScene::Init(int StageNum)
 
 	// 小人管理クラス実体化
 	g_pDwarfManager = new DwarfManager();
-	//g_pDwarfManager->Init();
+	g_pDwarfManager->Init();
 
 	// プレイヤークラス実体化
 	g_pPlayer = new Player();
@@ -302,7 +303,7 @@ SCENE GameScene::Update()
 	g_pBulletTarget->Update();
 
 	// 弾更新
-	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());						// プレイヤーの座標を設定
+	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
 	g_pBulletManger->SetTargetPos(g_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
 	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
 	g_pBulletManger->Update();
@@ -364,7 +365,9 @@ SCENE GameScene::Update()
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
 	{
 		if (!g_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {		// 生存してなかったらやらない
-			m_IsGameOver = true;
+			if (!m_IsClear) {
+				m_IsGameOver = true;
+			}
 			break;
 		}
 		//----- 小人と床の当たり判定 -----
@@ -398,8 +401,9 @@ SCENE GameScene::Update()
 	}
 	//----- ゲームクリア -----
 	if (g_pDwarfManager->GetCollectionSum() == MAX_DWARF) {		// 小人全回収でクリア
-		m_IsClear = true;
-
+		if (!m_IsGameOver) {
+			m_IsClear = true;
+		}
 	}
 
 	//***************************************************************
@@ -436,10 +440,14 @@ SCENE GameScene::Update()
 		g_pBulletManger->DestroyBullet();
 	}
 	if (IsRelease('0')) {				// 0キーでゲームクリア
-		m_IsClear = true;
+		if (!m_IsGameOver) {
+			m_IsClear = true;
+		}
 	}
 	if (IsRelease('9')) {				// ９キーでゲームオーバー
-		m_IsGameOver = true;
+		if (!m_IsClear) {
+			m_IsGameOver = true;
+		}
 	}
 #endif
 
@@ -638,8 +646,7 @@ void GameScene::Draw()
 	//	EnableCulling(false);
 	
 	//	EnableCulling(true);
-
-	// 
+ 
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {

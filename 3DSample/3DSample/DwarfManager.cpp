@@ -27,7 +27,6 @@ DwarfManager::DwarfManager() :
 	m_DwarfNum(MAX_DWARF)
 {
 	m_collectionSum = 0;
-	Init();
 }
 
 //====================================================================
@@ -73,7 +72,6 @@ bool DwarfManager::Init()
 		// ‚»‚ê‚¼‚ê‚Ì”z—ñ‚É¬l‚ğƒƒ‚ƒŠŠm•Û
 		if (i < MAX_RED_DWARF) {
 			m_ppDwarf[i] = new RedDwarf;
-			m_ppDwarf[i]->Init();
 		} else {
 			m_ppDwarf[i] = new BlueDwarf;
 		}
@@ -81,7 +79,7 @@ bool DwarfManager::Init()
 		m_ppDwarf[i]->TargetPos(DwarfSet[i].pos);
 		m_ppDwarf[i]->SetPos(DwarfSet[i].pos);
 		m_ppDwarf[i]->SetSize(XMFLOAT3(1.0f / 2, 1.0f / 2, 1.0f / 2));
-		//m_ppDwarf[i]->Init();
+		m_ppDwarf[i]->Init();
 	}
 
 	return true;
