@@ -64,18 +64,41 @@ BulletBase::~BulletBase()
 //==============================================================
 void BulletBase::Update()
 {
+
+
 	// 重力追加
-	m_move.y -= BULLET_GRAVITY;
+	//m_move.y -= BULLET_GRAVITY;
+
+	//---放物線をベジェ曲線の計算で処理を行う
+	// ベジェ曲線で算出した値を各座標に格納
+	// CurrentPos = m_pos となる
+	m_ThrowTimer += 1.0f / FPS * 10.0f;
+
+	m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
+		m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x +
+		m_ThrowTimer * m_ThrowTimer + m_EndPos.x;
+
+	m_pos.y = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
+		m_StarPos.y + 2 * (1 - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.y +
+		m_ThrowTimer * m_ThrowTimer + m_EndPos.y;
+
+	m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) +
+		m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z +
+		m_ThrowTimer * m_ThrowTimer + m_EndPos.z;
+
+
 
 	//if (m_ColFlg) {
 	if (m_pos.y < 1.0f) {							// 今は高さで判定
+	//if(m_ThrowTimer < 1.0f){
 		m_LandingFlg = true;
+		//m_move.x = 0.0f;
+		//m_move.y = 0.0f;
+		//m_move.z = 0.0f;
 		
-		m_move.x = 0.0f;
-		m_move.y = 0.0f;
-		m_move.z = 0.0f;
+		//SetMove(m_move);
 
-		SetMove(m_move);
+		use = false;
 	}
 
 	if (m_LandingFlg) {
@@ -84,6 +107,7 @@ void BulletBase::Update()
 			CSound::Play(SE_BULLET_2);
 		}
 
+
 		// 弾の時間経過での破壊処理
 		m_AliveTime--;					// 生存時間のカウントダウン
 		if (m_AliveTime < 0) {			// 0以下になったら
@@ -91,10 +115,10 @@ void BulletBase::Update()
 		}
 	}
 
-	//座標更新
-	m_pos.x += m_move.x;
-	m_pos.y += m_move.y;
-	m_pos.z += m_move.z;
+	////座標更新
+	//m_pos.x += m_move.x;
+	//m_pos.y += m_move.y;
+	//m_pos.z += m_move.z;
 
 }
 
@@ -149,4 +173,20 @@ bool BulletBase::GetRBFlg()
 //=============================================================
 void BulletBase::SetColFlg(bool flg) {
 	m_ColFlg = flg;
+}
+
+//=============================================================
+//
+//	ベジェ曲線による算出を行うための座標を取得
+//	作成者	： 吉原飛鳥
+//	戻り値	： なし
+//　引数		： XMFLOAT3型で3つの座標を取得 
+//
+//=============================================================
+void BulletBase::SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 centerPos,float ThrowTimer)		
+{
+	m_StarPos = startPos;
+	m_EndPos = endPos;
+	m_CenterPos = centerPos;
+	m_ThrowTimer = ThrowTimer;
 }

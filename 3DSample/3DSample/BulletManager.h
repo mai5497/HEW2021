@@ -20,6 +20,7 @@
 // クラスの前方定義
 class Player;
 class BulletTarget;
+class BulletBase;
 class Camera;
 
 //*******************************************************************************
@@ -65,7 +66,8 @@ private:
 	XMFLOAT3 m_PlayerPos;						// プレイヤーの情報を扱う(座標)
 	//XMFLOAT3 m_PlayerAngle;						// プレイヤーの情報を扱う(角度)
 	XMFLOAT3 m_TargetPos;						// ターゲット座標
-	//XMFLOAT3 m_CurrentPos;						// 現在の座標
+
+	XMFLOAT3 m_CurrentPos;						// 現在の座標
 
 
 	//Player *m_pPlayer;							// プレイヤーインスタンスを扱う

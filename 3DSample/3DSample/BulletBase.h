@@ -15,6 +15,7 @@
 #include	"CharacterBase.h"
 #include	"Collision.h"
 #include	"Stage.h"
+#include	"BulletManager.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -45,6 +46,8 @@ public:
 
 			void SetColFlg(bool flg);
 
+			void SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 centerPos,float ThrowTimer);		// ベジェ曲線による算出を行うための座標を取得
+
 private:
 	//---関数
 
@@ -54,6 +57,11 @@ private:
 	float m_BulletAngle;						// 角度
 	XMFLOAT3 m_dir;							// 向き
 	int m_AliveTime;							// 弾の生存時間
+
+	XMFLOAT3 m_StarPos;					// 開始地点
+	XMFLOAT3 m_EndPos;					// 着地点
+	XMFLOAT3 m_CenterPos;				// 制御点
+	float m_ThrowTimer;				// 投げる時間
 
 	bool m_rbFlg;									// true　→　赤			false　→　青
 	bool m_ColFlg;								// true　→　接している		false → 接していない
