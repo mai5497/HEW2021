@@ -138,7 +138,7 @@ GameScene::~GameScene(void)
 void GameScene::Init(int StageNum)
 {
 	g_pCamera = new Camera();
-	g_pCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
+	g_pCamera->Init();
 
 	// メンバ変数初期化
 	m_StageNum = StageNum;					// 現在のステージ番号保存
@@ -189,6 +189,7 @@ void GameScene::Init(int StageNum)
 	//g_pEnemyManager->Init();
 
 	// ステージクラスの実体化
+	
 	g_pStageManager = new StageManager();
 	g_pStageManager->Init(StageNum);
 

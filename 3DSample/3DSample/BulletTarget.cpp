@@ -189,6 +189,8 @@ void BulletTarget::Update()
 	Direction.x = m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
 	Direction.y = m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
 	Direction = Direction.GetNormalize();
+	//Direction.x = m_move.x - m_move.z;
+	//Direction.y = m_move.x + m_move.z;
 
 	// 当たり判定？
 	// atan ... アークタンジェントの関数
