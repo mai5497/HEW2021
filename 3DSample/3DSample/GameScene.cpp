@@ -12,6 +12,8 @@
  *		 2021/12/25 整理！(吉原)
  *		 2022/01/02 ステージ選択できるようにした（伊地田）
  *		 2022/01/10 バレットの使用変更～
+ *  	 2021/01/16 バレットの落下地点のオブジェクト追加(吉原)
+
  * @brief ゲームシーンに関する処理
  */
 
@@ -53,6 +55,7 @@
 
 // ---ゲーム関連-弾
 #include "BulletManager.h"
+#include "BulletTarget.h"
 
 // ---ゲーム関連-回収
 #include "Collector.h"
@@ -85,7 +88,9 @@ Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
 DwarfManager		*g_pDwarfManager;
+
 BulletManager		*g_pBulletManger;
+BulletTarget			* g_pBulletTarget;
 
 Score				*g_pScore;
 Tutorial			*g_pTutorial;
@@ -158,6 +163,10 @@ void GameScene::Init(int StageNum)
 	// 弾の管理クラス
 	g_pBulletManger = new BulletManager();
 	g_pBulletManger->Init();
+
+	// 弾の落下地点クラス
+	g_pBulletTarget = new BulletTarget();
+	g_pBulletTarget->Init();
 
 	// 小人管理クラス実体化
 	g_pDwarfManager = new DwarfManager();
@@ -272,6 +281,10 @@ void GameScene::Uninit()
 	g_pBulletManger->Uninit();
 	delete g_pBulletManger;
 
+	// 弾の落下地点クラス解放
+	g_pBulletTarget->Uninit();
+	delete g_pBulletTarget;
+
 	// 回収者
 	g_pCollector->Uninit();
 	delete g_pCollector;
@@ -324,6 +337,9 @@ SCENE GameScene::Update()
 {
 	// プレイヤー更新
 	g_pPlayer->Update();
+
+	// 落下地点の更新
+	g_pBulletTarget->Update();
 
 	// 弾更新
 	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());
@@ -659,6 +675,9 @@ void GameScene::Draw()
 
 	// 弾の描画
 	g_pBulletManger->Draw();
+
+	// 落下地点の描画
+	g_pBulletTarget->Draw();
 
 	//g_pEnemy->Draw();
 	SHADER->SetTexture(NULL);
