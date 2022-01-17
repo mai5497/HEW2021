@@ -17,16 +17,26 @@ Camera::Camera()
 	//, m_radius(5.0f)
 
 	// ---å©â∫ÇÎÇµ - í≤êÆ
-	: m_pos(0.0f, 25.0f, -15.0f)
+	//: m_pos(0.0f, 25.0f, -15.0f)
+	//, m_look(0.0f, 0.0f, 0.0f)
+	//, m_up(0.0f, 0.1f, 0.0f)
+	//, m_angle(60.0f)
+	//, m_near(0.5f)
+	//, m_far(1000.0f)
+	//, m_xzAngle(30.0f)
+	//, m_yAngle(60.0f)
+	//, m_radius(5.0f)
+
+	// ---å©â∫ÇÎÇµ - í≤êÆ
+	: m_pos(0.0f, 30.0f, 5.0f)
 	, m_look(0.0f, 0.0f, 0.0f)
 	, m_up(0.0f, 0.1f, 0.0f)
-	, m_angle(60.0f)
+	, m_angle(50.0f)
 	, m_near(0.5f)
 	, m_far(1000.0f)
 	, m_xzAngle(30.0f)
 	, m_yAngle(60.0f)
 	, m_radius(5.0f)
-
 
 	// ---TPSéãì_
 	//: m_pos(0, 2.5f, -5)
