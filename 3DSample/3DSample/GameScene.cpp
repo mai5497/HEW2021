@@ -11,7 +11,7 @@
  *		 2021/12/25 小人フィールドから落ちる(伊地田)
  *		 2021/12/25 整理！(吉原)
  *		 2022/01/02 ステージ選択できるようにした（伊地田）
- *		 2022/01/10 バレットの使用変更～
+ *		 2022/01/10 バレットの使用変更～(吉原)
  * @brief ゲームシーンに関する処理
  */
 
@@ -20,6 +20,7 @@
 //*******************************************************************************
 
 //---システム関連
+#include "Camera.h"
 #include "Input.h"
 #include "TPSCamera.h"
 #include "Collision.h"
@@ -40,9 +41,6 @@
 // ---ゲーム関連-プレイヤー
 #include "Player.h"
 #include "GameObject.h"
-#include "model.h"
-#include "Cube.h"
-#include "PlayerToEnemy.h"
 
 // ---ゲーム関連-エネミー
 #include "Enemy.h"
@@ -73,14 +71,11 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-Cube				*g_pCube;
-Model				*g_pModel;
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
 StageManager		*g_pStageManager;
 Collision			*g_pCollision;
-PlayerToEnemy		*g_pPlayerToEnemy;
 Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
@@ -93,7 +88,6 @@ Tutorial			*g_pTutorial;
 
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
-//Shot				*g_pShot;
 
 XMFLOAT3 g_recPlayerPos;
 XMFLOAT3 g_recBulletPos;
@@ -143,17 +137,6 @@ void GameScene::Init(int StageNum)
 	m_NextStageNum = m_StageNum;			// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
 	m_IsClear = false;						// クリアフラグ
 	m_IsGameOver = false;					// ゲームオーバーフラグ
-
-	// 立方体クラスの実体化
-	g_pCube = new Cube();
-
-	// モデルクラスの実体化
-	g_pModel = new Model();
-	g_pModel->LoadModel("Assets/Model/tyoutin.fbx");
-
-	// カメラクラスの実体化
-	//g_pCamera = new Camera();
-	//g_pCamera->Init();
 	
 	// 弾の管理クラス
 	g_pBulletManger = new BulletManager();
@@ -180,11 +163,10 @@ void GameScene::Init(int StageNum)
 	// 回収車
 	g_pCollector = new Collector();
 	g_pCollector->Init();
-
+	
+	// 回収ポイント
 	g_pCollectionPoint = new CollectionPoint();
 	g_pCollectionPoint->Init();
-
-
 
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -195,10 +177,6 @@ void GameScene::Init(int StageNum)
 	//g_pEnemyManager = new EnemyManager();
 	//g_pEnemyManager->Init();
 
-	// 弾クラスの実体
-	//	g_pShot = new Shot();
-	//	g_pShot->Init();
-
 	// ステージクラスの実体化
 	g_pStageManager = new StageManager();
 	g_pStageManager->Init(StageNum);
@@ -206,10 +184,6 @@ void GameScene::Init(int StageNum)
 	// 当たり判定クラス
 	g_pCollision = new Collision();
 	g_pCollision->Init();
-
-	// プレイヤーtoエネミーの当たり判定クラス
-	g_pPlayerToEnemy = new PlayerToEnemy();
-	g_pPlayerToEnemy->Init();
 
 	// スコアクラス
 	g_pScore = new Score();
@@ -252,10 +226,6 @@ void GameScene::Uninit()
 	g_pCollision->Uninit();
 	delete g_pCollision;
 
-	// プレイヤーtoエネミークラスの終了処理
-	g_pPlayerToEnemy->Uninit();
-	delete g_pPlayerToEnemy;
-
 	// ステージクラスの終了処理
 	g_pStageManager->Uninit();
 	delete g_pStageManager;
@@ -283,24 +253,11 @@ void GameScene::Uninit()
 	// エネミー終了処理
 	//delete g_pEnemy;
 
-	// エネミーマネージャ終了
-	//g_pEnemyManager->Uninit();
-	//delete g_pEnemyManager;
-
-	// バレット終了
-	//	delete g_pBullet;
-
 	// カメラ類終了
 	g_pCamera->Uninit();
 	delete g_pCamera;
 	g_pTPSCamera->Uninit();
 	delete g_pTPSCamera;
-
-	// モデル終了
-	delete g_pModel;
-
-	// キューブ終了
-	delete g_pCube;
 
 	// ゲームクリア終了
 	UninitClear();
@@ -346,15 +303,15 @@ SCENE GameScene::Update()
 	// ステージ更新
 	g_pStageManager->Update();
 
+	//----- プレイヤーの座標を取得 -----
 	g_recPlayerPos = g_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
-
 	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
-	/* 弾の発射はplayer.cppに移動 */
-
+	// スコア更新
 	g_pScore->Update();
 
+	// チュートリアル表示更新
 	g_pTutorial->Update();
 
 
@@ -362,12 +319,6 @@ SCENE GameScene::Update()
 	// すべての移動(更新処理)がすんでから
 	// すべてのオブジェクトの当たり判定を行う
 	//*************************************************************+*
-	//----- プレイヤーと床 -----
-	//for (int i = 0; i < g_pStageManager->GetStageNum(); i++)
-	//{
-	//	g_pCollision->Register(g_pPlayer, g_pStageManager->GetStage(i));
-	//}
-
 	//----- 弾と床 -----
 	//for (int i = 0; i < g_pPlayer->GetBulletNum(); i++) {
 	//	g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(1));
@@ -396,8 +347,6 @@ SCENE GameScene::Update()
 			m_IsGameOver = true;
 			break;
 		}
-
-
 		//----- 小人と床の当たり判定 -----
 		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(1));
 
@@ -478,7 +427,6 @@ SCENE GameScene::Update()
 	//	カメラ更新
 	//***************************************************************	
 	g_pTPSCamera->Update();
-	g_pPlayerToEnemy->Update();
 	g_pCollision->Update();
 
 	//***************************************************************
@@ -639,12 +587,8 @@ void GameScene::Draw()
 	//とりあえずキューブは画面の奥に移動
 	SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
 
-	//そもそも描画関数コメントアウトしておけばよかった
-	//	g_pCube->Draw();
-
 	//モデルが大きいので小さくする
 	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
-	//g_pModel->Draw();
 
 
 	// 回収者の描画
@@ -662,13 +606,10 @@ void GameScene::Draw()
 
 	//g_pEnemy->Draw();
 	SHADER->SetTexture(NULL);
-	//	g_pBullet->Draw();
 
 	// ステージ描画
 	g_pStageManager->Draw();
 
-
-	// g_pShot->Draw();
 	// プレイヤー描画
 	g_pPlayer->Draw();
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
@@ -679,18 +620,20 @@ void GameScene::Draw()
 
 	// 
 
-
+	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {
 		DrawGameOver();
 	}
 
+	// ゲームオーバーフラグが立っているときゲームオーバー描画
 	if (m_IsClear) {
 		DrawClear();
 	}
-
-
+	
+	// スコア描画
 	g_pScore->Draw();
 
+	// チュートリアル描画
 	g_pTutorial->Draw();
 
 }

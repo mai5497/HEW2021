@@ -22,12 +22,12 @@ public:
 private:
 	SCENE m_scene;			// 現在のシーン
 	SCENE m_nextScene;		// 次のシーン(予約)
-	TitleScene m_title;		// タイトルの処理全般
-	GameScene m_game;			// ゲームシーン
-	SelectScene m_select;
+	TitleScene *m_pTitle;		// タイトルの処理全般
+	GameScene *m_pGame;			// ゲームシーン
+	SelectScene *m_pSelect;
 	//TitleSceneMenu m_titleMenu;	// タイトルメニュー
 	//ScenePause m_pause;			// ポーズ画面
-	ResultScene m_result;		// リザルト画面
+	ResultScene *m_pResult;		// リザルト画面
 	//Fade m_fade;				// フェード処理
 	//Tutorial m_tutorial;		// チュートリアル
 

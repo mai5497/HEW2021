@@ -163,6 +163,10 @@ void RedDwarf::Update()
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
+	if (m_pos.y < 0.8f) {
+		RedDwarf::SetAliveFlg(false);
+	}
+
 	m_currentPos = m_pos;
 
 }

@@ -22,18 +22,22 @@ HRESULT SceneManager::Init()
 	{
 	case SCENE_TITLE:
 		// タイトルメニューの初期化
-		m_title.Init();
+		m_pTitle = new TitleScene;
+		m_pTitle->Init();
 		break;
 	case SCENE_SELECT:
-		m_select.Init();
+		m_pSelect = new SelectScene;
+		m_pSelect->Init();
 		break;
 	case SCENE_GAME:
 		//--- ゲーム内のオブジェクトの初期化 ---
-		m_game.Init(m_StageNum);
+		m_pGame = new GameScene;
+		m_pGame->Init(m_StageNum);
 		break;
 
 	case SCENE_RESULT:
-		m_result.Init();
+		m_pResult = new ResultScene;
+		m_pResult->Init();
 		break;
 	/*case SCENE_LOSE_RESULT1:
 		m_loseresult1.Init();
@@ -49,17 +53,17 @@ void SceneManager::Uninit()
 	switch (m_scene)
 	{
 	case SCENE_TITLE:
-		m_title.Uninit();
+		m_pTitle->Uninit();
 		break;
 	case SCENE_SELECT:
-		m_StageNum = m_select.GetStageNum();
-		m_select.Uninit();
+		m_StageNum = m_pSelect->GetStageNum();
+		m_pSelect->Uninit();
 		break;
-	case SCENE_GAME:
-		m_game.Uninit();
+	case SCENE_GAME: 
+		m_pGame->Uninit();
 		break;
 	case SCENE_RESULT:
-		m_result.Uninit();
+		m_pResult->Uninit();
 		break;
 	/*case SCENE_LOSE_RESULT1:
 		m_loseresult1.Uninit();
@@ -84,16 +88,16 @@ bool SceneManager::Update()
 	switch (m_scene)
 	{
 	case SCENE_TITLE:
-		m_nextScene = m_title.Update();
+		m_nextScene = m_pTitle->Update();
 		break;
 	case SCENE_SELECT:
-		m_nextScene = m_select.Update();
+		m_nextScene = m_pSelect->Update();
 		break;
 	case SCENE_GAME:
-		m_nextScene = m_game.Update();
+		m_nextScene = m_pGame->Update();
 		break;
 	case SCENE_RESULT:
-		m_nextScene = m_result.Update();
+		m_nextScene = m_pResult->Update();
 		break;
 	/*case SCENE_LOSE_RESULT1:
 		m_nextScene = m_loseresult1.Update();
@@ -111,16 +115,16 @@ void SceneManager::Draw()
 	switch (m_scene)
 	{
 	case SCENE_TITLE:
-		m_title.Draw();
+		m_pTitle->Draw();
 		break;
 	case SCENE_SELECT:
-		m_select.Draw();
+		m_pSelect->Draw();
 		break;
 	case SCENE_GAME:
-		m_game.Draw();
+		m_pGame->Draw();
 		break;
 	case SCENE_RESULT:
-		m_result.Draw();
+		m_pResult->Draw();
 		break;
 	/*case SCENE_LOSE_RESULT1:
 		m_loseresult1.Draw();
