@@ -179,6 +179,7 @@ void Camera::Update()
 	//ƒJƒƒ‰ˆÊ’uŒvŽZ
 	float xzRad = m_xzAngle * 3.141592f / 180.0f;
 	float yRad = m_yAngle * 3.141592f / 180.0f;
+
 	m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
 	m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
 	m_pos.y = sin(yRad) * m_radius;
@@ -205,9 +206,8 @@ void Camera::Bind()
 			m_near, m_far
 		)
 	);
+
 	SHADER->SetPSCameraPos(m_pos);
-
-
 }
 
 void Camera::Bind2D()

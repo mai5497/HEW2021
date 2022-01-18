@@ -8,13 +8,24 @@
 
 //============== 定数定義 ======================
 #define CLEAR_CNT			(600)
+#define MAX_CLAER_SCENE_TEX	(4)			// テクスチャの数
 
 //============== グローバル変数定義 ======================
-static int g_nTimer;					// タイマー
-ID3D11ShaderResourceView* g_pClearTex;	// テクスチャ
-static DrawBuffer g_pBuffer;			// 頂点バッファ
-GameObject* g_pClearObject;				// ゲームオブジェクト
-Camera* g_pClearCamera;
+static int g_nTimer;										// タイマー
+ID3D11ShaderResourceView* g_pClearTex[MAX_CLAER_SCENE_TEX];	// テクスチャ
+static DrawBuffer g_pBuffer;								// 頂点バッファ
+Camera* g_pClearCamera;										// カメラ
+GameObject g_pClearObject[MAX_CLAER_SCENE_TEX];				// ゲームオブジェクト
+float  g_ArrowPosY;											// カーソル座標
+int g_SelectState;											// シーンの値
+
+
+const char* g_pClearTexFName[MAX_CLAER_SCENE_TEX] = {
+	"Assets/Texture/SceneTexture/GameClear.png",
+	"Assets/Texture/SceneTexture/NextStage.png",
+	"Assets/Texture/SceneTexture/StageSelect2.png",
+	"Assets/Texture/SceneTexture/SelectObj_Block_Pencel.png",
+};
 
 
 //=========================================================
@@ -26,14 +37,41 @@ void InitClear() {
 	// タイマー初期化
 	g_nTimer = CLEAR_CNT;
 
-	LoadTextureFromFile("Assets/Texture/Clear.png", &g_pClearTex);
-	g_pClearObject = new GameObject;
-	g_pClearObject->Init();
-	g_pClearObject->SetPos(DirectX::XMFLOAT3(0, 0, 300));
-	g_pClearObject->SetSize(DirectX::XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 1));
+	// オブジェクト・テクスチャ読み込み
+	for (int i = 0; i < MAX_CLAER_SCENE_TEX; i++){
+		LoadTextureFromFile(g_pClearTexFName[i], &g_pClearTex[i]);
+		g_pClearObject[i].Init();
+	}
+
+	//---ゲームクリアテクスチャ
+	g_pClearObject[0].SetPos(XMFLOAT3(0.0f, 0.2f, 1.0f));			// 座標
+	g_pClearObject[0].SetSize(XMFLOAT3(0.8f, 0.1f, 0.0f));			// サイズ
+	g_pClearObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.2f));	// 半透明
+
+	//---次のステージ
+	g_pClearObject[1].SetPos(XMFLOAT3(0.0f,  0.0f, 1.0f));
+	g_pClearObject[1].SetSize(XMFLOAT3(0.5f, 0.1f, 0.0f));
+
+	//---ステージセレクト
+	g_pClearObject[2].SetPos(XMFLOAT3(0.02f, -0.15f, 1.0f));
+	g_pClearObject[2].SetSize(XMFLOAT3(0.5f, 0.1f, 0.0f));
+
+	//---カーソル
+	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 0.9f));
+	g_pClearObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 0.0f));
+
+	//g_pClearObject = new GameObject;
+	//g_pClearObject->Init();
+	//g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
+
 	g_pClearCamera = new Camera;
-	g_pClearCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
-	g_pClearObject->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));	// 半透明
+	g_pClearCamera->Init();
+
+	// カーソルの初期位置
+	g_ArrowPosY = 0.0f;
+
+	// シーンの値初期
+	g_SelectState = STATE_NEXT;
 }
 
 //===========================================================
@@ -42,13 +80,19 @@ void InitClear() {
 //
 //===========================================================
 void UninitClear() {
-	SAFE_RELEASE(g_pClearTex);
 
+	// オブジェクト・テクスチャ解放
+	for (int i = 0; i < MAX_CLAER_SCENE_TEX; i++)
+	{
+		SAFE_RELEASE(g_pClearTex[i]);
+		g_pClearObject[i].Uninit();
+
+	}
+
+	// カメラインスタンス解放
 	g_pClearCamera->Uninit();
 	delete g_pClearCamera;
 
-	g_pClearObject->Uninit();
-	delete g_pClearObject;
 }
 
 //===========================================================
@@ -57,21 +101,56 @@ void UninitClear() {
 //	戻り値：次のステージに行くのか選択のシーンに戻るかを数字で返す
 //
 //===========================================================
-int	UpdateClear() {
+int	UpdateClear() 
+{
 	// タイマーカウントダウン
 	g_nTimer--;
 	if (g_nTimer < 0) {
 		return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
 	}
 
+
+	//---カーソル移動
+	if (IsTrigger(VK_UP) || IsRelease(JPadButton::DPAD_UP)) {
+		CSound::Play(SE_SELECT_1);
+
+		g_ArrowPosY += 0.15f;
+
+		g_SelectState = STATE_NEXT;
+		if (g_ArrowPosY > 0.0f) {
+			g_ArrowPosY = 0.0f;
+			g_SelectState = STATE_NEXT;
+		}
+	}
+
+	if (IsTrigger(VK_DOWN) || IsRelease(JPadButton::DPAD_DOWN)) {
+		CSound::Play(SE_SELECT_1);
+
+		g_ArrowPosY -= 0.15f;
+
+		g_SelectState = STATE_SELECT;
+		if (g_ArrowPosY < -0.15f) {
+			g_ArrowPosY = 0.15f;
+			g_SelectState = STATE_SELECT;
+		}
+	}
+
+	//---カーソルのオブジェクト再表示
+	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, g_ArrowPosY, 0.9f));
+
+	//---決定
+	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
+		CSound::Play(SE_ENTER_1);
+		return g_SelectState;
+	}
 	// とりあえず１で次のステージ
-	if (IsRelease('1')) {
-		return STATE_NEXT;
-	}
+	//if (IsRelease('1') || IsRelease(JPadButton::Y)) {
+	//	return STATE_NEXT;
+	//}
 	// ２でステージ選択
-	if (IsRelease('2')) {
-		return STATE_SELECT;
-	}
+	//if (IsRelease('2') || IsRelease(JPadButton::A)) {
+	//	return STATE_SELECT;
+	//}
 	//g_pClearObject->Update();
 
 	return -1;
@@ -83,13 +162,16 @@ int	UpdateClear() {
 //
 //===================
 void DrawClear() {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
 	g_pClearCamera->Bind2D();
 
-	SHADER->SetTexture(g_pClearTex);
+	for (int i = 0; i < MAX_CLAER_SCENE_TEX; i++)
+	{
+		SHADER->SetTexture(g_pClearTex[i]);
+		g_pClearObject[i].Draw();
 
-	g_pClearObject->Draw();
+	}
 
 	SHADER->SetTexture(NULL);
 }

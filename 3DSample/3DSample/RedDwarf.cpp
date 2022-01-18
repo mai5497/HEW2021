@@ -133,7 +133,8 @@ void RedDwarf::Update()
 		XMStoreFloat3(&m_move, vDirection * 5);
 	}
 	if (GetrunFlg()) {		// 弾から逃げるとき
-		XMStoreFloat3(&m_move, -(vDirection * 2.5));
+		//XMStoreFloat3(&m_move, -(vDirection * 2.5));
+		XMStoreFloat3(&m_move, -(vDirection * 1.5f));
 	}
 
 	// アークタンジェント(逆正接)
@@ -153,7 +154,7 @@ void RedDwarf::Update()
 
 	//Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
 	//if (Differ < 0.3f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-	//	//SetMoveFlg(false);		// 移動許可おろす
+	//	SetMoveFlg(false);		// 移動許可おろす
 	//}
 
 	// 重力をかける

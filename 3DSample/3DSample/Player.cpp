@@ -18,7 +18,6 @@
 #include	"MyMath.h"
 #include	"Camera.h"
 
-
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
@@ -57,6 +56,9 @@ Player::Player():m_pControllCamera(nullptr)
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
 
+	g_pPlayerCamera = new Camera;
+	g_pPlayerCamera->Init();
+
 	m_collisionType = COLLISION_DYNAMIC;
 
 	//g_pPlayerCamera = new Camera;
@@ -79,6 +81,11 @@ Player::~Player()
 
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
+
+	g_pPlayerCamera->Uninit();
+	delete g_pPlayerCamera;
+	g_pPlayerCamera = nullptr;
+	
 	Uninit();
 }
 
@@ -218,6 +225,7 @@ void Player::Update()
 		m_DrawAngle = atan2(m_move.z, m_move.x);
 		m_DrawAngle -= XM_PI * 0.5f;
 	}
+
 	//m_move.x = direction.x * Move;
 	//m_move.z = direction.y * Move;
 
@@ -258,6 +266,7 @@ void Player::Draw()
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
+
 	//CharacterBase::Draw();
 }
 

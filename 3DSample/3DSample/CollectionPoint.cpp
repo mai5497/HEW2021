@@ -19,7 +19,7 @@
 //====================================================================
 CollectionPoint::CollectionPoint()
 {
-	m_size	= XMFLOAT3(2.5f, 0.1f, 2.5f);
+	m_size	= XMFLOAT3(2.5f, 0.0f, 2.5f);
 	m_pos	= XMFLOAT3(0.0f, 1.0f, 0.0f);
 	m_Angle	= XMFLOAT3(0, 0, 0);
 

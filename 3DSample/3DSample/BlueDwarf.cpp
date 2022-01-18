@@ -127,7 +127,7 @@ void BlueDwarf::Update()
 		XMStoreFloat3(&m_move, vDirection * 5);
 	}
 	if (GetrunFlg()) {		// 弾から逃げるとき
-		XMStoreFloat3(&m_move, -(vDirection * 2.5));
+		XMStoreFloat3(&m_move, -(vDirection * 1.5f));
 	}
 
 	// アークタンジェント(逆正接)

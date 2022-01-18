@@ -34,23 +34,24 @@ void TitleScene::Init()
 {
 	for (int i = 0; i < MAX_TITLE_TEX; i++) {
 		LoadTextureFromFile(g_pTitleTexFName[i], &g_pTitleTex[i]);
+		g_pTitleObject[i].Init();
 	}
-	g_pTitleObject[0].Init();
-	g_pTitleObject[0].SetPos(XMFLOAT3(0, 0, -18));
-	g_pTitleObject[0].SetSize(XMFLOAT3(1, (float)SCREEN_HEIGHT / SCREEN_WIDTH, 0));
-	
-	g_pTitleObject[1].Init();
-	g_pTitleObject[1].SetPos(XMFLOAT3(0, 11, -18));
-	g_pTitleObject[1].SetSize(XMFLOAT3(4, 2, 0));
 
-	g_pTitleObject[2].Init();
-	g_pTitleObject[2].SetPos(XMFLOAT3(0, 8, -18));
-	g_pTitleObject[2].SetSize(XMFLOAT3(2, 1, 0));
-
+	//g_pTitleObject[0].Init();
+	g_pTitleObject[0].SetPos(XMFLOAT3(0.0f,0.0f,1.1f));
+	g_pTitleObject[0].SetSize(XMFLOAT3(1.0f,1.0f,0.0f));
 	
+	//g_pTitleObject[1].Init();
+	g_pTitleObject[1].SetPos(XMFLOAT3(0.0f,0.15f,1.0f));
+	g_pTitleObject[1].SetSize(XMFLOAT3(0.5f,0.1f,0.0f));
+
+	//g_pTitleObject[2].Init();
+	g_pTitleObject[2].SetPos(XMFLOAT3(0.0f,-0.15f,1.0f));
+	g_pTitleObject[2].SetSize(XMFLOAT3(0.5f,0.1f,0.0f));
+
 	
 	g_pTitleCamera = new Camera;
-	g_pTitleCamera->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));
+	g_pTitleCamera->Init();
 
 	// BGMÄ¶
 	CSound::Play(TITLE_BGM);
@@ -72,20 +73,40 @@ SCENE TitleScene::Update()
 
 	//g_pTitleTPSCamera->Update();
 
-	if (IsRelease('1') || IsRelease(JPadButton::B)) {
+	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
 		CSound::Play(SE_ENTER_1);
 		return SCENE_SELECT;
 	}
+
+#ifdef _DEBUG
+	if (IsRelease(JPadButton::L_SHOULDER) && IsRelease(JPadButton::R_SHOULDER)) {
+		CSound::Play(SE_ENTER_1);
+		return SCENE_GAME;
+	}
+
+#endif // _DEBUG
+
 	return SCENE_TITLE;
 }
 void TitleScene::Draw()
 {
 
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
-	g_pTitleCamera->Bind();
+	g_pTitleCamera->Bind2D();
 	
 	for (int i = 0; i < MAX_TITLE_TEX; i++) {
+		//SHADER->SetWorld(
+		//	XMMatrixScaling(
+		//		g_pTitleObject[i].GetSize().x,
+		//		g_pTitleObject[i].GetSize().y,
+		//		g_pTitleObject[i].GetSize().z)
+		//	* XMMatrixTranslation(
+		//		g_pTitleObject[i].GetPos().x,
+		//		g_pTitleObject[i].GetPos().y,
+		//		g_pTitleObject[i].GetPos().z));
+
+
 		SHADER->SetTexture(g_pTitleTex[i]);
 		g_pTitleObject[i].Draw();
 	}

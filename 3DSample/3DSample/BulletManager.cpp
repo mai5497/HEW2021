@@ -22,6 +22,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define BULLET_SPEED		(0.1f)								// 弾の速度
+#define BULLET_THROW_HEIGHT	(15.0f)								// 弾のなげる高さ
 
 //*******************************************************************************
 // グローバル変数
@@ -214,7 +215,7 @@ void BulletManager::CreateBullet(bool rbFlg)
 
 		//---制御点
 		XMFLOAT3 CenterPos = XMFLOAT3((StartPos.x + EndPos.x) / 2.0f,		// X座標 ... 発射地点と落下地点の中点
-			7.0f,								// Y座標 ... 高さは任意の値
+			BULLET_THROW_HEIGHT,								// Y座標 ... 高さは任意の値
 			(StartPos.z + EndPos.z) / 2.0f);	// Z座標 ... 発射地点と落下地点の中点
 
 		XMFLOAT3 CurrentPos;

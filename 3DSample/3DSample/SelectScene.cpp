@@ -169,6 +169,8 @@ SCENE SelectScene::Update()
 		if (m_StageNum > 3) {
 			m_StageNum = 3;
 			g_arrowPosX = 0.3f;
+			//g_pSelectObject[SELECT_TITLE_1].SetCollor(XMFLOAT4(0.0f,0.0f,1.0f,1.0f));
+
 		}
 	}
 	if (IsRelease(VK_LEFT) || IsRelease(JPadButton::DPAD_LEFT)) {
@@ -183,7 +185,7 @@ SCENE SelectScene::Update()
 	// 選択されたステージに矢印を移動
 	g_pSelectObject[SELECT_ARROW].SetPos(DirectX::XMFLOAT3(g_arrowPosX, -0.05f, 1));
 
-	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::B)) {
+	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
 		CSound::Play(SE_ENTER_1);
 
 		switch (m_StageNum) {

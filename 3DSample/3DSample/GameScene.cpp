@@ -162,7 +162,7 @@ void GameScene::Init(int StageNum)
 	// プレイヤークラス実体化
 	g_pPlayer = new Player();
 	g_pPlayer->Init();
-
+	
 	// TPSカメラはプレイヤーより後
 	//g_pTPSCamera = new TPSCamera();
 	//g_pTPSCamera->SetTargetObj(g_pPlayer);
@@ -436,15 +436,15 @@ SCENE GameScene::Update()
 	//*******************************************************************************
 	//	デバッグ用キー処理
 	//*******************************************************************************
-	if (IsRelease('X')){				// Xキーで弾消去
-		g_pBulletManger->DestroyBullet();
-	}
-	if (IsRelease('0')) {				// 0キーでゲームクリア
+	//if (IsRelease('X')){				// Xキーで弾消去
+	//	g_pBulletManger->DestroyBullet();
+	//}
+	if (IsRelease('0' || IsRelease(JPadButton::R_SHOULDER))) {				// 0キーでゲームクリア
 		if (!m_IsGameOver) {
 			m_IsClear = true;
 		}
 	}
-	if (IsRelease('9')) {				// ９キーでゲームオーバー
+	if (IsRelease('9' || IsRelease(JPadButton::L_SHOULDER))) {				// ９キーでゲームオーバー
 		if (!m_IsClear) {
 			m_IsGameOver = true;
 		}
@@ -456,6 +456,8 @@ SCENE GameScene::Update()
 	//***************************************************************	
 	//g_pTPSCamera->Update();
 	g_pCamera->Update();
+
+
 	g_pCollision->Update();
 
 	//***************************************************************
@@ -558,8 +560,9 @@ void GameScene::Draw()
 	//SetLight～　光源の色を設定
 	//Set～　光が当たった物体の反射しやすい色
 
-	SHADER->SetLightAmbient(XMFLOAT4(0.6f, 0.6f, 0.6f, 0.6f));
-	SHADER->SetLightSpecular(XMFLOAT4(1, 1, 1, 1),20);
+	//SHADER->SetAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//SHADER->SetLightAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//SHADER->SetLightSpecular(XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),0.0f);
 
 	//①オブジェクトごとに
 	//　ローカル座標を持つ(頂点)
@@ -577,15 +580,15 @@ void GameScene::Draw()
 	SHADER->SetWorld(XMMatrixRotationY(a += 3.141592f / 180.0));
 	SHADER->SetWorld(XMMatrixTranslation(0, 0, 0));
 
-	/*
+	/* 
 	//カメラ座標系に変換
 	//第1引数:カメラの位置
 	//第2引数:カメラの注視点
 	//第3引数:カメラの上方向
 	SHADER->SetView(
 	DirectX::XMMatrixLookAtLH(
-	DirectX::XMVectorSet(0, 2, -5, 0),
-	DirectX::XMVectorSet(0, 0, 0, 0),
+	DirectX::XMVectorSet(0, 10, 0, 0),
+	DirectX::XMVectorSet(0, 1, 0, 0),
 	DirectX::XMVectorSet(0, 1, 0, 0)
 	));
 	//カメラの画角を設定
@@ -598,14 +601,13 @@ void GameScene::Draw()
 	3.141592f / 3,
 	(float)SCREEN_WIDTH / SCREEN_HEIGHT,
 	1.0f, 1000.0f
-	));*/
+	));
+	*/
 
 	//g_pTPSCamera->Bind();
-
-
 	g_pCamera->Bind();
 	
-	///g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
 	SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
@@ -630,20 +632,25 @@ void GameScene::Draw()
 	// 落下地点の描画
 	g_pBulletTarget->Draw();
 
+
 	//g_pEnemy->Draw();
-	SHADER->SetTexture(NULL);
+	//SHADER->SetTexture(NULL);
 
 	// ステージ描画
 	g_pStageManager->Draw();
 
 	// プレイヤー描画
 	g_pPlayer->Draw();
+
+
+
+
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	
 	//	EnableCulling(false);
-	
 	//	EnableCulling(true);
  
+
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {
