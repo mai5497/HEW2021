@@ -107,7 +107,7 @@ bool StageManager::Init(int SelectStageNum)
 		},
 		//小人のステージ
 		{ XMFLOAT3(0.0f,0.5f, 0.0f),
-		  XMFLOAT3(0.8f,0.8f,0.8f),
+		  XMFLOAT3(0.8f,1.0f,0.8f),
 		},
 		////右の壁
 		//{ XMFLOAT3(12.5f,0.0f,0.0f),
@@ -183,6 +183,7 @@ bool StageManager::Init(int SelectStageNum)
 		m_ppStages[i] = new Stage(settings[i].size);
 		m_ppStages[i]->SetPos(settings[i].pos);
 		m_ppStages[i]->Init();
+
 	}
 	//※クラスを配列でメモリ確保する場合は
 	//既定のコンストラクタ(引数のないコンストラクタ)

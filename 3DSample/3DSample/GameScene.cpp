@@ -352,7 +352,7 @@ SCENE GameScene::Update()
 	static int Timer;
 	Timer--;
 	if (Timer < 0) {
-		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
+		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.0f + DWARF_SIZE, 0.0f);	// ランダム
 		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 			//----- 乱数で目的地を設定 -----
 			randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
@@ -371,7 +371,9 @@ SCENE GameScene::Update()
 			break;
 		}
 		//----- 小人と床の当たり判定 -----
+		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(0));
 		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(1));
+		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(2));
 
 		//----- 小人回収処理 -----
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {

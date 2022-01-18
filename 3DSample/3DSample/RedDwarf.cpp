@@ -112,6 +112,7 @@ void RedDwarf::Update()
 	//----- 変数初期化 -----
 	//static bool jumpFlg;
 	float Differ;		// 小人と弾の距離の差
+	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
@@ -163,7 +164,7 @@ void RedDwarf::Update()
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
-	if (m_pos.y < 0.8f) {
+	if (m_pos.y < 0.5f) {
 		RedDwarf::SetAliveFlg(false);
 	}
 

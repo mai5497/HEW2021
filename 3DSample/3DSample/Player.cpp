@@ -52,14 +52,15 @@ Player::Player():m_pControllCamera(nullptr)
 	m_pos.y = 3.0f;
 	m_pos.z = -13.0f;
 	m_Angle = XMFLOAT3(0, 0, 0);
+	m_DrawAngle = 0.0f;
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
 
 	m_collisionType = COLLISION_DYNAMIC;
 
-	g_pPlayerCamera = new Camera;
-	g_pPlayerCamera->Init();
+	//g_pPlayerCamera = new Camera;
+	//g_pPlayerCamera->Init();
 
 }
 
@@ -73,8 +74,8 @@ Player::Player():m_pControllCamera(nullptr)
 //==============================================================
 Player::~Player()
 {
-	g_pPlayerCamera->Uninit();
-	delete g_pPlayerCamera;
+	//g_pPlayerCamera->Uninit();
+	//delete g_pPlayerCamera;
 
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
@@ -212,7 +213,7 @@ void Player::Update()
 	//m_pos.y += m_move.y;
 	//m_pos.z += m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
 
-	//当たり判定
+	//描画用角度設定
 	if (moveFlg == true) {
 		m_DrawAngle = atan2(m_move.z, m_move.x);
 		m_DrawAngle -= XM_PI * 0.5f;
@@ -223,6 +224,9 @@ void Player::Update()
 	//m_pos.x += m_move.x;
 	//m_pos.y = 1.5f;
 	//m_pos.z += m_move.z;
+	
+	// カメラ更新
+	//g_pPlayerCamera->Update();
 }
 
 //==============================================================
@@ -235,8 +239,8 @@ void Player::Update()
 //==============================================================
 void Player::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
-	g_pPlayerCamera->Bind();
+	//SHADER->Bind(VS_WORLD, PS_PHONG);
+	//g_pPlayerCamera->Bind();
 
 
 	DirectX::XMFLOAT3 pPos = m_pos;

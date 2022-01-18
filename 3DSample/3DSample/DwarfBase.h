@@ -10,6 +10,8 @@
 #define MAX_RED_DWARF	(6)									// 赤小人最大値
 #define MAX_BLUE_DWARF	(6)									// 青小人最大値
 #define MAX_DWARF		(MAX_RED_DWARF + MAX_BLUE_DWARF)	// 小人最大数合計
+#define DWARF_SIZE (2.0f)
+
 
 //========================= クラス定義 ===========================
 class DwarfBase : public CharacterBase 
