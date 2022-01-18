@@ -139,7 +139,8 @@ void BulletTarget::Uninit()
 void BulletTarget::Update()
 {
 	//---変数初期化
-	XMFLOAT2 Axis = LeftThumbPosition();
+	XMFLOAT2 Axis = XMFLOAT2(0.0f, 0.0f);
+	Axis = LeftThumbPosition();
 	bool moveFlg = false;					// 移動フラグ
 
 	const float Move = (10.0f / FPS) * 2;	// 1秒間で2M進む
@@ -150,24 +151,24 @@ void BulletTarget::Update()
 	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
-
-	if (IsPress(VK_LEFT)) {			// 左
-		moveFlg = true;
-		m_move.x -= Move;
-	}
-	if (IsPress(VK_RIGHT)) {		// 右
-		moveFlg = true;
-		m_move.x += Move;
-	}	
-	if (IsPress(VK_UP)) {			// 上
-		moveFlg = true;
-		m_move.z += Move;
-	}
-	if (IsPress(VK_DOWN)) {			// 下
-		moveFlg = true;
-		m_move.z -= Move;
-	}
-
+	//if (m_move.x != 0.0f && m_move.y != 0.0f) {
+		if (IsPress(VK_LEFT)) {			// 左
+			moveFlg = true;
+			m_move.x -= Move;
+		}
+		if (IsPress(VK_RIGHT)) {		// 右
+			moveFlg = true;
+			m_move.x += Move;
+		}
+		if (IsPress(VK_UP)) {			// 上
+			moveFlg = true;
+			m_move.z += Move;
+		}
+		if (IsPress(VK_DOWN)) {			// 下
+			moveFlg = true;
+			m_move.z -= Move;
+		}
+	//}
 	//MyVector2 Direction(0.0f, 0.0f);
 
 	// 極座標を使ったTPS視点
@@ -203,6 +204,7 @@ void BulletTarget::Update()
 void BulletTarget::Draw()
 {
 	SHADER->Bind(VS_WORLD, PS_PHONG);
+	//m_pCamera->Bind();
 
 	//int MeshNum = m_pFBX->GetMeshNum();
 	//for (int i = 0; i < MeshNum; ++i){
