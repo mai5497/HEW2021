@@ -24,15 +24,15 @@ Camera::Camera()
 	//, m_radius(5.0f)
 
 	//---真上からの見下ろし
-	: m_pos(0.0f,5.0f,0.0f)				// カメラの座標
-	, m_look(0.0f, 1.0f, 0.0f)			// カメラの注視点
-	, m_up(0.0f, 1.0f, 0.0f)			// カメラの上方向
-	, m_angle(45.0f)					// 視野角
-	, m_near(0.5f)						// 手前の面の描画範囲(とりあえずはこの値)
-	, m_far(1000.0f)					// 奥行の面の範囲描画(とりあえずはこの値)
-	, m_xzAngle(0.0f)					// カメラのXとZ軸の回転を行う
-	, m_yAngle(85.0f)					// カメラのY軸回転
-	, m_radius(30.0f)					// 焦点までの距離
+	: m_pos		(0.0f,10.0f,0.0f)		// カメラの座標
+	, m_look	(0.0f,1.0f, 0.0f)		// カメラの注視点
+	, m_up		(0.0f,1.0f, 0.0f)		// カメラの上方向
+	, m_angle	(45.0f)					// 視野角
+	, m_near	(0.5f)					// 手前の面の描画範囲(とりあえずはこの値)
+	, m_far		(1000.0f)				// 奥行の面の範囲描画(とりあえずはこの値)
+	, m_xzAngle	(0.0f)					// カメラのXとZ軸の回転を行う
+	, m_yAngle	(85.0f)					// カメラのY軸回転
+	, m_radius	(30.0f)					// 焦点までの距離
 
 	// ---見下ろし - 調整
 	//: m_pos(0.0f, 25.0f, -15.0f)
@@ -179,6 +179,7 @@ void Camera::Update()
 	//カメラ位置計算
 	float xzRad = m_xzAngle * 3.141592f / 180.0f;
 	float yRad = m_yAngle * 3.141592f / 180.0f;
+
 	m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
 	m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
 	m_pos.y = sin(yRad) * m_radius;
@@ -205,9 +206,8 @@ void Camera::Bind()
 			m_near, m_far
 		)
 	);
+
 	SHADER->SetPSCameraPos(m_pos);
-
-
 }
 
 void Camera::Bind2D()

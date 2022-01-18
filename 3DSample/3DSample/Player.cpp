@@ -16,7 +16,7 @@
 #include	<math.h>
 #include	"Controller.h"
 #include	"MyMath.h"
-
+#include	"Camera.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -30,7 +30,7 @@
 XMFLOAT3 pOldCameraPos;
 DrawBuffer *Player::m_pBuffer = NULL;
 FBXPlayer *Player::m_pFBX = NULL;
-
+Camera* g_pPlayerCamera = NULL;
 
 
 //==============================================================
@@ -55,6 +55,9 @@ Player::Player():m_pControllCamera(nullptr)
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
 
+	g_pPlayerCamera = new Camera;
+	g_pPlayerCamera->Init();
+
 	m_collisionType = COLLISION_DYNAMIC;
 
 
@@ -73,6 +76,11 @@ Player::~Player()
 {
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
+
+	g_pPlayerCamera->Uninit();
+	delete g_pPlayerCamera;
+	g_pPlayerCamera = nullptr;
+	
 	Uninit();
 }
 
@@ -211,6 +219,7 @@ void Player::Update()
 		m_DrawAngle = atan2(m_move.z, m_move.x);
 		m_DrawAngle -= XM_PI * 0.5f;
 	}
+
 	//m_move.x = direction.x * Move;
 	//m_move.z = direction.y * Move;
 
@@ -230,9 +239,10 @@ void Player::Update()
 void Player::Draw()
 {
 	SHADER->Bind(VS_WORLD, PS_PHONG);
+	g_pPlayerCamera->Bind();
 
-	DirectX::XMFLOAT3 pPos = m_pos;
-	DirectX::XMFLOAT3 pSize = m_size;
+	//DirectX::XMFLOAT3 pPos = m_pos;
+	//DirectX::XMFLOAT3 pSize = m_size;
 
 
 	int meshNum = m_pFBX->GetMeshNum();
@@ -246,7 +256,11 @@ void Player::Draw()
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
+
 	//CharacterBase::Draw();
+	SHADER->SetTexture(NULL);
+
+
 }
 
 //==============================================================

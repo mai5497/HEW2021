@@ -21,23 +21,24 @@
  //*******************************************************************************
  // 定数・マクロ定義
  //*******************************************************************************
-#define TARGET_POS_X	(10.0f)
-#define TARGET_POS_Y	(  1.1f)
-#define TARGET_POS_Z	(-13.0f)
+#define TARGET_POS_X	(0.0f)
+#define TARGET_POS_Y	(1.2f)
+#define TARGET_POS_Z	(0.0f)
 
 #define TARGET_SIZE_X	(1.0f)
-#define TARGET_SIZE_Y	(.0f)
+#define TARGET_SIZE_Y	(0.0f)
 #define TARGET_SIZE_Z	(1.0f)
 
 #define L_PI			(3.1415926f)		// π
 #define L_H_DEG			(180.0f)			// 角度
 #define	TRANS_RADIAN	(L_PI / L_H_DEG)	// ラジアンに変換
+
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
 //DrawBuffer* BulletTarget::m_pBuffer = NULL;
 //FBXPlayer* BulletTarget::m_pFBX = NULL;
-
+Camera* g_pBulletTargetCamera;
 
 //==============================================================
 //
@@ -75,14 +76,17 @@ BulletTarget::~BulletTarget()
 //==============================================================
 bool BulletTarget::Init()
 {
+	LoadTextureFromFile("Assets/Model/Target.png", &m_pBulletTargetTex);
+
 	GameObject::Init();
 
 	// カメラインスタンスの初期化
-	m_pCamera = new Camera;
-	m_pCamera->Init();
+	//m_pCamera = new Camera;
+	//m_pCamera->Init();
+	g_pBulletTargetCamera = new Camera;
+	g_pBulletTargetCamera->Init();
 
 	//---テクスチャ読み込み
-	LoadTextureFromFile("Assets/Model/Target.png", &m_pBulletTargetTex);
 
 	//---変数初期化
 	m_pos = XMFLOAT3(TARGET_POS_X, TARGET_POS_Y, TARGET_POS_Z);
@@ -121,9 +125,11 @@ void BulletTarget::Uninit()
 	//---テクスチャ解放
 	SAFE_RELEASE(m_pBulletTargetTex);
 
-	// カメラインスタンス解放
+	//// カメラインスタンス解放
 	m_pCamera->Uninit();
 	delete m_pCamera;
+	//g_pBulletTargetCamera->Uninit();
+	//delete g_pBulletTargetCamera;
 
 	GameObject::Uninit();
 }
@@ -142,7 +148,7 @@ void BulletTarget::Update()
 	XMFLOAT2 Axis = LeftThumbPosition();
 	bool moveFlg = false;					// 移動フラグ
 
-	const float Move = (10.0f / FPS) * 2;	// 1秒間で2M進む
+	const float Move = (10.0f / FPS) * 4;	// 1秒間で4M進む
 
 	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
 
@@ -150,7 +156,6 @@ void BulletTarget::Update()
 	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
-
 	if (IsPress(VK_LEFT)) {			// 左
 		moveFlg = true;
 		m_move.x -= Move;
@@ -202,15 +207,17 @@ void BulletTarget::Update()
 //==============================================================
 void BulletTarget::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
+	//g_pBulletTargetCamera->Bind2D();
 
 	//int MeshNum = m_pFBX->GetMeshNum();
 	//for (int i = 0; i < MeshNum; ++i){
 	SHADER->SetTexture(m_pBulletTargetTex);
+
 	SHADER->SetWorld
 	(
 		XMMatrixScaling(m_size.x, m_size.y, m_size.z)*
-		XMMatrixRotationX(-m_DrawAngle)*
+		XMMatrixRotationY(-m_DrawAngle)*
 		XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
 	);
 
