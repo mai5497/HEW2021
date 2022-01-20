@@ -14,6 +14,7 @@
  *		 2022/01/10 バレットの使用変更～(吉原)
  *  	 2022/01/16 バレットの落下地点のオブジェクト追加(吉原)
  *		 2022/01/17 ゲームオーバークリアが同時に出るのなおした（伊地田）
+ *		 2022/01/18 ステージのオブジェクトの配置(吉原)
  *
  * @brief ゲームシーンに関する処理
  */
@@ -39,7 +40,7 @@
 
 // ---ステージ関連
 #include "Stage.h"
-#include "StageManager.h"
+#include "StageObjectManager.h"
 
 // ---ゲーム関連-プレイヤー
 #include "Player.h"
@@ -78,7 +79,10 @@
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
+
 StageManager		*g_pStageManager;
+StageObjectManager* g_pStageObjectManager;
+
 Collision			*g_pCollision;
 Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
@@ -190,10 +194,14 @@ void GameScene::Init(int StageNum)
 	//g_pEnemyManager->Init();
 
 	// ステージクラスの実体化
-	
 	g_pStageManager = new StageManager();
 	g_pStageManager->Init(StageNum);
 
+	// ステージオブジェクトの実体化
+	g_pStageObjectManager = new StageObjectManager;
+	g_pStageObjectManager->Init();
+
+	
 	// 当たり判定クラス
 	g_pCollision = new Collision();
 	g_pCollision->Init();
@@ -242,6 +250,10 @@ void GameScene::Uninit()
 	// ステージクラスの終了処理
 	g_pStageManager->Uninit();
 	delete g_pStageManager;
+
+	// ステージオブジェクトの終了処理
+	g_pStageObjectManager->Uninit();
+	delete g_pStageObjectManager;
 
 	//プレイヤーの終了処理
 	g_pPlayer->Uninit();
@@ -323,6 +335,10 @@ SCENE GameScene::Update()
 
 	// ステージ更新
 	g_pStageManager->Update();
+
+	// ステージオブジェクト更新
+	g_pStageObjectManager->Update();
+
 
 	//----- プレイヤーの座標を取得 -----
 	g_recPlayerPos = g_pPlayer->GetPos();
@@ -636,6 +652,10 @@ void GameScene::Draw()
 
 	// ステージ描画
 	g_pStageManager->Draw();
+
+	// ステージオブジェクト描画
+	g_pStageObjectManager->Draw();
+
 
 	// プレイヤー描画
 	g_pPlayer->Draw();

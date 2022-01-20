@@ -16,7 +16,7 @@ using namespace DirectX;
 //オブジェクトの種類
 enum ObjectCollisionType
 {
-	COLLISION_STATIC,	//静止している物体
+	COLLISION_STATIC,		//静止している物体
 	COLLISION_DYNAMIC,	//動いている物体
 	COLLISION_OVERLAP,	//貫通する物体
 	COLLISION_ENEMY,

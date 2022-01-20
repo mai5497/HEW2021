@@ -18,14 +18,11 @@
 #include	"TPScamera.h"
 
 // クラスの前方定義
+class BulletBase;
 class Player;
 class BulletTarget;
-class BulletBase;
 class Camera;
 
-//*******************************************************************************
-// 定数・マクロ定義
-//*******************************************************************************
 #define	MAX_RED_BULLET		(5)									// 赤弾の最大値
 #define	MAX_BLUE_BULLET		(5)									// 青弾の最大値
 #define	MAX_BULLET			(MAX_RED_BULLET + MAX_BLUE_BULLET)	// 弾の最大値(赤弾 + 青弾)

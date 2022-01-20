@@ -150,6 +150,7 @@ bool StageManager::Init(int SelectStageNum)
 				//小人のステージ
 				XMFLOAT3(0.0f,0.5f, 0.0f),
 				XMFLOAT3(20.0f,1.0f,20.0f),
+
 			};
 			break;
 		case 2:

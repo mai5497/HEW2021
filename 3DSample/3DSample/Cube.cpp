@@ -21,6 +21,7 @@ Cube::Cube()
 	};
 
 	const float l = 0.5f;
+
 	Vertex vtx[] = {
 		{{ -l, l,-l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
 		{{  l, l,-l },{ m_R,m_G,m_B,m_A },{ 1,0 }},

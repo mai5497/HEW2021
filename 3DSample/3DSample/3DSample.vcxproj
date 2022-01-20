@@ -136,6 +136,7 @@
     <ClCompile Include="CollectionPoint.cpp" />
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="StageObjectBase.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterBase.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
     <ClCompile Include="FBX\FBXLoadMesh.cpp" />
     <ClCompile Include="FBX\FBXPlayer.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -175,6 +177,7 @@
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="StageObjectManager.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -193,6 +196,7 @@
     <ClInclude Include="CollectionPoint.h" />
     <ClInclude Include="Collector.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="StageObjectBase.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />
@@ -211,6 +215,7 @@
     <ClInclude Include="FBX\FBXLoadMaterial.h" />
     <ClInclude Include="FBX\FBXLoadMesh.h" />
     <ClInclude Include="FBX\FBXPlayer.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundData.hpp" />
@@ -232,6 +237,7 @@
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="StageManager.h" />
+    <ClInclude Include="StageObjectManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TPScamera.h" />
