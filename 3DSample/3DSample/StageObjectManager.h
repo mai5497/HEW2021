@@ -13,6 +13,7 @@
  //*******************************************************************************
 #include	"StageObjectBase.h"
 
+
  //*******************************************************************************
  // クラス宣言
  //*******************************************************************************
@@ -23,7 +24,7 @@ public:
 	~StageObjectManager();
 
 	//---関数
-	bool Init();
+	bool Init(int SelectStageNum);
 	void Uninit();
 	void Update();
 	void Draw();
@@ -33,5 +34,6 @@ public:
 private:
 	StageObjectBase	**m_ppStageObject;		// ステージのオブジェクト
 	int m_StageObjectNum;								// ステージのオブジェクトの最大数
+	int m_SelectStageNm;								//　選択されているステージ番号
 };
 

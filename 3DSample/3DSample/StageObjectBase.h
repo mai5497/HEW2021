@@ -29,6 +29,8 @@ public:
 	virtual ~StageObjectBase();
 
 	//---ä÷êî
+	bool Init();
+	void Uninit();
 	virtual void Update();
 	virtual void Draw();
 
@@ -56,8 +58,8 @@ public:
 private:
 
 	//---ïœêî
-	static	 DrawBuffer *m_pBuffer;
-	static FBXPlayer *m_pFBX;
+	DrawBuffer *m_pBuffer;
+	FBXPlayer *m_pFBX;
 
 
 	LPCSTR m_TexPath;

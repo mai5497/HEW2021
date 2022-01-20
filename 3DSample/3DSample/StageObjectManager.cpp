@@ -16,6 +16,14 @@
 //*******************************************************************************
 #define MAX_STAGEOBJECT			(10)
 
+typedef enum
+{
+	STAGE_1 =1,
+	STAGE_2,
+	STAGE_3,
+
+	MAX_STAGE
+}STAGE_NUMBER;
 //==============================================================
 //
 //	StageObjectManager::コンストラクタ
@@ -41,7 +49,7 @@ StageObjectManager::~StageObjectManager()
 //	StageObjectManager::初期化
 // 
 //==============================================================
-bool StageObjectManager::Init()
+bool StageObjectManager::Init(int SelectStageNum)
 {
 	//---ステージオブジェクトの情報
 	typedef struct {
@@ -50,32 +58,56 @@ bool StageObjectManager::Init()
 		LPCSTR TexPath;			// テクスチャパス
 		LPCSTR ModelPath;			// モデルパス
 	}StageObjectInfo;
-
-
+	
 	StageObjectInfo StageObjectSet[] =
 	{
-		//---ブルドーザー
+		//---(柵)
 		{
-			XMFLOAT3(0.0f,5.0f,0.0f),
-			XMFLOAT3(1.0f,1.0f,1.0f),
-			LPCSTR("Assets/Texture/bulldozer.png"),
-			LPCSTR("Assets/Model/bulldozer.fbx"),
-		}
-
+			XMFLOAT3(0.0f,1.5f,0.0f),
+			XMFLOAT3(0.95f,0.7f,0.95f),
+			LPCSTR("Assets/Model/fence.png"),
+			LPCSTR("Assets/Model/fenceall.fbx"),
+		},
+ 
+		//---(ブルドーザー)
+		//{
+		//	XMFLOAT3(1.0f,5.0f,3.0f),
+		//	XMFLOAT3(1.0f,1.0f,1.0f),
+		//	LPCSTR("Assets/Model/bulldozer.png"),
+		//	LPCSTR("Assets/Model/bulldozer.fbx"),
+		//},
 	};
+
+	//switch (m_SelectStageNm)
+	//{
+
+	//case STAGE_1:				// ステージ１
+	//	break;
+
+	//case STAGE_2:				// ステージ2
+	//	break;
+
+	//case STAGE_3:				// ステージ3
+
+	//	break;
+
+	//default:					// 例外処理
+	//	break;
+
+	//}
+
 
 	//---最大数を取得
 	m_StageObjectNum = sizeof(StageObjectSet) / sizeof(StageObjectSet[0]);
 
 	//---オブジェクトベースのメモリ確保
-	m_ppStageObject = new  StageObjectBase * [m_StageObjectNum];
+	m_ppStageObject = new  StageObjectBase *[m_StageObjectNum];
 
 	// オブジェクトの最大数メモリ確保
 	for (int i = 0; i < m_StageObjectNum; i++) {
 		m_ppStageObject[i] = new StageObjectBase;
-		//m_ppStageObject[i]->Init();
-		m_ppStageObject[i]->CreateStageObject(
-			StageObjectSet[i].pos, StageObjectSet[i].size, StageObjectSet[i].TexPath, StageObjectSet[i].ModelPath);
+		m_ppStageObject[i]->Init();
+		m_ppStageObject[i]->CreateStageObject(StageObjectSet[i].pos, StageObjectSet[i].size, StageObjectSet[i].TexPath, StageObjectSet[i].ModelPath);
 	}
 
 	return true;
