@@ -25,13 +25,13 @@
 #define TARGET_POS_Y		(1.2f)
 #define TARGET_POS_Z		(0.0f)
 
-#define TARGET_SIZE_X	(1.0f)
+#define TARGET_SIZE_X		(1.0f)
 #define TARGET_SIZE_Y		(0.0f)
 #define TARGET_SIZE_Z		(1.0f)
 
-#define L_PI			(3.1415926f)		// π
-#define L_H_DEG			(180.0f)			// 角度
-#define	TRANS_RADIAN	(L_PI / L_H_DEG)	// ラジアンに変換
+#define L_PI				(3.1415926f)		// π
+#define L_H_DEG				(180.0f)			// 角度
+#define	TRANS_RADIAN		(L_PI / L_H_DEG)	// ラジアンに変換
 
 //*******************************************************************************
 // グローバル宣言

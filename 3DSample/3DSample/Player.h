@@ -40,6 +40,8 @@ public:
 	XMFLOAT3 GetPlayerPos();
 	XMFLOAT3 GetPlayerAngle();
 
+	void SetBulletTargetPos(XMFLOAT3 pos);
+
 
 private:
 	bool LoadPlayer(const char *pFilePath);
@@ -51,6 +53,8 @@ private:
 	static FBXPlayer *m_pFBX;				// FBXファイル操作クラス
 
 	float m_DrawAngle;						// 描画角度
+
+	XMFLOAT3 m_BulletTargetPos;
 };
 
 #endif // !_PLAYER_H_
