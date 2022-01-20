@@ -124,38 +124,32 @@ void RedDwarf::Update()
 	// 速度を変えるならvDirectonに速度をかける。
 	vDirection = XMVector3Normalize(vDirection);
 	// かける関数								  ↓かける数
-	vDirection = XMVectorScale(vDirection, 1.0f / 60);
+	if (GetFollowFlg()) {		// 追跡フラグが立っているとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 5);
+	} else if (GetrunFlg()) {	// 弾から逃げるとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -1.5);
+	} else {
+		vDirection = XMVectorScale(vDirection, (1.0f / 60));
+	}
 	// Float3型に変換
 	XMStoreFloat3(&m_move, vDirection);
 
 
-	if (GetFollowFlg()) {	// 追跡フラグが立っているとき
-		XMStoreFloat3(&m_move, vDirection * 5);
-	}
-	if (GetrunFlg()) {		// 弾から逃げるとき
-		//XMStoreFloat3(&m_move, -(vDirection * 2.5));
-		XMStoreFloat3(&m_move, -(vDirection * 1.5f));
-	}
 
 	// アークタンジェント(逆正接)
 	m_DwarfAngle = atan2(m_move.z, m_move.x);
 	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
 
-	//if(m_AttackFlg) {
-	//	m_move.y += 0.2f;
-	//	jumpFlg = true;
-	//} else {
-	//	jumpFlg = false;
-	//}
 
 	//if (jumpFlg) {
 	//	m_move.y -= 0.21f;
 	//}
 
-	//Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	//if (Differ < 0.3f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-	//	SetMoveFlg(false);		// 移動許可おろす
-	//}
+	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
+	if (GetrunFlg() || Differ > 0.3f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+		//SetMoveFlg(false);		// 移動許可おろす
+		SetrunFlg(false);
+	}
 
 	// 重力をかける
 	m_move.y -= GRAVITY;

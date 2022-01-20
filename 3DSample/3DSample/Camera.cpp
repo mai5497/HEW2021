@@ -111,70 +111,70 @@ void Camera::Update()
 	//y = sinΦ * r
 
 
-
+#if 0
 	//カメラの角度変更
-	//if (IsPress(VK_LEFT))
-	//{
-	//	m_xzAngle += 1.0f;
-	//}
-	//if (IsPress(VK_RIGHT))
-	//{
-	//	m_xzAngle -= 1.0f;
-	//}
-	//if (IsPress(VK_UP))
-	//{
-	//	if (IsPress(VK_SHIFT))
-	//	{
-	//		m_radius -= 10.0f / 60.0f;
-	//		if (m_radius <= 1.0f)
-	//			m_radius = 1.0f;
-	//	}
-	//	else
-	//	{
-	//		m_yAngle += 1.0f;
-	//	}
+	if (IsPress(VK_LEFT))
+	{
+		m_xzAngle += 1.0f;
+	}
+	if (IsPress(VK_RIGHT))
+	{
+		m_xzAngle -= 1.0f;
+	}
+	if (IsPress(VK_UP))
+	{
+		if (IsPress(VK_SHIFT))
+		{
+			m_radius -= 10.0f / 60.0f;
+			if (m_radius <= 1.0f)
+				m_radius = 1.0f;
+		}
+		else
+		{
+			m_yAngle += 1.0f;
+		}
 
-	//	//カメラの上方ベクトルが常に上を向いているのでひっくり絵は取れない
-	//	//※常にまっすぐ立った状態の絵が取れる
-	//	//通常、３Dのツールではカメラが真上から見下ろす、真下から見上げる絵にならないように移動の制限をかけている
-	//	if (m_yAngle >= 90.0f)
-	//	{
-	//		m_yAngle = 89.0f;
-	//	}
+		//カメラの上方ベクトルが常に上を向いているのでひっくり絵は取れない
+		//※常にまっすぐ立った状態の絵が取れる
+		//通常、３Dのツールではカメラが真上から見下ろす、真下から見上げる絵にならないように移動の制限をかけている
+		if (m_yAngle >= 90.0f)
+		{
+			m_yAngle = 89.0f;
+		}
 
-	//}
-	//if (IsPress(VK_DOWN))
-	//{
-	//	if (IsPress(VK_SHIFT))
-	//	{
-	//		m_radius += 10.0f / 60.0f;
-	//	}
-	//	else
-	//	{
-	//		m_yAngle -= 1.0f;
-	//	}
-	//	if (m_yAngle <= -90.0f)
-	//	{
-	//		m_yAngle = -89.0f;
-	//	}
-	//}
+	}
+	if (IsPress(VK_DOWN))
+	{
+		if (IsPress(VK_SHIFT))
+		{
+			m_radius += 10.0f / 60.0f;
+		}
+		else
+		{
+			m_yAngle -= 1.0f;
+		}
+		if (m_yAngle <= -90.0f)
+		{
+			m_yAngle = -89.0f;
+		}
+	}
 
-	//}
-	//if (IsPress(VK_DOWN))
-	//{
-	//	if (IsPress(VK_SHIFT))
-	//	{
-	//		m_radius += 10.0f / 60.0f;
-	//	}
-	//	else
-	//	{
-	//		m_yAngle -= 1.0f;
-	//	}
-	//	if (m_yAngle <= -90.0f)
-	//	{
-	//		m_yAngle = -89.0f;
-	//	}
-	//}
+	if (IsPress(VK_DOWN))
+	{
+		if (IsPress(VK_SHIFT))
+		{
+			m_radius += 10.0f / 60.0f;
+		}
+		else
+		{
+			m_yAngle -= 1.0f;
+		}
+		if (m_yAngle <= -90.0f)
+		{
+			m_yAngle = -89.0f;
+		}
+	}
+#endif
 
 	//カメラ位置計算
 	float xzRad = m_xzAngle * 3.141592f / 180.0f;

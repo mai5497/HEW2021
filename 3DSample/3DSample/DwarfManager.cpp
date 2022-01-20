@@ -126,16 +126,19 @@ void DwarfManager::Update()
 	
 		for (int j = 0; j < MAX_BULLET; j++) 
 		{
+			if (!m_pBullet->GetBullet(j)->use) {
+				continue;
+			}
 			if (!CollisionSphere(m_ppDwarf[i], m_pBullet->GetBullet(j))) {		// ‹ß‚­‚É‚¢‚È‚©‚Á‚½‚ç‰º‚Ìˆ—‚ð‚µ‚È‚¢
 				continue;
 			}
 
 			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
-				//m_ppDwarf[i]->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
+				m_ppDwarf[i]->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
 				m_ppDwarf[i]->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
 				m_ppDwarf[i]->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚È‚¢
 			} else {
-				//m_ppDwarf[i]->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
+				m_ppDwarf[i]->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
 				m_ppDwarf[i]->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
 				m_ppDwarf[i]->SetrunFlg(true);		// ’e‚©‚ç—£‚ê‚é
 			}

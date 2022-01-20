@@ -51,6 +51,7 @@
 
 // ---ゲーム関連-小人
 #include "DwarfManager.h"
+#include "DwarfStageCollision.h"
 
 // ---ゲーム関連-弾
 #include "BulletManager.h"
@@ -84,6 +85,7 @@ Collector			*g_pCollector;
 CollectionPoint		*g_pCollectionPoint;
 SelectScene			*g_pSelectScene;
 DwarfManager		*g_pDwarfManager;
+DwarfStageCollision	*g_pDwarfStageCollision;
 
 BulletManager		*g_pBulletManger;
 BulletTarget			* g_pBulletTarget;
@@ -159,6 +161,10 @@ void GameScene::Init(int StageNum)
 	g_pDwarfManager = new DwarfManager();
 	g_pDwarfManager->Init();
 
+	// 小人のステージの当たり判定用のブロックたち初期化
+	g_pDwarfStageCollision = new DwarfStageCollision();
+	g_pDwarfStageCollision->Init();
+
 	// プレイヤークラス実体化
 	g_pPlayer = new Player();
 	g_pPlayer->Init();
@@ -212,9 +218,16 @@ void GameScene::Init(int StageNum)
 	// ゲームオーバー初期化
 	InitGameOver();
 
+	// 当たり判定配列にデータを入れる
+	for (int i = 0; i < MAX_DWARF; i++) {
+		for (int j = 0; j < g_pDwarfStageCollision->GetStageNum(); j++) {
+			g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfStageCollision->GetDwarfStageCollision(j));
+		}
+	}
+
+
 	// BGM再生
 	CSound::Play(GAME_BGM);
-
 }
 
 //==============================================================
@@ -246,6 +259,10 @@ void GameScene::Uninit()
 	//プレイヤーの終了処理
 	g_pPlayer->Uninit();
 	delete g_pPlayer;
+
+	// 小人のステージの当たり判定終了
+	g_pDwarfStageCollision->Uninit();
+	delete g_pDwarfStageCollision;
 
 	// 小人終了処理
 	g_pDwarfManager->Uninit();
@@ -337,26 +354,16 @@ SCENE GameScene::Update()
 
 
 	//***************************************************************
-	// すべての移動(更新処理)がすんでから
-	// すべてのオブジェクトの当たり判定を行う
-	//*************************************************************+*
-	//----- 弾と床 -----
-	//for (int i = 0; i < g_pPlayer->GetBulletNum(); i++) {
-	//	g_pCollision->Register(g_pPlayer->GetBullet(i), g_pStage->GetField(1));
-	//}
-
-
-	//***************************************************************
 	// 小人処理
 	//***************************************************************
 	static int Timer;
 	Timer--;
 	if (Timer < 0) {
-		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.0f + DWARF_SIZE, 0.0f);	// ランダム
+		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
 		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
-			randomPos.z = (float)(rand() % 20 - 10.0f);
+			randomPos.x = (float)(rand() % 10 - 5.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 10 - 5.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 		}
 		Timer = TARGETSET_TIME;
@@ -370,11 +377,6 @@ SCENE GameScene::Update()
 			}
 			break;
 		}
-		//----- 小人と床の当たり判定 -----
-		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(0));
-		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(1));
-		g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pStageManager->GetStage(2));
-
 		//----- 小人回収処理 -----
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
@@ -389,6 +391,9 @@ SCENE GameScene::Update()
 				g_LastBulletNun = j;
 			}
 			if (!g_pBullet[j]->use) {								// 弾未用ならスキップ
+				continue;
+			}
+			if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
 				continue;
 			}
 			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
@@ -439,12 +444,12 @@ SCENE GameScene::Update()
 	//if (IsRelease('X')){				// Xキーで弾消去
 	//	g_pBulletManger->DestroyBullet();
 	//}
-	if (IsRelease('0' || IsRelease(JPadButton::R_SHOULDER))) {				// 0キーでゲームクリア
+	if (IsRelease('0') || IsRelease(JPadButton::R_SHOULDER)) {				// 0キーでゲームクリア
 		if (!m_IsGameOver) {
 			m_IsClear = true;
 		}
 	}
-	if (IsRelease('9' || IsRelease(JPadButton::L_SHOULDER))) {				// ９キーでゲームオーバー
+	if (IsRelease('9') || IsRelease(JPadButton::L_SHOULDER)) {				// ９キーでゲームオーバー
 		if (!m_IsClear) {
 			m_IsGameOver = true;
 		}
@@ -458,6 +463,10 @@ SCENE GameScene::Update()
 	g_pCamera->Update();
 
 
+	//***************************************************************
+	// すべての移動(更新処理)がすんでから
+	// すべてのオブジェクトの当たり判定を行う
+	//*************************************************************+*
 	g_pCollision->Update();
 
 	//***************************************************************
@@ -638,6 +647,11 @@ void GameScene::Draw()
 
 	// ステージ描画
 	g_pStageManager->Draw();
+#ifdef _DEBUG
+	// 小人のステージの当たり判定ようブロック描画
+	g_pDwarfStageCollision->Draw();
+#endif 
+
 
 	// プレイヤー描画
 	g_pPlayer->Draw();

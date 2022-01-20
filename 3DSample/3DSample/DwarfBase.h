@@ -54,6 +54,7 @@ private:
 	bool m_MoveFlg;				// 移動許可フラグ
 	bool m_colFlg;				// 当たり判定フラグ
 	bool m_CollectionFlg;		// 回収　true：回収された
+	bool m_CircumferenceFlg;	// 周回フラグ
 
 protected:
 	//---関数

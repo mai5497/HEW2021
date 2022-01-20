@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -135,6 +135,7 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="CollectionPoint.cpp" />
     <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="DwarfStageCollision.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Clear.h" />
     <ClInclude Include="CollectionPoint.h" />
     <ClInclude Include="Collector.h" />
+    <ClInclude Include="DwarfStageCollision.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />

@@ -101,45 +101,30 @@ bool StageManager::Init(int SelectStageNum)
 
 	StageSetting settings[] =
 	{
-		//大きい床
+		// 大きい床
 		{ XMFLOAT3(0.0f,-0.5f, 0.0f),
-		  XMFLOAT3(50.0f, 1.0f,50.0f),
+		  XMFLOAT3(80.0f, 1.0f,80.0f),
 		},
-		//小人のステージ
-		{ XMFLOAT3(0.0f,0.5f, 0.0f),
-		  XMFLOAT3(0.8f,1.0f,0.8f),
+		// 小人のステージ
+		{ XMFLOAT3(0.0f,1.5f, 0.0f),
+		  XMFLOAT3(1.0f,0.1f,1.0f),
 		},
-		////右の壁
-		//{ XMFLOAT3(12.5f,0.0f,0.0f),
-		// XMFLOAT3(2.0f,3.0f,27.0f)
-		//},
-		////左の壁
-		//{ XMFLOAT3(-12.5f,0.0f,0.0f),
-		//  XMFLOAT3(2.0f,3.0f,27.0f)
-		//},
-		////奥の壁
-		//{ XMFLOAT3(0.0f,0.0f,12.5f),
-		//  XMFLOAT3(27.0f,3.0f,2.0f)
-		//},
-		////手前の壁
-		//{ XMFLOAT3(0.0f,0.0f,-12.5f),
-		//  XMFLOAT3(27.0f,3.0f,2.0f)
-		//},
-		//大きい壁右
-		{ XMFLOAT3(25,0.0f,0),
-		  XMFLOAT3(1,30,50),
+		// 大きい壁右
+		{ XMFLOAT3(40.0f,0.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,80.0f),
 		},
-
-		//大きい壁左
-		{ XMFLOAT3(-25,0.0f,0),
-		  XMFLOAT3(1,30,50),
+		// 大きい壁左
+		{ XMFLOAT3(-40.0f,0.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,80.0f),
 		},
-
-		//大きい壁奥
-		{ XMFLOAT3(0,0.0f,25),
-		  XMFLOAT3(50,30,1),
+		// 大きい壁奥
+		{ XMFLOAT3(0.0f,0.0f,40.0f),
+		  XMFLOAT3(80.0f,30.0f,1.0f),
 		},
-
+		// プレイヤーの床
+		{ XMFLOAT3(0.0f,0.5f,-17.0f),
+		  XMFLOAT3(4.0f,3.0f,4.0f),
+		},
 	};
 
 
@@ -265,10 +250,13 @@ void StageManager::Draw()
 		m_pBuffer[j].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
+
+
 	SHADER->SetTexture(m_pStageTex[2]);
 	m_ppStages[2]->Draw();
 	m_ppStages[3]->Draw();
 	m_ppStages[4]->Draw();
+	m_ppStages[5]->Draw();
 
 
 	SHADER->SetTexture(NULL);
@@ -299,7 +287,7 @@ Stage *StageManager::GetStage(int index)
 
 //====================================================================
 //
-//		何個目のステージかを返す
+//		ステージがいくつあるかを返す
 //
 //====================================================================
 int StageManager::GetStageNum()
