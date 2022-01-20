@@ -22,7 +22,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS				(60)
-#define PLAYER_SIZE		(0.25f)
+#define PLAYER_SIZE		(0.8f)
 
 //*******************************************************************************
 // グローバル宣言
@@ -30,7 +30,6 @@
 XMFLOAT3 pOldCameraPos;
 DrawBuffer *Player::m_pBuffer = NULL;
 FBXPlayer *Player::m_pFBX = NULL;
-Camera *g_pPlayerCamera;
 
 
 //==============================================================
@@ -48,22 +47,14 @@ Player::Player():m_pControllCamera(nullptr)
 
 	// ---変数初期化
 	m_pos.x = 0.0f;
-	m_pos.y = 3.0f;
-	m_pos.z = -13.0f;
-	m_Angle = XMFLOAT3(0, 0, 0);
+	m_pos.y = 0.5f - PLAYER_SIZE;
+	m_pos.z = -17.0f;
+	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_DrawAngle = 0.0f;
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
-
-	g_pPlayerCamera = new Camera;
-	g_pPlayerCamera->Init();
-
 	m_collisionType = COLLISION_DYNAMIC;
-
-	//g_pPlayerCamera = new Camera;
-	//g_pPlayerCamera->Init();
-
 }
 
 //==============================================================
@@ -76,15 +67,8 @@ Player::Player():m_pControllCamera(nullptr)
 //==============================================================
 Player::~Player()
 {
-	//g_pPlayerCamera->Uninit();
-	//delete g_pPlayerCamera;
-
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
-
-	g_pPlayerCamera->Uninit();
-	delete g_pPlayerCamera;
-	g_pPlayerCamera = nullptr;
 	
 	Uninit();
 }
@@ -233,8 +217,6 @@ void Player::Update()
 	//m_pos.y = 1.5f;
 	//m_pos.z += m_move.z;
 	
-	// カメラ更新
-	//g_pPlayerCamera->Update();
 }
 
 //==============================================================

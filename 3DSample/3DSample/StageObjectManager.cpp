@@ -73,7 +73,7 @@ bool StageObjectManager::Init()
 	// オブジェクトの最大数メモリ確保
 	for (int i = 0; i < m_StageObjectNum; i++) {
 		m_ppStageObject[i] = new StageObjectBase;
-		m_ppStageObject[i]->Init();
+		//m_ppStageObject[i]->Init();
 		m_ppStageObject[i]->CreateStageObject(
 			StageObjectSet[i].pos, StageObjectSet[i].size, StageObjectSet[i].TexPath, StageObjectSet[i].ModelPath);
 	}
@@ -94,11 +94,11 @@ void StageObjectManager::Uninit()
 	{
 		m_ppStageObject[i]->Uninit();
 		delete m_ppStageObject[i];
-		m_ppStageObject[i] = NULL;
+		m_ppStageObject[i] = nullptr;
 	}
-
 	delete[] m_ppStageObject;
-	m_ppStageObject = NULL;
+	m_ppStageObject = nullptr;
+
 }
 
 //==============================================================

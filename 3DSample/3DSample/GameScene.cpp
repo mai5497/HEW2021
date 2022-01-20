@@ -72,7 +72,7 @@
 //*******************************************************************************
 #define CONTROL_NUM		(5)
 #define RECORD_MARGIN	(10)
-#define TARGETSET_TIME	(300)
+
 
 //*******************************************************************************
 // グローバル宣言
@@ -372,18 +372,33 @@ SCENE GameScene::Update()
 	//***************************************************************
 	// 小人処理
 	//***************************************************************
-	static int Timer;
-	Timer--;
-	if (Timer < 0) {
-		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
-		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
+	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
+	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
+		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg()) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 10 - 5.0f);	//-10.0 ~ 10.0の間の乱数
-			randomPos.z = (float)(rand() % 10 - 5.0f);
+			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 30 - 15.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
 		}
-		Timer = TARGETSET_TIME;
 	}
+
+	//if (Timer < 0) {
+	//	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
+	//	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
+	//		if (g_pDwarfManager->GetDwarf(j)->GetFollowFlg()) {
+	//			continue;
+	//		}
+	//		if (g_pDwarfManager->GetDwarf(j)->GetrunFlg()) {
+	//			continue;
+	//		}
+	//		//----- 乱数で目的地を設定 -----
+	//		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0の間の乱数
+	//		randomPos.z = (float)(rand() % 10 - 5.0f);
+	//		g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+	//	}
+	//	Timer = TARGETSET_TIME;
+	//}
 
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
 	{
@@ -409,9 +424,9 @@ SCENE GameScene::Update()
 			if (!g_pBullet[j]->use) {								// 弾未用ならスキップ
 				continue;
 			}
-			if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
-				continue;
-			}
+			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
+			//	continue;
+			//}
 			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
 				g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
 			}

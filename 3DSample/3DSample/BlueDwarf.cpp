@@ -42,6 +42,9 @@ BlueDwarf::BlueDwarf()
 
 	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
 
+	m_DwarfAngle = 0.0f;
+
+
 	SetRBFlg(false);	// 青小人
 
 }
@@ -104,6 +107,7 @@ void BlueDwarf::Update()
 	//----- 変数初期化 -----
 	//static bool jumpFlg;
 	float Differ;		// 小人と弾の距離の差
+	float vAngle;		// 目的位置の角度
 
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
@@ -117,22 +121,34 @@ void BlueDwarf::Update()
 	// 一定の速度にするために正規化
 	// 速度を変えるならvDirectonに速度をかける。
 	vDirection = XMVector3Normalize(vDirection);
-	// かける関数							↓かける数
-	vDirection = XMVectorScale(vDirection, 1.0f / 60);
-
-	XMStoreFloat3(&m_move, vDirection);
+	// かける関数								  ↓かける数
+	if (GetFollowFlg()) {		// 追跡フラグが立っているとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 10);
+	} else if (GetrunFlg()) {	// 弾から逃げるとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -1.5);
+	} else {
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
+	}
 
 	// Float3型に変換
-	if (GetFollowFlg()) {	// 追跡フラグが立っているとき
-		XMStoreFloat3(&m_move, vDirection * 5);
-	}
-	if (GetrunFlg()) {		// 弾から逃げるとき
-		XMStoreFloat3(&m_move, -(vDirection * 1.5f));
-	}
+	XMStoreFloat3(&m_move, vDirection);
 
 	// アークタンジェント(逆正接)
-	m_DwarfAngle = atan2(m_move.z, m_move.x);
-	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
+	vAngle = XMConvertToDegrees(atan2(m_move.z, m_move.x));
+	float DiffAngle = vAngle - m_DwarfAngle;
+	if (DiffAngle >= 180.0f) {
+		DiffAngle -= 360.0f;
+	}
+	if (DiffAngle < -180.0f) {
+		DiffAngle += 360.0f;
+	}
+	m_DwarfAngle += DiffAngle * RATE_ROTATE_DWARF;
+	if (m_DwarfAngle >= 180.0f) {
+		m_DwarfAngle -= 360.0f;
+	}
+	if (m_DwarfAngle < -180.0f) {
+		m_DwarfAngle += 360.0f;
+	}
 
 
 	//if (jumpFlg) {
@@ -140,8 +156,11 @@ void BlueDwarf::Update()
 	//}
 
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (Differ < 0.025f || GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-		SetMoveFlg(false);		// 移動許可おろす
+	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+		SetrunFlg(false);
+	}
+	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		SetFollowFlg(false);
 	}
 
 	// 重力をかける
@@ -176,7 +195,7 @@ void BlueDwarf::Draw()
 
 		SHADER->SetWorld(
 			DirectX::XMMatrixScaling(m_size.x, m_size.y, m_size.z)
-			*DirectX::XMMatrixRotationY(-m_DwarfAngle)
+			*DirectX::XMMatrixRotationY(-XMConvertToRadians(m_DwarfAngle) + (XM_PI * 0.5f))
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pBlueDwarfTex);

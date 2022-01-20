@@ -27,7 +27,8 @@ DwarfBase::DwarfBase():
 	m_runFlg(false),
 	m_MoveFlg(false),
 	m_colFlg(false),
-	m_CollectionFlg(false)
+	m_CollectionFlg(false),
+	m_CircumferenceFlg(false)
 {
 	//----- 変数初期化 -----
 	m_collisionType = COLLISION_DYNAMIC;	// 小人は動く物体
@@ -309,4 +310,28 @@ bool DwarfBase::GetCollectionFlg()
 	return m_CollectionFlg;
 }
 
+
+//====================================================================
+//
+//		周回フラグセット
+//		作成者：伊地田真衣
+//		戻り値 : void
+//		引数   : 周回フラグtrue:周回する false:周回しない
+//
+//====================================================================
+void DwarfBase::SetCircumferenceFlg(bool flg) {
+	m_CircumferenceFlg = flg;
+}
+
+//====================================================================
+//
+//		周回フラグ取得
+//		作成者：伊地田真衣
+//		戻り値 : 回収フラグtrue:回収された false:回収されていない
+//		引数   : void
+//
+//====================================================================
+bool DwarfBase::GetCircumferenceFlg() {
+	return m_CircumferenceFlg;
+}
 

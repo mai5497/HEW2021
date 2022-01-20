@@ -166,11 +166,11 @@ void BulletManager::CreateBullet(bool rbFlg)
 		m_ppBullets[i]->SetRBFlg(rbFlg);
 		if (rbFlg == true) {	// trueが赤
 			m_ppBullets[i] = new BulletRed;
-			m_ppBullets[i]->Init();
+			//m_ppBullets[i]->Init(); バレットベースいにっとつくてない
 		}
 		else {
 			m_ppBullets[i] = new BulletBlue;
-			m_ppBullets[i]->Init();
+			//m_ppBullets[i]->Init();
 		}
 		m_ppBullets[i]->use = true;
 

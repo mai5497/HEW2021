@@ -28,6 +28,7 @@
 #define DWARF_SIZE	(0.7f)
 #define GRAVITY		(0.3f)
 
+
 //========================= グローバル変数定義 ===========================
 DrawBuffer *RedDwarf::m_pBuffer = NULL;
 FBXPlayer *RedDwarf::m_pFBX = NULL;
@@ -48,6 +49,8 @@ RedDwarf::RedDwarf()
 	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
 
 	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
+
+	m_DwarfAngle = 0.0f;
 
 	SetRBFlg(true);	// 赤小人
 	use = true;
@@ -112,6 +115,7 @@ void RedDwarf::Update()
 	//----- 変数初期化 -----
 	//static bool jumpFlg;
 	float Differ;		// 小人と弾の距離の差
+	float vAngle;		// 目的位置の角度
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	// 追従するターゲットの座標
@@ -125,20 +129,15 @@ void RedDwarf::Update()
 	vDirection = XMVector3Normalize(vDirection);
 	// かける関数								  ↓かける数
 	if (GetFollowFlg()) {		// 追跡フラグが立っているとき
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 5);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 10);
 	} else if (GetrunFlg()) {	// 弾から逃げるとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -1.5);
 	} else {
-		vDirection = XMVectorScale(vDirection, (1.0f / 60));
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
 	}
+
 	// Float3型に変換
 	XMStoreFloat3(&m_move, vDirection);
-
-
-
-	// アークタンジェント(逆正接)
-	m_DwarfAngle = atan2(m_move.z, m_move.x);
-	m_DwarfAngle -= DirectX::XM_PI * 0.5f;
 
 
 	//if (jumpFlg) {
@@ -146,20 +145,41 @@ void RedDwarf::Update()
 	//}
 
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (GetrunFlg() || Differ > 0.3f) {	// なんとなく離れたとき。マジックナンバーでごめん。
-		//SetMoveFlg(false);		// 移動許可おろす
+	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
 	}
+	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		SetFollowFlg(false);		
+	}
+
 
 	// 重力をかける
 	m_move.y -= GRAVITY;
 
-	// 移動
+	// アークタンジェント(逆正接)
+	vAngle = XMConvertToDegrees(atan2(m_move.z, m_move.x));
+	float DiffAngle = vAngle - m_DwarfAngle;
+	if (DiffAngle >= 180.0f) {
+		DiffAngle -= 360.0f;
+	}
+	if (DiffAngle < -180.0f) {
+		DiffAngle += 360.0f;
+	}
+	m_DwarfAngle += DiffAngle * RATE_ROTATE_DWARF;
+	if (m_DwarfAngle >= 180.0f) {
+		m_DwarfAngle -= 360.0f;
+	}
+	if (m_DwarfAngle < -180.0f) {
+		m_DwarfAngle += 360.0f;
+	}
+
+
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
 	if (m_pos.y < 0.5f) {
+		/* todo: ゲームオーバーの瞬間にその小人にカメラ寄る */
 		RedDwarf::SetAliveFlg(false);
 	}
 
@@ -181,7 +201,7 @@ void RedDwarf::Draw()
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
-			*DirectX::XMMatrixRotationY(-m_DwarfAngle)
+			*DirectX::XMMatrixRotationY(-XMConvertToRadians(m_DwarfAngle) + (XM_PI * 0.5f))
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pRedDwarfTex);

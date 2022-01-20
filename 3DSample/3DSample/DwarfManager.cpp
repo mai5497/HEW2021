@@ -71,7 +71,7 @@ bool DwarfManager::Init()
 		randomPos.z = (float)(rand() % 10 - 5.0f);
 
 		// ランダムで算出した値を基準位置に加算して代入
-		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 10.0f, basePos.z + randomPos.z);
+		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
 		if (i < MAX_RED_DWARF) {
 			m_ppDwarf[i] = new RedDwarf;
@@ -81,7 +81,7 @@ bool DwarfManager::Init()
 
 		m_ppDwarf[i]->TargetPos(DwarfSet[i].pos);
 		m_ppDwarf[i]->SetPos(DwarfSet[i].pos);
-		m_ppDwarf[i]->SetSize(XMFLOAT3(1.0f / 2, 1.0f / 2, 1.0f / 2));
+		m_ppDwarf[i]->SetSize(XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE));
 		m_ppDwarf[i]->Init();
 	}
 
@@ -113,19 +113,19 @@ void DwarfManager::Uninit()
 //		更新処理
 //
 //====================================================================
-void DwarfManager::Update() 
-{
-	for (int i = 0; i < MAX_DWARF; i++) 
-	{
+void DwarfManager::Update() {
+	static int Timer;
+	Timer--;
+
+	for (int i = 0; i < MAX_DWARF; i++) {
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
 			return; // 一体でも死んだらゲームオーバーの為
 		}
 		if (m_ppDwarf[i]->GetCollectionFlg()) {
 			continue;
 		}
-	
-		for (int j = 0; j < MAX_BULLET; j++) 
-		{
+
+		for (int j = 0; j < MAX_BULLET; j++) {
 			if (!m_pBullet->GetBullet(j)->use) {
 				continue;
 			}
@@ -134,17 +134,26 @@ void DwarfManager::Update()
 			}
 
 			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
-				m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
+				//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
 				m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
 				m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
 			} else {
-				m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
+				//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
 				m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
 				m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
 			}
 		}
 
+		if (Timer < 0) {
+			if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
+				m_ppDwarf[i]->SetCircumferenceFlg(true);
+			}
+		}
 		m_ppDwarf[i]->Update();
+	}
+
+	if (Timer < 0) {
+		Timer = TARGETSET_TIME;
 	}
 
 }
