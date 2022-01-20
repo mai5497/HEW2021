@@ -15,8 +15,7 @@
  //*******************************************************************************
  // グローバル変数
  //*******************************************************************************
-DrawBuffer* StageObjectBase::m_pBuffer = NULL;
-FBXPlayer* StageObjectBase::m_pFBX = NULL;
+
 
 //==============================================================
 //
@@ -43,7 +42,7 @@ StageObjectBase::StageObjectBase()
 	// モデル読み込み
 	//LoadStageObject(m_ModelPath);
 
-	m_collisionType = COLLISION_STATIC;
+
 }
 
 //==============================================================
@@ -59,7 +58,54 @@ StageObjectBase::~StageObjectBase()
 
 }
 
+//==============================================================
+//
+//	ObjectBaseクラス::初期化
+//	作成者	： 吉原飛鳥
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
+bool StageObjectBase::Init()
+{
+	//---変数初期化
+	m_pos = XMFLOAT3(0.0f,0.0f,0.0f);
+	m_size = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
+	m_collisionType = COLLISION_STATIC;
+
+	m_pBuffer = nullptr;
+	m_pFBX = nullptr;
+
+	GameObject::Init();
+
+	return true;
+}
+
+//==============================================================
+//
+//	ObjectBaseクラス::初期化
+//	作成者	： 吉原飛鳥
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
+void StageObjectBase::Uninit()
+{
+	if (m_pBuffer != NULL)
+	{
+		delete[] m_pBuffer;
+		m_pBuffer = NULL;
+
+		delete m_pFBX;
+		m_pFBX = NULL;
+	}
+
+	SAFE_RELEASE(m_pStageObjectTex);
+	GameObject::Uninit();
+
+}
 //==============================================================
 //
 //	ObjectBaseクラス::更新
