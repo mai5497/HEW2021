@@ -86,7 +86,7 @@ void StageObjectBase::Draw()
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
-			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
+			* DirectX::XMMatrixRotationY(XM_PI)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pStageObjectTex);

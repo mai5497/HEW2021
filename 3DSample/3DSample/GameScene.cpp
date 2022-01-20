@@ -205,7 +205,7 @@ void GameScene::Init(int StageNum)
 
 	// ステージオブジェクトの実体化
 	g_pStageObjectManager = new StageObjectManager;
-	g_pStageObjectManager->Init();
+	g_pStageObjectManager->Init(StageNum);
 
 	
 	// 当たり判定クラス
