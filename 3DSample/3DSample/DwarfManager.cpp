@@ -67,11 +67,11 @@ bool DwarfManager::Init()
 		// 小人をランダムで初期配置
 		//randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
 		//randomPos.z = (float)(rand() % 20 - 10.0f);
-		randomPos.x = (float)(rand() % 10 - 5.0f);	//-10.0 ~ 10.0の間の乱数
-		randomPos.z = (float)(rand() % 10 -5.0f);
+		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0の間の乱数
+		randomPos.z = (float)(rand() % 10 - 5.0f);
 
 		// ランダムで算出した値を基準位置に加算して代入
-		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 2.0f, basePos.z + randomPos.z);
+		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 10.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
 		if (i < MAX_RED_DWARF) {
 			m_ppDwarf[i] = new RedDwarf;
@@ -81,7 +81,7 @@ bool DwarfManager::Init()
 
 		m_ppDwarf[i]->TargetPos(DwarfSet[i].pos);
 		m_ppDwarf[i]->SetPos(DwarfSet[i].pos);
-		m_ppDwarf[i]->SetSize(XMFLOAT3(1.0f, 1.0f, 1.0f));
+		m_ppDwarf[i]->SetSize(XMFLOAT3(1.0f / 2, 1.0f / 2, 1.0f / 2));
 		m_ppDwarf[i]->Init();
 	}
 
@@ -126,16 +126,19 @@ void DwarfManager::Update()
 	
 		for (int j = 0; j < MAX_BULLET; j++) 
 		{
+			if (!m_pBullet->GetBullet(j)->use) {
+				continue;
+			}
 			if (!CollisionSphere(m_ppDwarf[i], m_pBullet->GetBullet(j))) {		// 近くにいなかったら下の処理をしない
 				continue;
 			}
 
 			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
-				//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
+				m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
 				m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
 				m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
 			} else {
-				//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
+				m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
 				m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
 				m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
 			}

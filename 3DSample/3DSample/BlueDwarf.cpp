@@ -19,7 +19,6 @@
 #include "GameScene.h"
 
 //========================= 定数定義 ===========================
-#define DWARF_SIZE (0.7f)
 #define GRAVITY		(0.3f)
 
 
@@ -106,6 +105,8 @@ void BlueDwarf::Update()
 	//static bool jumpFlg;
 	float Differ;		// 小人と弾の距離の差
 
+	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
 
 	// 追従するターゲットの座標
 	XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
@@ -138,10 +139,10 @@ void BlueDwarf::Update()
 	//	m_move.y -= 0.21f;
 	//}
 
-	//Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	//if (Differ < 0.05f) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-	//	SetMoveFlg(false);		// 移動許可おろす
-	//}
+	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
+	if (Differ < 0.025f || GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		SetMoveFlg(false);		// 移動許可おろす
+	}
 
 	// 重力をかける
 	m_move.y -= GRAVITY;
@@ -152,7 +153,9 @@ void BlueDwarf::Update()
 	m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
 
-	if (m_pos.y < 0.8f) {
+	
+	if (m_pos.y < 0.5f) {
+		/* todo: ゲームオーバーの瞬間にその小人にカメラ寄る */
 		BlueDwarf::SetAliveFlg(false);
 	}
 

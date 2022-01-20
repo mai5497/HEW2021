@@ -28,10 +28,10 @@ FBXPlayer *StageManager::m_pfbx = NULL;
 //====================================================================
 StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 {
-	LoadTextureFromFile("Assets/Model/woodground.jpg", &m_pStageTex[0]);
+	//LoadTextureFromFile("Assets/Model/woodground.jpg", &m_pStageTex[0]);
+	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[0]);
 	LoadTextureFromFile("Assets/Model/ground.png", &m_pStageTex[1]);
-	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[2]);
-	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[3]);
+	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[2]);
 }
 
 
@@ -87,7 +87,7 @@ bool StageManager::Init(int SelectStageNum)
 	//----- メンバ変数初期化 -----
 	m_SelectStageNum = SelectStageNum;
 	if (m_pBuffer == NULL) {
-		StageManager::LoadStage("Assets/Model/dekoboko.fbx");
+		LoadStage("Assets/Model/ground2.fbx");
 	}
 
 
@@ -101,77 +101,61 @@ bool StageManager::Init(int SelectStageNum)
 
 	StageSetting settings[] =
 	{
-		//大きい床
+		// 大きい床
 		{ XMFLOAT3(0.0f,-0.5f, 0.0f),
-		  XMFLOAT3(50.0f, 1.0f,50.0f),
+		  XMFLOAT3(80.0f, 1.0f,80.0f),
 		},
-		//小人のステージ
-		{ XMFLOAT3(0.0f,0.5f, 0.0f),
-		  XMFLOAT3(19.0f,1.0f,19.0f),
+		// 小人のステージ
+		{ XMFLOAT3(0.0f,1.5f, 0.0f),
+		  XMFLOAT3(1.0f,0.1f,1.0f),
 		},
-		//右の壁
-		{ XMFLOAT3(12.5f,0.0f,0.0f),
-		 XMFLOAT3(2.0f,3.0f,27.0f)
+		// 大きい壁右
+		{ XMFLOAT3(40.0f,0.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,80.0f),
 		},
-		//左の壁
-		{ XMFLOAT3(-12.5f,0.0f,0.0f),
-		  XMFLOAT3(2.0f,3.0f,27.0f)
+		// 大きい壁左
+		{ XMFLOAT3(-40.0f,0.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,80.0f),
 		},
-		//奥の壁
-		{ XMFLOAT3(0.0f,0.0f,12.5f),
-		  XMFLOAT3(27.0f,3.0f,2.0f)
+		// 大きい壁奥
+		{ XMFLOAT3(0.0f,0.0f,40.0f),
+		  XMFLOAT3(80.0f,30.0f,1.0f),
 		},
-		//手前の壁
-		{ XMFLOAT3(0.0f,0.0f,-12.5f),
-		  XMFLOAT3(27.0f,3.0f,2.0f)
+		// プレイヤーの床
+		{ XMFLOAT3(0.0f,0.5f,-17.0f),
+		  XMFLOAT3(4.0f,3.0f,4.0f),
 		},
-		//大きい壁右
-		{ XMFLOAT3(25,0.0f,0),
-		  XMFLOAT3(1,30,50),
-		},
-
-		//大きい壁左
-		{ XMFLOAT3(-25,0.0f,0),
-		  XMFLOAT3(1,30,50),
-		},
-
-		//大きい壁奥
-		{ XMFLOAT3(0,0.0f,25),
-		  XMFLOAT3(50,30,1),
-		},
-
 	};
 
 
-	switch (m_SelectStageNum) {
-		case 1:
-			settings[1] =
-			{
-				//小人のステージ
-				XMFLOAT3(0.0f,0.5f, 0.0f),
-				XMFLOAT3(20.0f,1.0f,20.0f),
-
-			};
-			break;
-		case 2:
-			settings[1] =
-			{
-				//小人のステージ
-				XMFLOAT3(0.0f,0.5f, 0.0f),
-				XMFLOAT3(20.0f,1.0f,20.0f),
-			};
-			break;
-		case 3:
-			settings[1] =
-			{
-				//小人のステージ
-				XMFLOAT3(0.0f,0.5f, 0.0f),
-				XMFLOAT3(19.0f,1.0f,19.0f),
-			};
-			break;
-		default:
-			break;
-	}
+	//switch (m_SelectStageNum) {
+	//	case 1:
+	//		settings[1] =
+	//		{
+	//			//小人のステージ
+	//			XMFLOAT3(0.0f,0.5f, 0.0f),
+	//			XMFLOAT3(0.8f,0.8f,0.8f),
+	//		};
+	//		break;
+	//	case 2:
+	//		settings[1] =
+	//		{
+	//			//小人のステージ
+	//			XMFLOAT3(0.0f,0.5f, 0.0f),
+	//			XMFLOAT3(0.5f,0.5f,0.5f),
+	//		};
+	//		break;
+	//	case 3:
+	//		settings[1] =
+	//		{
+	//			//小人のステージ
+	//			XMFLOAT3(0.0f,0.5f, 0.0f),
+	//			XMFLOAT3(0.6f,0.6f,0.6f),
+	//		};
+	//		break;
+	//	default:
+	//		break;
+	//}
 	//初期データからフィールドの数を計算
 	m_nStageNum = sizeof(settings) / sizeof(settings[0]);
 
@@ -184,6 +168,7 @@ bool StageManager::Init(int SelectStageNum)
 		m_ppStages[i] = new Stage(settings[i].size);
 		m_ppStages[i]->SetPos(settings[i].pos);
 		m_ppStages[i]->Init();
+
 	}
 	//※クラスを配列でメモリ確保する場合は
 	//既定のコンストラクタ(引数のないコンストラクタ)
@@ -212,10 +197,9 @@ void StageManager::Uninit()
 		m_pfbx = NULL;
 	}
 
-	SAFE_RELEASE(m_pStageTex[0]);
-	SAFE_RELEASE(m_pStageTex[1]);
-	SAFE_RELEASE(m_pStageTex[2]);
-
+	for (int i = 0; i < m_nStageNum; i++) {
+		SAFE_RELEASE(m_pStageTex[i]);
+	}
 
 	if (m_ppStages != NULL){
 		for (int i = 0; i < m_nStageNum; i++){
@@ -252,32 +236,28 @@ void StageManager::Draw()
 {
 	int meshNum = m_pfbx->GetMeshNum();
 
-	SHADER->SetTexture(m_pStageTex[2]);
+	SHADER->SetTexture(m_pStageTex[0]);
 	m_ppStages[0]->Draw();
 
-	SHADER->SetTexture(m_pStageTex[1]);
-	m_ppStages[1]->Draw();
+	// 小人のステージ
+	for (int j = 0; j < meshNum; ++j) {
+		SHADER->SetWorld(
+			DirectX::XMMatrixScaling(m_ppStages[1]->GetSize().x, m_ppStages[1]->GetSize().y, m_ppStages[1]->GetSize().z)
+			*DirectX::XMMatrixRotationY(XM_PI)
+			*DirectX::XMMatrixTranslation(m_ppStages[1]->GetPos().x, m_ppStages[1]->GetPos().y, m_ppStages[1]->GetPos().z));
 
-	SHADER->SetTexture(m_pStageTex[0]);
+		SHADER->SetTexture(m_pStageTex[1]);
+		m_pBuffer[j].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	}
+
+
+
+	SHADER->SetTexture(m_pStageTex[2]);
 	m_ppStages[2]->Draw();
-
-	SHADER->SetTexture(m_pStageTex[0]);
 	m_ppStages[3]->Draw();
-
-	SHADER->SetTexture(m_pStageTex[0]);
 	m_ppStages[4]->Draw();
-
-	SHADER->SetTexture(m_pStageTex[0]);
 	m_ppStages[5]->Draw();
 
-	SHADER->SetTexture(m_pStageTex[3]);
-	m_ppStages[6]->Draw();
-
-	SHADER->SetTexture(m_pStageTex[3]);
-	m_ppStages[7]->Draw();
-
-	SHADER->SetTexture(m_pStageTex[3]);
-	m_ppStages[8]->Draw();
 
 	SHADER->SetTexture(NULL);
 
@@ -307,7 +287,7 @@ Stage *StageManager::GetStage(int index)
 
 //====================================================================
 //
-//		何個目のステージかを返す
+//		ステージがいくつあるかを返す
 //
 //====================================================================
 int StageManager::GetStageNum()
