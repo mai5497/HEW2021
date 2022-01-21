@@ -22,7 +22,9 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS				(60)
-#define PLAYER_SIZE		(0.8f)
+#define PLAYER_SIZE_X	(0.8)
+#define PLAYER_SIZE_Y	(0.8f)
+#define PLAYER_SIZE_Z	(0.8f)
 
 //*******************************************************************************
 // グローバル宣言
@@ -43,16 +45,16 @@ FBXPlayer *Player::m_pFBX = NULL;
 Player::Player():m_pControllCamera(nullptr)
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Model/princess.png", &m_pPlayerTex);
+	LoadTextureFromFile("Assets/Model/player.png", &m_pPlayerTex);
 
 	// ---変数初期化
 	m_pos.x = 0.0f;
-	m_pos.y = 0.5f - PLAYER_SIZE;
-	m_pos.z = -17.0f;
+	m_pos.y = 2.0f;
+	m_pos.z = -25.0f;
 	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_DrawAngle = 0.0f;
+	m_DrawAngle = XM_PI;
 
-	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
+	m_size = XMFLOAT3(PLAYER_SIZE_X, PLAYER_SIZE_Y, PLAYER_SIZE_Z);
 
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -86,7 +88,7 @@ bool Player::Init()
 	//----- プレイヤー処理 -----
 	GameObject::Init();	// プレイヤー用初期化？
 	if (m_pBuffer == NULL) {
-		Player::LoadPlayer("Assets/Model/princess.fbx");
+		Player::LoadPlayer("Assets/Model/player2.fbx");
 	}
 
 
@@ -129,7 +131,8 @@ void Player::Update() {
 	XMFLOAT2 Axis = LeftThumbPosition();
 	bool moveFlg = false;
 
-	m_move = m_BulletTargetPos;
+	m_move = XMFLOAT3(m_BulletTargetPos.x, m_BulletTargetPos.y, m_BulletTargetPos.z - m_pos.z);
+
 
 	//描画用角度設定
 	m_DrawAngle = atan2(m_move.z, m_move.x);

@@ -3,7 +3,7 @@
 
 //DirectX‚ª’ñ‹Ÿ‚µ‚Ä‚¢‚é”ŠwŒn‚Ìƒ‰ƒCƒuƒ‰ƒŠ
 #include <DirectXMath.h>
-
+#include	"Main.h"
 
 class Camera
 {

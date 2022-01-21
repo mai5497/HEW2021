@@ -29,7 +29,7 @@ FBXPlayer *StageManager::m_pfbx = NULL;
 StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 {
 	//LoadTextureFromFile("Assets/Model/woodground.jpg", &m_pStageTex[0]);
-	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[0]);
+	LoadTextureFromFile("Assets/Model/grass.jpeg", &m_pStageTex[0]);
 	LoadTextureFromFile("Assets/Model/ground.png", &m_pStageTex[1]);
 	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[2]);
 }
@@ -102,27 +102,27 @@ bool StageManager::Init(int SelectStageNum)
 	StageSetting settings[] =
 	{
 		// 大きい床
-		{ XMFLOAT3(0.0f,-0.5f, 0.0f),
-		  XMFLOAT3(80.0f, 1.0f,80.0f),
+		{ XMFLOAT3(0.0f,-20.0f, 0.0f),
+		  XMFLOAT3(400.0f, 1.0f,400.0f),
 		},
 		// 小人のステージ
 		{ XMFLOAT3(0.0f,1.5f, 0.0f),
-		  XMFLOAT3(1.0f,0.1f,1.0f),
+		  XMFLOAT3(1.5f,0.1f,1.5f),
 		},
 		// 大きい壁右
-		{ XMFLOAT3(40.0f,0.0f,0.0f),
-		  XMFLOAT3(1.0f,30.0f,80.0f),
+		{ XMFLOAT3(200.0f,15.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,400.0f),
 		},
 		// 大きい壁左
-		{ XMFLOAT3(-40.0f,0.0f,0.0f),
-		  XMFLOAT3(1.0f,30.0f,80.0f),
+		{ XMFLOAT3(-200.0f,15.0f,0.0f),
+		  XMFLOAT3(1.0f,30.0f,400.0f),
 		},
 		// 大きい壁奥
-		{ XMFLOAT3(0.0f,0.0f,40.0f),
-		  XMFLOAT3(80.0f,30.0f,1.0f),
+		{ XMFLOAT3(0.0f,15.0f,200.0f),
+		  XMFLOAT3(400.0f,30.0f,1.0f),
 		},
 		// プレイヤーの床
-		{ XMFLOAT3(0.0f,0.5f,-17.0f),
+		{ XMFLOAT3(0.0f,0.5f,-25.0f),
 		  XMFLOAT3(4.0f,3.0f,4.0f),
 		},
 	};

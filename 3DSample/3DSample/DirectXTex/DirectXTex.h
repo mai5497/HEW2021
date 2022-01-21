@@ -11,11 +11,13 @@
 
 #pragma once
 
-#include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <utility>
 #include <vector>
 
+#if defined(WIN32) || defined(_WIN32)
 #if !defined(__d3d11_h__) && !defined(__d3d11_x_h__) && !defined(__d3d12_h__) && !defined(__d3d12_x_h__) && !defined(__XBOX_D3D12_X__)
 #ifdef _GAMING_XBOX_SCARLETT
 #include <d3d12_xs.h>
@@ -27,15 +29,21 @@
 #include <d3d11_1.h>
 #endif
 #endif
+#else
+#include <directx/dxgiformat.h>
+#include <wsl/winadapter.h>
+#endif
 
 #include <DirectXMath.h>
 
+#ifdef WIN32
 #include <OCIdl.h>
-
-#define DIRECTX_TEX_VERSION 190
 
 struct IWICImagingFactory;
 struct IWICMetadataQueryReader;
+#endif
+
+#define DIRECTX_TEX_VERSION 191
 
 
 namespace DirectX
@@ -192,6 +200,29 @@ namespace DirectX
             // Enables the loader to read large dimension .dds files (i.e. greater than known hardware requirements)
     };
 
+    enum TGA_FLAGS : unsigned long
+    {
+        TGA_FLAGS_NONE                 = 0x0,
+
+        TGA_FLAGS_BGR                  = 0x1,
+            // 24bpp files are returned as BGRX; 32bpp files are returned as BGRA
+
+        TGA_FLAGS_ALLOW_ALL_ZERO_ALPHA = 0x2,
+            // If the loaded image has an all zero alpha channel, normally we assume it should be opaque. This flag leaves it alone.
+
+        TGA_FLAGS_IGNORE_SRGB          = 0x10,
+            // Ignores sRGB TGA 2.0 metadata if present in the file
+
+        TGA_FLAGS_FORCE_SRGB           = 0x20,
+            // Writes sRGB metadata into the file reguardless of format (TGA 2.0 only)
+
+        TGA_FLAGS_FORCE_LINEAR         = 0x40,
+            // Writes linear gamma metadata into the file reguardless of format (TGA 2.0 only)
+
+        TGA_FLAGS_DEFAULT_SRGB         = 0x80,
+            // If no colorspace is specified in TGA 2.0 metadata, assume sRGB
+    };
+
     enum WIC_FLAGS : unsigned long
     {
         WIC_FLAGS_NONE                  = 0x0,
@@ -254,11 +285,14 @@ namespace DirectX
 
     HRESULT __cdecl GetMetadataFromTGAMemory(
         _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
+        _In_ TGA_FLAGS flags,
         _Out_ TexMetadata& metadata) noexcept;
     HRESULT __cdecl GetMetadataFromTGAFile(
         _In_z_ const wchar_t* szFile,
+        _In_ TGA_FLAGS flags,
         _Out_ TexMetadata& metadata) noexcept;
 
+#ifdef WIN32
     HRESULT __cdecl GetMetadataFromWICMemory(
         _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
         _In_ WIC_FLAGS flags,
@@ -270,6 +304,15 @@ namespace DirectX
         _In_ WIC_FLAGS flags,
         _Out_ TexMetadata& metadata,
         _In_opt_ std::function<void __cdecl(IWICMetadataQueryReader*)> getMQR = nullptr);
+#endif
+
+    // Compatability helpers
+    HRESULT __cdecl GetMetadataFromTGAMemory(
+        _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
+        _Out_ TexMetadata& metadata) noexcept;
+    HRESULT __cdecl GetMetadataFromTGAFile(
+        _In_z_ const wchar_t* szFile,
+        _Out_ TexMetadata& metadata) noexcept;
 
     //---------------------------------------------------------------------------------
     // Bitmap image container
@@ -401,15 +444,22 @@ namespace DirectX
     // TGA operations
     HRESULT __cdecl LoadFromTGAMemory(
         _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
+        _In_ TGA_FLAGS flags,
         _Out_opt_ TexMetadata* metadata, _Out_ ScratchImage& image) noexcept;
     HRESULT __cdecl LoadFromTGAFile(
         _In_z_ const wchar_t* szFile,
+        _In_ TGA_FLAGS flags,
         _Out_opt_ TexMetadata* metadata, _Out_ ScratchImage& image) noexcept;
 
-    HRESULT __cdecl SaveToTGAMemory(_In_ const Image& image, _Out_ Blob& blob, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
-    HRESULT __cdecl SaveToTGAFile(_In_ const Image& image, _In_z_ const wchar_t* szFile, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
+    HRESULT __cdecl SaveToTGAMemory(_In_ const Image& image,
+        _In_ TGA_FLAGS flags,
+        _Out_ Blob& blob, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
+    HRESULT __cdecl SaveToTGAFile(_In_ const Image& image,
+        _In_ TGA_FLAGS flags,
+        _In_z_ const wchar_t* szFile, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
 
     // WIC operations
+#ifdef WIN32
     HRESULT __cdecl LoadFromWICMemory(
         _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
         _In_ WIC_FLAGS flags,
@@ -439,6 +489,18 @@ namespace DirectX
         _In_ WIC_FLAGS flags, _In_ REFGUID guidContainerFormat,
         _In_z_ const wchar_t* szFile, _In_opt_ const GUID* targetFormat = nullptr,
         _In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr);
+#endif // WIN32
+
+    // Compatability helpers
+    HRESULT __cdecl LoadFromTGAMemory(
+        _In_reads_bytes_(size) const void* pSource, _In_ size_t size,
+        _Out_opt_ TexMetadata* metadata, _Out_ ScratchImage& image) noexcept;
+    HRESULT __cdecl LoadFromTGAFile(
+        _In_z_ const wchar_t* szFile,
+        _Out_opt_ TexMetadata* metadata, _Out_ ScratchImage& image) noexcept;
+
+    HRESULT __cdecl SaveToTGAMemory(_In_ const Image& image, _Out_ Blob& blob, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
+    HRESULT __cdecl SaveToTGAFile(_In_ const Image& image, _In_z_ const wchar_t* szFile, _In_opt_ const TexMetadata* metadata = nullptr) noexcept;
 
     //---------------------------------------------------------------------------------
     // Texture conversion, resizing, mipmap generation, and block compression
@@ -453,11 +515,13 @@ namespace DirectX
         TEX_FR_FLIP_VERTICAL    = 0x10,
     };
 
+#ifdef WIN32
     HRESULT __cdecl FlipRotate(_In_ const Image& srcImage, _In_ TEX_FR_FLAGS flags, _Out_ ScratchImage& image) noexcept;
     HRESULT __cdecl FlipRotate(
         _In_reads_(nimages) const Image* srcImages, _In_ size_t nimages, _In_ const TexMetadata& metadata,
         _In_ TEX_FR_FLAGS flags, _Out_ ScratchImage& result) noexcept;
         // Flip and/or rotate image
+#endif
 
     enum TEX_FILTER_FLAGS : unsigned long
     {
@@ -737,7 +801,7 @@ namespace DirectX
 
     //---------------------------------------------------------------------------------
     // WIC utility code
-
+#ifdef WIN32
     enum WICCodecs
     {
         WIC_CODEC_BMP = 1,          // Windows Bitmap (.bmp)
@@ -753,6 +817,7 @@ namespace DirectX
 
     IWICImagingFactory* __cdecl GetWICFactory(bool& iswic2) noexcept;
     void __cdecl SetWICFactory(_In_opt_ IWICImagingFactory* pWIC) noexcept;
+#endif
 
     //---------------------------------------------------------------------------------
     // Direct3D 11 functions

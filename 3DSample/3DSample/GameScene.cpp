@@ -24,47 +24,48 @@
 // インクルード部
 //*******************************************************************************
 
-//---システム関連
-#include "Camera.h"
-#include "Input.h"
-#include "TPSCamera.h"
-#include "Collision.h"
-#include "Shader.h"
-#include "Defines.h"
+////---システム関連
+//#include "Camera.h"
+//#include "Input.h"
+//#include "TPSCamera.h"
+//#include "Collision.h"
+//#include "Shader.h"
+//#include "Defines.h"
 
-// ---シーン関連
+//// ---シーン関連
 #include "GameScene.h"
-#include "SelectScene.h"
-#include "Tutorial.h"
+//#include "SelectScene.h"
+//#include "Tutorial.h"
 #include "Clear.h"
 #include "GameOver.h"
 
-// ---ステージ関連
-#include "Stage.h"
-#include "StageObjectManager.h"
 
-// ---ゲーム関連-プレイヤー
-#include "Player.h"
-#include "GameObject.h"
-
-// ---ゲーム関連-エネミー
-#include "Enemy.h"
-#include "EnemyManager.h"
-
-// ---ゲーム関連-小人
-#include "DwarfManager.h"
-#include "DwarfStageCollision.h"
-
-// ---ゲーム関連-弾
-#include "BulletManager.h"
-#include "BulletTarget.h"
-
-// ---ゲーム関連-回収
-#include "Collector.h"
-#include "CollectionPoint.h"
-
-// ---ゲーム関連-UI
-#include "Score.h"
+//// ---ステージ関連
+//#include "Stage.h"
+//#include "StageObjectManager.h"
+//
+//// ---ゲーム関連-プレイヤー
+//#include "Player.h"
+//#include "GameObject.h"
+//
+//// ---ゲーム関連-エネミー
+//#include "Enemy.h"
+//#include "EnemyManager.h"
+//
+//// ---ゲーム関連-小人
+//#include "DwarfManager.h"
+//#include "DwarfStageCollision.h"
+//
+//// ---ゲーム関連-弾
+//#include "BulletManager.h"
+//#include "BulletTarget.h"
+//
+//// ---ゲーム関連-回収
+//#include "Collector.h"
+//#include "CollectionPoint.h"
+//
+//// ---ゲーム関連-UI
+//#include "Score.h"
 
 
 
@@ -78,25 +79,25 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-Camera				*g_pCamera;
-TPSCamera			*g_pTPSCamera;
-Player				*g_pPlayer;
-
-StageManager		*g_pStageManager;
-StageObjectManager* g_pStageObjectManager;
-
-Collision			*g_pCollision;
-Collector			*g_pCollector;
-CollectionPoint		*g_pCollectionPoint;
-SelectScene			*g_pSelectScene;
-DwarfManager		*g_pDwarfManager;
-DwarfStageCollision	*g_pDwarfStageCollision;
-
-BulletManager		*g_pBulletManger;
-BulletTarget			* g_pBulletTarget;
-
-Score				*g_pScore;
-Tutorial			*g_pTutorial;
+//Camera				*g_pCamera;
+//TPSCamera			*g_pTPSCamera;
+//Player				*g_pPlayer;
+//
+//StageManager		*g_pStageManager;
+//StageObjectManager* g_pStageObjectManager;
+//
+//Collision			*g_pCollision;
+//Collector			*g_pCollector;
+//CollectionPoint		*g_pCollectionPoint;
+//SelectScene			*g_pSelectScene;
+//DwarfManager		*g_pDwarfManager;
+//DwarfStageCollision	*g_pDwarfStageCollision;
+//
+//BulletManager		*g_pBulletManger;
+//BulletTarget			* g_pBulletTarget;
+//
+//Score				*g_pScore;
+//Tutorial			*g_pTutorial;
 
 
 //Enemy				*g_pEnemy;
@@ -145,8 +146,8 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
-	g_pCamera = new Camera();
-	g_pCamera->Init();
+	m_pCamera = new Camera();
+	m_pCamera->Init();
 
 	// メンバ変数初期化
 	m_StageNum = StageNum;					// 現在のステージ番号保存
@@ -155,24 +156,24 @@ void GameScene::Init(int StageNum)
 	m_IsGameOver = false;					// ゲームオーバーフラグ
 	
 	// 弾の管理クラス
-	g_pBulletManger = new BulletManager();
-	g_pBulletManger->Init();
+	m_pBulletManger = new BulletManager();
+	m_pBulletManger->Init();
 
 	// 弾の落下地点クラス
-	g_pBulletTarget = new BulletTarget();
-	g_pBulletTarget->Init();
+	m_pBulletTarget = new BulletTarget();
+	m_pBulletTarget->Init();
 
 	// 小人管理クラス実体化
-	g_pDwarfManager = new DwarfManager();
-	g_pDwarfManager->Init();
+	m_pDwarfManager = new DwarfManager();
+	m_pDwarfManager->Init();
 
 	// 小人のステージの当たり判定用のブロックたち初期化
-	g_pDwarfStageCollision = new DwarfStageCollision();
-	g_pDwarfStageCollision->Init();
+	m_pDwarfStageCollision = new DwarfStageCollision();
+	m_pDwarfStageCollision->Init();
 
 	// プレイヤークラス実体化
-	g_pPlayer = new Player();
-	g_pPlayer->Init();
+	m_pPlayer = new Player();
+	m_pPlayer->Init();
 	
 	// TPSカメラはプレイヤーより後
 	//g_pTPSCamera = new TPSCamera();
@@ -184,12 +185,12 @@ void GameScene::Init(int StageNum)
 	//g_pPlayer->GetCameraPos(g_pTPSCamera);
 
 	// 回収車
-	g_pCollector = new Collector();
-	g_pCollector->Init();
+	m_pCollector = new Collector();
+	m_pCollector->Init();
 	
 	// 回収ポイント
-	g_pCollectionPoint = new CollectionPoint();
-	g_pCollectionPoint->Init();
+	m_pCollectionPoint = new CollectionPoint();
+	m_pCollectionPoint->Init();
 
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -201,25 +202,25 @@ void GameScene::Init(int StageNum)
 	//g_pEnemyManager->Init();
 
 	// ステージクラスの実体化
-	g_pStageManager = new StageManager();
-	g_pStageManager->Init(StageNum);
+	m_pStageManager = new StageManager();
+	m_pStageManager->Init(StageNum);
 
 	// ステージオブジェクトの実体化
-	g_pStageObjectManager = new StageObjectManager;
-	g_pStageObjectManager->Init(StageNum);
+	m_pStageObjectManager = new StageObjectManager;
+	m_pStageObjectManager->Init(StageNum);
 
 	
 	// 当たり判定クラス
-	g_pCollision = new Collision();
-	g_pCollision->Init();
+	m_pCollision = new Collision();
+	m_pCollision->Init();
 
 	// スコアクラス
-	g_pScore = new Score();
-	g_pScore->Init();
+	m_pScore = new Score();
+	m_pScore->Init();
 
 	// チュートリアルクラス
-	g_pTutorial = new Tutorial();
-	g_pTutorial->Init();
+	m_pTutorial = new Tutorial();
+	m_pTutorial->Init();
 
 	// ゲームクリア初期化
 	InitClear();
@@ -229,8 +230,8 @@ void GameScene::Init(int StageNum)
 
 	// 当たり判定配列にデータを入れる
 	for (int i = 0; i < MAX_DWARF; i++) {
-		for (int j = 0; j < g_pDwarfStageCollision->GetStageNum(); j++) {
-			g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfStageCollision->GetDwarfStageCollision(j));
+		for (int j = 0; j < m_pDwarfStageCollision->GetStageNum(); j++) {
+			m_pCollision->Register(m_pDwarfManager->GetDwarf(i), m_pDwarfStageCollision->GetDwarfStageCollision(j));
 		}
 		//for (int k = i+1; k < MAX_DWARF; k++) {
 		//	g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfManager->GetDwarf(k));
@@ -253,59 +254,59 @@ void GameScene::Init(int StageNum)
 void GameScene::Uninit()
 {
 	// スコアクラスの終了処理
-	g_pScore->Uninit();
-	delete g_pScore;
+	m_pScore->Uninit();
+	delete m_pScore;
 
 	// チュートリアルシーンの終了処理
-	g_pTutorial->Uninit();
-	delete g_pTutorial;
+	m_pTutorial->Uninit();
+	delete m_pTutorial;
 
 	// 当たり判定クラスの終了処理
-	g_pCollision->Uninit();
-	delete g_pCollision;
+	m_pCollision->Uninit();
+	delete m_pCollision;
 
 	// ステージクラスの終了処理
-	g_pStageManager->Uninit();
-	delete g_pStageManager;
+	m_pStageManager->Uninit();
+	delete m_pStageManager;
 
 	// ステージオブジェクトの終了処理
-	g_pStageObjectManager->Uninit();
-	delete g_pStageObjectManager;
+	m_pStageObjectManager->Uninit();
+	delete m_pStageObjectManager;
 
 	//プレイヤーの終了処理
-	g_pPlayer->Uninit();
-	delete g_pPlayer;
+	m_pPlayer->Uninit();
+	delete m_pPlayer;
 
 	// 小人のステージの当たり判定終了
-	g_pDwarfStageCollision->Uninit();
-	delete g_pDwarfStageCollision;
+	m_pDwarfStageCollision->Uninit();
+	delete m_pDwarfStageCollision;
 
 	// 小人終了処理
-	g_pDwarfManager->Uninit();
-	delete g_pDwarfManager;
+	m_pDwarfManager->Uninit();
+	delete m_pDwarfManager;
 
 	// 弾のクラス解放
-	g_pBulletManger->Uninit();
-	delete g_pBulletManger;
+	m_pBulletManger->Uninit();
+	delete m_pBulletManger;
 
 	// 弾の落下地点クラス解放
-	g_pBulletTarget->Uninit();
-	delete g_pBulletTarget;
+	m_pBulletTarget->Uninit();
+	delete m_pBulletTarget;
 
 	// 回収者
-	g_pCollector->Uninit();
-	delete g_pCollector;
+	m_pCollector->Uninit();
+	delete m_pCollector;
 	
 	// 回収ポイント
-	g_pCollectionPoint->Uninit();
-	delete g_pCollectionPoint;
+	m_pCollectionPoint->Uninit();
+	delete m_pCollectionPoint;
 
 	// エネミー終了処理
 	//delete g_pEnemy;
 
 	// カメラ類終了
-	g_pCamera->Uninit();
-	delete g_pCamera;
+	m_pCamera->Uninit();
+	delete m_pCamera;
 	//g_pTPSCamera->Uninit();
 	//delete g_pTPSCamera;
 
@@ -330,25 +331,25 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// 落下地点の更新
-	g_pBulletTarget->Update();
+	m_pBulletTarget->Update();
 
 	// プレイヤー更新
-	g_pPlayer->SetBulletTargetPos(g_pBulletTarget->GetBulletTargetPos());
-	g_pPlayer->Update();
+	m_pPlayer->SetBulletTargetPos(m_pBulletTarget->GetBulletTargetPos());
+	m_pPlayer->Update();
 
 	// 弾更新
-	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
-	g_pBulletManger->SetTargetPos(g_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
-	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
-	g_pBulletManger->Update();
+	m_pBulletManger->SetPlayePos(m_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
+	m_pBulletManger->SetTargetPos(m_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
+	m_pBulletManger->SetPlayerAngle(m_pPlayer->GetPlayerAngle());
+	m_pBulletManger->Update();
 
 	// 小人更新処理
-	g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
-	g_pDwarfManager->Update();
+	m_pDwarfManager->SetBulletInfo(m_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
+	m_pDwarfManager->Update();
 	
 	// 回収者
-	g_pCollector->Update();
-	g_pCollectionPoint->Update();
+	m_pCollector->Update();
+	m_pCollectionPoint->Update();
 
 
 	// エネミー更新
@@ -356,35 +357,35 @@ SCENE GameScene::Update()
 	//g_pEnemyManager->Update();
 
 	// ステージ更新
-	g_pStageManager->Update();
+	m_pStageManager->Update();
 
 	// ステージオブジェクト更新
-	g_pStageObjectManager->Update();
+	m_pStageObjectManager->Update();
 
 
 	//----- プレイヤーの座標を取得 -----
-	g_recPlayerPos = g_pPlayer->GetPos();
+	g_recPlayerPos = m_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
 	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
 	// スコア更新
-	g_pScore->Update();
+	m_pScore->Update();
 
 	// チュートリアル表示更新
-	g_pTutorial->Update();
+	m_pTutorial->Update();
 
 
 	//***************************************************************
 	// 小人処理
 	//***************************************************************
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
-	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
-		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg()) {
+	for (int j = 0; j < m_pDwarfManager->GetDwarfNum(); j++) {
+		if (m_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg()) {
 			//----- 乱数で目的地を設定 -----
 			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
 			randomPos.z = (float)(rand() % 30 - 15.0f);
-			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
-			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
+			m_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+			m_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
 		}
 	}
 
@@ -405,24 +406,24 @@ SCENE GameScene::Update()
 	//	Timer = TARGETSET_TIME;
 	//}
 
-	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
+	for (int i = 0; i < m_pDwarfManager->GetDwarfNum(); i++) 
 	{
-		if (!g_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {		// 生存してなかったらやらない
+		if (!m_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {		// 生存してなかったらやらない
 			if (!m_IsClear) {
 				m_IsGameOver = true;
 			}
 			break;
 		}
 		//----- 小人回収処理 -----
-		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
-			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-			g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
-			g_pDwarfManager->AddCollectionSum();
+		if (CollisionSphere(m_pDwarfManager->GetDwarf(i), m_pCollector)) {
+			m_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+			m_pScore->SetScore(m_pDwarfManager->GetDwarfNum());
+			m_pDwarfManager->AddCollectionSum();
 		}
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {
-			g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
+			g_pBullet[j] = m_pBulletManger->GetBullet(j);						// 弾情報取得
 			if (g_pBullet[j]->use) {									// 最後の指示を通す
 				g_LastBulletNun = j;
 			}
@@ -432,16 +433,16 @@ SCENE GameScene::Update()
 			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
 			//	continue;
 			//}
-			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
+			if (m_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
 				g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
 			}
 			//---ピクミンの弾への追尾
-			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+			m_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
 		}
 
 	}
 	//----- ゲームクリア -----
-	if (g_pDwarfManager->GetCollectionSum() == MAX_DWARF) {		// 小人全回収でクリア
+	if (m_pDwarfManager->GetCollectionSum() == MAX_DWARF) {		// 小人全回収でクリア
 		if (!m_IsGameOver) {
 			m_IsClear = true;
 		}
@@ -496,14 +497,14 @@ SCENE GameScene::Update()
 	//	カメラ更新
 	//***************************************************************	
 	//g_pTPSCamera->Update();
-	g_pCamera->Update();
+	m_pCamera->Update();
 
 
 	//***************************************************************
 	// すべての移動(更新処理)がすんでから
 	// すべてのオブジェクトの当たり判定を行う
 	//*************************************************************+*
-	g_pCollision->Update();
+	m_pCollision->Update();
 
 	//***************************************************************
 	//	軌跡の更新
@@ -512,7 +513,7 @@ SCENE GameScene::Update()
 	{
 		g_recordPos[i] = g_recordPos[i - 1];
 	}
-	g_recordPos[0] = g_pPlayer->GetPos();
+	g_recordPos[0] = m_pPlayer->GetPos();
 
 	//***************************************************************
 	//	軌跡の計算
@@ -614,7 +615,9 @@ void GameScene::Draw()
 	//②ローカル座標をワールド座標に変換
 	//③ワールド座標をカメラ座標に変換
 	//④カメラの画角に収まる範囲に変換(スクリーン座標)
+
 	static float a = 0.0f;
+
 	//ワールド座標へ変換
 	//XMMatrixTranslation 移動
 	//XMMatrixRotationX X軸で回転
@@ -650,7 +653,7 @@ void GameScene::Draw()
 	*/
 
 	//g_pTPSCamera->Bind();
-	g_pCamera->Bind();
+	m_pCamera->Bind();
 	
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -662,49 +665,45 @@ void GameScene::Draw()
 
 
 	// 回収者の描画
-	g_pCollector->Draw();
-	g_pCollectionPoint->Draw();
+	m_pCollector->Draw();
+	m_pCollectionPoint->Draw();
 
 	// 敵の描画
 	//g_pEnemyManager->Draw();
 
 	// ピクミン描画
-	g_pDwarfManager->Draw();
+	m_pDwarfManager->Draw();
 
 	// 弾の描画
-	g_pBulletManger->Draw();
+	m_pBulletManger->Draw();
 
 	// 落下地点の描画
-	g_pBulletTarget->Draw();
+	m_pBulletTarget->Draw();
 
 
 	//g_pEnemy->Draw();
 	//SHADER->SetTexture(NULL);
 
 	// ステージ描画
-	g_pStageManager->Draw();
+	m_pStageManager->Draw();
 #ifdef _DEBUG
 	// 小人のステージの当たり判定ようブロック描画
-	g_pDwarfStageCollision->Draw();
+	m_pDwarfStageCollision->Draw();
 #endif 
 
 
 	// ステージオブジェクト描画
-	g_pStageObjectManager->Draw();
+	m_pStageObjectManager->Draw();
 
 
 	// プレイヤー描画
-	g_pPlayer->Draw();
-
-
+	m_pPlayer->Draw();
 
 
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	
 	//	EnableCulling(false);
 	//	EnableCulling(true);
- 
-
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {
@@ -717,7 +716,7 @@ void GameScene::Draw()
 	}
 	
 	// スコア描画
-	g_pScore->Draw();
+	m_pScore->Draw();
 
 	// チュートリアル描画
 	//g_pTutorial->Draw();

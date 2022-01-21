@@ -64,7 +64,7 @@ bool StageObjectManager::Init(int SelectStageNum)
 		//---(çÚ)
 		{
 			XMFLOAT3(0.0f,1.5f,0.0f),
-			XMFLOAT3(0.95f,0.7f,0.95f),
+			XMFLOAT3(1.45f,0.7f,1.45f),
 			LPCSTR("Assets/Model/fence.png"),
 			LPCSTR("Assets/Model/fenceall.fbx"),
 		},
