@@ -53,6 +53,8 @@ Collector::Collector()
 	m_timer = WAIT_TIME * FPS + 59;
 	m_timeFlg = true;
 	use = true;
+	m_nowCollectFlg = false;
+	m_nowCollectTimer = WAIT_TIME * FPS + 59;
 
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -147,47 +149,54 @@ void Collector::Update()
 	m_angle = atan2(m_move.z, m_move.x);
 	m_angle -= DirectX::XM_PI * 0.5f;
 
+	if (m_nowCollectFlg) {
+		m_nowCollectTimer--;
+	}
+
+
+	//----- 回収中 -----
 	if (m_timeFlg) {
 		// 一定時間待機
 		if (m_timer > 0) {
 			m_timer--;
-		}
-		// 回収地点へ移動
-		else {
+		} else {// 回収地点へ移動
 			m_move.x = -(MOVE_SPEED / FPS);
 		}
+
 		if (m_pos.x < COLLECT_POS_X) {
 			m_move.x = 0;
-			if (m_pos.y > COLLECT_POS_Y) {
-				m_move.y = -(MOVE_SPEED / FPS);
-			}
-			else {
-				CSound::Stop(SE_COLLECTOR_1);
-				m_move.y = 0;
+			m_nowCollectFlg = true;
+			if (m_nowCollectTimer < 0) {
 				m_timeFlg = false;
+				m_nowCollectFlg = false;
 				m_timer = WAIT_TIME * FPS + 59;
 			}
+
+			//if (m_pos.y > COLLECT_POS_Y) {
+			//	m_move.y = -(MOVE_SPEED / FPS);
+			//}else {
+			//	CSound::Stop(SE_COLLECTOR_1);
+			//	m_move.y = 0;
+			//	m_timeFlg = false;
+			//	m_timer = WAIT_TIME * FPS + 59;
+			//}
 		}
 	}
 
+	//----- 帰宅 -----
 	if (!m_timeFlg) {
 		// 一定時間待機
 		if (m_timer > 0) {
 			m_timer--;
 		}
 		// 開始地点へ戻る
-		else {
-			m_move.y = (MOVE_SPEED / FPS);
-		}
+		if(m_pos.x < START_POS_X){
+			m_move.x = (MOVE_SPEED / FPS);
+		} else {
+			m_move.x = 0;
+			m_timeFlg = true;
+			m_timer = WAIT_TIME * FPS + 59;
 
-		if (m_pos.y > START_POS_Y) {
-			m_move.y = 0;
-			if (m_pos.x < START_POS_X) {
-				m_move.x = (MOVE_SPEED / FPS);
-			}
-			else {
-				m_move.x = 0;
-			}
 		}
 	}
 
