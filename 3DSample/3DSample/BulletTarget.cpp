@@ -22,8 +22,8 @@
  // 定数・マクロ定義
  //*******************************************************************************
 #define TARGET_POS_X		(0.0f)
-#define TARGET_POS_Y		(1.2f)
-#define TARGET_POS_Z		(0.0f)
+#define TARGET_POS_Y		(4.2f)
+#define TARGET_POS_Z		(-10.0f)
 
 #define TARGET_SIZE_X		(1.0f)
 #define TARGET_SIZE_Y		(0.0f)
@@ -32,6 +32,7 @@
 #define L_PI				(3.1415926f)		// π
 #define L_H_DEG				(180.0f)			// 角度
 #define	TRANS_RADIAN		(L_PI / L_H_DEG)	// ラジアンに変換
+
 
 //*******************************************************************************
 // グローバル宣言
@@ -134,6 +135,8 @@ void BulletTarget::Uninit()
 	GameObject::Uninit();
 }
 
+
+bool g_moveFlg = false;					// 移動フラグ
 //==============================================================
 //
 //	BulletTargetクラス::更新
@@ -145,35 +148,55 @@ void BulletTarget::Uninit()
 void BulletTarget::Update()
 {
 	//---変数初期化
-	XMFLOAT2 Axis = XMFLOAT2(0.0f, 0.0f);
-	Axis = LeftThumbPosition();
-	bool moveFlg = false;					// 移動フラグ
+	//XMFLOAT2 Axis = XMFLOAT2(0.0f, 0.0f);
+	//Axis = LeftThumbPosition();
 
-	const float Move = (10.0f / FPS) * 4;	// 1秒間で4M進む
+	static float Move = (10.0f / FPS) * 2;	// 1秒間で2M進む
 
-	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
+	//m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
 
 	//---カメラの向きを取得(ラジアンに変換)
 	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
 	//if (m_move.x != 0.0f && m_move.y != 0.0f) {
-		if (IsPress(VK_LEFT)) {			// 左
-			moveFlg = true;
-			m_move.x -= Move;
+		//if (IsPress(VK_LEFT)) {			// 左
+		//	m_move.x -= Move;
+		//}
+		//if (IsPress(VK_RIGHT)) {		// 右
+		//	m_move.x += Move;
+		//}
+		//if (IsPress(VK_UP)) {			// 上
+		//	moveFlg = true;
+		//	m_move.z += Move;
+		//}		
+	if (IsPress('Q')) {			// 上
+		/* キーはなしたら帰ってきた！！！なんで！！！！わあ！！！！ */
+
+		g_moveFlg = true;
+		m_move.z = Move;
+		if (m_pos.z > 7.0f) {
+			//m_pos.z = 7.0f;
+			Move *= -1;
 		}
-		if (IsPress(VK_RIGHT)) {		// 右
-			moveFlg = true;
-			m_move.x += Move;
+		if (m_pos.z < -10.0f) {
+			//m_pos.z = -10.0f;
+			Move *= -1;
 		}
-		if (IsPress(VK_UP)) {			// 上
-			moveFlg = true;
-			m_move.z += Move;
-		}
-		if (IsPress(VK_DOWN)) {			// 下
-			moveFlg = true;
-			m_move.z -= Move;
-		}
+	}
+
+
+		//if (IsPress('E')) {			// 上
+		//	moveFlg = true;
+		//	m_move.z += Move;
+		//	if (m_pos.z > 5.0f) {
+		//		m_pos.z = 5.0f;
+		//	}
+		//}
+		//if (IsPress(VK_DOWN)) {			// 下
+		//	moveFlg = true;
+		//	m_move.z -= Move;
+		//}
 	//}
 	//MyVector2 Direction(0.0f, 0.0f);
 
@@ -186,10 +209,10 @@ void BulletTarget::Update()
 
 	// 描画用角度変更だよ
 	// atan ... アークタンジェントの関数
-	if (moveFlg == true) {
-		m_DrawAngle  = atan2(m_move.z, m_move.x);
-		m_DrawAngle -= XM_PI * 0.5f;
-	}
+	//if (moveFlg == true) {
+	//	m_DrawAngle  = atan2(m_move.z, m_move.x);
+	//	m_DrawAngle -= XM_PI * 0.5f;
+	//}
 
 	//m_move.x = Direction.x * Move;
 	//m_move.z = Direction.y * Move;
@@ -209,7 +232,7 @@ void BulletTarget::Update()
 //==============================================================
 void BulletTarget::Draw()
 {
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 	//m_pCamera->Bind();
 
 	//int MeshNum = m_pFBX->GetMeshNum();
