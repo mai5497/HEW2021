@@ -40,18 +40,22 @@ enum class JPadButton {
 
 // @brief 入力情報の取得・更新
 void UpdateInput(HWND&, float);
+
 // @brief キーを押しているかを取得
 // @param[in] key	VK_SPACE 等で指定
 // @return bool
 bool IsPress(unsigned char key);
+
 // @brief キーを押した瞬間を取得
 // @param[in] key	VK_SPACE 等で指定
 // @return bool
 bool IsTrigger(unsigned char key);
+
 // @brief キーを離した瞬間を取得
 // @param[in] key	VK_SPACE 等で指定
 // @return bool
 bool IsRelease(unsigned char key);
+
 // @brief キーを押している間一定間隔でtrueを返す
 // @param[in] key	VK_SPACE 等で指定
 // @param[in] cycle	trueを返す周期

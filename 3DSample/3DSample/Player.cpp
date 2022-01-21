@@ -22,7 +22,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define FPS				(60)
-#define PLAYER_SIZE		(0.25f)
+#define PLAYER_SIZE		(0.8f)
 
 //*******************************************************************************
 // グローバル宣言
@@ -30,7 +30,6 @@
 XMFLOAT3 pOldCameraPos;
 DrawBuffer *Player::m_pBuffer = NULL;
 FBXPlayer *Player::m_pFBX = NULL;
-Camera *g_pPlayerCamera;
 
 
 //==============================================================
@@ -48,22 +47,14 @@ Player::Player():m_pControllCamera(nullptr)
 
 	// ---変数初期化
 	m_pos.x = 0.0f;
-	m_pos.y = 3.0f;
-	m_pos.z = -13.0f;
-	m_Angle = XMFLOAT3(0, 0, 0);
+	m_pos.y = 0.5f - PLAYER_SIZE;
+	m_pos.z = -17.0f;
+	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_DrawAngle = 0.0f;
 
 	m_size = XMFLOAT3(PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE);
 
-
-	g_pPlayerCamera = new Camera;
-	g_pPlayerCamera->Init();
-
 	m_collisionType = COLLISION_DYNAMIC;
-
-	//g_pPlayerCamera = new Camera;
-	//g_pPlayerCamera->Init();
-
 }
 
 //==============================================================
@@ -76,15 +67,8 @@ Player::Player():m_pControllCamera(nullptr)
 //==============================================================
 Player::~Player()
 {
-	//g_pPlayerCamera->Uninit();
-	//delete g_pPlayerCamera;
-
 	m_pControllCamera = nullptr;
 	SAFE_RELEASE(m_pPlayerTex);
-
-	g_pPlayerCamera->Uninit();
-	delete g_pPlayerCamera;
-	g_pPlayerCamera = nullptr;
 	
 	Uninit();
 }
@@ -140,101 +124,16 @@ void Player::Uninit()
 //	引数		： void
 //
 //==============================================================
-void Player::Update()
-{
+void Player::Update() {
 	//----- 変数初期化 -----
 	XMFLOAT2 Axis = LeftThumbPosition();
 	bool moveFlg = false;
 
-	//bool keyL = IsPress('A');
-	//bool keyR = IsPress('D');
-	//bool keyU = IsPress('W');
-	//bool keyD = IsPress('S');
-	//bool keyJ = IsTrigger(VK_SPACE);
-
-	//１秒間（60FPS）で2M進ことを表す。
-	//const float Move = (10.0f / 60) * 2;
-
-	m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
-
-	//float CameraRad = m_pControllCamera->GetxzAngle() * 3.14159265359f / 180.0f;
-	
-	//プレイヤー移動
-	//m_move.y -= 0.01f;	// 重力
-	//if (m_pos.z == -13.0f) {
-	//	if (keyL ) {
-	//		moveFlg = true;
-	//		m_move.x -= Move;
-	//		if (m_Angle.y >= -CameraRad - 90.0f * 3.1415926f / 180.0f) {
-	//			m_Angle.y -= 0.1f;
-	//		}
-	//	}
-
-	//	if (keyR) {
-	//		moveFlg = true;
-	//		m_move.x += Move;
-	//		if (m_Angle.y <= -CameraRad + 90.0f * 3.1415926f / 180.0f) {
-	//			m_Angle.y += 0.1f;
-	//		}
-	//	}
-	//} else if (m_pos.z < -13.0f) {
-	//	m_pos.z = -13.0f;
-	//}
-
-	//if (m_pos.x == 12.5f) {
-	//	if (keyU) {
-	//		moveFlg = true;
-	//		m_move.z += Move;
-	//		if (m_Angle.y <= -CameraRad) {
-	//			m_Angle.y += 0.1f;
-	//		}
-	//		if (m_Angle.y >= -CameraRad) {
-	//			m_Angle.y -= 0.1f;
-	//		}
-	//	}
-	//	if (keyD) {
-	//		m_move.z -= Move;
-	//	}
-	//} else if (m_pos.x > 12.5f) {
-	//	m_pos.x = 12.5f;
-	//}
-
-	//if (keyJ) { m_move.y += 0.2f; }			// ジャンプ
-
-	//if (IsPress(VK_UP)) {	// 弾の飛ばす位置伸ばす
-	//	/*todo 弾の飛距離伸ばす*/
-	//}
-	//if (IsPress(VK_DOWN)) {	// 弾の飛ばす位置短く
-	//	/*todo 弾の飛距離落とす*/
-	//}
-
-	//MyVector2 direction(0, 0);
-
-	// 極座標を使ったTPS視点
-	//direction.x = m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
-	//direction.y = m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
-	//direction = direction.GetNormalize();
-
-	////座標を更新
-	//m_pos.x += m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
-	//m_pos.y += m_move.y;
-	//m_pos.z += m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
+	m_move = m_BulletTargetPos;
 
 	//描画用角度設定
-	if (moveFlg == true) {
-		m_DrawAngle = atan2(m_move.z, m_move.x);
-		m_DrawAngle -= XM_PI * 0.5f;
-	}
-
-	//m_move.x = direction.x * Move;
-	//m_move.z = direction.y * Move;
-
-	//m_pos.x += m_move.x;
-	//m_pos.y = 1.5f;
-	//m_pos.z += m_move.z;
-	
-	// カメラ更新
-	//g_pPlayerCamera->Update();
+	m_DrawAngle = atan2(m_move.z, m_move.x);
+	m_DrawAngle -= XM_PI * 0.5f;
 }
 
 //==============================================================
@@ -247,12 +146,9 @@ void Player::Update()
 //==============================================================
 void Player::Draw()
 {
-	//SHADER->Bind(VS_WORLD, PS_PHONG);
-	//g_pPlayerCamera->Bind();
 
-
-	DirectX::XMFLOAT3 pPos = m_pos;
-	DirectX::XMFLOAT3 pSize = m_size;
+	XMFLOAT3 pPos = m_pos;
+	XMFLOAT3 pSize = m_size;
 
 
 	int meshNum = m_pFBX->GetMeshNum();
@@ -266,8 +162,6 @@ void Player::Draw()
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
-
-	//CharacterBase::Draw();
 }
 
 //==============================================================
@@ -394,4 +288,15 @@ XMFLOAT3 Player::GetPlayerPos()
 XMFLOAT3 Player::GetPlayerAngle()
 {
 	return m_Angle;
+}
+
+//==============================================================
+//
+//	Playerクラス::弾のターゲットの座標の取得
+//	作成者	: 伊地田真衣
+//	戻り値	: なし
+//	引数		: 弾のターゲットの座標 
+//==============================================================
+void Player::SetBulletTargetPos(XMFLOAT3 pos) {
+	m_BulletTargetPos = pos;
 }

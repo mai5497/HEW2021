@@ -126,11 +126,11 @@ void StageObjectManager::Uninit()
 	{
 		m_ppStageObject[i]->Uninit();
 		delete m_ppStageObject[i];
-		m_ppStageObject[i] = NULL;
+		m_ppStageObject[i] = nullptr;
 	}
-
 	delete[] m_ppStageObject;
-	m_ppStageObject = NULL;
+	m_ppStageObject = nullptr;
+
 }
 
 //==============================================================

@@ -156,9 +156,6 @@
     <ClCompile Include="SelectScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="StageManager.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
@@ -195,13 +192,16 @@
     <ClCompile Include="DwarfStageCollision.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="StageObjectBase.cpp">
+    <ClCompile Include="Shadow.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="StageObjectManager.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Shadow.cpp">
+    <ClCompile Include="StageObjectBase.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,6 +371,9 @@
     <ClInclude Include="BulletTarget.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
+    <ClInclude Include="DwarfStageCollision.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
     <ClInclude Include="Shadow.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
@@ -378,9 +381,6 @@
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="StageObjectManager.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="DwarfStageCollision.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>

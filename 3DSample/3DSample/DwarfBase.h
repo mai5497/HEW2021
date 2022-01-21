@@ -10,7 +10,11 @@
 #define MAX_RED_DWARF	(6)									// 赤小人最大値
 #define MAX_BLUE_DWARF	(6)									// 青小人最大値
 #define MAX_DWARF		(MAX_RED_DWARF + MAX_BLUE_DWARF)	// 小人最大数合計
-#define DWARF_SIZE (2.0f)
+
+#define DWARF_SIZE		(2.0f)
+#define TARGETSET_TIME	(300)
+#define	RATE_ROTATE_DWARF	(0.20f)		// 回転慣性係数
+
 
 
 //========================= クラス定義 ===========================
@@ -40,6 +44,9 @@ public:
 	XMFLOAT3 GetCurrentPos();				// 現在の座標取得
 	void SetCollectionFlg(bool flg);		// 回収フラグセットtrueで回収された
 	bool GetCollectionFlg();				
+	void SetCircumferenceFlg(bool flg);		// 周回フラグセット
+	bool GetCircumferenceFlg();				// 周回フラグゲット
+
 
 	//---変数
 
