@@ -19,6 +19,10 @@ public:
 	void Draw();
 
 	int GetTimer();
+	int GetnowCollectTimer();
+
+	bool GetNowCollectFlg();
+
 
 private:
 	bool LoadFBX(const char* pFilePath);
@@ -38,5 +42,6 @@ private:
 	int		m_nowCollectTimer;
 	bool	m_timeFlg;
 	bool	m_nowCollectFlg;
+	XMFLOAT3 m_targetPos;
 };
 

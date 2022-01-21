@@ -15,7 +15,7 @@ public:
 	//---ŠÖ”
 	DwarfManager();
 	~DwarfManager();
-	bool Init();
+	bool Init(int stagenum);
 	void Uninit();
 	void Update();
 	void Draw();

@@ -152,8 +152,6 @@ void Collector::Update()
 	if (m_nowCollectFlg) {
 		m_nowCollectTimer--;
 	}
-
-
 	//----- 回収中 -----
 	if (m_timeFlg) {
 		// 一定時間待機
@@ -169,20 +167,11 @@ void Collector::Update()
 			if (m_nowCollectTimer < 0) {
 				m_timeFlg = false;
 				m_nowCollectFlg = false;
+				m_nowCollectTimer = WAIT_TIME * FPS + 59;
 				m_timer = WAIT_TIME * FPS + 59;
 			}
-
-			//if (m_pos.y > COLLECT_POS_Y) {
-			//	m_move.y = -(MOVE_SPEED / FPS);
-			//}else {
-			//	CSound::Stop(SE_COLLECTOR_1);
-			//	m_move.y = 0;
-			//	m_timeFlg = false;
-			//	m_timer = WAIT_TIME * FPS + 59;
-			//}
 		}
 	}
-
 	//----- 帰宅 -----
 	if (!m_timeFlg) {
 		// 一定時間待機
@@ -196,9 +185,35 @@ void Collector::Update()
 			m_move.x = 0;
 			m_timeFlg = true;
 			m_timer = WAIT_TIME * FPS + 59;
-
 		}
 	}
+
+
+	if (0/*もしターゲットのポスがすたーとだったら*/) {
+		/*回収位置に向かう*/
+	} else {
+		/*スタートに戻る*/
+	}
+
+
+	//// 追従するターゲットの座標
+	//XMVECTOR vTarget = XMLoadFloat3(&m_targetPos);
+	//// 今の座標
+	//XMVECTOR vCollectorPos = XMLoadFloat3(&m_pos);
+	//// 進行方向							　　↓ベクトルの引き算
+	//XMVECTOR vDirection = XMVectorSubtract(vTarget, vCollectorPos);
+	//// 一定の速度にするために正規化
+	//// 速度を変えるならvDirectonに速度をかける。
+	//vDirection = XMVector3Normalize(vDirection);
+	//// かける関数								  ↓かける数
+	//vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
+	//// Float3型に変換
+	//XMStoreFloat3(&m_move, vDirection);
+
+
+
+
+
 
 	// 移動
 	m_pos.x += m_move.x;
@@ -235,4 +250,25 @@ void Collector::Draw()
 int Collector::GetTimer()
 {
 	return m_timer;
+}
+
+
+//====================================================================
+//
+//		回収中タイムの取得
+//
+//====================================================================
+int Collector::GetnowCollectTimer() {
+	return m_nowCollectTimer;
+}
+
+
+
+//====================================================================
+//
+//		回収中フラグの取得
+//
+//====================================================================
+bool Collector::GetNowCollectFlg() {
+	return m_nowCollectFlg;
 }

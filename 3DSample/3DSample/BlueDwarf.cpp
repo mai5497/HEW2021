@@ -36,12 +36,6 @@ BlueDwarf::BlueDwarf()
 	//----- ïœêîèâä˙âª -----
 	LoadTextureFromFile("Assets/Model/kobitoblue.png", &m_pBlueDwarfTex);
 
-	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
-
-	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
-
 	m_DwarfAngle = 0.0f;
 
 
@@ -123,11 +117,11 @@ void BlueDwarf::Update()
 	vDirection = XMVector3Normalize(vDirection);
 	// Ç©ÇØÇÈä÷êî								  Å´Ç©ÇØÇÈêî
 	if (GetFollowFlg()) {		// í«ê’ÉtÉâÉOÇ™óßÇ¡ÇƒÇ¢ÇÈÇ∆Ç´
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 10);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_FOLLOW_SPEED);
 	} else if (GetrunFlg()) {	// íeÇ©ÇÁì¶Ç∞ÇÈÇ∆Ç´
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -1.5);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
 	} else {
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
 	}
 
 	// Float3å^Ç…ïœä∑

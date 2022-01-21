@@ -17,7 +17,12 @@ public:
 	void Update();
 	void Draw();
 
-private:
+	void SetNowCollectFlg(bool flg);
+	void SetnowCollectTimer(int time);
 
+private:
+	int m_PosSetTime;
+	bool m_nowCollectFlg;
+	int m_nowCollectTimer;
 };
 

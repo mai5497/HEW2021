@@ -154,9 +154,6 @@ void BulletTarget::Update()
 	static float Move = (10.0f / FPS) * 2;	// 1秒間で2M進む
 
 	//m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
-
-	//---カメラの向きを取得(ラジアンに変換)
-	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
 	//if (m_move.x != 0.0f && m_move.y != 0.0f) {
@@ -198,24 +195,7 @@ void BulletTarget::Update()
 		//	m_move.z -= Move;
 		//}
 	//}
-	//MyVector2 Direction(0.0f, 0.0f);
 
-	// 極座標を使ったTPS視点
-	//Direction.x = m_move.x * cosf(CameraRad) - m_move.z * sinf(CameraRad);
-	//Direction.y = m_move.x * sinf(CameraRad) + m_move.z * cosf(CameraRad);
-	//Direction = Direction.GetNormalize();
-	//Direction.x = m_move.x - m_move.z;
-	//Direction.y = m_move.x + m_move.z;
-
-	// 描画用角度変更だよ
-	// atan ... アークタンジェントの関数
-	//if (moveFlg == true) {
-	//	m_DrawAngle  = atan2(m_move.z, m_move.x);
-	//	m_DrawAngle -= XM_PI * 0.5f;
-	//}
-
-	//m_move.x = Direction.x * Move;
-	//m_move.z = Direction.y * Move;
 
 	m_pos.x += m_move.x;
 	m_pos.y += m_move.y;

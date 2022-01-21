@@ -24,7 +24,7 @@
 //====================================================================
 DwarfManager::DwarfManager() : 
 	m_ppDwarf(nullptr),
-	m_DwarfNum(MAX_DWARF)
+	m_DwarfNum(0)
 {
 	m_collectionSum = 0;
 }
@@ -45,15 +45,43 @@ DwarfManager::~DwarfManager()
 //		初期化
 //
 //====================================================================
-bool DwarfManager::Init() 
+bool DwarfManager::Init(int stagenum)
 {
+	//----- ローカル変数初期化 -----
+	int rednum;
+	int bluenum;
+
+	if (stagenum == 1) {
+		m_DwarfNum = MAX_DWARF_1;
+		rednum = MAX_RED_DWARF_1;
+		bluenum = MAX_BLUE_DWARF_1;
+	} else if (stagenum == 2) {
+		m_DwarfNum = MAX_DWARF_2;
+		rednum = MAX_RED_DWARF_2;
+		bluenum = MAX_BLUE_DWARF_2;
+
+	} else if (stagenum == 3) {
+		m_DwarfNum = MAX_DWARF_3;
+		rednum = MAX_RED_DWARF_3;
+		bluenum = MAX_BLUE_DWARF_3;
+	}
+
+
 	struct DwarfSetting 
 	{
 		XMFLOAT3 pos;
 	};
 
-	// キャラクターを設置
-	DwarfSetting DwarfSet[MAX_DWARF];
+
+	DwarfSetting DwarfSet[MAX_DWARF_1];
+	if (stagenum == 1) {
+		DwarfSetting DwarfSet[MAX_DWARF_1];
+	} else if (stagenum == 2) {
+		DwarfSetting DwarfSet[MAX_DWARF_2];
+	} else if (stagenum == 3) {
+		DwarfSetting DwarfSet[MAX_DWARF_3];
+	}
+	
 
 	XMFLOAT3 basePos = XMFLOAT3(0.0f, 0.0f, 0.0f);		// 指定した位置付近に配置できる
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
@@ -61,9 +89,16 @@ bool DwarfManager::Init()
 	srand(time(NULL));
 
 	// ポインタを格納する配列を作成
-	m_ppDwarf = new DwarfBase*[MAX_DWARF];
+	if (stagenum == 1) {
+		m_ppDwarf = new DwarfBase*[MAX_DWARF_1];
+	} else if (stagenum == 2) {
+		m_ppDwarf = new DwarfBase*[MAX_DWARF_2];
+	} else if (stagenum == 3) {
+		m_ppDwarf = new DwarfBase*[MAX_DWARF_3];
+	}
 
-	for (int i = 0; i < MAX_DWARF; i++){
+
+	for (int i = 0; i < m_DwarfNum; i++){
 		// 小人をランダムで初期配置
 		//randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
 		//randomPos.z = (float)(rand() % 20 - 10.0f);
@@ -73,7 +108,7 @@ bool DwarfManager::Init()
 		// ランダムで算出した値を基準位置に加算して代入
 		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
-		if (i < MAX_RED_DWARF) {
+		if (i < rednum) {
 			m_ppDwarf[i] = new RedDwarf;
 		} else {
 			m_ppDwarf[i] = new BlueDwarf;
@@ -96,7 +131,7 @@ bool DwarfManager::Init()
 //====================================================================
 void DwarfManager::Uninit() 
 {
-	for (int i = 0; i < MAX_DWARF; i++)
+	for (int i = 0; i < m_DwarfNum; i++)
 	{
 		m_ppDwarf[i]->Uninit();
 		delete m_ppDwarf[i];
@@ -117,7 +152,7 @@ void DwarfManager::Update() {
 	static int Timer;
 	Timer--;
 
-	for (int i = 0; i < MAX_DWARF; i++) {
+	for (int i = 0; i < m_DwarfNum; i++) {
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
 			return; // 一体でも死んだらゲームオーバーの為
 		}
@@ -166,7 +201,7 @@ void DwarfManager::Update() {
 //====================================================================
 void DwarfManager::Draw() 
 {
-	for (int i = 0; i < MAX_DWARF; i++)
+	for (int i = 0; i < m_DwarfNum; i++)
 	{
 		if (!m_ppDwarf[i]->GetAliveFlg()) {
 			return; // 一体でも死んだらゲームオーバーの為
@@ -187,7 +222,7 @@ void DwarfManager::Draw()
 //====================================================================
 DwarfBase* DwarfManager::GetDwarf(int index) 
 {
-	if (index < MAX_DWARF) {
+	if (index < m_DwarfNum) {
 		return m_ppDwarf[index];
 	}
 	return NULL;

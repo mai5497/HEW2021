@@ -67,11 +67,11 @@ Camera::Camera()
 	//, m_yAngle(30.0f)
 	//, m_radius(5.0f)
 {
-	//float xzRad = m_xzAngle * 3.141592f / 180.0f;
-	//float yRad = m_yAngle * 3.141592f / 180.0f;
-	//m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
-	//m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
-	//m_pos.y = sin(yRad) * m_radius;
+	float xzRad = m_xzAngle * 3.141592f / 180.0f;
+	float yRad = m_yAngle * 3.141592f / 180.0f;
+	m_pos.x += cos(yRad) * sin(xzRad) * m_radius;
+	m_pos.z += cos(yRad) * -cos(xzRad) * m_radius;
+	m_pos.y += sin(yRad) * m_radius;
 }
 
 Camera::~Camera()
@@ -111,7 +111,7 @@ void Camera::Update()
 	//y = sinΦ * r
 
 
-#if 1
+#if 0
 	//カメラの角度変更
 	if (IsPress(VK_LEFT))
 	{
@@ -174,7 +174,6 @@ void Camera::Update()
 			m_yAngle = -89.0f;
 		}
 	}
-#endif
 
 	//カメラ位置計算
 	float xzRad = m_xzAngle * 3.141592f / 180.0f;
@@ -183,6 +182,7 @@ void Camera::Update()
 	m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
 	m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
 	m_pos.y = sin(yRad) * m_radius;
+#endif
 
 }
 

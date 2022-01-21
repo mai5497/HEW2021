@@ -25,7 +25,6 @@
 
 
 //========================= ’è”’è‹` ===========================
-#define DWARF_SIZE	(0.7f)
 #define GRAVITY		(0.3f)
 
 
@@ -43,12 +42,6 @@ RedDwarf::RedDwarf()
 {
 	//----- •Ï”‰Šú‰» -----
 	LoadTextureFromFile("Assets/Model/kobitored.png", &m_pRedDwarfTex);
-
-	m_move = XMFLOAT3(0.0f,0.0f,0.0f);
-
-	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
-
-	m_Radius = XMFLOAT3(2.0f, 1.0f, 2.0f);
 
 	m_DwarfAngle = 0.0f;
 
@@ -129,11 +122,11 @@ void RedDwarf::Update()
 	vDirection = XMVector3Normalize(vDirection);
 	// ‚©‚¯‚éŠÖ”								  «‚©‚¯‚é”
 	if (GetFollowFlg()) {		// ’ÇÕƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚é‚Æ‚«
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 10);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_FOLLOW_SPEED);
 	} else if (GetrunFlg()) {	// ’e‚©‚ç“¦‚°‚é‚Æ‚«
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -1.5);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
 	} else {
-		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
 	}
 
 	// Float3Œ^‚É•ÏŠ·

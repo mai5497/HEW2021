@@ -32,6 +32,13 @@ DwarfBase::DwarfBase():
 {
 	//----- •Ï”‰Šú‰» -----
 	m_collisionType = COLLISION_DYNAMIC;	// ¬l‚Í“®‚­•¨‘Ì
+	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	m_size = XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE);
+
+	m_Radius = XMFLOAT3(DWARF_HITBOX_X, DWARF_HITBOX_Y, DWARF_HITBOX_Z);
+
+
 }
 
 

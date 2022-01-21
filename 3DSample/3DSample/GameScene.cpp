@@ -15,7 +15,8 @@
  *  	 2022/01/16 バレットの落下地点のオブジェクト追加(吉原)
  *		 2022/01/17 ゲームオーバークリアが同時に出るのなおした（伊地田）
  *		 2022/01/18 ステージのオブジェクトの配置(吉原)
- *		 2022/
+ *		 2022/01/20 小人挙動いじった（伊地田）
+ *		 2022/01/21 回収いじった（伊地田）
  *
  * @brief ゲームシーンに関する処理
  */
@@ -164,7 +165,7 @@ void GameScene::Init(int StageNum)
 
 	// 小人管理クラス実体化
 	g_pDwarfManager = new DwarfManager();
-	g_pDwarfManager->Init();
+	g_pDwarfManager->Init(StageNum);
 
 	// 小人のステージの当たり判定用のブロックたち初期化
 	g_pDwarfStageCollision = new DwarfStageCollision();
@@ -178,7 +179,6 @@ void GameScene::Init(int StageNum)
 	//g_pTPSCamera = new TPSCamera();
 	//g_pTPSCamera->SetTargetObj(g_pPlayer);
 	//g_pTPSCamera->Init(XMFLOAT3(0, 12.0f, -22.5f));
-
 
 	//g_pPlayer->SetControllCamera(g_pTPSCamera);
 	//g_pPlayer->GetCameraPos(g_pTPSCamera);
@@ -228,7 +228,7 @@ void GameScene::Init(int StageNum)
 	InitGameOver();
 
 	// 当たり判定配列にデータを入れる
-	for (int i = 0; i < MAX_DWARF; i++) {
+	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < g_pDwarfStageCollision->GetStageNum(); j++) {
 			g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfStageCollision->GetDwarfStageCollision(j));
 		}
@@ -348,6 +348,7 @@ SCENE GameScene::Update()
 	
 	// 回収者
 	g_pCollector->Update();
+	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
 	g_pCollectionPoint->Update();
 
 
@@ -425,7 +426,7 @@ SCENE GameScene::Update()
 
 	}
 	//----- ゲームクリア -----
-	if (g_pDwarfManager->GetCollectionSum() == MAX_DWARF) {		// 小人全回収でクリア
+	if (g_pDwarfManager->GetCollectionSum() == g_pDwarfManager->GetDwarfNum()) {		// 小人全回収でクリア
 		if (!m_IsGameOver) {
 			m_IsClear = true;
 		}
