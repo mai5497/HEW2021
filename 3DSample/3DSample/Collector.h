@@ -31,10 +31,12 @@ private:
 	static DrawBuffer* m_pBuffer;
 	static FBXPlayer* m_pfbx;		//FBXファイル操作クラス
 
-	DirectX::XMFLOAT3	m_dir;
+	XMFLOAT3	m_dir;
 
 	float	m_angle;
 	int		m_timer;
+	int		m_nowCollectTimer;
 	bool	m_timeFlg;
+	bool	m_nowCollectFlg;
 };
 

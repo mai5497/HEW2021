@@ -388,22 +388,6 @@ SCENE GameScene::Update()
 		}
 	}
 
-	//if (Timer < 0) {
-	//	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ƒ‰ƒ“ƒ_ƒ€
-	//	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
-	//		if (g_pDwarfManager->GetDwarf(j)->GetFollowFlg()) {
-	//			continue;
-	//		}
-	//		if (g_pDwarfManager->GetDwarf(j)->GetrunFlg()) {
-	//			continue;
-	//		}
-	//		//----- —”‚Å–Ú“I’n‚ðÝ’è -----
-	//		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0‚ÌŠÔ‚Ì—”
-	//		randomPos.z = (float)(rand() % 10 - 5.0f);
-	//		g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
-	//	}
-	//	Timer = TARGETSET_TIME;
-	//}
 
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
 	{
