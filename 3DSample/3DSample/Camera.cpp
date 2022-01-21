@@ -111,7 +111,7 @@ void Camera::Update()
 	//y = sinƒ³ * r
 
 
-#if 0
+#if 1
 	//ƒJƒƒ‰‚ÌŠp“x•ÏX
 	if (IsPress(VK_LEFT))
 	{
