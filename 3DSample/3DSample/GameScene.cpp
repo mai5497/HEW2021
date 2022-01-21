@@ -25,47 +25,48 @@
 // インクルード部
 //*******************************************************************************
 
-//---システム関連
-#include "Camera.h"
-#include "Input.h"
-#include "TPSCamera.h"
-#include "Collision.h"
-#include "Shader.h"
-#include "Defines.h"
+////---システム関連
+//#include "Camera.h"
+//#include "Input.h"
+//#include "TPSCamera.h"
+//#include "Collision.h"
+//#include "Shader.h"
+//#include "Defines.h"
 
-// ---シーン関連
+//// ---シーン関連
 #include "GameScene.h"
-#include "SelectScene.h"
-#include "Tutorial.h"
+//#include "SelectScene.h"
+//#include "Tutorial.h"
 #include "Clear.h"
 #include "GameOver.h"
 
-// ---ステージ関連
-#include "Stage.h"
-#include "StageObjectManager.h"
 
-// ---ゲーム関連-プレイヤー
-#include "Player.h"
-#include "GameObject.h"
-
-// ---ゲーム関連-エネミー
-#include "Enemy.h"
-#include "EnemyManager.h"
-
-// ---ゲーム関連-小人
-#include "DwarfManager.h"
-#include "DwarfStageCollision.h"
-
-// ---ゲーム関連-弾
-#include "BulletManager.h"
-#include "BulletTarget.h"
-
-// ---ゲーム関連-回収
-#include "Collector.h"
-#include "CollectionPoint.h"
-
-// ---ゲーム関連-UI
-#include "Score.h"
+//// ---ステージ関連
+//#include "Stage.h"
+//#include "StageObjectManager.h"
+//
+//// ---ゲーム関連-プレイヤー
+//#include "Player.h"
+//#include "GameObject.h"
+//
+//// ---ゲーム関連-エネミー
+//#include "Enemy.h"
+//#include "EnemyManager.h"
+//
+//// ---ゲーム関連-小人
+//#include "DwarfManager.h"
+//#include "DwarfStageCollision.h"
+//
+//// ---ゲーム関連-弾
+//#include "BulletManager.h"
+//#include "BulletTarget.h"
+//
+//// ---ゲーム関連-回収
+//#include "Collector.h"
+//#include "CollectionPoint.h"
+//
+//// ---ゲーム関連-UI
+//#include "Score.h"
 
 
 
@@ -82,22 +83,6 @@
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
-
-StageManager		*g_pStageManager;
-StageObjectManager* g_pStageObjectManager;
-
-Collision			*g_pCollision;
-Collector			*g_pCollector;
-CollectionPoint		*g_pCollectionPoint;
-SelectScene			*g_pSelectScene;
-DwarfManager		*g_pDwarfManager;
-DwarfStageCollision	*g_pDwarfStageCollision;
-
-BulletManager		*g_pBulletManger;
-BulletTarget			* g_pBulletTarget;
-
-Score				*g_pScore;
-Tutorial			*g_pTutorial;
 
 
 //Enemy				*g_pEnemy;
@@ -599,7 +584,9 @@ void GameScene::Draw()
 	//②ローカル座標をワールド座標に変換
 	//③ワールド座標をカメラ座標に変換
 	//④カメラの画角に収まる範囲に変換(スクリーン座標)
+
 	static float a = 0.0f;
+
 	//ワールド座標へ変換
 	//XMMatrixTranslation 移動
 	//XMMatrixRotationX X軸で回転
@@ -688,8 +675,6 @@ void GameScene::Draw()
 	
 	//	EnableCulling(false);
 	//	EnableCulling(true);
- 
-
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {

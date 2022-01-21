@@ -37,9 +37,9 @@ BulletBase::BulletBase() :
 	m_pos.x = 1000.0f;						//‰ŠúÀ•Wx
 	m_pos.y = 1000.0f;						//‰ŠúÀ•Wy
 	m_pos.z = 1000.0f;						//‰ŠúÀ•Wz
-	m_size.x = 0.25f;
-	m_size.y = 0.25f;
-	m_size.z = 0.25f;
+	m_size.x = 0.5f;
+	m_size.y = 0.5f;
+	m_size.z = 0.5f;
 	m_sleep = 0;
 	m_sleep2 = 0;
 
