@@ -29,8 +29,8 @@
 #define DWARF_HITBOX_Z		(2.0f)
 
 #define DWARF_DEFAULT_SPEED	(2.0f)								// 普段のスピード
-#define DWARF_RUN_SPEED		(1.5f)								// 弾から逃げるスピード
-#define DWARF_FOLLOW_SPEED	(10.0f)								// 弾を追いかけるときのスピード
+#define DWARF_RUN_SPEED		(3.0f)								// 弾から逃げるスピード
+#define DWARF_FOLLOW_SPEED	(30.0f)								// 弾を追いかけるときのスピード
 //↑みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
 
 

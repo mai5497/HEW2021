@@ -76,7 +76,7 @@ void BulletBase::Update()
 	// CurrentPos = m_pos となる 
 
 	// 弾の投擲時間を進める(定数で投げ終わる時間を決めれる)
-	m_ThrowTimer += 1.0 / BULLET_THROW_CNT;
+	m_ThrowTimer += 1.3f / BULLET_THROW_CNT;
 
 
 	if (m_ThrowTimer <= 1.0f) {
@@ -89,19 +89,19 @@ void BulletBase::Update()
 	}
 	else {
 
-	//if (m_ColFlg) {
-	//if (m_pos.y < 1.0f) {							// 今は高さで判定
-	//if(m_ThrowTimer > 1.0f){
-		m_ColFlg = true;
-		//m_move.x = 0.0f;
-		//m_move.y = 0.0f;
-		//m_move.z = 0.0f;
-		
-		//SetMove(m_move);
+		//if (m_ColFlg) {
+		//if (m_pos.y < 1.7f) {							// 今は高さで判定
+		//if(m_ThrowTimer > 1.0f){
+			m_ColFlg = true;
+			//m_move.x = 0.0f;
+			//m_move.y = 0.0f;
+			//m_move.z = 0.0f;
 
-		//use = false;
+			//SetMove(m_move);
+
+			//use = false;
+		//}
 	}
-
 	if (m_ColFlg) {
 		if (m_AliveTime == BULLET_DESTOROY_CNT) {
 			// サウンド

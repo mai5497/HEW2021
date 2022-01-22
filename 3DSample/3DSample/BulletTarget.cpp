@@ -24,7 +24,7 @@
 
 //---座標系
 #define TARGET_POS_X		(0.0f)			
-#define TARGET_POS_Y		(4.0f)
+#define TARGET_POS_Y		(1.6f)
 #define TARGET_POS_Z		(-10.0f)
 
 //---サイズ系
@@ -152,15 +152,15 @@ void BulletTarget::Uninit()
 void BulletTarget::Update()
 {
 	//---変数初期化
-	//XMFLOAT2 Axis = XMFLOAT2(0.0f, 0.0f);
-	//Axis = LeftThumbPosition();
+	XMFLOAT2 Axis = XMFLOAT2(0.0f, 0.0f);
+	Axis = LeftThumbPosition();
 
 	bool moveFlg = false;					// 移動フラグ
 
 	 float Move = (10.0f / FPS) * 4;	// 1秒間で2M進む
 
-	//m_move = XMFLOAT3(Axis.x, m_move.y, Axis.y);
-	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_move = XMFLOAT3(Axis.x, 0.0f, 0.0f);
+	//m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 
 	//---カメラの向きを取得(ラジアンに変換)
@@ -235,7 +235,7 @@ void BulletTarget::Update()
 
 
 	m_pos.x += m_move.x;
-	m_pos.y += m_move.y;
+	//m_pos.y += m_move.y;
 	m_pos.z += m_move.z;
  }
 
