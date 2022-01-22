@@ -22,6 +22,7 @@ public:
 	int GetnowCollectTimer();
 
 	bool GetNowCollectFlg();
+	void SetTargetPos(XMFLOAT3 pos);
 
 
 private:
@@ -42,6 +43,7 @@ private:
 	int		m_nowCollectTimer;
 	bool	m_timeFlg;
 	bool	m_nowCollectFlg;
+	bool	m_moveFlg;
 	XMFLOAT3 m_targetPos;
 };
 

@@ -183,13 +183,15 @@ void GameScene::Init(int StageNum)
 	//g_pPlayer->SetControllCamera(g_pTPSCamera);
 	//g_pPlayer->GetCameraPos(g_pTPSCamera);
 
-	// 回収車
-	g_pCollector = new Collector();
-	g_pCollector->Init();
-	
 	// 回収ポイント
 	g_pCollectionPoint = new CollectionPoint();
 	g_pCollectionPoint->Init();
+	
+	// 回収車
+	g_pCollector = new Collector();
+	g_pCollector->Init();
+	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
+
 
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -292,13 +294,13 @@ void GameScene::Uninit()
 	g_pBulletTarget->Uninit();
 	delete g_pBulletTarget;
 
-	// 回収者
-	g_pCollector->Uninit();
-	delete g_pCollector;
-	
 	// 回収ポイント
 	g_pCollectionPoint->Uninit();
 	delete g_pCollectionPoint;
+	
+	// 回収者
+	g_pCollector->Uninit();
+	delete g_pCollector;
 
 	// エネミー終了処理
 	//delete g_pEnemy;
@@ -349,6 +351,7 @@ SCENE GameScene::Update()
 	// 回収者
 	g_pCollector->Update();
 	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
+	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 	g_pCollectionPoint->Update();
 
 

@@ -76,7 +76,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release;$(LibraryPath)</LibraryPath>
-    <ReferencePath>C:\Users\asuka\OneDrive\デスクトップ\HEW_GitHub\HEW_0121\3DSample\3DSample\DirectXTex;$(ReferencePath)</ReferencePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
