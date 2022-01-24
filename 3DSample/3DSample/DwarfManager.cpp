@@ -169,10 +169,16 @@ void DwarfManager::Update() {
 			}
 
 			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// “Š‚°‚½’e‚Æ¬l‚ÌF‚ª“¯‚¶‚¾‚Á‚½‚ç
+				if (m_ppDwarf[i]->GetLiftFlg()) {
+					continue;
+				}
 				//m_ppDwarf[i]->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
 				m_ppDwarf[i]->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
 				m_ppDwarf[i]->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚È‚¢
 			} else {
+				if (m_ppDwarf[i]->GetLiftFlg()) {
+					continue;
+				}
 				//m_ppDwarf[i]->SetMoveFlg(false);	// ˆÚ“®‹–‰Â‚µ‚È‚¢
 				m_ppDwarf[i]->SetFollowFlg(false);	// ’ÇÕ‚µ‚È‚¢
 				m_ppDwarf[i]->SetrunFlg(true);		// ’e‚©‚ç—£‚ê‚é

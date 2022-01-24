@@ -383,7 +383,7 @@ SCENE GameScene::Update()
 	//***************************************************************
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
-		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg()) {
+		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
 			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
 			randomPos.z = (float)(rand() % 30 - 15.0f);
@@ -406,7 +406,6 @@ SCENE GameScene::Update()
 		}
 
 		//----- 小人回収処理 -----
-		//if (CollisionAABB(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
 			if (g_pCollector->GetNowCollectFlg()) {
 				g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
@@ -416,10 +415,7 @@ SCENE GameScene::Update()
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
 			g_pDwarfManager->AddCollectionSum();
-		} //else if() {
-		//	g_pDwarfManager->GetDwarf(i)->SetLiftFlg(false);	// 回収できなかったら落ちてくる
-		//	g_pDwarfManager->SubCollectionSum();
-		//}
+		}
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {

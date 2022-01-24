@@ -12,7 +12,7 @@
 #define	RATE_ROTATE_DWARF	(0.20f)		// 回転慣性係数
 #define GRAVITY				(0.3f)		// 重力
 #define LIFTPOWER			(0.15f)		// 浮く力
-#define COLLECTOR_POS_Y		(17.0f)		// ゆーふぉーの高さ
+#define COLLECTOR_POS_Y		(20.0f)		// ゆーふぉーの高さ
 
 
 

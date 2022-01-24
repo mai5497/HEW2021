@@ -103,7 +103,6 @@ void BlueDwarf::Update()
 	float vAngle;		// 目的位置の角度
 
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	SetMoveFlg(true);
 
 
 	// 追従するターゲットの座標
@@ -118,10 +117,13 @@ void BlueDwarf::Update()
 	// かける関数								  ↓かける数
 	if (GetFollowFlg()) {		// 追跡フラグが立っているとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_FOLLOW_SPEED);
+		SetMoveFlg(true);
 	} else if (GetrunFlg()) {	// 弾から逃げるとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
-	} else {
+		SetMoveFlg(true);
+	} else {	// 徘徊時
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
+		SetMoveFlg(true);
 	}
 
 	// Float3型に変換
@@ -153,14 +155,11 @@ void BlueDwarf::Update()
 	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
 		SetMoveFlg(false);
-
 	}
 	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
 		SetFollowFlg(false);
 		SetMoveFlg(false);
-
 	}
-
 
 	if (!GetLiftFlg()) {
 		// 重力をかける
@@ -174,25 +173,25 @@ void BlueDwarf::Update()
 	}
 
 
-	// 移動
-	if (GetMoveFlg() && !GetLiftFlg()) {	// 移動中で回収範囲外である
-		m_pos.x += m_move.x;
-		m_pos.y += m_move.y;	// 重力
-		m_pos.z += m_move.z;
-	} else if (!GetMoveFlg() && !GetLiftFlg()) {	// 移動中ではなく回収範囲外である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;	//重力
-		m_pos.z += 0;
-	} else if (GetMoveFlg() && GetLiftFlg()) {	// 移動中で回収範囲内である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;
-		m_pos.z += 0;
-	} else if (!GetMoveFlg() && GetLiftFlg()) { // 移動中ではなく回収範囲内である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;
-		m_pos.z += 0;
-	}
 
+
+	// 移動
+	if (GetMoveFlg()) {
+		m_pos.x += m_move.x;
+		m_pos.y += m_move.y;
+		m_pos.z += m_move.z;
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
+	} else {
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
+	}
 	
 	if (m_pos.y < 0.5f) {
 		/* todo: ゲームオーバーの瞬間にその小人にカメラ寄る */

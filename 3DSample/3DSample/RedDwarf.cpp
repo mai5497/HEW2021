@@ -175,23 +175,21 @@ void RedDwarf::Update()
 		m_DwarfAngle += 360.0f;
 	}
 
-
-	if (GetMoveFlg() && !GetLiftFlg()) {	// 移動中で回収範囲外である
+	if (GetMoveFlg()) {
 		m_pos.x += m_move.x;
-		m_pos.y += m_move.y;	// 重力
+		m_pos.y += m_move.y;
 		m_pos.z += m_move.z;
-	} else if(!GetMoveFlg() && !GetLiftFlg()){	// 移動中ではなく回収範囲外である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;	//重力
-		m_pos.z += 0;
-	} else if (GetMoveFlg() && GetLiftFlg()) {	// 移動中で回収範囲内である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;
-		m_pos.z += 0;
-	} else if (!GetMoveFlg() && GetLiftFlg()) { // 移動中ではなく回収範囲内である
-		m_pos.x += 0;
-		m_pos.y += m_move.y;
-		m_pos.z += 0;
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
+	} else {
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
 	}
 
 	if (m_pos.y < 0.5f) {
