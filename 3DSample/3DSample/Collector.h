@@ -38,12 +38,12 @@ private:
 
 	XMFLOAT3	m_dir;
 
-	float	m_angle;
-	int		m_timer;
-	int		m_nowCollectTimer;
-	bool	m_timeFlg;
-	bool	m_nowCollectFlg;
-	bool	m_moveFlg;
-	XMFLOAT3 m_targetPos;
+	float	m_angle;			// 描画角度
+	int		m_timer;			// 待機時間
+	int		m_nowCollectTimer;	// 回収中時間
+	bool	m_collectFlg;		// tureで回収に行くfalseで帰還
+	bool	m_nowCollectFlg;	// 回収中かどうか
+	bool	m_moveFlg;			// 移動許可フラグ
+	XMFLOAT3 m_targetPos;		// 目的地座標
 };
 

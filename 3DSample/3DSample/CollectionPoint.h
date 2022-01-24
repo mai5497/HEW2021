@@ -26,5 +26,6 @@ private:
 	int m_PosSetTime;
 	bool m_nowCollectFlg;
 	int m_nowCollectTimer;
+	bool m_TimerStart;
 };
 

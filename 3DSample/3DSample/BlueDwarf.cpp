@@ -19,7 +19,6 @@
 #include "GameScene.h"
 
 //========================= 定数定義 ===========================
-#define GRAVITY		(0.3f)
 
 
 //========================= グローバル変数定義 ===========================
@@ -104,6 +103,7 @@ void BlueDwarf::Update()
 	float vAngle;		// 目的位置の角度
 
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	SetMoveFlg(true);
 
 
 	// 追従するターゲットの座標
@@ -152,19 +152,46 @@ void BlueDwarf::Update()
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
 	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
+		SetMoveFlg(false);
+
 	}
 	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
 		SetFollowFlg(false);
+		SetMoveFlg(false);
+
 	}
 
-	// 重力をかける
-	m_move.y -= GRAVITY;
+
+	if (!GetLiftFlg()) {
+		// 重力をかける
+		m_move.y -= GRAVITY;
+	} else {
+		// 浮く
+		m_move.y += LIFTPOWER;
+		if (m_pos.y > COLLECTOR_POS_Y) {
+			SetLiftFlg(false);
+		}
+	}
 
 
 	// 移動
-	m_pos.x += m_move.x;
-	m_pos.y += m_move.y;
-	m_pos.z += m_move.z;
+	if (GetMoveFlg() && !GetLiftFlg()) {	// 移動中で回収範囲外である
+		m_pos.x += m_move.x;
+		m_pos.y += m_move.y;	// 重力
+		m_pos.z += m_move.z;
+	} else if (!GetMoveFlg() && !GetLiftFlg()) {	// 移動中ではなく回収範囲外である
+		m_pos.x += 0;
+		m_pos.y += m_move.y;	//重力
+		m_pos.z += 0;
+	} else if (GetMoveFlg() && GetLiftFlg()) {	// 移動中で回収範囲内である
+		m_pos.x += 0;
+		m_pos.y += m_move.y;
+		m_pos.z += 0;
+	} else if (!GetMoveFlg() && GetLiftFlg()) { // 移動中ではなく回収範囲内である
+		m_pos.x += 0;
+		m_pos.y += m_move.y;
+		m_pos.z += 0;
+	}
 
 	
 	if (m_pos.y < 0.5f) {

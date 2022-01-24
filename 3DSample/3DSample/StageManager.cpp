@@ -107,7 +107,7 @@ bool StageManager::Init(int SelectStageNum)
 		},
 		// 小人のステージ
 		{ XMFLOAT3(0.0f,1.5f, 0.0f),
-		  XMFLOAT3(1.5f,0.1f,1.5f),
+		  XMFLOAT3(1.5f,1.5f,1.5f),
 		},
 		// 大きい壁右
 		{ XMFLOAT3(200.0f,15.0f,0.0f),

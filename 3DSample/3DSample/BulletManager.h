@@ -68,7 +68,7 @@ private:
 
 
 	//Player *m_pPlayer;							// プレイヤーインスタンスを扱う
-	//Camera* m_pCamera;							// カメラインスタンス
+	//Camera *m_pCamera;							// カメラインスタンス
 	//BulletTarget *m_pTarget;					// 落下地点のインスタンスを扱う
 
 };

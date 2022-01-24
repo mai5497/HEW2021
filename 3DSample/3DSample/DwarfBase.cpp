@@ -28,7 +28,8 @@ DwarfBase::DwarfBase():
 	m_MoveFlg(false),
 	m_colFlg(false),
 	m_CollectionFlg(false),
-	m_CircumferenceFlg(false)
+	m_CircumferenceFlg(false),
+	m_liftFlg(false)
 {
 	//----- 変数初期化 -----
 	m_collisionType = COLLISION_DYNAMIC;	// 小人は動く物体
@@ -342,3 +343,28 @@ bool DwarfBase::GetCircumferenceFlg() {
 	return m_CircumferenceFlg;
 }
 
+
+//====================================================================
+//
+//		浮くフラグセット
+//		作成者：伊地田真衣
+//		戻り値 : void
+//		引数   : 浮いてるtrue
+//
+//====================================================================
+void DwarfBase::SetLiftFlg(bool flg) {
+	m_liftFlg = flg;
+}
+
+
+//====================================================================
+//
+//		浮くフラグセット
+//		作成者：伊地田真衣
+//		戻り値 : void
+//		引数   : 浮いてるtrue
+//
+//====================================================================
+bool DwarfBase::GetLiftFlg() {
+	return m_liftFlg;
+}

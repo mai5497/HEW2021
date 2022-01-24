@@ -18,13 +18,13 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define COLLECTOR_SIZE		(0.3f)
+#define COLLECTOR_SIZE		(1.0f)
 #define FPS					(60)					// フレーム数
 #define WAIT_TIME			(5)					// 待機時間
 
-#define START_POS_X			(25.0f)					// 開始地点 X
-#define START_POS_Z			(0.0f)					// 開始地点 
-#define START_POS_Y			(10.0f)					// 開始地点 Y
+#define START_POS_X			(46.0f)					// 開始地点 X
+#define START_POS_Z			(26.0f)					// 開始地点 
+#define START_POS_Y			(17.0f)					// 開始地点 Y
 #define COLLECT_POS_X		(0.0f)					// 回収地点 X
 #define COLLECT_POS_Y		(1.0f)					// 回収地点 Y
 
@@ -47,13 +47,13 @@ Collector::Collector()
 {
 	LoadTextureFromFile("Assets/Model/ufo.png", &m_pCollectorTex);
 
-	m_pos = XMFLOAT3(START_POS_X, START_POS_Y, 0.0f);
+	m_pos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Radius = XMFLOAT3(0.8f, 0.8f, 0.8f);
+	m_Radius = XMFLOAT3(5.0f, 0.1f, 5.0f);
 
 	m_nowCollectTimer = WAIT_TIME * FPS + 59;
 	m_timer = WAIT_TIME * FPS + 59;
-	m_timeFlg = true;
+	m_collectFlg = true;
 	use = true;
 	m_nowCollectFlg = false;
 	m_nowCollectTimer = WAIT_TIME * FPS + 59;
@@ -151,85 +151,43 @@ void Collector::Update()
 {
 	XMFLOAT3 targetpos;
 
-	// アークタンジェント(逆正接)
-	m_angle = atan2(m_move.z, m_move.x);
-	m_angle -= DirectX::XM_PI * 0.5f;
-
+	//----- 回収中待機タイマーカウントダウン -----
 	if (m_nowCollectFlg) {
 		m_nowCollectTimer--;
 	}
 
-	////----- 回収中 -----
-	//if (m_timeFlg) {
-	//	// 一定時間待機
-	//	if (m_timer > 0) {
-	//		m_timer--;
-	//	} else {// 回収地点へ移動
-	//		m_move.x = -(MOVE_SPEED / FPS);
-	//	}
-
-	//	if (m_pos.x < COLLECT_POS_X) {
-	//		m_move.x = 0;
-	//		m_nowCollectFlg = true;
-	//		if (m_nowCollectTimer < 0) {
-	//			m_timeFlg = false;
-	//			m_nowCollectFlg = false;
-	//			m_nowCollectTimer = WAIT_TIME * FPS + 59;
-	//			m_timer = WAIT_TIME * FPS + 59;
-	//		}
-	//	}
-	//}
-	////----- 帰宅 -----
-	//if (!m_timeFlg) {
-	//	// 一定時間待機
-	//	if (m_timer > 0) {
-	//		m_timer--;
-	//	}
-	//	// 開始地点へ戻る
-	//	if(m_pos.x < START_POS_X){
-	//		m_move.x = (MOVE_SPEED / FPS);
-	//	} else {
-	//		m_move.x = 0;
-	//		m_timeFlg = true;
-	//		m_timer = WAIT_TIME * FPS + 59;
-	//	}
-	//}
-
-
-	if (m_timeFlg) {
+	//----- 回収へ向かう -----
+	if (m_collectFlg) {
 		// 一定時間待機
 		if (m_timer > 0) {
-			m_timer--;
+			m_timer--;	// スタートからの待機タイマーカウントダウン
 		} else {
-			m_moveFlg = true;
+			m_moveFlg = true;	// 移動許可フラグを立てる
 		}
-
 		if (m_moveFlg) {
 			// 追従するターゲットの座標
 			targetpos = XMFLOAT3(m_targetPos.x, START_POS_Y, m_targetPos.z);	// Yは移動させないからスタート突っ込んでる
-			
-			if (m_pos.x == m_targetPos.x && m_pos.z == m_targetPos.z && !m_nowCollectFlg) {
-				m_nowCollectFlg = true;
-			}
-			if (m_nowCollectTimer < 0) {
-				m_timeFlg = false;
-				m_nowCollectFlg = false;
-				m_nowCollectTimer = WAIT_TIME * FPS + 59;
-				m_timer = WAIT_TIME * FPS + 59;
+			if (m_pos.x <= targetpos.x && m_pos.z <= targetpos.z) {	// 目的地に到着
+				m_nowCollectFlg = true;	// 回収中フラグを立てる
+				m_moveFlg = false;		// 移動許可を下す（おろしておくと回収車がぷるぷるしない）
+				if (m_nowCollectTimer < 0) {	// 回収中のタイマーが０
+					m_moveFlg = true;							// 移動許可を立てる
+					m_collectFlg = false;						// 帰還にうつるのでfalse
+					m_nowCollectFlg = false;					// 回収中のフラグを下す
+					m_nowCollectTimer = WAIT_TIME * FPS + 59;	// 回収中タイマーの初期化
+				}
 			}
 		}
 	} 
 
-	if (!m_timeFlg) {
-		if (m_targetPos.x == START_POS_X && m_targetPos.z == START_POS_Z) {
-			//m_moveFlg = false;
-			m_timeFlg = true;
-			m_moveFlg = true;
-
-			//m_timer = WAIT_TIME * FPS + 59;
-
+	//----- 帰還する -----
+	if (!m_collectFlg) {
+		if(m_pos.x <= START_POS_X && m_pos.z <= START_POS_Z){	// スタート位置に帰っていなかったら
+			targetpos = m_targetPos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);	// 追従するターゲットの座標
 		} else {
-			targetpos = m_targetPos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);
+			m_moveFlg = false;				// 移動許可をおろす
+			m_collectFlg = true;			// 次は回収に向かうのでture
+			m_timer = WAIT_TIME * FPS + 59;	// スタート位置での待機タイマーの初期化
 		}
 	}
 
@@ -242,11 +200,14 @@ void Collector::Update()
 	// 速度を変えるならvDirectonに速度をかける。
 	vDirection = XMVector3Normalize(vDirection);
 	// かける関数								  ↓かける数
-	vDirection = XMVectorScale(vDirection, (1.0f / 60) * 2);
+	vDirection = XMVectorScale(vDirection, (1.0f / 60) * 7);
 	// Float3型に変換
 	XMStoreFloat3(&m_move, vDirection);
 
 
+	// アークタンジェント(逆正接)
+	m_angle = atan2(m_move.z, m_move.x);
+	m_angle -= DirectX::XM_PI * 0.5f;
 
 
 

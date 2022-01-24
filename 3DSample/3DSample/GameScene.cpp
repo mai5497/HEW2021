@@ -401,12 +401,25 @@ SCENE GameScene::Update()
 			}
 			break;
 		}
+		if (g_pDwarfManager->GetDwarf(i)->GetCollectionFlg()) {	// すでに回収済みならやらない
+			continue;
+		}
+
 		//----- 小人回収処理 -----
+		//if (CollisionAABB(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+			if (g_pCollector->GetNowCollectFlg()) {
+				g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+			}
+		}
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-			g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
 			g_pDwarfManager->AddCollectionSum();
-		}
+		} //else if() {
+		//	g_pDwarfManager->GetDwarf(i)->SetLiftFlg(false);	// 回収できなかったら落ちてくる
+		//	g_pDwarfManager->SubCollectionSum();
+		//}
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {
@@ -667,7 +680,6 @@ void GameScene::Draw()
 	// 落下地点の描画
 	g_pBulletTarget->Draw();
 
-
 	//g_pEnemy->Draw();
 	//SHADER->SetTexture(NULL);
 
@@ -693,6 +705,13 @@ void GameScene::Draw()
 	
 	//	EnableCulling(false);
 	//	EnableCulling(true);
+
+	//g_pCamera->Bind2D_Z();
+
+
+	g_pCamera->Bind2D();
+
+
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {

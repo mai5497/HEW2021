@@ -27,6 +27,7 @@ HRESULT LoadTextureFromFile(const char *pszFileName, ID3D11ShaderResourceView **
 
 	// •¶š•ÏŠ·
 	MultiByteToWideChar(0, 0, pszFileName, -1, wPath, MAX_PATH);
+
 	// ƒtƒ@ƒCƒ‹•Ê“Ç‚İ‚İ
 	if (strstr(pszFileName, ".tga")){
 		hr = DirectX::LoadFromTGAFile(wPath, &mdata, image);
