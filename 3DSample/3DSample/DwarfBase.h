@@ -7,30 +7,35 @@
 #include "StageManager.h"
 
 //=========================  定数・マクロ定義===========================
-#define DWARF_SIZE		(2.0f)
-#define TARGETSET_TIME	(300)
+#define DWARF_SIZE			(2.0f)
+#define TARGETSET_TIME		(300)
 #define	RATE_ROTATE_DWARF	(0.20f)		// 回転慣性係数
+#define GRAVITY				(0.3f)		// 重力
+#define LIFTPOWER			(0.15f)		// 浮く力
+#define COLLECTOR_POS_Y		(20.0f)		// ゆーふぉーの高さ
+
+
 
 //↓みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
 #define MAX_RED_DWARF_1		(6)									// ステージ１赤小人最大値
 #define MAX_BLUE_DWARF_1	(6)									// ステージ１青小人最大値
 #define MAX_DWARF_1			(MAX_RED_DWARF_1 + MAX_BLUE_DWARF_1)// ステージ１小人最大数合計
 
-#define MAX_RED_DWARF_2		(6)									// ステージ１赤小人最大値
-#define MAX_BLUE_DWARF_2	(6)									// ステージ１青小人最大値
+#define MAX_RED_DWARF_2		(3)									// ステージ１赤小人最大値
+#define MAX_BLUE_DWARF_2	(3)									// ステージ１青小人最大値
 #define MAX_DWARF_2			(MAX_RED_DWARF_2 + MAX_BLUE_DWARF_2)// ステージ１小人最大数合計
 
-#define MAX_RED_DWARF_3		(6)									// ステージ１赤小人最大値
-#define MAX_BLUE_DWARF_3	(6)									// ステージ１青小人最大値
+#define MAX_RED_DWARF_3		(4)									// ステージ１赤小人最大値
+#define MAX_BLUE_DWARF_3	(4)									// ステージ１青小人最大値
 #define MAX_DWARF_3			(MAX_RED_DWARF_3 + MAX_BLUE_DWARF_3)// ステージ１小人最大数合計
 
 #define DWARF_HITBOX_X		(2.0f)								// 小人のヒットボックス（正確には境界球）
 #define DWARF_HITBOX_Y		(1.0f)
 #define DWARF_HITBOX_Z		(2.0f)
 
-#define DWARF_DEFAULT_SPEED	(2.0f)								// 普段のスピード
-#define DWARF_RUN_SPEED		(1.5f)								// 弾から逃げるスピード
-#define DWARF_FOLLOW_SPEED	(10.0f)								// 弾を追いかけるときのスピード
+#define DWARF_DEFAULT_SPEED	(4.0f)								// 普段のスピード
+#define DWARF_RUN_SPEED		(3.0f)								// 弾から逃げるスピード
+#define DWARF_FOLLOW_SPEED	(12.0f)								// 弾を追いかけるときのスピード
 //↑みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
 
 
@@ -66,7 +71,8 @@ public:
 	bool GetCollectionFlg();				
 	void SetCircumferenceFlg(bool flg);		// 周回フラグセット
 	bool GetCircumferenceFlg();				// 周回フラグゲット
-
+	void SetLiftFlg(bool flg);
+	bool GetLiftFlg();
 
 	//---変数
 
@@ -82,6 +88,7 @@ private:
 	bool m_colFlg;				// 当たり判定フラグ
 	bool m_CollectionFlg;		// 回収　true：回収された
 	bool m_CircumferenceFlg;	// 周回フラグ
+	bool m_liftFlg;				// 浮くフラグ
 
 protected:
 	//---関数

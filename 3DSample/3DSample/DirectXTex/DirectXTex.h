@@ -3,7 +3,7 @@
 //
 // DirectX Texture Library
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -29,7 +29,7 @@
 #include <d3d11_1.h>
 #endif
 #endif
-#else
+#else // !WIN32
 #include <directx/dxgiformat.h>
 #include <wsl/winadapter.h>
 #endif
@@ -37,13 +37,17 @@
 #include <DirectXMath.h>
 
 #ifdef WIN32
+#ifdef NTDDI_WIN10_FE
+#include <ocidl.h>
+#else
 #include <OCIdl.h>
+#endif
 
 struct IWICImagingFactory;
 struct IWICMetadataQueryReader;
 #endif
 
-#define DIRECTX_TEX_VERSION 191
+#define DIRECTX_TEX_VERSION 195
 
 
 namespace DirectX
@@ -396,7 +400,11 @@ namespace DirectX
         void *__cdecl GetBufferPointer() const noexcept { return m_buffer; }
         size_t __cdecl GetBufferSize() const noexcept { return m_size; }
 
+        HRESULT __cdecl Resize(size_t size) noexcept;
+            // Reallocate for a new size
+
         HRESULT __cdecl Trim(size_t size) noexcept;
+            // Shorten size without reallocation
 
     private:
         void*   m_buffer;

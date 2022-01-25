@@ -46,39 +46,39 @@ void DwarfStageCollision::Init() {
 	StageSetting settings[] =
 	{
 		// àÍî‘è„
-		{ XMFLOAT3(0.0f,1.0f, 15.5f),
+		{ XMFLOAT3(0.0f,1.0f, 15.5f * 1.5f),
 		  XMFLOAT3(19.0f * 1.5f,1.0f,1.0 * 1.5f),
 		},
 		//è„Ç©ÇÁÇQî‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f, 14.5f),
+		{ XMFLOAT3(0.0f,1.0f, 14.5f * 1.5f),
 		  XMFLOAT3(22.0f * 1.5f,1.0f,1.0f * 1.5f),
 		},
 		//è„Ç©ÇÁ3î‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f, 13.5f),
+		{ XMFLOAT3(0.0f,1.0f, 13.5f * 1.5f),
 		  XMFLOAT3(25.0f * 1.5f,1.0f,1.0f * 1.5f),
 		},
 		//è„Ç©ÇÁ4î‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f, 12.0f),
+		{ XMFLOAT3(0.0f,1.0f, 12.0f * 1.5f),
 		  XMFLOAT3(31.0f * 1.5f,1.0f,2.0f * 1.5f),
 		},
 		// ê^ÇÒíÜ
-		{ XMFLOAT3(0.0f,1.0f,10.0f),
+		{ XMFLOAT3(0.0f,1.0f,10.0f * 1.5f),
 		  XMFLOAT3(35.0f * 1.5f,1.0f,2.0f * 1.5f),
 		},
 		// â∫Ç©ÇÁÇSî‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f,7.5f),
+		{ XMFLOAT3(0.0f,1.0f,7.5f * 1.5f),
 		  XMFLOAT3(40.0f * 1.5f ,1.0f,3.0f * 1.5f),
 		},
 		// â∫Ç©ÇÁÇRî‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f,4.0f),
+		{ XMFLOAT3(0.0f,1.0f,4.0f * 1.5f),
 		  XMFLOAT3(46.0f * 1.5f,1.0f,4.0f * 1.5f),
 		},
 		// â∫Ç©ÇÁìÒî‘ñ⁄
-		{ XMFLOAT3(0.0f,1.0f,-1.5f),
+		{ XMFLOAT3(0.0f,1.0f,-1.5f * 1.5f),
 		  XMFLOAT3(52.0f * 1.5f,1.0f,7.0f * 1.5f),
 		},
 		//àÍî‘â∫
-		{ XMFLOAT3(0.0f, 1.0f, -10.0f),
+		{ XMFLOAT3(0.0f, 1.0f, -10.0f * 1.5f),
 		  XMFLOAT3(56.0f * 1.5f, 1.0f,10.0f * 1.5f),
 		},
 

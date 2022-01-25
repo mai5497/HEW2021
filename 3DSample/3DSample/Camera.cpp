@@ -238,6 +238,29 @@ void Camera::Bind2D()
 	);
 	SHADER->SetPSCameraPos(DirectX::XMFLOAT3(0, 0, 0));
 }
+
+void Camera::Bind2D_Z() {
+	SHADER->SetView
+	(
+		DirectX::XMMatrixLookAtLH
+		(
+			DirectX::XMVectorSet(0, 0, 0, 0.0f),		// 第一引数：カメラの位置
+			DirectX::XMVectorSet(0.0f, 300.0f, 0.0f, 0.0f),		// 第二引数：カメラの注視点
+			DirectX::XMVectorSet(0, 0, 1, 0.0f)			// 第三引数：カメラの上方向ベクトル
+		)
+	);
+
+	SHADER->SetProjection
+	(
+		DirectX::XMMatrixOrthographicLH
+		(
+			1, (float)SCREEN_HEIGHT / SCREEN_WIDTH,		// 縦横比(x,y)
+			0.5f, 500.0f									// ニア、ファークリップ
+		)
+	);
+	SHADER->SetPSCameraPos(DirectX::XMFLOAT3(0, 0, 0));
+}
+
 float Camera::GetxzAngle()
 {
 	return m_xzAngle;

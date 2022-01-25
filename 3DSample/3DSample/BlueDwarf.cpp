@@ -19,7 +19,6 @@
 #include "GameScene.h"
 
 //========================= 定数定義 ===========================
-#define GRAVITY		(0.3f)
 
 
 //========================= グローバル変数定義 ===========================
@@ -118,10 +117,13 @@ void BlueDwarf::Update()
 	// かける関数								  ↓かける数
 	if (GetFollowFlg()) {		// 追跡フラグが立っているとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_FOLLOW_SPEED);
+		SetMoveFlg(true);
 	} else if (GetrunFlg()) {	// 弾から逃げるとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
-	} else {
+		SetMoveFlg(true);
+	} else {	// 徘徊時
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
+		SetMoveFlg(true);
 	}
 
 	// Float3型に変換
@@ -152,20 +154,44 @@ void BlueDwarf::Update()
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
 	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
+		SetMoveFlg(false);
 	}
 	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
 		SetFollowFlg(false);
+		SetMoveFlg(false);
 	}
 
-	// 重力をかける
-	m_move.y -= GRAVITY;
+	if (!GetLiftFlg()) {
+		// 重力をかける
+		m_move.y -= GRAVITY;
+	} else {
+		// 浮く
+		m_move.y += LIFTPOWER;
+		if (m_pos.y > COLLECTOR_POS_Y) {
+			SetLiftFlg(false);
+		}
+	}
+
+
 
 
 	// 移動
-	m_pos.x += m_move.x;
-	m_pos.y += m_move.y;
-	m_pos.z += m_move.z;
-
+	if (GetMoveFlg()) {
+		m_pos.x += m_move.x;
+		m_pos.y += m_move.y;
+		m_pos.z += m_move.z;
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
+	} else {
+		if (GetLiftFlg()) {
+			m_pos.x += 0.0f;
+			m_pos.y += m_move.y;
+			m_pos.z += 0.0f;
+		}
+	}
 	
 	if (m_pos.y < 0.5f) {
 		/* todo: ゲームオーバーの瞬間にその小人にカメラ寄る */

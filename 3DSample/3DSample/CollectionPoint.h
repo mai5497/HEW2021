@@ -20,9 +20,12 @@ public:
 	void SetNowCollectFlg(bool flg);
 	void SetnowCollectTimer(int time);
 
+	XMFLOAT3 GetTargetPos();
+
 private:
 	int m_PosSetTime;
 	bool m_nowCollectFlg;
 	int m_nowCollectTimer;
+	bool m_TimerStart;
 };
 

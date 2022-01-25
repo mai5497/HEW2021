@@ -25,48 +25,48 @@
 // インクルード部
 //*******************************************************************************
 
-////---システム関連
-//#include "Camera.h"
-//#include "Input.h"
-//#include "TPSCamera.h"
-//#include "Collision.h"
-//#include "Shader.h"
-//#include "Defines.h"
+//---システム関連
+#include "Camera.h"
+#include "Input.h"
+#include "TPSCamera.h"
+#include "Collision.h"
+#include "Shader.h"
+#include "Defines.h"
 
-//// ---シーン関連
+// ---シーン関連
 #include "GameScene.h"
-//#include "SelectScene.h"
-//#include "Tutorial.h"
+#include "SelectScene.h"
+#include "Tutorial.h"
 #include "Clear.h"
 #include "GameOver.h"
 
 
-//// ---ステージ関連
-//#include "Stage.h"
-//#include "StageObjectManager.h"
-//
-//// ---ゲーム関連-プレイヤー
-//#include "Player.h"
-//#include "GameObject.h"
-//
-//// ---ゲーム関連-エネミー
-//#include "Enemy.h"
-//#include "EnemyManager.h"
-//
-//// ---ゲーム関連-小人
-//#include "DwarfManager.h"
-//#include "DwarfStageCollision.h"
-//
-//// ---ゲーム関連-弾
-//#include "BulletManager.h"
-//#include "BulletTarget.h"
-//
-//// ---ゲーム関連-回収
-//#include "Collector.h"
-//#include "CollectionPoint.h"
-//
-//// ---ゲーム関連-UI
-//#include "Score.h"
+// ---ステージ関連
+#include "Stage.h"
+#include "StageObjectManager.h"
+
+// ---ゲーム関連-プレイヤー
+#include "Player.h"
+#include "GameObject.h"
+
+// ---ゲーム関連-エネミー
+#include "Enemy.h"
+#include "EnemyManager.h"
+
+// ---ゲーム関連-小人
+#include "DwarfManager.h"
+#include "DwarfStageCollision.h"
+
+// ---ゲーム関連-弾
+#include "BulletManager.h"
+#include "BulletTarget.h"
+
+// ---ゲーム関連-回収
+#include "Collector.h"
+#include "CollectionPoint.h"
+
+// ---ゲーム関連-UI
+#include "Score.h"
 
 
 
@@ -86,7 +86,20 @@ Player				*g_pPlayer;
 GamePolygon			*g_pPolygon;
 
 StageManager		*g_pStageManager;
-StageObjectManager	*g_pStageObjectManager;
+StageObjectManager* g_pStageObjectManager;
+
+Collision			*g_pCollision;
+Collector			*g_pCollector;
+CollectionPoint		*g_pCollectionPoint;
+SelectScene			*g_pSelectScene;
+DwarfManager		*g_pDwarfManager;
+DwarfStageCollision	*g_pDwarfStageCollision;
+
+BulletManager		*g_pBulletManger;
+BulletTarget			* g_pBulletTarget;
+
+Score				*g_pScore;
+Tutorial			*g_pTutorial;
 
 Collision			*g_pCollision;
 Collector			*g_pCollector;
@@ -194,13 +207,15 @@ void GameScene::Init(int StageNum)
 	//g_pPlayer->SetControllCamera(g_pTPSCamera);
 	//g_pPlayer->GetCameraPos(g_pTPSCamera);
 
-	// 回収車
-	g_pCollector = new Collector();
-	g_pCollector->Init();
-	
 	// 回収ポイント
 	g_pCollectionPoint = new CollectionPoint();
 	g_pCollectionPoint->Init();
+	
+	// 回収車
+	g_pCollector = new Collector();
+	g_pCollector->Init();
+	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
+
 
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
@@ -243,9 +258,9 @@ void GameScene::Init(int StageNum)
 		for (int j = 0; j < g_pDwarfStageCollision->GetStageNum(); j++) {
 			g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfStageCollision->GetDwarfStageCollision(j));
 		}
-		//for (int k = i+1; k < MAX_DWARF; k++) {
-		//	g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfManager->GetDwarf(k));
-		//}
+		for (int k = i+1; k < g_pDwarfManager->GetDwarfNum(); k++) {
+			g_pCollision->Register(g_pDwarfManager->GetDwarf(i), g_pDwarfManager->GetDwarf(k));
+		}
 	}
 
 
@@ -311,13 +326,13 @@ void GameScene::Uninit()
 	g_pBulletTarget->Uninit();
 	delete g_pBulletTarget;
 
-	// 回収者
-	g_pCollector->Uninit();
-	delete g_pCollector;
-	
 	// 回収ポイント
 	g_pCollectionPoint->Uninit();
 	delete g_pCollectionPoint;
+	
+	// 回収者
+	g_pCollector->Uninit();
+	delete g_pCollector;
 
 	// エネミー終了処理
 	//delete g_pEnemy;
@@ -374,6 +389,7 @@ SCENE GameScene::Update()
 	// 回収者
 	g_pCollector->Update();
 	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
+	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 	g_pCollectionPoint->Update();
 
 
@@ -405,7 +421,7 @@ SCENE GameScene::Update()
 	//***************************************************************
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
-		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg()) {
+		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
 			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
 			randomPos.z = (float)(rand() % 30 - 15.0f);
@@ -423,10 +439,19 @@ SCENE GameScene::Update()
 			}
 			break;
 		}
+		if (g_pDwarfManager->GetDwarf(i)->GetCollectionFlg()) {	// すでに回収済みならやらない
+			continue;
+		}
+
 		//----- 小人回収処理 -----
+		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+			if (g_pCollector->GetNowCollectFlg()) {
+				g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+			}
+		}
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-			g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
 			g_pDwarfManager->AddCollectionSum();
 		}
 
@@ -696,7 +721,6 @@ void GameScene::Draw()
 	// 落下地点の描画
 	g_pBulletTarget->Draw();
 
-
 	//g_pEnemy->Draw();
 	//SHADER->SetTexture(NULL);
 
@@ -719,6 +743,13 @@ void GameScene::Draw()
 	
 	//	EnableCulling(false);
 	//	EnableCulling(true);
+
+	//g_pCamera->Bind2D_Z();
+
+
+	g_pCamera->Bind2D();
+
+
 
 	// ゲームクリアフラグが立っているときクリア描画
 	if (m_IsGameOver) {

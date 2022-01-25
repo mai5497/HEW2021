@@ -169,10 +169,16 @@ void DwarfManager::Update() {
 			}
 
 			if (m_pBullet->GetBullet(j)->GetRBFlg() == m_ppDwarf[i]->GetRBFlg()) {	// 投げた弾と小人の色が同じだったら
+				if (m_ppDwarf[i]->GetLiftFlg()) {
+					continue;
+				}
 				//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
 				m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
 				m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
 			} else {
+				if (m_ppDwarf[i]->GetLiftFlg()) {
+					continue;
+				}
 				//m_ppDwarf[i]->SetMoveFlg(false);	// 移動許可しない
 				m_ppDwarf[i]->SetFollowFlg(false);	// 追跡しない
 				m_ppDwarf[i]->SetrunFlg(true);		// 弾から離れる
@@ -277,10 +283,22 @@ void DwarfManager::AddCollectionSum()
 	m_collectionSum++;
 }
 
+//==============================================================
+//
+//	回収数カウントダウン
+//	作成者	: 伊地田真衣
+//	戻り値	: void
+//	引数	: void
+//
+//==============================================================
+void DwarfManager::SubCollectionSum() {
+	m_collectionSum--;
+}
+
 
 //==============================================================
 //
-//	弾の情報の取得
+//	回収数の取得
 //	作成者	: 伊地田真衣
 //	戻り値	: void
 //	引数	: void

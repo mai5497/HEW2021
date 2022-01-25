@@ -25,6 +25,7 @@ public:
 	void		SetAllDwarfTarget(XMFLOAT3 pos);
 	void SetBulletInfo(BulletManager *pBullet);
 	void AddCollectionSum();
+	void SubCollectionSum();
 	int GetCollectionSum();
 	//---ïœêî
 

@@ -11,7 +11,7 @@
 //========================= インクルード部 ===========================
 #include "CollectionPoint.h"
 
-#define POSSETTIME	(13 * 60)		// 回収待機(10s)
+#define POSSETTIME	(90)	// 回収終了後からプラスの時間
 
 
 //====================================================================
@@ -21,10 +21,21 @@
 //====================================================================
 CollectionPoint::CollectionPoint()
 {
-	m_size	= XMFLOAT3(2.5f, 0.0f, 2.5f);
-	m_pos	= XMFLOAT3(0.0f, 1.6f, 0.0f);
+	m_size	= XMFLOAT3(5.0f, 0.0f, 5.0f);
+
+
+	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 2.0f, 0.0f);	// ランダム
+	//----- 乱数で座標を設定 -----
+	randomPos.x = (float)(rand() % 18 - 9.0f);	//-9.0 ~ 9.0の間の乱数
+	randomPos.z = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
+
+	m_pos = randomPos;
+
+	m_Radius = XMFLOAT3(2.0f, 0.1f, 2.0f);
 	m_Angle	= XMFLOAT3(0, 0, 0);
 	m_PosSetTime = POSSETTIME;	
+	m_TimerStart = false;
+
 	m_collisionType = COLLISION_STATIC;
 }
 
@@ -70,15 +81,23 @@ void CollectionPoint::Uninit()
 //====================================================================
 void CollectionPoint::Update()
 {
-	//m_PosSetTime--;
-	if (m_nowCollectTimer < 1) {
-		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.6f, 0.0f);	// ランダム
+	if (m_nowCollectTimer < 1 && !m_TimerStart) {
+		m_TimerStart = true;
+	}
+
+	if (m_TimerStart) {
+		m_PosSetTime--;
+	}
+
+	if(m_PosSetTime < 0){
+		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 2.0f, 0.0f);	// ランダム
 		//----- 乱数で座標を設定 -----
 		randomPos.x = (float)(rand() % 18 - 9.0f);	//-9.0 ~ 9.0の間の乱数
 		randomPos.z = (float)(rand() % 20 - 10.0f);	//-9.0 ~ 9.0の間の乱数
 
 		m_pos = randomPos;
-		//m_PosSetTime = POSSETTIME;
+		m_TimerStart = false;
+		m_PosSetTime = POSSETTIME;
 	}
 }
 
@@ -119,4 +138,14 @@ void CollectionPoint::SetnowCollectTimer(int time) {
 	m_nowCollectTimer = time;
 }
 
+
+
+//====================================================================
+//
+//		ターゲットの座標の取得
+//
+//====================================================================
+XMFLOAT3 CollectionPoint::GetTargetPos() {
+	return m_pos;
+}
 

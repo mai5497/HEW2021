@@ -18,6 +18,7 @@ public:
 
 	void Bind();
 	void Bind2D();
+	void Bind2D_Z();
 	DirectX::XMFLOAT3 GetCameraPos() { return m_pos; }
 
 	float GetxzAngle();
