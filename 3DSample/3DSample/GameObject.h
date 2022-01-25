@@ -48,9 +48,9 @@ public:
 	DirectX::XMFLOAT4 GetColor();
 
 	//ílê›íË
-	void SetMove(XMFLOAT3 move);
 	void SetPos(XMFLOAT3 pos);
 	void SetSize(XMFLOAT3 size);
+	void SetMove(XMFLOAT3 move);
 	void SetAngle(XMFLOAT3 angle);
 	//void SetFollowFlg(bool flg);
 	void SetCollor(XMFLOAT4 color);

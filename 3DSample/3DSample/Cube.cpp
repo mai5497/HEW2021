@@ -9,7 +9,7 @@
 
 Cube::Cube()
 	:m_posX(0),m_posY(0),m_posZ(0)
-	,m_width(1),m_height(1),m_depth(1)
+	,m_width(1),m_depth(1)
 	, m_R(1.0f), m_G(1.0f), m_B(1.0f), m_A(1.0f)
 {
 	//頂点バッファ
@@ -92,7 +92,7 @@ void Cube::SetPos(float x, float y, float z)
 	m_posY = y;
 	m_posZ = z;
 }
-void Cube::SetSize(float w, float h, float d)
+void Cube::SetSize(float w, float h,float d)
 {
 	m_width = w;
 	m_height = h;

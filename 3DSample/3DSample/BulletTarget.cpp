@@ -11,10 +11,12 @@
  //*******************************************************************************
 #include	<math.h>
 #include	"MyMath.h"
-
-#include	"BulletTarget.h"
 #include	"Input.h"
 #include	"Controller.h"
+#include	"Camera.h"
+#include	"Shader.h"
+
+#include	"BulletTarget.h"
 
 
 
@@ -44,7 +46,7 @@
 DrawBuffer* BulletTarget::m_pBTBuffer = NULL;
 FBXPlayer* BulletTarget::m_pBTFBX = NULL;
 Camera* g_pBulletTargetCamera;
-//GameObject g_BulletTarget;
+GameObject* g_pBulletTarget;
 
 //==============================================================
 //
@@ -94,6 +96,11 @@ bool BulletTarget::Init()
 	LoadTextureFromFile("Assets/Model/Target2.png", &m_pBulletTargetTex);
 
 	//---変数初期化
+	//g_pBulletTarget->SetPos((XMFLOAT3(TARGET_POS_X, TARGET_POS_Y, TARGET_POS_Z)));
+	//g_pBulletTarget->SetSize(XMFLOAT3(TARGET_SIZE_X, TARGET_SIZE_Y, TARGET_SIZE_Z));
+	//g_pBulletTarget->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	//g_pBulletTarget->SetAngle(XMFLOAT3(1.0f, 1.0f, 1.0f));
+
 	m_pos = (XMFLOAT3(TARGET_POS_X, TARGET_POS_Y, TARGET_POS_Z));
 	m_size = (XMFLOAT3(TARGET_SIZE_X, TARGET_SIZE_Y, TARGET_SIZE_Z));
 	m_Color = (XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f));
@@ -133,8 +140,8 @@ void BulletTarget::Uninit()
 	//// カメラインスタンス解放
 	m_pCamera->Uninit();
 	delete m_pCamera;
-	//g_pBulletTargetCamera->Uninit();
-	//delete g_pBulletTargetCamera;
+	g_pBulletTargetCamera->Uninit();
+	delete g_pBulletTargetCamera;
 
 	GameObject::Uninit();
 }
@@ -167,7 +174,7 @@ void BulletTarget::Update()
 	//float CameraRad = m_pCamera->GetxzAngle() * TRANS_RADIAN;
 	
 	// ターゲットオブジェクト移動
-	//if (m_move.x != 0.0f && m_move.y != 0.0f) {
+	//if (m_move.x != 0.0f && m_move.y != 0.0f) {z
 		if (IsPress('A')) {			// 左
 			m_move.x -= Move;
 
@@ -175,6 +182,7 @@ void BulletTarget::Update()
 				m_pos.x = -40.0f;
 			}
 		}
+
 		if (IsPress('D')) {		// 右
 			m_move.x += Move;
 
@@ -183,8 +191,10 @@ void BulletTarget::Update()
 			}
 		}
 
+
+		// キーを押し続けている間
 		if (IsRepeat(('Q'),1) || IsRepeat((JPadButton::X),1)|| 
-			IsRepeat(('E'),1) || IsRepeat((JPadButton::B),1)){			// 変更後ー上
+			IsRepeat(('E'),1) || IsRepeat((JPadButton::B),1)){			
 			/* 
 				キーはなしたら帰ってきた！！！なんで！！！！わあ！！！！	(2022/01/21時点)
 				できた！！まんじ！！								(2022/01/22時点)
@@ -201,7 +211,7 @@ void BulletTarget::Update()
 			m_move.z = m_MoveSpeed;		// 移動方向反転
 		}
 
-		//if (IsPress('W')) {			// 上
+if (IsPress('W')) {			// 上
 		//	moveFlg = true;
 		//	m_move.z += Move;
 		//}
@@ -210,7 +220,7 @@ void BulletTarget::Update()
 		//	m_move.z -= Move;
 		//}
 
-		//}
+		}
 
 		//if (IsPress(VK_DOWN)) {			// 下
 		//	moveFlg = true;
@@ -266,15 +276,30 @@ void BulletTarget::Draw()
 		XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
 	);
 
+	//g_pBulletTarget->Draw();
+
+
 	GameObject::Draw();
 
-	//SHADER->SetTexture(NULL);
+	SHADER->SetTexture(NULL);
 
 		//m_pBTBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//}
 
 }
 
+//==============================================================
+//
+//	BulletTargetクラス::座標設定
+//	作成者	： 吉原飛鳥
+//	戻り値	： void
+//	引数		： void
+//
+//==============================================================
+void BulletTarget::SetBulletTargetPos(XMFLOAT3 pos) 
+{
+	m_pos = pos;
+}
 
 //==============================================================
 //

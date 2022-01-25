@@ -58,10 +58,13 @@ public:
 
 private:
 	BulletBase** m_ppBullets;					// 弾の情報を扱う(ベース)
+	//BulletTarget* m_pBulletTarget;				// 弾の落下地点
+
+
 	int m_BulletNum;							// 弾の数
 
 	XMFLOAT3 m_PlayerPos;						// プレイヤーの情報を扱う(座標)
-	//XMFLOAT3 m_PlayerAngle;						// プレイヤーの情報を扱う(角度)
+	//XMFLOAT3 m_PlayerAngle;					// プレイヤーの情報を扱う(角度)
 	XMFLOAT3 m_TargetPos;						// ターゲット座標
 
 	XMFLOAT3 m_CurrentPos;						// 現在の座標

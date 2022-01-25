@@ -37,6 +37,7 @@ public:
 	virtual void Update();
 	void Draw();
 
+	void SetBulletTargetPos(XMFLOAT3 pos);	// ターゲット座標の設定
 	XMFLOAT3 GetBulletTargetPos();			// ターゲット座標の取得
 
 	//---てくすちゃ読み込み

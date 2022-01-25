@@ -82,7 +82,6 @@ void GameObject::Draw()
 		DirectX::XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 		* DirectX::XMMatrixRotationY(m_Angle.y)
 		* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
 	m_pCube->Draw();
 }
 void GameObject::CreateObject(XMFLOAT3 pos,XMFLOAT3 dir,XMFLOAT3 move)
@@ -172,6 +171,7 @@ XMFLOAT4 GameObject::GetColor()
 void GameObject::SetPos(XMFLOAT3 pos)
 {
 	m_pos = pos;
+	
 }
 
 //=======================================================

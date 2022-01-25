@@ -5,11 +5,7 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-
 Shader g_shader;
-
-
-
 
 //----------------------------------------
 // 頂点レイアウト
@@ -318,7 +314,7 @@ HRESULT Shader::Init()
 	texDesc.SampleDesc.Count = 1;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	// テクスチャデータ
+	 //テクスチャデータ
 	BYTE color[TexSize * TexSize][4] = {};
 	for (int j = 0; j < TexSize; ++j)
 	{

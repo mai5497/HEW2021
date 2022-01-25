@@ -3,43 +3,28 @@
 // 影[Shadow.h]
 // 作成者:吉原飛鳥
 // 
-// 更新日:2022/01/18	作成
+// 更新日:2022/01/24	作成
 //====================================================================
-// 
+
  //*******************************************************************************
  // インクルード部
  //*******************************************************************************
 #include	"Shadow.h"
 
- //*******************************************************************************
- // 定数・マクロ定義
- //*******************************************************************************
-
- //*******************************************************************************
- // グローバル変数
- //*******************************************************************************
-Camera* g_pShadowCamera;
-
 //==============================================================
-//
+// 
 //	Shadowクラス::コンストラクタ
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
+// 
 //==============================================================
-Shadow::Shadow() : m_pCamera(nullptr)
+Shadow::Shadow()
 {
 
 }
 
 //==============================================================
-//
+// 
 //	Shadowクラス::デストラクタ
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
+// 
 //==============================================================
 Shadow::~Shadow()
 {
@@ -47,115 +32,77 @@ Shadow::~Shadow()
 }
 
 //==============================================================
-//
-//	Shadowクラス::初期化処理
-//	作成者	： 吉原飛鳥
-//	戻り値	： bool
-//	引数		： void
-//
+// 
+//	Shadowクラス::初期化
+// 
 //==============================================================
-bool Shadow::Init()
+void Shadow::Init()
 {
 	//---テクスチャ読み込み
-	LoadTextureFromFile("Assets/Model/Target.png", &m_pShadowTex);
+	LoadTextureFromFile("Assets/Model/shadow000.jpg", &m_pShadowTex);
 
-	//---オブジェクトインスタンスの初期化
-	GameObject::Init();
-
-	g_pShadowCamera = new Camera;
-	g_pShadowCamera->Init();
-
-	//---変数初期化
-	m_pos = XMFLOAT3(0.0f, 1.1f, 0.0f);
-	m_size = XMFLOAT3(1.0f, 0.0f, 1.0f);
-	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
-	m_collisionType = COLLISION_DYNAMIC;
-
-	return true;
+	//---オブジェクトインスタンス
+	m_pPolygonShadow = new GamePolygon;
+	m_pPolygonShadow->Init();
+	m_pPolygonShadow->SetPos(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	m_pPolygonShadow->SetSize(XMFLOAT3(10.0f, 10.0f, 10.0f));
+	
+	//---カメラインスタンス
+	m_pCameraShadow = new Camera;
+	m_pCameraShadow->Init(XMFLOAT3(0.0f, 3.0f, 0.0f));
 
 }
 
 //==============================================================
-//
-//	Shadowクラス::終了処理
-//	作成者	： 吉原飛鳥
-//	戻り値	：	void
-//	引数		： void
-//
+// 
+//	Shadowクラス::終了
+// 
 //==============================================================
 void Shadow::Uninit()
 {
-	//---テクスチャ解放
 	SAFE_RELEASE(m_pShadowTex);
 
-	//オブジェクトインスタンス解放
-	m_pCamera->Uninit();
-	delete m_pCamera;
-	GameObject::Uninit();
+	//---オブジェクトインスタンス解放
+	m_pPolygonShadow->Uninit();
+	delete m_pPolygonShadow;
 
+	//---カメラインスタンス解放
+	m_pCameraShadow->Uninit();
+	delete m_pCameraShadow;
 }
 
 //==============================================================
-//
-//	BulletTargetクラス::更新
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
+// 
+//	Shadowクラス::更新
+// 
 //==============================================================
 void Shadow::Update()
 {
-	//---何もしない
+
 }
 
 //==============================================================
-//
-//	BulletTargetクラス::更新
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
+// 
+//	Shadowクラス::描画
+// 
 //==============================================================
 void Shadow::Draw()
 {
 	SHADER->Bind(VS_WORLD, PS_UNLIT);
+
+	m_pCameraShadow->Bind();
+
 	SHADER->SetTexture(m_pShadowTex);
-
-	SHADER->SetWorld
-	(
-		XMMatrixScaling(m_size.x, m_size.y, m_size.z) *
-		XMMatrixRotationY(-m_Angle.y) *
-		XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
-	);
-
-	GameObject::Draw();
 
 	SHADER->SetTexture(NULL);
 }
 
 //==============================================================
-//
-//	BulletTargetクラス::更新
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
+// 
+//	Shadowクラス::座標の設定
+// 
 //==============================================================
-XMFLOAT3 Shadow::GetShadowPos()
+void Shadow::SetShadow(XMFLOAT3 pos)
 {
-	return m_pos;
-}
-
-//==============================================================
-//
-//	BulletTargetクラス::更新
-//	作成者	： 吉原飛鳥
-//	戻り値	： void
-//	引数		： void
-//
-//==============================================================
-void Shadow::CreateShadow(XMFLOAT3 pos,float radius)
-{
-
+	
 }

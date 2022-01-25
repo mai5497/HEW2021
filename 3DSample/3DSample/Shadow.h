@@ -3,7 +3,7 @@
 // 影[Shadow.h]
 // 作成者:吉原飛鳥
 // 
-// 更新日:2022/01/18	作成
+// 更新日:2022/01/24	作成
 //====================================================================
 
 /* -----------------インクルードガード------------------ */
@@ -12,38 +12,32 @@
  //*******************************************************************************
  // インクルード部
  //*******************************************************************************
-#include	"GameObject.h"
-#include	"Camera.h"
-
-//---モデル描画
 #include	"Texture.h"
-#include	"FBX/FBXPlayer.h"
-#include	"DrawBuffer.h"
+#include	"GamePolygon.h"
+#include	"Camera.h"
 
  //*******************************************************************************
  // クラス宣言
  //*******************************************************************************
-class Shadow : public GameObject
+class Shadow
 {
 public:
 	Shadow();
 	~Shadow();
 
 	//---関数
-	bool Init();
+	void Init();
 	void Uninit();
 	void Update();
 	void Draw();
 
-	XMFLOAT3 GetShadowPos();									// 影の座標取得
-	void CreateShadow(XMFLOAT3 pos,float radius);	// 影の生成										// 影の生成
+	void SetShadow(XMFLOAT3 pos);
 
-	//---テクスチャ読み込み
-	ID3D11ShaderResourceView *m_pShadowTex;		// テクスチャ
 
 private:
-	//---モデル読み込み
+	ID3D11ShaderResourceView* m_pShadowTex;
 
-	Camera* m_pCamera;							// カメラ情報
-
+	GamePolygon* m_pPolygonShadow;
+	Camera* m_pCameraShadow;
 };
+

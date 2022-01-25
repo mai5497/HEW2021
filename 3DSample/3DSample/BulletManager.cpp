@@ -64,9 +64,9 @@ bool BulletManager::Init()
 	}BulletSettings;
 
 	// 弾の初期化...BulletBaseのコンストラクタで行うためここではとりあえず行わない。-2021/01/09時点
-
 	// ポインタを格納する配列を作成
 	m_ppBullets = new BulletBase * [MAX_BULLET];
+
 
 	// 弾の最大数分メモリ確保
 	for (int i = 0; i < MAX_BULLET; ++i){
@@ -119,6 +119,7 @@ void BulletManager::Update()
 		rbflg = true;		// 赤弾セット
 		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);
+
 	}
 
 	// 弾の最大数更新処理

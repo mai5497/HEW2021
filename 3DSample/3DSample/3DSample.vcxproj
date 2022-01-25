@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BFDA2DF7-0AD0-4925-8152-0319C59E1BCF}</ProjectGuid>
     <RootNamespace>My3DSample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -47,7 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -143,6 +143,9 @@
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="DwarfStageCollision.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GamePolygon.cpp" />
+    <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="Squre.cpp" />
     <ClCompile Include="StageObjectBase.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -161,7 +164,6 @@
     <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
     <ClCompile Include="FBX\FBXLoadMesh.cpp" />
     <ClCompile Include="FBX\FBXPlayer.cpp" />
-    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -204,6 +206,9 @@
     <ClInclude Include="Collector.h" />
     <ClInclude Include="DwarfStageCollision.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GamePolygon.h" />
+    <ClInclude Include="Shadow.h" />
+    <ClInclude Include="Squre.h" />
     <ClInclude Include="StageObjectBase.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />
@@ -223,7 +228,6 @@
     <ClInclude Include="FBX\FBXLoadMaterial.h" />
     <ClInclude Include="FBX\FBXLoadMesh.h" />
     <ClInclude Include="FBX\FBXPlayer.h" />
-    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundData.hpp" />

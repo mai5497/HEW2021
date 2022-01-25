@@ -131,6 +131,8 @@ void StageObjectBase::Draw()
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
 
+		SHADER->Bind(VS_WORLD,PS_LAMBERT);
+
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			* DirectX::XMMatrixRotationY(XM_PI)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));

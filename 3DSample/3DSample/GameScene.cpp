@@ -83,7 +83,25 @@
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
+GamePolygon			*g_pPolygon;
 
+StageManager		*g_pStageManager;
+StageObjectManager	*g_pStageObjectManager;
+
+Collision			*g_pCollision;
+Collector			*g_pCollector;
+CollectionPoint		*g_pCollectionPoint;
+SelectScene			*g_pSelectScene;
+DwarfManager		*g_pDwarfManager;
+DwarfStageCollision	*g_pDwarfStageCollision;
+
+BulletManager		*g_pBulletManger;
+BulletTarget		*g_pBulletTarget;
+
+Score				*g_pScore;
+Tutorial			*g_pTutorial;
+
+Shadow				*g_pShadow;
 
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
@@ -133,6 +151,14 @@ void GameScene::Init(int StageNum)
 {
 	g_pCamera = new Camera();
 	g_pCamera->Init();
+
+	//---ポリゴンクラス
+	g_pPolygon = new GamePolygon;
+	g_pPolygon->Init();
+
+	//---影
+	g_pShadow = new Shadow;
+	g_pShadow->Init();
 
 	// メンバ変数初期化
 	m_StageNum = StageNum;					// 現在のステージ番号保存
@@ -237,6 +263,14 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
+	// ポリゴン
+	g_pPolygon->Uninit();
+	delete g_pPolygon;
+
+	// 影
+	g_pShadow->Uninit();
+	delete g_pShadow;
+
 	// スコアクラスの終了処理
 	g_pScore->Uninit();
 	delete g_pScore;
@@ -314,6 +348,12 @@ void GameScene::Uninit()
 //==============================================================
 SCENE GameScene::Update()
 {
+	// ポリゴン
+	g_pPolygon->Update();
+	
+	// 影
+	g_pShadow->Update();
+
 	// 落下地点の更新
 	g_pBulletTarget->Update();
 
@@ -624,6 +664,8 @@ void GameScene::Draw()
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
+
+
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
@@ -631,6 +673,11 @@ void GameScene::Draw()
 
 	//モデルが大きいので小さくする
 	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
+
+
+	// ポリゴン
+	//g_pPolygon->Draw();
+
 
 
 	// 回収者の描画
@@ -668,9 +715,6 @@ void GameScene::Draw()
 	// プレイヤー描画
 	g_pPlayer->Draw();
 
-
-
-
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());
 	
 	//	EnableCulling(false);
@@ -688,6 +732,9 @@ void GameScene::Draw()
 	
 	// スコア描画
 	g_pScore->Draw();
+
+	// 影
+	g_pShadow->Draw();
 
 	// チュートリアル描画
 	//g_pTutorial->Draw();
