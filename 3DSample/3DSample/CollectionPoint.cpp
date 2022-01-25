@@ -36,6 +36,11 @@ CollectionPoint::CollectionPoint()
 	m_PosSetTime = POSSETTIME;	
 	m_TimerStart = false;
 
+	m_ColorVal[RED] = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_ColorVal[BLUE] = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_ColorVal[REDBLUE] = XMFLOAT4(0.5f, 0.0f, 0.5f, 1.0f);
+	m_colorNum = 0;	// カラーの情報をとる配列の番号
+
 	m_collisionType = COLLISION_STATIC;
 }
 
@@ -55,9 +60,37 @@ CollectionPoint::~CollectionPoint()
 //		初期化
 //
 //====================================================================
-bool CollectionPoint::Init()
+bool CollectionPoint::Init(int stagenum)
 {
 	GameObject::Init();
+
+	if (stagenum == 1) {
+		m_colorInfo[0] = BLUE;
+		m_colorInfo[1] = MAX_COLOR;
+	}
+	if (stagenum == 2) {
+		m_colorInfo[0] = RED;
+		m_colorInfo[1] = BLUE;
+		m_colorInfo[2] = REDBLUE;
+		m_colorInfo[3] = MAX_COLOR;
+	}
+	if (stagenum == 3) {
+		m_colorInfo[0] = RED;
+		m_colorInfo[1] = BLUE;
+		m_colorInfo[2] = REDBLUE;
+		m_colorInfo[3] = MAX_COLOR;
+	}
+
+
+	//----- 色の変更 -----
+	m_Color = m_ColorVal[m_colorInfo[m_colorNum]];
+	//m_colorNum++;
+	//if (m_colorInfo[m_colorNum] >= MAX_COLOR) {
+	//	m_colorNum = 0;
+	//}
+
+	GameObject::Update();
+
 	return true;
 }
 
@@ -70,7 +103,6 @@ bool CollectionPoint::Init()
 void CollectionPoint::Uninit()
 {
 	GameObject::Uninit();
-
 }
 
 
@@ -81,24 +113,31 @@ void CollectionPoint::Uninit()
 //====================================================================
 void CollectionPoint::Update()
 {
+	//----- ランダムで配置 -----
 	if (m_nowCollectTimer < 1 && !m_TimerStart) {
 		m_TimerStart = true;
 	}
-
 	if (m_TimerStart) {
 		m_PosSetTime--;
 	}
-
 	if(m_PosSetTime < 0){
 		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 2.0f, 0.0f);	// ランダム
 		//----- 乱数で座標を設定 -----
 		randomPos.x = (float)(rand() % 18 - 9.0f);	//-9.0 ~ 9.0の間の乱数
 		randomPos.z = (float)(rand() % 20 - 10.0f);	//-9.0 ~ 9.0の間の乱数
 
+
 		m_pos = randomPos;
 		m_TimerStart = false;
 		m_PosSetTime = POSSETTIME;
+		m_colorNum++;
+		if (m_colorInfo[m_colorNum] == MAX_COLOR) {
+			m_colorNum = 0;
+		}
+		m_Color = m_ColorVal[m_colorInfo[m_colorNum]];
 	}
+
+	GameObject::Update();
 }
 
 
@@ -149,3 +188,12 @@ XMFLOAT3 CollectionPoint::GetTargetPos() {
 	return m_pos;
 }
 
+
+//====================================================================
+//
+//		色番号の取得
+//
+//====================================================================
+int CollectionPoint::GetColorNum() {
+	return m_colorInfo[m_colorNum];
+}

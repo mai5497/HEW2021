@@ -14,6 +14,11 @@
 #include "BulletBase.h"
 #include "FBX/FBXPlayer.h"
 
+enum BULLETANIME {
+	BLAST = 0,
+};
+
+
 //*******************************************************************************
 // クラス宣言															
 //*******************************************************************************
@@ -27,6 +32,7 @@ public:
 	bool Init();
 	virtual void Unint();
 	void Draw();
+	void AnimUpdate();
 
 	//---変数
 	ID3D11ShaderResourceView* m_pBulletBlueTex;
@@ -38,6 +44,7 @@ private:
 	//---変数
 	static DrawBuffer* m_pBuffer;
 	static FBXPlayer* m_pFBX;		// FBXファイル操作クラス
+	ANIME_INDEX m_floweAnim[MAX_ANIME];
 
 };
 
