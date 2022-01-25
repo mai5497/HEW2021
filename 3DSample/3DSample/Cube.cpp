@@ -10,7 +10,7 @@
 
 Cube::Cube()
 	:m_posX(0),m_posY(0),m_posZ(0)
-	,m_width(1),m_depth(1)
+	,m_width(1),m_height(1),m_depth(1)
 	, m_R(1.0f), m_G(1.0f), m_B(1.0f), m_A(1.0f)
 {
 	//頂点バッファ
@@ -42,18 +42,18 @@ Cube::Cube()
 	{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//2
 	{{  l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//3
 	//---右
-	{{  l, l, -l },{ m_R,m_G,m_B,m_A },{ 0,0 }},		//4
-	{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},		//5
-	{{  l,-l, -l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//6
-	{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//7
+	{{  l, l, -l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//4
+	{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//5
+	{{  l,-l, -l },{ m_R,m_G,m_B,m_A },{ 0,1 }},	//6
+	{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//7
 	//---奥
-	{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},		//8
-	{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},		//9
+	{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//8
+	{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//9
 	{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//10
-	{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//11
+	{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//11
 	//---左
-	{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},		//12
-	{{ -l, l, -l },{ m_R,m_G,m_B,m_A },{ 1,0 }},		//13
+	{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//12
+	{{ -l, l, -l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//13
 	{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//14
 	{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//15
 
@@ -109,17 +109,42 @@ void Cube::Update() {
 		float uv[2];
 	};
 	const float l = 0.5f;
+	//---頂点24個に変更
 	Vertex vtx[] = {
-		{{ -l, l,-l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
-		{{  l, l,-l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
-		{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
-		{{  l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
-		{{  l, l, l },{ m_R,m_G,m_B,m_A },{ 0,0 }},
-		{{ -l, l, l },{ m_R,m_G,m_B,m_A },{ 1,0 }},
-		{{  l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},
-		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 1,1 }},
-	};
+		//---手前
+		{{ -l, l,-l },{ m_R,m_G,m_B,m_A },{ 0,0 }},		//0
+		{{  l, l,-l },{ m_R,m_G,m_B,m_A },{ 1,0 }},		//1
+		{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//2
+		{{  l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//3
+		//---右
+		{{  l, l, -l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//4
+		{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//5
+		{{  l,-l, -l },{ m_R,m_G,m_B,m_A },{ 0,1 }},	//6
+		{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//7
+		//---奥
+		{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//8
+		{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//9
+		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//10
+		{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//11
+		//---左
+		{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//12
+		{{ -l, l, -l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//13
+		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,1 }},		//14
+		{{ -l,-l,-l },{ m_R,m_G,m_B,m_A },{ 1,1 }},		//15
 
+		//---上
+		{{ -l, l,  l },{ m_R,m_G,m_B,m_A },{ 0,0 }},	//16
+		{{  l, l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//17
+		{{ -l, l, -l },{ m_R,m_G,m_B,m_A },{ 0,1 }},	//18
+		{{  l, l, -l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//19
+
+		//---下
+		{{ -l,-l, l },{ m_R,m_G,m_B,m_A },{ 0,0 }},		//20
+		{{  l,-l,  l },{ m_R,m_G,m_B,m_A },{ 1,0 }},	//21
+		{{ -l,-l, -l },{ m_R,m_G,m_B,m_A },{ 0,1 }},	//22
+		{{  l,-l, -l },{ m_R,m_G,m_B,m_A },{ 1,1 }},	//23
+
+	};
 	m_buffer.CreateVertexBuffer(
 		vtx, sizeof(Vertex),
 		sizeof(vtx) / sizeof(Vertex));

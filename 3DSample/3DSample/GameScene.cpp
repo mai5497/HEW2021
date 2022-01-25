@@ -694,8 +694,6 @@ void GameScene::Draw()
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
-	// ポリゴン
-	g_pPolygon->Draw();
 
 
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -709,7 +707,7 @@ void GameScene::Draw()
 
 	// 回収者の描画
 	g_pCollector->Draw();
-	//g_pCollectionPoint->Draw();
+	g_pCollectionPoint->Draw();
 
 	// 敵の描画
 	//g_pEnemyManager->Draw();
@@ -738,10 +736,12 @@ void GameScene::Draw()
 	g_pStageObjectManager->Draw();
 
 
-
 	// プレイヤー描画
 	g_pPlayer->Draw();
 
+
+	//影
+	g_pShadow->Draw();
 
 	SHADER->Bind(VS_WORLD, PS_PHONG);
 
@@ -770,10 +770,6 @@ void GameScene::Draw()
 	
 	// スコア描画
 	g_pScore->Draw();
-
-	 //影
-	g_pShadow->Draw();
-
 
 
 	 //チュートリアル描画

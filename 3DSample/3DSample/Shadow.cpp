@@ -49,7 +49,7 @@ bool Shadow::Init()
 	//m_pPolygonShadow->SetSize(XMFLOAT3(10.0f, 10.0f, 10.0f));
 	GameObject::Init();
 
-	m_pos = XMFLOAT3(0.0f, 10.0f, 0.0f);
+	m_pos = XMFLOAT3(0.0f, 1.6f, 0.0f);
 	m_size = XMFLOAT3(3.0f, 0.0f, 3.0f);
 	m_Color = XMFLOAT4(0.0f, 0.0f, 0.0f,1.0f);
 	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
