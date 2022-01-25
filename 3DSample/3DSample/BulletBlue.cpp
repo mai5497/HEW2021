@@ -49,13 +49,19 @@ bool BulletBlue::Init()
 {
 	/* モデル読み込み */
 	if (m_pBuffer == NULL) {
-		BulletBlue::LoadBullet("Assets/Model/flowerblue.fbx");
+		LoadBullet("Assets/Model/flowerblue.fbx");
 	}
+	//m_floweAnim[0] = m_pFBX->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
 
 	GameObject::Init();
 
 	return true;
 }
+
+//void BulletBlue::AnimUpdate() {
+//	m_pFBX->Play(0);
+//	m_pFBX->Step();
+//}
 
 //==============================================================
 //
@@ -82,6 +88,9 @@ void BulletBlue::Unint()
 //==============================================================
 void BulletBlue::Draw()
 {
+	//SHADER->Bind(VS_ANIMATION,PS_UNLIT);
+	//m_pFBX->Step();
+
 	// 弾のテクスチャ
 	int meshNum = m_pFBX->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
@@ -97,7 +106,6 @@ void BulletBlue::Draw()
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
-
 }
 
 //====================================================================

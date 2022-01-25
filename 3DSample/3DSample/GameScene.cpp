@@ -185,7 +185,7 @@ void GameScene::Init(int StageNum)
 
 	// 回収ポイント
 	g_pCollectionPoint = new CollectionPoint();
-	g_pCollectionPoint->Init();
+	g_pCollectionPoint->Init(StageNum);
 	
 	// 回収車
 	g_pCollector = new Collector();
@@ -385,8 +385,8 @@ SCENE GameScene::Update()
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
-			randomPos.z = (float)(rand() % 30 - 15.0f);
+			randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 40 - 20.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
 		}
@@ -407,10 +407,23 @@ SCENE GameScene::Update()
 
 		//----- 小人回収処理 -----
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
-			if (g_pCollector->GetNowCollectFlg()) {
-				g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+			if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
+			}else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
+			}else  if((g_pCollectionPoint->GetColorNum()) == REDBLUE){
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
 			}
 		}
+
+
+
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
@@ -565,16 +578,16 @@ SCENE GameScene::Update()
 //==============================================================
 void GameScene::Draw()
 {
-	SHADER->Bind(
+	//SHADER->Bind(
 		//頂点シェーダで使用する計算の種類
-		VS_WORLD,
+	//	VS_WORLD,
 		//ピクセルシェーダで使用する計算の種類
 		//PS_UNLIT...影をつけない
 		//PS_LAMBERT...DiffuseとAmbientのみ
 		//			　 金属表現は行わない
 		//PS_PHONG...Lambertに
 		//			 Specularを加える
-		PS_PHONG);
+	//	PS_PHONG);
 	//3Dの物体に影がつく仕組み
 	//3Dの面に対して垂直な線を考える(法線)
 	//光源からの光の向きと、面の法線が
@@ -648,6 +661,9 @@ void GameScene::Draw()
 	));
 	*/
 
+	SHADER->Bind(VS_WORLD, PS_PHONG);
+
+
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
@@ -691,10 +707,12 @@ void GameScene::Draw()
 	g_pStageObjectManager->Draw();
 
 
+
 	// プレイヤー描画
 	g_pPlayer->Draw();
 
 
+	SHADER->Bind(VS_WORLD, PS_PHONG);
 
 
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());

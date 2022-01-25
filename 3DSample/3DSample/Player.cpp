@@ -42,7 +42,9 @@ FBXPlayer *Player::m_pFBX = NULL;
 //	引数	： void
 //
 //==============================================================
-Player::Player():m_pControllCamera(nullptr)
+Player::Player():
+	m_pControllCamera(nullptr),
+	m_throwFlg(false)
 {
 	//----- 変数初期化 -----
 	LoadTextureFromFile("Assets/Model/player.png", &m_pPlayerTex);
@@ -88,9 +90,9 @@ bool Player::Init()
 	//----- プレイヤー処理 -----
 	GameObject::Init();	// プレイヤー用初期化？
 	if (m_pBuffer == NULL) {
-		Player::LoadPlayer("Assets/Model/player2.fbx");
+		LoadPlayer("Assets/Model/player2.fbx");
 	}
-
+	//m_playerAnim[0] = m_pFBX->LoadAnimation("Assets/Model/player2.fbx");
 
 	return true;
 }
@@ -132,11 +134,17 @@ void Player::Update() {
 	bool moveFlg = false;
 
 	m_move = XMFLOAT3(m_BulletTargetPos.x, m_BulletTargetPos.y, m_BulletTargetPos.z - m_pos.z);
+	
+	//if (IsRelease('E') || IsRelease('Q')) {
+	//	m_pFBX->Play(0);
+	//}
 
 
 	//描画用角度設定
 	m_DrawAngle = atan2(m_move.z, m_move.x);
 	m_DrawAngle -= XM_PI * 0.5f;
+
+	//m_pFBX->Step();
 }
 
 //==============================================================
@@ -149,6 +157,8 @@ void Player::Update() {
 //==============================================================
 void Player::Draw()
 {
+	//SHADER->Bind(VS_ANIMATION,PS_UNLIT);
+
 
 	XMFLOAT3 pPos = m_pos;
 	XMFLOAT3 pSize = m_size;
@@ -165,6 +175,8 @@ void Player::Draw()
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
+
+
 }
 
 //==============================================================
@@ -302,4 +314,16 @@ XMFLOAT3 Player::GetPlayerAngle()
 //==============================================================
 void Player::SetBulletTargetPos(XMFLOAT3 pos) {
 	m_BulletTargetPos = pos;
+}
+
+
+//==============================================================
+//
+//	Playerクラス::投げているフラグセット
+//	作成者	: 伊地田真衣
+//	戻り値	: なし
+//	引数		: 弾のターゲットの座標 
+//==============================================================
+void Player::SetThrowFlg(bool flg) {
+	m_throwFlg = flg;
 }

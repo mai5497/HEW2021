@@ -13,6 +13,12 @@
 #include	"FBX//FBXPlayer.h"
 #include	"DrawBuffer.h"
 
+enum PLAYERANIME {
+	STAND = 0,
+	THROW,
+	MAX_ANIME
+};
+
 class DwarfManager;
 
 class Player : public CharacterBase
@@ -40,21 +46,21 @@ public:
 	XMFLOAT3 GetPlayerPos();
 	XMFLOAT3 GetPlayerAngle();
 
+
 	void SetBulletTargetPos(XMFLOAT3 pos);
 
+	void SetThrowFlg(bool flg);
 
 private:
 	bool LoadPlayer(const char *pFilePath);
 
-
 	Camera * m_pControllCamera;				// カメラ座標操作
-
 	static DrawBuffer *m_pBuffer;			// バッファ情報操作
 	static FBXPlayer *m_pFBX;				// FBXファイル操作クラス
-
 	float m_DrawAngle;						// 描画角度
-
 	XMFLOAT3 m_BulletTargetPos;
+	ANIME_INDEX m_playerAnim[MAX_ANIME];
+	bool m_throwFlg;
 };
 
 #endif // !_PLAYER_H_

@@ -17,16 +17,16 @@
 
 
 //↓みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
-#define MAX_RED_DWARF_1		(6)									// ステージ１赤小人最大値
+#define MAX_RED_DWARF_1		(0)									// ステージ１赤小人最大値
 #define MAX_BLUE_DWARF_1	(6)									// ステージ１青小人最大値
 #define MAX_DWARF_1			(MAX_RED_DWARF_1 + MAX_BLUE_DWARF_1)// ステージ１小人最大数合計
 
-#define MAX_RED_DWARF_2		(3)									// ステージ１赤小人最大値
-#define MAX_BLUE_DWARF_2	(3)									// ステージ１青小人最大値
+#define MAX_RED_DWARF_2		(6)									// ステージ１赤小人最大値
+#define MAX_BLUE_DWARF_2	(6)									// ステージ１青小人最大値
 #define MAX_DWARF_2			(MAX_RED_DWARF_2 + MAX_BLUE_DWARF_2)// ステージ１小人最大数合計
 
-#define MAX_RED_DWARF_3		(4)									// ステージ１赤小人最大値
-#define MAX_BLUE_DWARF_3	(4)									// ステージ１青小人最大値
+#define MAX_RED_DWARF_3		(12)									// ステージ１赤小人最大値
+#define MAX_BLUE_DWARF_3	(12)									// ステージ１青小人最大値
 #define MAX_DWARF_3			(MAX_RED_DWARF_3 + MAX_BLUE_DWARF_3)// ステージ１小人最大数合計
 
 #define DWARF_HITBOX_X		(2.0f)								// 小人のヒットボックス（正確には境界球）
