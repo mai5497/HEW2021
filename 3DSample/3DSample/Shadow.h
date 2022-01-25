@@ -13,23 +13,23 @@
  // インクルード部
  //*******************************************************************************
 #include	"Texture.h"
-#include	"GamePolygon.h"
+#include	"GameObject.h"
 #include	"Camera.h"
 
  //*******************************************************************************
  // クラス宣言
  //*******************************************************************************
-class Shadow
+class Shadow : public GameObject
 {
 public:
 	Shadow();
 	~Shadow();
 
 	//---関数
-	void Init();
-	void Uninit();
-	void Update();
-	void Draw();
+			bool Init();
+			void Uninit();
+	virtual void Update();
+			void Draw();
 
 	void SetShadow(XMFLOAT3 pos);
 
@@ -37,7 +37,7 @@ public:
 private:
 	ID3D11ShaderResourceView* m_pShadowTex;
 
-	GamePolygon* m_pPolygonShadow;
+	GameObject* m_pPolygonShadow;
 	Camera* m_pCameraShadow;
 };
 

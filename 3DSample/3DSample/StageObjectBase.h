@@ -50,7 +50,7 @@ public:
 	bool LoadStageObject(const char *pFilePath);			//ÉÇÉfÉãì«Ç›çûÇ›
 
 	//---ê∂ê¨
-	void CreateStageObject(XMFLOAT3 pos, XMFLOAT3 size, LPCSTR TexPath, LPCSTR ModelPath);
+	void CreateStageObject(XMFLOAT3 pos, XMFLOAT3 size, XMFLOAT3 angle,LPCSTR TexPath, LPCSTR ModelPath);
 
 	//---ïœêî
 	ID3D11ShaderResourceView *m_pStageObjectTex;

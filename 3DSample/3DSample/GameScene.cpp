@@ -101,19 +101,6 @@ BulletTarget			* g_pBulletTarget;
 Score				*g_pScore;
 Tutorial			*g_pTutorial;
 
-Collision			*g_pCollision;
-Collector			*g_pCollector;
-CollectionPoint		*g_pCollectionPoint;
-SelectScene			*g_pSelectScene;
-DwarfManager		*g_pDwarfManager;
-DwarfStageCollision	*g_pDwarfStageCollision;
-
-BulletManager		*g_pBulletManger;
-BulletTarget		*g_pBulletTarget;
-
-Score				*g_pScore;
-Tutorial			*g_pTutorial;
-
 Shadow				*g_pShadow;
 
 //Enemy				*g_pEnemy;
@@ -162,6 +149,8 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
+
+	//---ƒJƒƒ‰
 	g_pCamera = new Camera();
 	g_pCamera->Init();
 
@@ -689,6 +678,8 @@ void GameScene::Draw()
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
+	// ƒ|ƒŠƒSƒ“
+	g_pPolygon->Draw();
 
 
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -700,14 +691,9 @@ void GameScene::Draw()
 	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
 
 
-	// ƒ|ƒŠƒSƒ“
-	//g_pPolygon->Draw();
-
-
-
 	// ‰ñŽûŽÒ‚Ì•`‰æ
 	g_pCollector->Draw();
-	g_pCollectionPoint->Draw();
+	//g_pCollectionPoint->Draw();
 
 	// “G‚Ì•`‰æ
 	//g_pEnemyManager->Draw();
@@ -764,10 +750,12 @@ void GameScene::Draw()
 	// ƒXƒRƒA•`‰æ
 	g_pScore->Draw();
 
-	// ‰e
+	 //‰e
 	g_pShadow->Draw();
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹•`‰æ
+
+
+	 //ƒ`ƒ…[ƒgƒŠƒAƒ‹•`‰æ
 	//g_pTutorial->Draw();
 
 }

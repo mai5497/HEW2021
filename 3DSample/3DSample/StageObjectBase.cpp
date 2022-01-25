@@ -71,7 +71,7 @@ bool StageObjectBase::Init()
 	//---変数初期化
 	m_pos = XMFLOAT3(0.0f,0.0f,0.0f);
 	m_size = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Angle = XMFLOAT3(1.0f,1.0f , 1.0f);
 
 	m_collisionType = COLLISION_STATIC;
 
@@ -134,8 +134,12 @@ void StageObjectBase::Draw()
 		SHADER->Bind(VS_WORLD,PS_LAMBERT);
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
-			* DirectX::XMMatrixRotationY(XM_PI)
+			* DirectX::XMMatrixRotationRollPitchYaw(
+				XMConvertToRadians(m_Angle.x),
+				XMConvertToRadians(m_Angle.y),
+				XMConvertToRadians(m_Angle.z))
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
+		
 
 		SHADER->SetTexture(m_pStageObjectTex);
 		/*
@@ -203,14 +207,16 @@ LPCSTR StageObjectBase::GetModelPath()
 //	ObjectBaseクラス::オブジェクト生成
 //	作成者	： 吉原飛鳥
 //	戻り値	： void
-//	引数		： void
+//	引数		： 座標、大きさ,角度,テクスチャパス,モデルパス
 //
 //==============================================================
-void StageObjectBase::CreateStageObject(XMFLOAT3 pos, XMFLOAT3 size, LPCSTR TexPath, LPCSTR ModelPath)
+void StageObjectBase::CreateStageObject(XMFLOAT3 pos, XMFLOAT3 size, XMFLOAT3 angle,LPCSTR TexPath, LPCSTR ModelPath)
 {
-	//---座標・サイズの指定
+	//---座標・サイズ・アングルの指定
 	m_pos= pos;					
 	m_size = size;
+	m_Angle = angle;
+
 
 	//---テクスチャ・モデルの読み込み
 	if (m_pBuffer == NULL) {

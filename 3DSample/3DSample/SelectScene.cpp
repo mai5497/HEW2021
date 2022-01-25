@@ -162,6 +162,7 @@ void SelectScene::Uninit()
 SCENE SelectScene::Update()
 {
 
+
 	if (IsTrigger(VK_RIGHT) || IsRelease(JPadButton::DPAD_RIGHT)) {
 		CSound::Play(SE_SELECT_1);
 		m_StageNum++;
@@ -177,6 +178,7 @@ SCENE SelectScene::Update()
 		CSound::Play(SE_SELECT_1);
 		m_StageNum--;
 		g_arrowPosX -= 0.3f;
+
 		if (m_StageNum < 1) {
 			m_StageNum = 0;
 			g_arrowPosX = -0.3f;

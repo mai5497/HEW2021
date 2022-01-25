@@ -94,22 +94,27 @@ bool BulletTarget::Init()
 	//---テクスチャ読み込み
 	LoadTextureFromFile("Assets/Model/Target2.png", &m_pBulletTargetTex);
 
+	//g_pBulletTarget = new GameObject;
+	//g_pBulletTarget->Init();
+
+	GameObject::Init();
+
 	//---変数初期化
 	//g_pBulletTarget->SetPos((XMFLOAT3(TARGET_POS_X, TARGET_POS_Y, TARGET_POS_Z)));
 	//g_pBulletTarget->SetSize(XMFLOAT3(TARGET_SIZE_X, TARGET_SIZE_Y, TARGET_SIZE_Z));
 	//g_pBulletTarget->SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-	//g_pBulletTarget->SetAngle(XMFLOAT3(1.0f, 1.0f, 1.0f));
+	//g_pBulletTarget->SetAngle(XMFLOAT3(XM_PI / 2, 0.0f, 0.0f));
 
 	m_pos = (XMFLOAT3(TARGET_POS_X, TARGET_POS_Y, TARGET_POS_Z));
 	m_size = (XMFLOAT3(TARGET_SIZE_X, TARGET_SIZE_Y, TARGET_SIZE_Z));
 	m_Color = (XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f));
-	m_Angle = (XMFLOAT3(0.0f, 0.0, 0.0f));
+	m_Angle = (XMFLOAT3(XM_PI / 2, 0.0, 0.0f));
 
 	m_MoveSpeed = (1.0f / FPS) * 100.0f;
-	m_DrawAngle = 0.0f;
 	m_collisionType = COLLISION_DYNAMIC;			// 当たり判定を取るときのオブジェクトの種類の設定
 
-	GameObject::Init();
+
+	
 	return true;
 }
 
@@ -142,6 +147,9 @@ void BulletTarget::Uninit()
 	//delete m_pCamera;
 	//g_pBulletTargetCamera->Uninit();
 	//delete g_pBulletTargetCamera;
+
+	//g_pBulletTarget->Uninit();
+	//delete g_pBulletTarget;
 
 	GameObject::Uninit();
 }
@@ -230,19 +238,19 @@ void BulletTarget::Draw()
 	//for (int i = 0; i < MeshNum; ++i){
 	SHADER->SetTexture(m_pBulletTargetTex);
 
-	//SHADER->SetWorld
-	//(
-	//	XMMatrixScaling(m_size.x, m_size.y, m_size.z)*
-	//	XMMatrixRotationX(m_DrawAngle)*
-	//	XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
-	//);
+	SHADER->SetWorld
+	(
+		XMMatrixScaling(m_size.x, m_size.y, m_size.z)*
+		XMMatrixRotationX(XM_PI / 2) * 
+		XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z)
+	);
 
 	//g_pBulletTarget->Draw();
 
 
 	GameObject::Draw();
 
-	SHADER->SetTexture(NULL);
+	//SHADER->SetTexture(NULL);
 
 		//m_pBTBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//}

@@ -50,8 +50,7 @@ private:
 	static FBXPlayer* m_pBTFBX;			// FBXファイル操作クラス
 
 	Camera *m_pCamera;					// カメラ情報
-	float m_DrawAngle;						// 描画角度
-	float m_MoveSpeed;								// 移動速度
+	float m_MoveSpeed;						// 移動速度
 };
 
 
