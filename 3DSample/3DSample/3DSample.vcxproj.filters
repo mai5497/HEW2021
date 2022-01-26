@@ -250,6 +250,10 @@
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Squre.cpp">
+    <ClCompile Include="Score.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Shadow.cpp">
@@ -409,6 +413,8 @@
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    <ClInclude Include="Timer.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="RedDwarf.h">
       <Filter>ヘッダー ファイル\Game\Dwarf</Filter>

@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -189,6 +189,7 @@
     <ClCompile Include="StageObjectManager.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TPScamera.cpp" />
     <ClCompile Include="Score.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="StageObjectManager.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TPScamera.h" />
     <ClInclude Include="Score.h" />
