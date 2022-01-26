@@ -34,36 +34,6 @@
     <Filter Include="ヘッダー ファイル\Game">
       <UniqueIdentifier>{c588a373-8423-4ebb-82c2-27b93da19375}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Dwarf">
-      <UniqueIdentifier>{84b6835b-0f30-4a34-84e6-ec17bf345c6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Bullet">
-      <UniqueIdentifier>{a18bbddf-fa8b-4a70-9b3e-e95ca8c9bfda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Stage">
-      <UniqueIdentifier>{17737383-e429-480d-84f4-dbb1e7695d55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Enemy">
-      <UniqueIdentifier>{e877222a-30b4-4c06-9881-ee30210895ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Dwarf">
-      <UniqueIdentifier>{80b2ef0b-1a5d-4880-99e0-80a05d186bec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Bullet">
-      <UniqueIdentifier>{192caa67-a2b7-48c5-ac62-aa6ed2199da6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Stage">
-      <UniqueIdentifier>{cdae2c34-689b-4202-963b-2df88d2a9695}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Enemy">
-      <UniqueIdentifier>{ca10b04a-4d47-4a99-9164-2bfcdedc61c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\UI">
-      <UniqueIdentifier>{0341dd5d-5396-415b-adc3-3ff8737a3d05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\UI">
-      <UniqueIdentifier>{a3035212-7823-4cda-9e4c-52759ea9d635}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -178,64 +148,64 @@
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BlueDwarf.cpp">
-      <Filter>ソース ファイル\Game\Dwarf</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="DwarfBase.cpp">
-      <Filter>ソース ファイル\Game\Dwarf</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="DwarfManager.cpp">
-      <Filter>ソース ファイル\Game\Dwarf</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="DwarfStageCollision.cpp">
-      <Filter>ソース ファイル\Game\Dwarf</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="RedDwarf.cpp">
-      <Filter>ソース ファイル\Game\Dwarf</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BulletBase.cpp">
-      <Filter>ソース ファイル\Game\Bullet</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BulletBlue.cpp">
-      <Filter>ソース ファイル\Game\Bullet</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BulletManager.cpp">
-      <Filter>ソース ファイル\Game\Bullet</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BulletRed.cpp">
-      <Filter>ソース ファイル\Game\Bullet</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="BulletTarget.cpp">
-      <Filter>ソース ファイル\Game\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageManager.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageObjectBase.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="StageObjectManager.cpp">
-      <Filter>ソース ファイル\Game\Stage</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StageObjectBase.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StageObjectManager.cpp">
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Score.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Tutorial.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,61 +333,61 @@
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BulletBase.h">
-      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BulletBlue.h">
-      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BulletManager.h">
-      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BulletRed.h">
-      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BulletTarget.h">
-      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="DwarfBase.h">
-      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
-    </ClInclude>
-    <ClInclude Include="DwarfManager.h">
-      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
-    </ClInclude>
-    <ClInclude Include="DwarfStageCollision.h">
-      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="BlueDwarf.h">
-      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DwarfBase.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DwarfManager.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="DwarfStageCollision.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="RedDwarf.h">
-      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBase.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>ヘッダー ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageObjectBase.h">
-      <Filter>ヘッダー ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="StageObjectManager.h">
-      <Filter>ヘッダー ファイル\Game\Stage</Filter>
-    </ClInclude>
-    <ClInclude Include="Tutorial.h">
-      <Filter>ヘッダー ファイル\Game\UI</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="Score.h">
-      <Filter>ヘッダー ファイル\Game\UI</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>ヘッダー ファイル\Game\UI</Filter>
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Tutorial.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StageObjectBase.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="StageObjectManager.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
