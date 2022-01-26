@@ -4,6 +4,7 @@
 #include"Texture.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "GamePolygon.h"
 
 //---システム関連
 #include "Camera.h"
@@ -45,6 +46,7 @@
 
 // ---ゲーム関連-UI
 #include "Score.h"
+#include	"Shadow.h"
 
 
 class GameScene :public Scene

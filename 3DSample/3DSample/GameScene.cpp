@@ -83,6 +83,7 @@
 Camera				*g_pCamera;
 TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
+GamePolygon			*g_pPolygon;
 
 StageManager		*g_pStageManager;
 StageObjectManager* g_pStageObjectManager;
@@ -100,6 +101,8 @@ BulletTarget			* g_pBulletTarget;
 Tutorial			*g_pTutorial;
 Score				*g_pScore;
 Timer*				g_pTimer;
+
+Shadow				*g_pShadow;
 
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
@@ -147,8 +150,18 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
+
+	//---カメラ
 	g_pCamera = new Camera();
 	g_pCamera->Init();
+
+	//---ポリゴンクラス
+	g_pPolygon = new GamePolygon;
+	g_pPolygon->Init();
+
+	//---影
+	g_pShadow = new Shadow;
+	g_pShadow->Init();
 
 	// メンバ変数初期化
 	m_StageNum = StageNum;					// 現在のステージ番号保存
@@ -186,7 +199,7 @@ void GameScene::Init(int StageNum)
 
 	// 回収ポイント
 	g_pCollectionPoint = new CollectionPoint();
-	g_pCollectionPoint->Init();
+	g_pCollectionPoint->Init(StageNum);
 	
 	// 回収車
 	g_pCollector = new Collector();
@@ -260,6 +273,14 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
+	// ポリゴン
+	g_pPolygon->Uninit();
+	delete g_pPolygon;
+
+	// 影
+	g_pShadow->Uninit();
+	delete g_pShadow;
+
 	// タイマークラスの終了処理
 	g_pTimer->Uninit();
 	delete g_pTimer;
@@ -341,6 +362,12 @@ void GameScene::Uninit()
 //==============================================================
 SCENE GameScene::Update()
 {
+	// ポリゴン
+	g_pPolygon->Update();
+	
+	// 影
+	g_pShadow->Update();
+
 	// 落下地点の更新
 	g_pBulletTarget->Update();
 
@@ -398,8 +425,8 @@ SCENE GameScene::Update()
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
-			randomPos.z = (float)(rand() % 30 - 15.0f);
+			randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.z = (float)(rand() % 40 - 20.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
 		}
@@ -420,10 +447,23 @@ SCENE GameScene::Update()
 
 		//----- 小人回収処理 -----
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
-			if (g_pCollector->GetNowCollectFlg()) {
-				g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+			if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
+			}else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
+			}else  if((g_pCollectionPoint->GetColorNum()) == REDBLUE){
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				}
 			}
 		}
+
+
+
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
@@ -578,16 +618,16 @@ SCENE GameScene::Update()
 //==============================================================
 void GameScene::Draw()
 {
-	SHADER->Bind(
+	//SHADER->Bind(
 		//頂点シェーダで使用する計算の種類
-		VS_WORLD,
+	//	VS_WORLD,
 		//ピクセルシェーダで使用する計算の種類
 		//PS_UNLIT...影をつけない
 		//PS_LAMBERT...DiffuseとAmbientのみ
 		//			　 金属表現は行わない
 		//PS_PHONG...Lambertに
 		//			 Specularを加える
-		PS_PHONG);
+	//	PS_PHONG);
 	//3Dの物体に影がつく仕組み
 	//3Dの面に対して垂直な線を考える(法線)
 	//光源からの光の向きと、面の法線が
@@ -661,9 +701,14 @@ void GameScene::Draw()
 	));
 	*/
 
+	SHADER->Bind(VS_WORLD, PS_PHONG);
+
+
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
+
+
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
@@ -708,6 +753,10 @@ void GameScene::Draw()
 	g_pPlayer->Draw();
 
 
+	//影
+	g_pShadow->Draw();
+
+	SHADER->Bind(VS_WORLD, PS_PHONG);
 
 
 	SHADER->SetWorld(DirectX::XMMatrixIdentity());

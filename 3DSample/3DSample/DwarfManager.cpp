@@ -45,43 +45,25 @@ DwarfManager::~DwarfManager()
 //		初期化
 //
 //====================================================================
-bool DwarfManager::Init(int stagenum)
-{
+bool DwarfManager::Init(int stagenum) {
 	//----- ローカル変数初期化 -----
 	int rednum;
 	int bluenum;
 
 	if (stagenum == 1) {
-		m_DwarfNum = MAX_DWARF_1;
 		rednum = MAX_RED_DWARF_1;
 		bluenum = MAX_BLUE_DWARF_1;
+		m_DwarfNum = MAX_DWARF_1;
 	} else if (stagenum == 2) {
-		m_DwarfNum = MAX_DWARF_2;
 		rednum = MAX_RED_DWARF_2;
 		bluenum = MAX_BLUE_DWARF_2;
-
+		m_DwarfNum = MAX_DWARF_2;
 	} else if (stagenum == 3) {
-		m_DwarfNum = MAX_DWARF_3;
 		rednum = MAX_RED_DWARF_3;
 		bluenum = MAX_BLUE_DWARF_3;
+		m_DwarfNum = MAX_DWARF_3;
 	}
 
-
-	struct DwarfSetting 
-	{
-		XMFLOAT3 pos;
-	};
-
-
-	DwarfSetting DwarfSet[MAX_DWARF_1];
-	if (stagenum == 1) {
-		DwarfSetting DwarfSet[MAX_DWARF_1];
-	} else if (stagenum == 2) {
-		DwarfSetting DwarfSet[MAX_DWARF_2];
-	} else if (stagenum == 3) {
-		DwarfSetting DwarfSet[MAX_DWARF_3];
-	}
-	
 
 	XMFLOAT3 basePos = XMFLOAT3(0.0f, 0.0f, 0.0f);		// 指定した位置付近に配置できる
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 0.0f, 0.0f);	// ランダム
@@ -89,24 +71,16 @@ bool DwarfManager::Init(int stagenum)
 	srand(time(NULL));
 
 	// ポインタを格納する配列を作成
-	if (stagenum == 1) {
-		m_ppDwarf = new DwarfBase*[MAX_DWARF_1];
-	} else if (stagenum == 2) {
-		m_ppDwarf = new DwarfBase*[MAX_DWARF_2];
-	} else if (stagenum == 3) {
-		m_ppDwarf = new DwarfBase*[MAX_DWARF_3];
-	}
-
+		
+	m_ppDwarf = new DwarfBase*[m_DwarfNum];
 
 	for (int i = 0; i < m_DwarfNum; i++){
 		// 小人をランダムで初期配置
-		//randomPos.x = (float)(rand() % 20 - 10.0f);	//-10.0 ~ 10.0の間の乱数
-		//randomPos.z = (float)(rand() % 20 - 10.0f);
-		randomPos.x = (float)(rand() % 10 - 5.0f);	//-5.0 ~ 5.0の間の乱数
-		randomPos.z = (float)(rand() % 10 - 5.0f);
+		randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
+		randomPos.z = (float)(rand() % 40 - 20.0f);
 
 		// ランダムで算出した値を基準位置に加算して代入
-		DwarfSet[i].pos = XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
+		XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
 		if (i < rednum) {
 			m_ppDwarf[i] = new RedDwarf;
@@ -114,8 +88,8 @@ bool DwarfManager::Init(int stagenum)
 			m_ppDwarf[i] = new BlueDwarf;
 		}
 
-		m_ppDwarf[i]->TargetPos(DwarfSet[i].pos);
-		m_ppDwarf[i]->SetPos(DwarfSet[i].pos);
+		m_ppDwarf[i]->TargetPos(XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z));
+		m_ppDwarf[i]->SetPos(XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z));
 		m_ppDwarf[i]->SetSize(XMFLOAT3(DWARF_SIZE, DWARF_SIZE, DWARF_SIZE));
 		m_ppDwarf[i]->Init();
 	}

@@ -16,6 +16,7 @@
 #include	"Collision.h"
 #include	"Stage.h"
 #include	"BulletManager.h"
+#include	"BulletTarget.h"
 
 //*******************************************************************************
 // 定数・マクロ定義
@@ -63,6 +64,8 @@ private:
 	XMFLOAT3 m_EndPos;				// 着地点
 	XMFLOAT3 m_CenterPos;			// 制御点
 	float m_ThrowTimer;				// 投げる時間
+
+	XMFLOAT3 m_BulletTargetPos;		// ターゲットの座標
 
 	bool m_rbFlg;					// true　→　赤			false　→　青
 	bool m_ColFlg;					// true　→　地面と接している	false → 地面と接していない

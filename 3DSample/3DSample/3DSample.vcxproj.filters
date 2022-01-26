@@ -34,6 +34,48 @@
     <Filter Include="ヘッダー ファイル\Game">
       <UniqueIdentifier>{c588a373-8423-4ebb-82c2-27b93da19375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Dwarf">
+      <UniqueIdentifier>{4ec66b7c-0c41-4491-a739-b4e7ffcc0b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Bullet">
+      <UniqueIdentifier>{287829d4-9ccc-4bd0-83d8-b9b73e54f5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Collector">
+      <UniqueIdentifier>{2be63e48-34cf-4632-8e62-89f1834deb9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Stage">
+      <UniqueIdentifier>{7b28f3b1-7203-488b-8c1e-b22516f797c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI">
+      <UniqueIdentifier>{c8da2fe8-408a-4c40-9030-d26e64272242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Player">
+      <UniqueIdentifier>{3ccc6f58-8e62-4e88-8ba9-fa2a499dec3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Enemy">
+      <UniqueIdentifier>{562bb9e4-3689-4f05-87a2-ab7ac42fcb00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Dwarf">
+      <UniqueIdentifier>{6984dcfa-fdc1-4025-b2e1-410b628b1fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bullet">
+      <UniqueIdentifier>{e35625a1-5ac2-404d-a9ea-fedf5b1d5e69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Collector">
+      <UniqueIdentifier>{6cf23473-192c-406b-a84a-f0e5291fd640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Enemy">
+      <UniqueIdentifier>{7d5d0a3d-a4f1-4df4-ac69-cdf2d66a2ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Stage">
+      <UniqueIdentifier>{3bfb689d-fd2d-4b3b-a3fa-8314e0a65c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\UI">
+      <UniqueIdentifier>{6d7f97e4-4531-4aa0-a53b-c9e6a1421d05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Player">
+      <UniqueIdentifier>{67514da0-41e1-4321-ab3b-a2b3d68b6be1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -102,20 +144,11 @@
     <ClCompile Include="Camera.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterBase.cpp">
-      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="MyVector.cpp">
       <Filter>ソース ファイル\System</Filter>
@@ -125,12 +158,6 @@
     </ClCompile>
     <ClCompile Include="PlayerToEnemy.cpp">
       <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="CollectionPoint.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Collector.cpp">
-      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="SelectScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -144,67 +171,92 @@
     <ClCompile Include="GameOver.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Shadow.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="BlueDwarf.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DwarfBase.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DwarfManager.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="DwarfStageCollision.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="RedDwarf.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Dwarf</Filter>
     </ClCompile>
     <ClCompile Include="BulletBase.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="BulletBlue.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="BulletManager.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="BulletRed.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="BulletTarget.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+    <ClCompile Include="CollectionPoint.cpp">
+      <Filter>ソース ファイル\Game\Collector</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBase.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+    <ClCompile Include="Collector.cpp">
+      <Filter>ソース ファイル\Game\Collector</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+    <ClCompile Include="DwarfBase.cpp">
+      <Filter>ソース ファイル\Game\Dwarf</Filter>
+    </ClCompile>
+    <ClCompile Include="DwarfManager.cpp">
+      <Filter>ソース ファイル\Game\Dwarf</Filter>
+    </ClCompile>
+    <ClCompile Include="DwarfStageCollision.cpp">
+      <Filter>ソース ファイル\Game\Dwarf</Filter>
+    </ClCompile>
+    <ClCompile Include="RedDwarf.cpp">
+      <Filter>ソース ファイル\Game\Dwarf</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="StageManager.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>ソース ファイル\Game\UI</Filter>
     </ClCompile>
     <ClCompile Include="StageObjectBase.cpp">
-      <Filter>ソース ファイル\Game</Filter>
+      <Filter>ソース ファイル\Game\Stage</Filter>
     </ClCompile>
     <ClCompile Include="StageObjectManager.cpp">
+      <Filter>ソース ファイル\Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>ソース ファイル\Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterBase.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>ソース ファイル\Game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePolygon.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Squre.cpp">
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Tutorial.cpp">
+    <ClCompile Include="Shadow.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,9 +330,6 @@
     <ClInclude Include="Cube.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
@@ -300,12 +349,6 @@
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="CollectionPoint.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Collector.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="SelectScene.h">
@@ -329,65 +372,73 @@
     <ClInclude Include="GameOver.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Shadow.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="BlueDwarf.h">
+      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
     </ClInclude>
     <ClInclude Include="BulletBase.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="BulletBlue.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="BulletManager.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="BulletRed.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="BulletTarget.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="BlueDwarf.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="CollectionPoint.h">
+      <Filter>ヘッダー ファイル\Game\Collector</Filter>
+    </ClInclude>
+    <ClInclude Include="Collector.h">
+      <Filter>ヘッダー ファイル\Game\Collector</Filter>
     </ClInclude>
     <ClInclude Include="DwarfBase.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
     </ClInclude>
     <ClInclude Include="DwarfManager.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
     </ClInclude>
     <ClInclude Include="DwarfStageCollision.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
     </ClInclude>
-    <ClInclude Include="RedDwarf.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     <ClInclude Include="Timer.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Tutorial.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="RedDwarf.h">
+      <Filter>ヘッダー ファイル\Game\Dwarf</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
+    <ClInclude Include="Shadow.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="StageObjectBase.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="StageObjectManager.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+      <Filter>ヘッダー ファイル\Game\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="Score.h">
+      <Filter>ヘッダー ファイル\Game\UI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBase.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="Shadow.h">
+      <Filter>ヘッダー ファイル\Game\UI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyManager.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
+    <ClInclude Include="Tutorial.h">
+      <Filter>ヘッダー ファイル\Game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

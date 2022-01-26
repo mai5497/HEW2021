@@ -29,7 +29,7 @@ FBXPlayer *StageManager::m_pfbx = NULL;
 StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 {
 	//LoadTextureFromFile("Assets/Model/woodground.jpg", &m_pStageTex[0]);
-	LoadTextureFromFile("Assets/Model/grass.jpeg", &m_pStageTex[0]);
+	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[0]);
 	LoadTextureFromFile("Assets/Model/ground.png", &m_pStageTex[1]);
 	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[2]);
 }

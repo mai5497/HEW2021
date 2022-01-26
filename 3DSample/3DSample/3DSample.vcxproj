@@ -75,18 +75,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2017\x64\release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -108,7 +108,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\ad\Desktop\HEW_GitHub\HEW_0121\3DSample\x64\Release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ad\Desktop\HEW_GitHub\HEW_0123\3DSample\3DSample\DirectXTex\x64\Release</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -124,7 +124,7 @@
       <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\x64\release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ad\Desktop\HEW_GitHub\HEW_0123\3DSample\3DSample\DirectXTex\x64\Release</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -143,6 +143,9 @@
     <ClCompile Include="Collector.cpp" />
     <ClCompile Include="DwarfStageCollision.cpp" />
     <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GamePolygon.cpp" />
+    <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="Squre.cpp" />
     <ClCompile Include="StageObjectBase.cpp" />
     <ClCompile Include="RedDwarf.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -161,7 +164,6 @@
     <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
     <ClCompile Include="FBX\FBXLoadMesh.cpp" />
     <ClCompile Include="FBX\FBXPlayer.cpp" />
-    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -205,6 +207,9 @@
     <ClInclude Include="Collector.h" />
     <ClInclude Include="DwarfStageCollision.h" />
     <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GamePolygon.h" />
+    <ClInclude Include="Shadow.h" />
+    <ClInclude Include="Squre.h" />
     <ClInclude Include="StageObjectBase.h" />
     <ClInclude Include="RedDwarf.h" />
     <ClInclude Include="Camera.h" />
@@ -224,7 +229,6 @@
     <ClInclude Include="FBX\FBXLoadMaterial.h" />
     <ClInclude Include="FBX\FBXLoadMesh.h" />
     <ClInclude Include="FBX\FBXPlayer.h" />
-    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundData.h" />
     <ClInclude Include="SoundData.hpp" />
