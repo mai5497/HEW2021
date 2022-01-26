@@ -43,6 +43,7 @@ BulletBase::BulletBase() :
 	m_size.z = 0.5f;
 	m_sleep = 0;
 	m_sleep2 = 0;
+	m_Radius = XMFLOAT3(5.0f, 0.1f, 5.0f);
 
 	m_BulletAngle = 0.0f;								// Šp“x‚Ì‰Šú‰»
 	m_dir = XMFLOAT3(0.0f, 0.0f, 0.0f);			// Œü‚«
@@ -204,4 +205,8 @@ void BulletBase::SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 cent
 	m_EndPos = endPos;
 	m_CenterPos = centerPos;
 	m_ThrowTimer = ThrowTimer;
+}
+
+bool BulletBase::GetColFlg() {
+	return m_ColFlg;
 }

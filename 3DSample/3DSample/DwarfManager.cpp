@@ -76,8 +76,8 @@ bool DwarfManager::Init(int stagenum) {
 
 	for (int i = 0; i < m_DwarfNum; i++){
 		// ¬l‚ðƒ‰ƒ“ƒ_ƒ€‚Å‰Šú”z’u
-		randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0‚ÌŠÔ‚Ì—”
-		randomPos.z = (float)(rand() % 40 - 20.0f);
+		randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0‚ÌŠÔ‚Ì—”
+		randomPos.z = (float)(rand() % 30 - 15.0f);
 
 		// ƒ‰ƒ“ƒ_ƒ€‚ÅŽZo‚µ‚½’l‚ðŠî€ˆÊ’u‚É‰ÁŽZ‚µ‚Ä‘ã“ü
 		XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
@@ -149,6 +149,7 @@ void DwarfManager::Update() {
 				//m_ppDwarf[i]->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
 				m_ppDwarf[i]->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
 				m_ppDwarf[i]->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚È‚¢
+
 			} else {
 				if (m_ppDwarf[i]->GetLiftFlg()) {
 					continue;
@@ -159,10 +160,19 @@ void DwarfManager::Update() {
 			}
 		}
 
+		for (int k = i+1; k < m_DwarfNum; k++) {
+			if (CollisionSphere(m_ppDwarf[i], m_ppDwarf[k])) {
+				m_ppDwarf[i]->SetColFlg(true);
+				m_ppDwarf[k]->SetColFlg(true);
+			}
+		}
+
 		if (Timer < 0) {
+			/*’e‚ªÁ‚¦‚½uŠÔ‚¾‚Á‚½‚ç‚P•bŒã‚Éœpœj*/
 			if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
 				m_ppDwarf[i]->SetCircumferenceFlg(true);
 			}
+			m_ppDwarf[i]->SetColFlg(false);
 		}
 		m_ppDwarf[i]->Update();
 	}

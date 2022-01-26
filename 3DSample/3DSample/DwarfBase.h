@@ -29,13 +29,14 @@
 #define MAX_BLUE_DWARF_3	(12)									// ステージ１青小人最大値
 #define MAX_DWARF_3			(MAX_RED_DWARF_3 + MAX_BLUE_DWARF_3)// ステージ１小人最大数合計
 
-#define DWARF_HITBOX_X		(2.0f)								// 小人のヒットボックス（正確には境界球）
+#define DWARF_HITBOX_X		(1.0f)								// 小人のヒットボックス（正確には境界球）
 #define DWARF_HITBOX_Y		(1.0f)
-#define DWARF_HITBOX_Z		(2.0f)
+#define DWARF_HITBOX_Z		(1.0f)
 
 #define DWARF_DEFAULT_SPEED	(4.0f)								// 普段のスピード
 #define DWARF_RUN_SPEED		(3.0f)								// 弾から逃げるスピード
 #define DWARF_FOLLOW_SPEED	(12.0f)								// 弾を追いかけるときのスピード
+#define DWARF_REVERSE_SPEED	(4.0f)								// ぶつかって反転するときのスピード
 //↑みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
 
 
@@ -86,7 +87,7 @@ private:
 	bool m_FollowFlg;			// 弾に追跡
 	bool m_MoveFlg;				// 移動許可フラグ
 	bool m_colFlg;				// 当たり判定フラグ
-	bool m_CollectionFlg;		// 回収　true：回収された
+	bool m_CollectionFlg;		// 回収フラグ　true：回収された
 	bool m_CircumferenceFlg;	// 周回フラグ
 	bool m_liftFlg;				// 浮くフラグ
 
