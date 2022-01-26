@@ -36,7 +36,6 @@
 // ---シーン関連
 #include "GameScene.h"
 #include "SelectScene.h"
-#include "Tutorial.h"
 #include "Clear.h"
 #include "GameOver.h"
 
@@ -66,8 +65,9 @@
 #include "CollectionPoint.h"
 
 // ---ゲーム関連-UI
+#include "Tutorial.h"
 #include "Score.h"
-
+#include "Timer.h"
 
 
 //*******************************************************************************
@@ -97,8 +97,9 @@ DwarfStageCollision	*g_pDwarfStageCollision;
 BulletManager		*g_pBulletManger;
 BulletTarget			* g_pBulletTarget;
 
-Score				*g_pScore;
 Tutorial			*g_pTutorial;
+Score				*g_pScore;
+Timer*				g_pTimer;
 
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
@@ -215,13 +216,18 @@ void GameScene::Init(int StageNum)
 	g_pCollision = new Collision();
 	g_pCollision->Init();
 
+	// チュートリアルクラス
+	g_pTutorial = new Tutorial();
+	g_pTutorial->Init();
+
 	// スコアクラス
 	g_pScore = new Score();
 	g_pScore->Init();
 
-	// チュートリアルクラス
-	g_pTutorial = new Tutorial();
-	g_pTutorial->Init();
+	// タイマークラス
+	g_pTimer = new Timer();
+	g_pTimer->Init();
+
 
 	// ゲームクリア初期化
 	InitClear();
@@ -254,6 +260,10 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
+	// タイマークラスの終了処理
+	g_pTimer->Uninit();
+	delete g_pTimer;
+
 	// スコアクラスの終了処理
 	g_pScore->Uninit();
 	delete g_pScore;
@@ -371,11 +381,14 @@ SCENE GameScene::Update()
 	//g_pEnemy->TargetPos(g_recPlayerPos);
 	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
+	// チュートリアル表示更新
+	g_pTutorial->Update();
+
 	// スコア更新
 	g_pScore->Update();
 
-	// チュートリアル表示更新
-	g_pTutorial->Update();
+	// タイマー更新
+	g_pTimer->Update();
 
 
 	//***************************************************************
@@ -719,11 +732,13 @@ void GameScene::Draw()
 		DrawClear();
 	}
 	
+	// チュートリアル描画
+	g_pTutorial->Draw();
+
 	// スコア描画
 	g_pScore->Draw();
 
-	// チュートリアル描画
-	//g_pTutorial->Draw();
-
+	// タイマー描画
+	g_pTimer->Draw();
 }
 

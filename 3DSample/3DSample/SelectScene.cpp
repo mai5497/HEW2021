@@ -24,13 +24,12 @@ typedef enum
 {
 
 	SELECT_BG = 0,
-	SELECT_ROGO,
+	SELECT_LOGO,
 	
 	SELECT_TITLE_1,
 	SELECT_TITLE_2,
 	SELECT_TITLE_3,
 	
-	SELECT_BLOCK_0,
 	SELECT_BLOCK_1,
 	SELECT_BLOCK_2,
 	SELECT_BLOCK_3,
@@ -47,16 +46,15 @@ Camera* g_pSelectCamera;
 GameObject g_pSelectObject[SELECT_MAX];
 
 const char* g_pTexFName[SELECT_MAX] = {
-	"Assets/Texture/StageSelect_BG.png",
-	"Assets/Texture/StageSelect.png",
-	"Assets/Texture/Stage_1.png",
-	"Assets/Texture/Stage_2.png",
-	"Assets/Texture/Stage_3.png",
-	"Assets/Texture/SelectObj_Block0.png",
-	"Assets/Texture/SelectObj_Block1.png",
-	"Assets/Texture/SelectObj_Block2.png",
-	"Assets/Texture/SelectObj_Block3.png",
-	"Assets/Texture/arrow_down.png",
+	"Assets/Texture/SceneTexture/Select_BG.png",
+	"Assets/Texture/SceneTexture/Select_Logo.png",
+	"Assets/Texture/SceneTexture/Stage_1.png",
+	"Assets/Texture/SceneTexture/Stage_2.png",
+	"Assets/Texture/SceneTexture/Stage_3.png",
+	"Assets/Texture/SceneTexture/1box/1box_0.png",
+	"Assets/Texture/SceneTexture/2box/2box_0.png",
+	"Assets/Texture/SceneTexture/3box/3box_0.png",
+	"Assets/Texture/SceneTexture/arrow_down.png",
 };
 
 float g_arrowPosX;
@@ -95,11 +93,11 @@ void SelectScene::Init()
 		g_pSelectObject[i].Init();
 	}
 
-	g_pSelectObject[SELECT_BG].SetSize(DirectX::XMFLOAT3(1.0f, 0.6f, 0.1f));
-	g_pSelectObject[SELECT_BG].SetPos (DirectX::XMFLOAT3(0, 0, 1));
+	g_pSelectObject[SELECT_BG].SetSize(DirectX::XMFLOAT3(1.0f, 0.6f, 1));
+	g_pSelectObject[SELECT_BG].SetPos (DirectX::XMFLOAT3(0, 0, 3));
 
-	g_pSelectObject[SELECT_ROGO].SetSize(DirectX::XMFLOAT3(0.35f, 0.15f, 1));
-	g_pSelectObject[SELECT_ROGO].SetPos (DirectX::XMFLOAT3(0.0f, 0.18f, 1));
+	g_pSelectObject[SELECT_LOGO].SetSize(DirectX::XMFLOAT3(0.35f, 0.25f, 1));
+	g_pSelectObject[SELECT_LOGO].SetPos (DirectX::XMFLOAT3(0.0f, 0.18f, 2));
 
 	g_pSelectObject[SELECT_TITLE_1].SetSize(DirectX::XMFLOAT3( 0.15f, 0.1f, 1));
 	g_pSelectObject[SELECT_TITLE_1].SetPos (DirectX::XMFLOAT3(-0.3f,  0.02f, 1));
@@ -107,9 +105,6 @@ void SelectScene::Init()
 	g_pSelectObject[SELECT_TITLE_2].SetPos (DirectX::XMFLOAT3( 0.0f,  0.02f, 1));
 	g_pSelectObject[SELECT_TITLE_3].SetSize(DirectX::XMFLOAT3( 0.15f, 0.1f, 1));
 	g_pSelectObject[SELECT_TITLE_3].SetPos (DirectX::XMFLOAT3( 0.3f,  0.02f, 1));
-
-	g_pSelectObject[SELECT_BLOCK_0].SetSize(DirectX::XMFLOAT3(0.15f,  0.2f, 1));
-	g_pSelectObject[SELECT_BLOCK_0].SetPos (DirectX::XMFLOAT3(-0.42f, -0.18f, 1));
 
 	g_pSelectObject[SELECT_BLOCK_1].SetSize(DirectX::XMFLOAT3( 0.12f, 0.12f, 1));
 	g_pSelectObject[SELECT_BLOCK_1].SetPos (DirectX::XMFLOAT3(-0.3f, -0.15f, 1));
