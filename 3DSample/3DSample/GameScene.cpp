@@ -81,7 +81,7 @@
 // ƒOƒ[ƒoƒ‹éŒ¾
 //*******************************************************************************
 Camera				*g_pCamera;
-TPSCamera			*g_pTPSCamera;
+//TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
 GamePolygon			*g_pPolygon;
 
