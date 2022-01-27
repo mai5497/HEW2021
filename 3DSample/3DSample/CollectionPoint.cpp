@@ -21,7 +21,7 @@
 //====================================================================
 CollectionPoint::CollectionPoint()
 {
-	m_size	= XMFLOAT3(5.0f, 0.0f, 5.0f);
+	m_size	= XMFLOAT3(7.0f, 0.0f, 7.0f);
 
 
 	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 2.0f, 0.0f);	// ƒ‰ƒ“ƒ_ƒ€
@@ -31,7 +31,7 @@ CollectionPoint::CollectionPoint()
 
 	m_pos = randomPos;
 
-	m_Radius = XMFLOAT3(2.0f, 0.1f, 2.0f);
+	m_Radius = XMFLOAT3(3.0f, 0.1f, 3.0f);
 	m_Angle	= XMFLOAT3(0, 0, 0);
 	m_PosSetTime = POSSETTIME;	
 	m_TimerStart = false;

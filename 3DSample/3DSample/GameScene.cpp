@@ -36,7 +36,6 @@
 // ---シーン関連
 #include "GameScene.h"
 #include "SelectScene.h"
-#include "Tutorial.h"
 #include "Clear.h"
 #include "GameOver.h"
 
@@ -66,8 +65,9 @@
 #include "CollectionPoint.h"
 
 // ---ゲーム関連-UI
+#include "Tutorial.h"
 #include "Score.h"
-
+#include "Timer.h"
 
 
 //*******************************************************************************
@@ -81,7 +81,7 @@
 // グローバル宣言
 //*******************************************************************************
 Camera				*g_pCamera;
-TPSCamera			*g_pTPSCamera;
+//TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
 GamePolygon			*g_pPolygon;
 
@@ -98,8 +98,9 @@ DwarfStageCollision	*g_pDwarfStageCollision;
 BulletManager		*g_pBulletManger;
 BulletTarget			* g_pBulletTarget;
 
-Score				*g_pScore;
 Tutorial			*g_pTutorial;
+Score				*g_pScore;
+Timer*				g_pTimer;
 
 Shadow				*g_pShadow;
 
@@ -228,13 +229,18 @@ void GameScene::Init(int StageNum)
 	g_pCollision = new Collision();
 	g_pCollision->Init();
 
+	// チュートリアルクラス
+	g_pTutorial = new Tutorial();
+	g_pTutorial->Init();
+
 	// スコアクラス
 	g_pScore = new Score();
 	g_pScore->Init();
 
-	// チュートリアルクラス
-	g_pTutorial = new Tutorial();
-	g_pTutorial->Init();
+	// タイマークラス
+	g_pTimer = new Timer();
+	g_pTimer->Init();
+
 
 	// ゲームクリア初期化
 	InitClear();
@@ -274,6 +280,10 @@ void GameScene::Uninit()
 	// 影
 	g_pShadow->Uninit();
 	delete g_pShadow;
+
+	// タイマークラスの終了処理
+	g_pTimer->Uninit();
+	delete g_pTimer;
 
 	// スコアクラスの終了処理
 	g_pScore->Uninit();
@@ -403,11 +413,14 @@ SCENE GameScene::Update()
 	//g_pEnemy->TargetPos(g_recPlayerPos);
 	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
+	// チュートリアル表示更新
+	g_pTutorial->Update();
+
 	// スコア更新
 	g_pScore->Update();
 
-	// チュートリアル表示更新
-	g_pTutorial->Update();
+	// タイマー更新
+	g_pTimer->Update();
 
 
 	//***************************************************************
@@ -417,7 +430,7 @@ SCENE GameScene::Update()
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.x = (float)(rand() % 40 - 20.0f);	//-20.0 ~ 20.0の間の乱数
 			randomPos.z = (float)(rand() % 40 - 20.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
@@ -453,9 +466,6 @@ SCENE GameScene::Update()
 				}
 			}
 		}
-
-
-
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
@@ -464,24 +474,30 @@ SCENE GameScene::Update()
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {
-			g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
-			if (g_pBullet[j]->use) {									// 最後の指示を通す
-				g_LastBulletNun = j;
-			}
-			if (!g_pBullet[j]->use) {								// 弾未用ならスキップ
+			//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
+			//if (g_pBullet[j]->use) {									// 最後の指示を通す
+			//	g_LastBulletNun = j;
+			//}
+			if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
 				continue;
 			}
 			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
 			//	continue;
 			//}
-			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
-				g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
+			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
+				continue;
 			}
-			//---ピクミンの弾への追尾
+			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
+				continue;
+			}
+			//---小人の弾への追尾
+			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
 			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+			g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
 		}
 
 	}
+
 	//----- ゲームクリア -----
 	if (g_pDwarfManager->GetCollectionSum() == g_pDwarfManager->GetDwarfNum()) {		// 小人全回収でクリア
 		if (!m_IsGameOver) {
@@ -576,6 +592,9 @@ SCENE GameScene::Update()
 	//***************************************************************	
 	int sceneState = -1;
 	if (m_IsClear) {
+		g_pScore->SetScore(1);
+		g_pSelectScene->SetScore(m_StageNum, 1);
+
 		sceneState = UpdateClear();
 		if (sceneState == STATE_NEXT) {
 			GameScene::Uninit();
@@ -773,12 +792,13 @@ void GameScene::Draw()
 		DrawClear();
 	}
 	
+	// チュートリアル描画
+	g_pTutorial->Draw();
+
 	// スコア描画
 	g_pScore->Draw();
 
-
-	 //チュートリアル描画
-	//g_pTutorial->Draw();
-
+	// タイマー描画
+	g_pTimer->Draw();
 }
 

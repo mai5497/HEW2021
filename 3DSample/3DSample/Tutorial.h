@@ -1,10 +1,14 @@
 #pragma once
+
+//========================= インクルード部 ===========================
 #include "Texture.h"
 #include "GameObject.h"
 #include "Camera.h"
 
+//========================= クラス定義 ===========================
 class Tutorial
 {
+	//---関数
 public:
 	Tutorial();
 	~Tutorial();
@@ -15,10 +19,11 @@ public:
 	void Draw();
 
 
+	//---変数
 private:
-	ID3D11ShaderResourceView*	m_pTexTutorial;
+	ID3D11ShaderResourceView*	m_pTexTutorial[3];
 
-	GameObject*		m_pObjectTutorial;
+	GameObject*		m_pObjectTutorial[3];
 	Camera*			m_pCameraTutorial;
 
 };

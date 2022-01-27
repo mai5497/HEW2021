@@ -1,81 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="ソース ファイル\System">
-      <UniqueIdentifier>{1b8d9a6a-7519-4c44-a563-2a5a45d3c140}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\System">
-      <UniqueIdentifier>{4eaa2edc-9288-4877-a978-e8e1cc40818b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FBX">
-      <UniqueIdentifier>{bce76c3b-ab8d-4b2b-a978-c2e095464b62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene">
-      <UniqueIdentifier>{d646aa39-37d3-433b-afb1-9b14117a1272}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Scene">
-      <UniqueIdentifier>{67bf5fe0-adf7-4e07-8c1c-3e78ea708740}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game">
-      <UniqueIdentifier>{1990f39b-33a8-4818-85ec-a9f7c3f1dffe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game">
-      <UniqueIdentifier>{c588a373-8423-4ebb-82c2-27b93da19375}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Dwarf">
-      <UniqueIdentifier>{4ec66b7c-0c41-4491-a739-b4e7ffcc0b25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Bullet">
-      <UniqueIdentifier>{287829d4-9ccc-4bd0-83d8-b9b73e54f5e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Collector">
-      <UniqueIdentifier>{2be63e48-34cf-4632-8e62-89f1834deb9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Stage">
-      <UniqueIdentifier>{7b28f3b1-7203-488b-8c1e-b22516f797c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\UI">
-      <UniqueIdentifier>{c8da2fe8-408a-4c40-9030-d26e64272242}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Player">
-      <UniqueIdentifier>{3ccc6f58-8e62-4e88-8ba9-fa2a499dec3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Enemy">
-      <UniqueIdentifier>{562bb9e4-3689-4f05-87a2-ab7ac42fcb00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Dwarf">
-      <UniqueIdentifier>{6984dcfa-fdc1-4025-b2e1-410b628b1fab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Bullet">
-      <UniqueIdentifier>{e35625a1-5ac2-404d-a9ea-fedf5b1d5e69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Collector">
-      <UniqueIdentifier>{6cf23473-192c-406b-a84a-f0e5291fd640}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Enemy">
-      <UniqueIdentifier>{7d5d0a3d-a4f1-4df4-ac69-cdf2d66a2ffb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Stage">
-      <UniqueIdentifier>{3bfb689d-fd2d-4b3b-a3fa-8314e0a65c33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\UI">
-      <UniqueIdentifier>{6d7f97e4-4531-4aa0-a53b-c9e6a1421d05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Player">
-      <UniqueIdentifier>{67514da0-41e1-4321-ab3b-a2b3d68b6be1}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="BlueDwarf.cpp" />
+    <ClCompile Include="BulletBase.cpp" />
+    <ClCompile Include="BulletBlue.cpp" />
+    <ClCompile Include="BulletManager.cpp" />
+    <ClCompile Include="BulletRed.cpp" />
+    <ClCompile Include="BulletTarget.cpp" />
+    <ClCompile Include="Clear.cpp" />
+    <ClCompile Include="CollectionPoint.cpp" />
+    <ClCompile Include="Collector.cpp" />
+    <ClCompile Include="DwarfStageCollision.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GamePolygon.cpp" />
+    <ClCompile Include="Shadow.cpp" />
+    <ClCompile Include="Squre.cpp" />
+    <ClCompile Include="StageObjectBase.cpp" />
+    <ClCompile Include="RedDwarf.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterBase.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="DrawBuffer.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="FBX\FBXLoadAnimation.cpp" />
+    <ClCompile Include="FBX\FBXLoadBone.cpp" />
+    <ClCompile Include="FBX\FBXLoader.cpp" />
+    <ClCompile Include="FBX\FBXLoadMaterial.cpp" />
+    <ClCompile Include="FBX\FBXLoadMesh.cpp" />
+    <ClCompile Include="FBX\FBXPlayer.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MyMath.cpp" />
+    <ClCompile Include="MyVector.cpp" />
+    <ClCompile Include="DwarfBase.cpp" />
+    <ClCompile Include="DwarfManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerToEnemy.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SelectScene.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="StageObjectManager.cpp" />
+    <ClCompile Include="Startup.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TPScamera.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

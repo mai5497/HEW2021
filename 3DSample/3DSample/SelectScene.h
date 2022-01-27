@@ -15,10 +15,11 @@ public:
 	void Draw();
 
 	int GetStageNum();	// ƒV[ƒ“”Ô†æ“¾
+	
+	void SetScore(int stageNum, int score);
 
 private:
 	int m_StageNum;
-
 };
 
 

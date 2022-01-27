@@ -76,8 +76,8 @@ bool DwarfManager::Init(int stagenum) {
 
 	for (int i = 0; i < m_DwarfNum; i++){
 		// 小人をランダムで初期配置
-		randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
-		randomPos.z = (float)(rand() % 40 - 20.0f);
+		randomPos.x = (float)(rand() % 30 - 15.0f);	//-10.0 ~ 10.0の間の乱数
+		randomPos.z = (float)(rand() % 30 - 15.0f);
 
 		// ランダムで算出した値を基準位置に加算して代入
 		XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
@@ -149,6 +149,7 @@ void DwarfManager::Update() {
 				//m_ppDwarf[i]->SetMoveFlg(true);		// 移動許可
 				m_ppDwarf[i]->SetFollowFlg(true);	// 追跡を始める
 				m_ppDwarf[i]->SetrunFlg(false);		// 弾から離れない
+
 			} else {
 				if (m_ppDwarf[i]->GetLiftFlg()) {
 					continue;
@@ -159,17 +160,26 @@ void DwarfManager::Update() {
 			}
 		}
 
-		if (Timer < 0) {
-			if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
-				m_ppDwarf[i]->SetCircumferenceFlg(true);
+		for (int k = i + 1; k < m_DwarfNum; k++) {
+			if (CollisionSphere(m_ppDwarf[i], m_ppDwarf[k])) {
+				m_ppDwarf[i]->SetColFlg(true);
+				m_ppDwarf[k]->SetColFlg(true);
 			}
+			m_ppDwarf[i]->SetColFlg(false);
 		}
+
+		//if (Timer < 0) {
+		//	if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
+		//		m_ppDwarf[i]->SetCircumferenceFlg(true);
+		//	}
+		//	m_ppDwarf[i]->SetColFlg(false);
+		//}
 		m_ppDwarf[i]->Update();
 	}
 
-	if (Timer < 0) {
-		Timer = TARGETSET_TIME;
-	}
+	//if (Timer < 0) {
+	//	Timer = TARGETSET_TIME;
+	//}
 
 }
 
