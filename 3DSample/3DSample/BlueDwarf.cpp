@@ -39,8 +39,11 @@ BlueDwarf::BlueDwarf()
 
 
 	SetRBFlg(false);	// 青小人
-
+	m_CircumferenceTimer = TARGETSET_TIME;
+	m_BulletAliveTimer = 0;
 }
+
+
 
 
 //====================================================================
@@ -103,6 +106,11 @@ void BlueDwarf::Update()
 	float vAngle;		// 目的位置の角度
 
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	SetMoveFlg(true);
+	if (m_BulletAliveTimer > 0) {
+		m_CircumferenceTimer = m_BulletAliveTimer;
+	}
+	m_CircumferenceTimer--;
 
 
 	// 追従するターゲットの座標
@@ -123,7 +131,7 @@ void BlueDwarf::Update()
 		SetMoveFlg(true);
 	} else if (GetColFlg()) {		// ぶつかって反転するとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_REVERSE_SPEED);
-	} else {	// 徘徊時
+	} else {
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
 		SetMoveFlg(true);
 	}
@@ -131,7 +139,36 @@ void BlueDwarf::Update()
 	// Float3型に変換
 	XMStoreFloat3(&m_move, vDirection);
 
-	// アークタンジェント(逆正接)
+	//----- 弾の近くにいるときの処理 -----
+	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
+	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+		SetrunFlg(false);
+		SetMoveFlg(false);
+	}
+	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
+		SetColFlg(false);
+		SetFollowFlg(false);
+		SetMoveFlg(false);
+	}
+	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
+		SetFollowFlg(false);
+		SetMoveFlg(false);
+	}
+
+
+	//----- 回収中の吸われる力をかけるか、重力をかけるか -----
+	if (!GetLiftFlg()) {
+		// 重力をかける
+		m_move.y -= GRAVITY;
+	} else {
+		// 浮く
+		m_move.y += LIFTPOWER;
+		if (m_pos.y > COLLECTOR_POS_Y) {
+			SetLiftFlg(false);
+		}
+	}
+
+	//----- 進行方向にくるってまわってから移動する -----
 	vAngle = XMConvertToDegrees(atan2(m_move.z, m_move.x));
 	float DiffAngle = vAngle - m_DwarfAngle;
 	if (DiffAngle >= 180.0f) {
@@ -148,41 +185,7 @@ void BlueDwarf::Update()
 		m_DwarfAngle += 360.0f;
 	}
 
-
-	//if (jumpFlg) {
-	//	m_move.y -= 0.21f;
-	//}
-
-	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
-		SetrunFlg(false);
-		//SetMoveFlg(false);
-	}
-	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
-		SetColFlg(false);
-		SetMoveFlg(false);
-	}
-	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
-		SetFollowFlg(false);
-		SetMoveFlg(false);
-	}
-
-
-	if (!GetLiftFlg()) {
-		// 重力をかける
-		m_move.y -= GRAVITY;
-	} else {
-		// 浮く
-		m_move.y += LIFTPOWER;
-		if (m_pos.y > COLLECTOR_POS_Y) {
-			SetLiftFlg(false);
-		}
-	}
-
-
-
-
-	// 移動
+	//----- 移動許可フラグが立っていないときは移動しない（プルプルしないため） -----
 	if (GetMoveFlg()) {
 		m_pos.x += m_move.x;
 		m_pos.y += m_move.y;
@@ -199,7 +202,18 @@ void BlueDwarf::Update()
 			m_pos.z += 0.0f;
 		}
 	}
-	
+
+	//----- ランダムで移動するための設定 -----
+	if (m_CircumferenceTimer < 0) {
+		if (!GetrunFlg() && !GetFollowFlg()) {
+			SetCircumferenceFlg(true);
+		}
+		SetColFlg(false);
+	}
+	if (m_CircumferenceTimer < 0 || GetCircumferenceFlg()) {
+		m_CircumferenceTimer = TARGETSET_TIME;
+	}
+
 	if (m_pos.y < 0.5f) {
 		/* todo: ゲームオーバーの瞬間にその小人にカメラ寄る */
 		BlueDwarf::SetAliveFlg(false);

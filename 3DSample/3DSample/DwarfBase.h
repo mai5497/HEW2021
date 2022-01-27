@@ -36,7 +36,7 @@
 #define DWARF_DEFAULT_SPEED	(4.0f)								// 普段のスピード
 #define DWARF_RUN_SPEED		(3.0f)								// 弾から逃げるスピード
 #define DWARF_FOLLOW_SPEED	(12.0f)								// 弾を追いかけるときのスピード
-#define DWARF_REVERSE_SPEED	(4.0f)								// ぶつかって反転するときのスピード
+#define DWARF_REVERSE_SPEED (4.0f)								// ぶつかって反転するときのスピード
 //↑みことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみことみこと
 
 
@@ -74,6 +74,7 @@ public:
 	bool GetCircumferenceFlg();				// 周回フラグゲット
 	void SetLiftFlg(bool flg);
 	bool GetLiftFlg();
+	void SetBulletAliveTimer(int time);		// 弾の生存時間のセット
 
 	//---変数
 
@@ -98,7 +99,8 @@ protected:
 	XMFLOAT3	m_currentPos;	// 現在の座標
 	XMFLOAT3	m_oldPos;		// 過去の座標
 	XMFLOAT3	m_targetPos;	// ターゲット座標
-
+	int m_CircumferenceTimer;	// 周回タイマー
+	int m_BulletAliveTimer;		// 弾の生存時間
 };
 
 

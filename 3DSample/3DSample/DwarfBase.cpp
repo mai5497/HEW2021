@@ -368,3 +368,17 @@ void DwarfBase::SetLiftFlg(bool flg) {
 bool DwarfBase::GetLiftFlg() {
 	return m_liftFlg;
 }
+
+
+//====================================================================
+//
+//		弾の生存時間のセット
+//		作成者：伊地田真衣
+//		戻り値 : void
+//		引数   : 弾の生存時間
+//
+//====================================================================
+void DwarfBase::SetBulletAliveTimer(int time) {
+	m_CircumferenceTimer = time;
+}
+

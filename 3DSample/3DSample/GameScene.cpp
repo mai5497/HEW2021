@@ -473,15 +473,10 @@ SCENE GameScene::Update()
 			//if (g_pBullet[j]->use) {									// 最後の指示を通す
 			//	g_LastBulletNun = j;
 			//}
-			if (!g_pBulletManger->GetBullet(j)->use) {					// 弾未用ならスキップ
+			if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
 				continue;
 			}
 			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
-			//	continue;
-			//}
-			//if (g_pBulletManger->GetBullet(j)->GetRBFlg() != g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が違ったら
-			//	g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
-			//	g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
 			//	continue;
 			//}
 			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
@@ -490,9 +485,10 @@ SCENE GameScene::Update()
 			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
 				continue;
 			}
-			//---ピクミンの弾への追尾
+			//---小人の弾への追尾
 			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
 			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+			g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
 		}
 
 	}

@@ -160,26 +160,26 @@ void DwarfManager::Update() {
 			}
 		}
 
-		for (int k = i+1; k < m_DwarfNum; k++) {
+		for (int k = i + 1; k < m_DwarfNum; k++) {
 			if (CollisionSphere(m_ppDwarf[i], m_ppDwarf[k])) {
 				m_ppDwarf[i]->SetColFlg(true);
 				m_ppDwarf[k]->SetColFlg(true);
 			}
-		}
-
-		if (Timer < 0) {
-			/*’e‚ªÁ‚¦‚½uŠÔ‚¾‚Á‚½‚ç‚P•bŒã‚Éœpœj*/
-			if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
-				m_ppDwarf[i]->SetCircumferenceFlg(true);
-			}
 			m_ppDwarf[i]->SetColFlg(false);
 		}
+
+		//if (Timer < 0) {
+		//	if (!m_ppDwarf[i]->GetrunFlg() && !m_ppDwarf[i]->GetFollowFlg()) {
+		//		m_ppDwarf[i]->SetCircumferenceFlg(true);
+		//	}
+		//	m_ppDwarf[i]->SetColFlg(false);
+		//}
 		m_ppDwarf[i]->Update();
 	}
 
-	if (Timer < 0) {
-		Timer = TARGETSET_TIME;
-	}
+	//if (Timer < 0) {
+	//	Timer = TARGETSET_TIME;
+	//}
 
 }
 

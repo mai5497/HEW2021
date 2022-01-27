@@ -50,7 +50,7 @@ public:
 			bool GetLandingFlg();
 
 			void SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 centerPos,float ThrowTimer);		// ベジェ曲線による算出を行うための座標を取得
-
+			int GetAliveTime();
 private:
 	//---関数
 
