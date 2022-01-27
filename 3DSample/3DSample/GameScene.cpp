@@ -261,6 +261,7 @@ void GameScene::Init(int StageNum)
 
 	// BGMÄ¶
 	CSound::Play(GAME_BGM);
+	CSound::SetVolume(GAME_BGM,0.5);
 }
 
 //==============================================================
@@ -468,6 +469,7 @@ SCENE GameScene::Update()
 		}
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+			CSound::Play(SE_Dwarf_1);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
 			g_pDwarfManager->AddCollectionSum();
 		}
