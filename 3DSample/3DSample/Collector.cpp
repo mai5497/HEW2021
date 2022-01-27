@@ -19,8 +19,8 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define COLLECTOR_SIZE		(1.0f)
-#define FPS					(60)					// フレーム数
-#define WAIT_TIME			(5)					// 待機時間
+#define FPS							(60)					// フレーム数
+#define WAIT_TIME				(5)					// 待機時間
 
 #define START_POS_X			(46.0f)					// 開始地点 X
 #define START_POS_Z			(26.0f)					// 開始地点 
@@ -50,6 +50,8 @@ Collector::Collector()
 	m_pos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Radius = XMFLOAT3(5.0f, 0.1f, 5.0f);
+	m_Angle = XMFLOAT3(15.0f, 0.0f, 0.0f);
+	//m_Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f);
 
 	m_nowCollectTimer = WAIT_TIME * FPS + 59;
 	m_timer = WAIT_TIME * FPS + 59;
@@ -232,7 +234,10 @@ void Collector::Draw()
 	{
 		SHADER->SetWorld(
 			DirectX::XMMatrixScaling(COLLECTOR_SIZE, COLLECTOR_SIZE, COLLECTOR_SIZE)
-			* DirectX::XMMatrixRotationY(-m_angle)
+			* DirectX::XMMatrixRotationRollPitchYaw(
+				XMConvertToRadians(m_Angle.x),
+				XMConvertToRadians(m_Angle.y),
+				XMConvertToRadians(m_Angle.z))
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 		SHADER->SetTexture(m_pCollectorTex);

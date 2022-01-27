@@ -115,7 +115,7 @@ void BulletManager::Update()
 
 	}
 
-	if (IsRelease('Q') || IsRelease(JPadButton::B)) {
+	if (IsRelease('Q') || IsRelease(JPadButton::A)) {
 		rbflg = true;		// ê‘íeÉZÉbÉg
 		CSound::Play(SE_BULLET_1);
 		CreateBullet(rbflg);

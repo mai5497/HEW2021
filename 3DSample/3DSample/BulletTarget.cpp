@@ -27,7 +27,7 @@
 //---座標系
 #define TARGET_POS_X		(0.0f)			
 #define TARGET_POS_Y		(5.0f)
-#define TARGET_POS_Z		(-10.0f)
+#define TARGET_POS_Z		(-20.0f)
 
 //---サイズ系
 #define TARGET_SIZE_X		(3.0f)
@@ -35,10 +35,12 @@
 #define TARGET_SIZE_Z		(3.0f)
 
 //---数学系
-#define L_PI				(3.1415926f)		// π
-#define L_H_DEG				(180.0f)			// 角度
-#define	TRANS_RADIAN		(L_PI / L_H_DEG)	// ラジアンに変換
+#define L_PI				(3.1415926f)			// π
+#define L_H_DEG				(180.0f)				// 角度
+#define	TRANS_RADIAN		(L_PI / L_H_DEG)		// ラジアンに変換
 
+//---弾の調整値
+#define	BULLET_THROEWPOWER	((1.0f / FPS) * 100.0f)	// 弾の飛距離の速度
 
 //*******************************************************************************
 // グローバル宣言
@@ -110,7 +112,13 @@ bool BulletTarget::Init()
 	m_Color = (XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f));
 	m_Angle = (XMFLOAT3(XM_PI / 2, 0.0, 0.0f));
 
-	m_MoveSpeed = (1.0f / FPS) * 100.0f;
+	m_ThrowDir = 1.0f;
+
+
+	//m_MoveSpeed = (1.0f / FPS) * 100.0f;
+	//m_MoveSpeed = atan2(m_move.z, m_move.x);
+	//m_MoveSpeed = BULLET_THROEWPOWER;				// 弾の飛距離の速度
+	 
 	m_collisionType = COLLISION_DYNAMIC;			// 当たり判定を取るときのオブジェクトの種類の設定
 
 
@@ -194,31 +202,54 @@ void BulletTarget::Update()
 		}
 	}
 
+	m_MoveSpeed.x = 0.0f;
+	m_MoveSpeed.z = 0.0f;
+	
 	if (IsRepeat(('Q'),1) || IsRepeat((JPadButton::X),1)|| 
-		IsRepeat(('E'),1) || IsRepeat((JPadButton::B),1)){			// 変更後ー上
+		IsRepeat(('E'),1) || IsRepeat((JPadButton::A),1)){			// 変更後ー上
 		/* 
 			キーはなしたら帰ってきた！！！なんで！！！！わあ！！！！	(2022/01/21時点)
 			できた！！まんじ！！								(2022/01/22時点)
 		*/
-		if (m_pos.z > 25.0f) {		// 一定の奥まで
-			m_pos.z = 25.0f;
-			m_MoveSpeed *= -1;		// 移動方向反転
+		
+
+		// 距離の計算(ターゲットとプレイヤーの距離)
+		// 三平方の定理によって算出
+		m_Distance = sqrt((m_pos.x - m_PlayerPos.x) * (m_pos.x - m_PlayerPos.x) + (m_pos.z - m_PlayerPos.z) * (m_pos.z - m_PlayerPos.z));
+
+		
+		if (m_Distance > 50.0f) {		// 一定の奥まで
+			// 距離の離れた大きさによって位置フレーム前の座標に再配置
+			m_Distance = 50.0f;
+			m_ThrowDir = -1.0f;			// 反転
 		}
 
-		if (m_pos.z < -23.0f) {		// 一定の手前まで
-			m_pos.z = -23.0f;
-			m_MoveSpeed *= -1;
+		if (m_Distance < 10.0f) {		// 一定の手前まで
+			// 距離の離れた大きさによって位置フレーム前の座標に再配置
+			m_Distance = 10.0f;
+			m_ThrowDir = 1.0f;			// 反転
+
+
 		}
-		m_move.z = m_MoveSpeed;		// 移動方向反転
+		
+
+		m_RotAngle.x = cos(m_ThrowAngle + XM_PI / 2.0f);
+		m_RotAngle.z = sin(m_ThrowAngle + XM_PI / 2.0f);
+
+		m_MoveSpeed.x = m_RotAngle.x * BULLET_THROEWPOWER * m_ThrowDir;
+		m_MoveSpeed.z = m_RotAngle.z * BULLET_THROEWPOWER * m_ThrowDir;
+
+		//m_move.z = m_MoveSpeed;		// 移動方向反転
+
 	}
 
 
-	m_pos.x += m_move.x;
+	m_pos.x += m_move.x + m_MoveSpeed.x;
 	//m_pos.y += m_move.y;
-	m_pos.z += m_move.z;
+	m_pos.z += m_move.z + m_MoveSpeed.z;
  }
 
-//==============================================================
+//============================================================
 //
 //	BulletTargetクラス::描画
 //	作成者	： 吉原飛鳥
@@ -262,12 +293,38 @@ void BulletTarget::Draw()
 //	BulletTargetクラス::座標設定
 //	作成者	： 吉原飛鳥
 //	戻り値	： void
-//	引数		： void
+//	引数		： XMFLOAT3
 //
 //==============================================================
 void BulletTarget::SetBulletTargetPos(XMFLOAT3 pos) 
 {
 	m_pos = pos;
+}
+
+//==============================================================
+//
+//	BulletTargetクラス::プレイヤーの座標を設定
+//	作成者	： 吉原飛鳥
+//	戻り値	： void
+//	引数		： XMFLOAT3
+//
+//==============================================================
+void BulletTarget::SetPlayerPos(XMFLOAT3  pos)
+{
+	m_PlayerPos = pos;
+}
+
+//==============================================================
+//
+//	BulletTargetクラス::プレイヤーの向く角度を設定
+//	作成者	： 吉原飛鳥
+//	戻り値	： void
+//	引数		： XMFLOAT3
+//
+//==============================================================
+void BulletTarget::SetPlayerDrawAngle(float  PlayerAngle)
+{
+	m_ThrowAngle = PlayerAngle;
 }
 
 //==============================================================

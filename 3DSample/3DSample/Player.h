@@ -45,10 +45,10 @@ public:
 	ID3D11ShaderResourceView *m_pPlayerTex;			
 	XMFLOAT3 GetPlayerPos();
 	XMFLOAT3 GetPlayerAngle();
-
+	float GetPlayerDrawAngle();							// プレイヤーの向く角度を取得
 
 	void SetBulletTargetPos(XMFLOAT3 pos);
-
+	
 	void SetThrowFlg(bool flg);
 
 private:

@@ -37,8 +37,10 @@ public:
 	virtual void Update();
 	void Draw();
 
-	void SetBulletTargetPos(XMFLOAT3 pos);	// ターゲット座標の設定
-	XMFLOAT3 GetBulletTargetPos();			// ターゲット座標の取得
+	void SetBulletTargetPos(XMFLOAT3 pos);			// ターゲット座標の設定
+	void SetPlayerPos(XMFLOAT3 pos);				// プレイヤーの座標を設定
+	void SetPlayerDrawAngle(float PlayerAngle);		// プレイヤーの向く角度を設定
+	XMFLOAT3 GetBulletTargetPos();					// ターゲット座標の取得
 
 	//---てくすちゃ読み込み
 	ID3D11ShaderResourceView	*m_pBulletTargetTex;
@@ -50,7 +52,16 @@ private:
 	static FBXPlayer* m_pBTFBX;			// FBXファイル操作クラス
 
 	Camera *m_pCamera;					// カメラ情報
-	float m_MoveSpeed;						// 移動速度
+	//float m_MoveSpeed;				// 移動速度
+
+	XMFLOAT3 m_PlayerPos;				// プレイヤーの座標
+
+	XMFLOAT3 m_RotAngle;				// 回転後の角度
+	float m_ThrowAngle;					// 投げる角度
+	float m_ThrowDir;					// 投げる方向
+	float m_Distance;					// プレイヤーとターゲットの距離
+	XMFLOAT3 m_MoveSpeed;				// 移動速度(XMFLOAT3型に変更)
+	
 };
 
 

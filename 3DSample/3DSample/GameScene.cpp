@@ -358,12 +358,17 @@ SCENE GameScene::Update()
 	// 影
 	g_pShadow->Update();
 
-	// 落下地点の更新
-	g_pBulletTarget->Update();
-
 	// プレイヤー更新
 	g_pPlayer->SetBulletTargetPos(g_pBulletTarget->GetBulletTargetPos());
 	g_pPlayer->Update();
+
+	// プレイヤーの向きをBulletTargetに取得
+	g_pBulletTarget->SetPlayerDrawAngle(g_pPlayer->GetPlayerDrawAngle());
+
+	// 落下地点の更新
+	g_pBulletTarget->Update();
+	g_pBulletTarget->SetPlayerPos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定(バレットターゲット内で使用)
+
 
 	// 弾更新
 	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
