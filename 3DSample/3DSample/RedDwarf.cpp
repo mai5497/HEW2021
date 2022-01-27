@@ -146,12 +146,8 @@ void RedDwarf::Update()
 
 	//----- 弾の近くにいるときの処理 -----
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (GetrunFlg() && Differ > 25.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
-		//SetMoveFlg(false);
-	}
-	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
-		SetColFlg(false);
 		SetMoveFlg(false);
 	}
 	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
