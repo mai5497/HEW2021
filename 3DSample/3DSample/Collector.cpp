@@ -20,7 +20,8 @@
 //*******************************************************************************
 #define COLLECTOR_SIZE		(1.0f)
 #define FPS					(60)					// フレーム数
-#define WAIT_TIME			(5)					// 待機時間
+#define START_WAIT_TIME			(5)					// 待機時間
+#define COLLECT_WAIT_TIME			(2)					// 待機時間
 
 #define START_POS_X			(46.0f)					// 開始地点 X
 #define START_POS_Z			(26.0f)					// 開始地点 
@@ -51,12 +52,11 @@ Collector::Collector()
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Radius = XMFLOAT3(5.0f, 0.1f, 5.0f);
 
-	m_nowCollectTimer = WAIT_TIME * FPS + 59;
-	m_timer = WAIT_TIME * FPS + 59;
+	m_nowCollectTimer = COLLECT_WAIT_TIME * FPS + 59;
+	m_timer = START_WAIT_TIME * FPS + 59;
 	m_collectFlg = true;
 	use = true;
 	m_nowCollectFlg = false;
-	m_nowCollectTimer = WAIT_TIME * FPS + 59;
 
 	m_moveFlg = false;
 
@@ -174,7 +174,7 @@ void Collector::Update()
 					m_moveFlg = true;							// 移動許可を立てる
 					m_collectFlg = false;						// 帰還にうつるのでfalse
 					m_nowCollectFlg = false;					// 回収中のフラグを下す
-					m_nowCollectTimer = WAIT_TIME * FPS + 59;	// 回収中タイマーの初期化
+					m_nowCollectTimer = COLLECT_WAIT_TIME * FPS + 59;	// 回収中タイマーの初期化
 				}
 			}
 		}
@@ -187,7 +187,7 @@ void Collector::Update()
 		} else {
 			m_moveFlg = false;				// 移動許可をおろす
 			m_collectFlg = true;			// 次は回収に向かうのでture
-			m_timer = WAIT_TIME * FPS + 59;	// スタート位置での待機タイマーの初期化
+			m_timer = START_WAIT_TIME * FPS + 59;	// スタート位置での待機タイマーの初期化
 		}
 	}
 
@@ -200,7 +200,11 @@ void Collector::Update()
 	// 速度を変えるならvDirectonに速度をかける。
 	vDirection = XMVector3Normalize(vDirection);
 	// かける関数								  ↓かける数
-	vDirection = XMVectorScale(vDirection, (1.0f / 60) * 7);
+	if (m_collectFlg) {
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 14);
+	} else {
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * 28);
+	}
 	// Float3型に変換
 	XMStoreFloat3(&m_move, vDirection);
 

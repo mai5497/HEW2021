@@ -38,11 +38,12 @@ BulletBase::BulletBase() :
 	m_pos.x = 1000.0f;						//初期座標x
 	m_pos.y = 1000.0f;						//初期座標y
 	m_pos.z = 1000.0f;						//初期座標z
-	m_size.x = 0.5f;
-	m_size.y = 0.5f;
-	m_size.z = 0.5f;
+	m_size.x = 1.0f;
+	m_size.y = 1.0f;
+	m_size.z = 1.0f;
 	m_sleep = 0;
 	m_sleep2 = 0;
+	m_Radius = XMFLOAT3(10.0f, 0.1f, 10.0f);
 
 	m_BulletAngle = 0.0f;								// 角度の初期化
 	m_dir = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 向き
@@ -204,4 +205,30 @@ void BulletBase::SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 cent
 	m_EndPos = endPos;
 	m_CenterPos = centerPos;
 	m_ThrowTimer = ThrowTimer;
+}
+
+
+//=============================================================
+//
+//	着地フラグの取得
+//	作成者	： 伊地田真衣
+//	戻り値	： 着地フラグ
+//　引数	： なし 
+//
+//=============================================================
+bool BulletBase::GetColFlg() {
+	return m_ColFlg;
+}
+
+
+//=============================================================
+//
+//	弾の生存時間の取得
+//	作成者	： 伊地田真衣
+//	戻り値	： 弾の生存時間
+//　引数	： なし
+//
+//=============================================================
+int BulletBase::GetAliveTime() {
+	return m_AliveTime;
 }
