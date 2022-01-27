@@ -27,9 +27,9 @@ Tutorial::~Tutorial()
 //====================================================================
 void Tutorial::Init()
 {
-	LoadTextureFromFile("Assets/Texture/Tutorial.png", &m_pTexTutorial[0]);
-	LoadTextureFromFile("Assets/Texture/flower.png", &m_pTexTutorial[1]);
-	LoadTextureFromFile("Assets/Texture/dwarf.png", &m_pTexTutorial[2]);
+	LoadTextureFromFile("Assets/Texture/UI/Tutorial.png", &m_pTexTutorial[0]);
+	LoadTextureFromFile("Assets/Texture/UI/flower.png", &m_pTexTutorial[1]);
+	LoadTextureFromFile("Assets/Texture/UI/dwarf.png", &m_pTexTutorial[2]);
 	m_pObjectTutorial[0] = new GameObject;
 	m_pObjectTutorial[0]->Init();
 	m_pObjectTutorial[0]->SetPos(DirectX::XMFLOAT3(0.3f, -0.15f, 1));
@@ -57,9 +57,11 @@ void Tutorial::Uninit()
 {
 	m_pCameraTutorial->Uninit();
 	delete m_pCameraTutorial;
+
 	for (int i = 0; i < 3; i++)
 	{
 		SAFE_RELEASE(m_pTexTutorial[i]);
+
 		m_pObjectTutorial[i]->Uninit();
 		delete m_pObjectTutorial[i];
 

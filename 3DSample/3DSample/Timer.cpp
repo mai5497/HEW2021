@@ -33,36 +33,36 @@ Timer::~Timer()
 //====================================================================
 void Timer::Init()
 {
-	LoadTextureFromFile("Assets/Texture/Number/0.png", &g_pTimerTex[0]);
-	LoadTextureFromFile("Assets/Texture/Number/1.png", &g_pTimerTex[1]);
-	LoadTextureFromFile("Assets/Texture/Number/2.png", &g_pTimerTex[2]);
-	LoadTextureFromFile("Assets/Texture/Number/3.png", &g_pTimerTex[3]);
-	LoadTextureFromFile("Assets/Texture/Number/4.png", &g_pTimerTex[4]);
-	LoadTextureFromFile("Assets/Texture/Number/5.png", &g_pTimerTex[5]);
-	LoadTextureFromFile("Assets/Texture/Number/6.png", &g_pTimerTex[6]);
-	LoadTextureFromFile("Assets/Texture/Number/7.png", &g_pTimerTex[7]);
-	LoadTextureFromFile("Assets/Texture/Number/8.png", &g_pTimerTex[8]);
-	LoadTextureFromFile("Assets/Texture/Number/9.png", &g_pTimerTex[9]);
-	LoadTextureFromFile("Assets/Texture/time_ufo2.png", &g_pTimerFlameTex);
+	LoadTextureFromFile("Assets/Texture/UI/Number/0.png", &g_pTimerTex[0]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/1.png", &g_pTimerTex[1]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/2.png", &g_pTimerTex[2]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/3.png", &g_pTimerTex[3]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/4.png", &g_pTimerTex[4]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/5.png", &g_pTimerTex[5]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/6.png", &g_pTimerTex[6]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/7.png", &g_pTimerTex[7]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/8.png", &g_pTimerTex[8]);
+	LoadTextureFromFile("Assets/Texture/UI/Number/9.png", &g_pTimerTex[9]);
+	LoadTextureFromFile("Assets/Texture/UI/time_ufo2.png", &g_pTimerFlameTex);
 	g_pTimerObj[0] = new GameObject;
 	g_pTimerObj[0]->Init();
-	g_pTimerObj[0]->SetPos(DirectX::XMFLOAT3(0.305f, 0.21f, 1));
+	g_pTimerObj[0]->SetPos(DirectX::XMFLOAT3(0.385f, 0.19f, 4));
 	g_pTimerObj[0]->SetSize(DirectX::XMFLOAT3(0.04f, 0.04f, 0.0f));
 	g_pTimerObj[1] = new GameObject;
 	g_pTimerObj[1]->Init();
-	g_pTimerObj[1]->SetPos(DirectX::XMFLOAT3(0.28f, 0.21f, 2));
+	g_pTimerObj[1]->SetPos(DirectX::XMFLOAT3(0.36f, 0.19f, 5));
 	g_pTimerObj[1]->SetSize(DirectX::XMFLOAT3(0.04f, 0.04f, 0.0f));
 	g_pTimerObj[2] = new GameObject;
 	g_pTimerObj[2]->Init();
-	g_pTimerObj[2]->SetPos(DirectX::XMFLOAT3(0.235f, 0.21f, 4));
+	g_pTimerObj[2]->SetPos(DirectX::XMFLOAT3(0.32f, 0.19f, 5));
 	g_pTimerObj[2]->SetSize(DirectX::XMFLOAT3(0.04f, 0.04f, 0.0f));
 	g_pTimerObj[3] = new GameObject;
 	g_pTimerObj[3]->Init();
-	g_pTimerObj[3]->SetPos(DirectX::XMFLOAT3(0.21f, 0.21f, 3));
+	g_pTimerObj[3]->SetPos(DirectX::XMFLOAT3(0.295f, 0.19f, 4));
 	g_pTimerObj[3]->SetSize(DirectX::XMFLOAT3(0.04f, 0.04f, 0.0f));
 	g_pTimerFlame = new GameObject;
 	g_pTimerFlame->Init();
-	g_pTimerFlame->SetPos(DirectX::XMFLOAT3(0.26f, 0.222f, 5));
+	g_pTimerFlame->SetPos(DirectX::XMFLOAT3(0.34f, 0.2f, 6));
 	g_pTimerFlame->SetSize(DirectX::XMFLOAT3(0.15f, 0.15f, 0.0f));
 
 }
@@ -80,6 +80,14 @@ void Timer::Uninit()
 		SAFE_RELEASE(g_pTimerTex[i]);
 	}
 	SAFE_RELEASE(g_pTimerFlameTex);
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	g_pTimerObj[i]->Uninit();
+	//	delete g_pTimerObj[i];
+	//}
+	g_pTimerFlame->Uninit();
+	delete g_pTimerFlame;
 
 }
 

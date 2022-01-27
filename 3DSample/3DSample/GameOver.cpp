@@ -42,10 +42,10 @@ GameObject g_pGameOverObject[MAX_GAMEOVER_TEX];				// ゲームオブジェクト
 Camera* g_pGameOverCamera;									// ゲームカメラ
 
 const char* g_pGameOverTexFName[MAX_GAMEOVER_TEX] = {		// テクスチャデータ
-	"Assets/Texture/SceneTexture/GameOver.png",
-	"Assets/Texture/SceneTexture/Retry.png",
-	"Assets/Texture/SceneTexture/StageSelect.png",
-	"Assets/Texture/SceneTexture/SelectObj_Block_Pencel.png",
+	"Assets/Texture/Scene/GameOver.png",
+	"Assets/Texture/Scene/Retry.png",
+	"Assets/Texture/Scene/StageSelect.png",
+	"Assets/Texture/Scene/SelectObj_Block_Pencel.png",
 };
 
 float	g_GO_ArrowPosY;										// カーソル移動
@@ -67,20 +67,20 @@ void InitGameOver()
 	}
 
 	//---ゲームオーバー
-	g_pGameOverObject[0].SetPos(XMFLOAT3(0.0f, 0.2f, 1.0f));
-	g_pGameOverObject[0].SetSize(XMFLOAT3(0.7f, 0.1f, 0.0f));
+	g_pGameOverObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 4));
+	g_pGameOverObject[0].SetSize(XMFLOAT3(0.45f, 0.3f, 1));
 
 	//---リトライ
-	g_pGameOverObject[1].SetPos(XMFLOAT3(0.0f, 0.0f, 1.0f));
-	g_pGameOverObject[1].SetSize(XMFLOAT3(0.4f, 0.08f, 0.0f));
+	g_pGameOverObject[1].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
+	g_pGameOverObject[1].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
 
 	//---ステージセレクト
-	g_pGameOverObject[2].SetPos(XMFLOAT3(0.0f, -0.15f, 1.0f));
-	g_pGameOverObject[2].SetSize(XMFLOAT3(0.4f, 0.1f, 0.0f));
+	g_pGameOverObject[2].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
+	g_pGameOverObject[2].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
 
 	//---カーソル
-	g_pGameOverObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 0.9f));
-	g_pGameOverObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 0.0f));
+	g_pGameOverObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
+	g_pGameOverObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
 
 
 	//---クラスメモリ確保

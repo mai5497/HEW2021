@@ -17,7 +17,7 @@ public:
 	void SetScore(int num);
 
 private:
-	ID3D11ShaderResourceView*	m_pTexScore;
+	ID3D11ShaderResourceView*	m_pTexScore[4];
 	
 	GameObject*		m_pObjectScore;
 	Camera*			m_pCameraScore;

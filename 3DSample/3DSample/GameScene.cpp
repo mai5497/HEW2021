@@ -584,6 +584,9 @@ SCENE GameScene::Update()
 	//***************************************************************	
 	int sceneState = -1;
 	if (m_IsClear) {
+		g_pScore->SetScore(1);
+		g_pSelectScene->SetScore(m_StageNum, 1);
+
 		sceneState = UpdateClear();
 		if (sceneState == STATE_NEXT) {
 			GameScene::Uninit();
