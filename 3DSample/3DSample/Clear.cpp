@@ -21,10 +21,10 @@ static int g_SelectState;											// シーンの値
 
 
 const char* g_pClearTexFName[MAX_CLAER_SCENE_TEX] = {
-	"Assets/Texture/SceneTexture/GameClear.png",
-	"Assets/Texture/SceneTexture/NextStage.png",
-	"Assets/Texture/SceneTexture/StageSelect2.png",
-	"Assets/Texture/SceneTexture/SelectObj_Block_Pencel.png",
+	"Assets/Texture/Scene/GameClear.png",
+	"Assets/Texture/Scene/NextStage.png",
+	"Assets/Texture/Scene/StageSelect.png",
+	"Assets/Texture/Scene/SelectObj_Block_Pencel.png",
 };
 
 
@@ -44,21 +44,21 @@ void InitClear() {
 	}
 
 	//---ゲームクリアテクスチャ
-	g_pClearObject[0].SetPos(XMFLOAT3(0.0f, 0.2f, 1.0f));			// 座標
-	g_pClearObject[0].SetSize(XMFLOAT3(0.8f, 0.1f, 0.0f));			// サイズ
-	g_pClearObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.2f));	// 半透明
+	g_pClearObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 4));			// 座標
+	g_pClearObject[0].SetSize(XMFLOAT3(0.45f, 0.3f, 1));			// サイズ
+	//g_pClearObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.2f));	// 半透明
 
 	//---次のステージ
-	g_pClearObject[1].SetPos(XMFLOAT3(0.0f,  0.0f, 1.0f));
-	g_pClearObject[1].SetSize(XMFLOAT3(0.5f, 0.1f, 0.0f));
+	g_pClearObject[1].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
+	g_pClearObject[1].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
 
 	//---ステージセレクト
-	g_pClearObject[2].SetPos(XMFLOAT3(0.02f, -0.15f, 1.0f));
-	g_pClearObject[2].SetSize(XMFLOAT3(0.5f, 0.1f, 0.0f));
+	g_pClearObject[2].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
+	g_pClearObject[2].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
 
 	//---カーソル
-	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 0.9f));
-	g_pClearObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 0.0f));
+	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
+	g_pClearObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
 
 	//g_pClearObject = new GameObject;
 	//g_pClearObject->Init();

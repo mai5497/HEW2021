@@ -28,10 +28,13 @@ Score::~Score()
 //====================================================================
 void Score::Init()
 {
-	LoadTextureFromFile("Assets/Texture/good.png", &m_pTexScore);
+	LoadTextureFromFile("Assets/Texture/UI/star/star_0.png", &m_pTexScore[0]);
+	LoadTextureFromFile("Assets/Texture/UI/star/star_1.png", &m_pTexScore[1]);
+	LoadTextureFromFile("Assets/Texture/UI/star/star_2.png", &m_pTexScore[2]);
+	LoadTextureFromFile("Assets/Texture/UI/star/star_3.png", &m_pTexScore[3]);
 	m_pObjectScore = new GameObject;
 	m_pObjectScore->Init();
-	m_pObjectScore->SetPos(DirectX::XMFLOAT3(-0.2f, 0.2f, 1));
+	m_pObjectScore->SetPos(DirectX::XMFLOAT3(0.0f, 0.15f, 1));
 	m_pObjectScore->SetSize(DirectX::XMFLOAT3(0.3f, 0.2f, 1));
 	m_pCameraScore = new Camera;
 	m_pCameraScore->Init(XMFLOAT3(0.0f, 0.0f, -5.0f));;
@@ -46,7 +49,11 @@ void Score::Init()
 //====================================================================
 void Score::Uninit()
 {
-	SAFE_RELEASE(m_pTexScore);
+	for (int i = 0; i < 4; i++)
+	{
+		SAFE_RELEASE(m_pTexScore[i]);
+	}
+	
 	m_pCameraScore->Uninit();
 	delete m_pCameraScore;
 	m_pObjectScore->Uninit();
@@ -74,12 +81,19 @@ void Score::Draw()
 
 	m_pCameraScore->Bind2D();
 
-	SHADER->SetTexture(m_pTexScore);
 
 	// ƒXƒRƒA“üŽè‚Å•`‰æ
-	if (m_nScore > 5){
+	switch (m_nScore)
+	{
+	case 1:
+		SHADER->SetTexture(m_pTexScore[1]);
 		m_pObjectScore->Draw();
+		break;
+	default:
+		SHADER->SetTexture(m_pTexScore[0]);
+		break;
 	}
+	
 
 	SHADER->SetTexture(NULL);
 }

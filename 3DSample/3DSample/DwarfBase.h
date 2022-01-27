@@ -88,7 +88,7 @@ private:
 	bool m_FollowFlg;			// 弾に追跡
 	bool m_MoveFlg;				// 移動許可フラグ
 	bool m_colFlg;				// 当たり判定フラグ
-	bool m_CollectionFlg;		// 回収　true：回収された
+	bool m_CollectionFlg;		// 回収フラグ　true：回収された
 	bool m_CircumferenceFlg;	// 周回フラグ
 	bool m_liftFlg;				// 浮くフラグ
 

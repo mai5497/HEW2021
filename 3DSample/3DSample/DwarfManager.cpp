@@ -149,6 +149,7 @@ void DwarfManager::Update() {
 				//m_ppDwarf[i]->SetMoveFlg(true);		// ˆÚ“®‹–‰Â
 				m_ppDwarf[i]->SetFollowFlg(true);	// ’ÇÕ‚ðŽn‚ß‚é
 				m_ppDwarf[i]->SetrunFlg(false);		// ’e‚©‚ç—£‚ê‚È‚¢
+
 			} else {
 				if (m_ppDwarf[i]->GetLiftFlg()) {
 					continue;
@@ -164,6 +165,7 @@ void DwarfManager::Update() {
 				m_ppDwarf[i]->SetColFlg(true);
 				m_ppDwarf[k]->SetColFlg(true);
 			}
+			m_ppDwarf[i]->SetColFlg(false);
 		}
 
 		//if (Timer < 0) {
