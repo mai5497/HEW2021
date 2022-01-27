@@ -11,13 +11,14 @@
 #define MAX_CLAER_SCENE_TEX	(4)			// テクスチャの数
 
 //============== グローバル変数定義 ======================
-static int g_nTimer;										// タイマー
-ID3D11ShaderResourceView* g_pClearTex[MAX_CLAER_SCENE_TEX];	// テクスチャ
-static DrawBuffer g_pBuffer;								// 頂点バッファ
-Camera* g_pClearCamera;										// カメラ
-GameObject g_pClearObject[MAX_CLAER_SCENE_TEX];				// ゲームオブジェクト
-float  g_ArrowPosY;											// カーソル座標
-static int g_SelectState;											// シーンの値
+static DrawBuffer			g_pBuffer;								// 頂点バッファ
+ID3D11ShaderResourceView*	g_pClearTex[MAX_CLAER_SCENE_TEX];		// テクスチャ
+
+Camera*			g_pClearCamera;									// カメラ
+GameObject		g_pClearObject[MAX_CLAER_SCENE_TEX];			// ゲームオブジェクト
+float			g_ArrowPosY;									// カーソル座標
+static int		g_nTimer;										// タイマー
+static int		g_SelectState;									// シーンの値
 
 
 const char* g_pClearTexFName[MAX_CLAER_SCENE_TEX] = {

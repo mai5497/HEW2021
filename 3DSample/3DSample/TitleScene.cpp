@@ -1,3 +1,4 @@
+
 #include "TitleScene.h"
 #include "Input.h"
 #include "Texture.h"
@@ -18,12 +19,12 @@ typedef enum
 	TITLE_MAX,
 }Title;
 
-ID3D11ShaderResourceView* g_pTitleTex[TITLE_MAX];
-Camera* g_pTitleCamera;
-GameObject g_pTitleObject[TITLE_MAX];
+ID3D11ShaderResourceView*	g_pTitleTex[TITLE_MAX];
+Camera*		g_pTitleCamera;
+GameObject	g_pTitleObject[TITLE_MAX];
 
 const char* g_pTitleTexFName[TITLE_MAX] = {
-	"Assets/Texture/Scene/Title_BG.png",
+	"Assets/Texture/Scene/Select_BG.png",
 	"Assets/Texture/Scene/Title_Logo.png",
 	"Assets/Texture/Scene/Press_A.png",
 };
@@ -47,7 +48,7 @@ void TitleScene::Init()
 	}
 
 	g_pTitleObject[TITLE_BG].SetPos(XMFLOAT3(0.0f,0.0f,1.1f));
-	g_pTitleObject[TITLE_BG].SetSize(XMFLOAT3(1.0f,1.0f,0.0f));
+	g_pTitleObject[TITLE_BG].SetSize(XMFLOAT3(1.0f,0.6f,0.0f));
 	
 	g_pTitleObject[TITLE_LOGO].SetPos(XMFLOAT3(0.0f,0.1f,1.0f));
 	g_pTitleObject[TITLE_LOGO].SetSize(XMFLOAT3(0.6f,0.38f,0.0f));
@@ -74,11 +75,9 @@ void TitleScene::Uninit()
 
 	CSound::Stop(TITLE_BGM);
 }
+
 SCENE TitleScene::Update()
 {
-
-	//g_pTitleTPSCamera->Update();
-
 	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
 		CSound::Play(SE_ENTER_1);
 		return SCENE_SELECT;
@@ -94,6 +93,7 @@ SCENE TitleScene::Update()
 
 	return SCENE_TITLE;
 }
+
 void TitleScene::Draw()
 {
 

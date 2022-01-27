@@ -6,6 +6,9 @@
 //	2021/12/27 : 作成
 //	2022/01/02 : コメント追加（伊地田）
 //				 ステージ番号の変数を追加（伊地田）
+//  2022/01/26 : 素材差し替え、各種数値調整
+//  2022/01/27 : スコアに応じた星の獲得を追加
+//				 コメント追記
 //
 //****************************************************
 
@@ -19,6 +22,9 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
+
+//============== 定数定義 ======================
+#define SELECT_MAX_TEX 14
 
 typedef enum
 {
@@ -34,13 +40,11 @@ typedef enum
 	SELECT_MAX,
 }Selct;
 
-#define SELECT_MAX_TEX 14
 
 //========================= グローバル変数定義 ===========================
-ID3D11ShaderResourceView* g_pSelectTex[SELECT_MAX_TEX];
-Camera* g_pSelectCamera;
-GameObject g_pSelectObject[SELECT_MAX];
-int g_nScore[3] = { 0, 0, 0 };
+ID3D11ShaderResourceView*	g_pSelectTex[SELECT_MAX_TEX];
+Camera*		g_pSelectCamera;
+GameObject	g_pSelectObject[SELECT_MAX];
 
 const char* g_pTexFName[SELECT_MAX_TEX] = {
 	"Assets/Texture/Scene/Select_BG.png",
@@ -60,8 +64,8 @@ const char* g_pTexFName[SELECT_MAX_TEX] = {
 
 };
 
-float g_arrowPosX;
-XMFLOAT3 g_pos;
+int		g_nScore[3] = { 0, 0, 0 };
+
 
 //====================================================================
 //
@@ -143,8 +147,6 @@ void SelectScene::Uninit()
 	delete g_pSelectCamera;
 
 	CSound::Stop(SELECT_BGM);
-
-
 }
 
 
@@ -202,6 +204,7 @@ void SelectScene::Draw()
 
 	g_pSelectCamera->Bind2D();
 
+	// 背景とロゴ
 	for (int i = 0; i < 2; ++i)
 	{
 		SHADER->SetTexture(g_pSelectTex[i]);
@@ -209,6 +212,7 @@ void SelectScene::Draw()
 	}
 
 	// スコア入手で描画
+	// ステージ１
 	switch (g_nScore[0])
 	{
 		case 0:
@@ -228,6 +232,7 @@ void SelectScene::Draw()
 	}
 	g_pSelectObject[SELECT_BLOCK_1].Draw();
 
+	// ステージ２
 	switch (g_nScore[1])
 	{
 		case 0:
@@ -247,6 +252,7 @@ void SelectScene::Draw()
 	}
 	g_pSelectObject[SELECT_BLOCK_2].Draw();
 
+	// ステージ３
 	switch (g_nScore[2])
 	{
 		case 0:
@@ -280,10 +286,16 @@ int SelectScene::GetStageNum() {
 	return m_StageNum;
 }
 
+//====================================================================
+//
+//		スコア設定
+//
+//====================================================================
 void SelectScene::SetScore(int stageNum, int score)
 {
 	int nScore = score;
 
+	// 設定されたステージにスコア追加
 	switch (stageNum)
 	{
 	case 1:

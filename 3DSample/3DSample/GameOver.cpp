@@ -33,13 +33,14 @@
 //*******************************************************************************
 // グローバル変数
 //*******************************************************************************
-static int g_nTimer;										// タイマー
 
-ID3D11ShaderResourceView* g_pGameOverTex[MAX_GAMEOVER_TEX];	// テクスチャ
-static DrawBuffer g_pBuffer;								// 頂点バッファ
+ID3D11ShaderResourceView*	g_pGameOverTex[MAX_GAMEOVER_TEX];		// テクスチャ
+static DrawBuffer			g_pBuffer;								// 頂点バッファ
 
-GameObject g_pGameOverObject[MAX_GAMEOVER_TEX];				// ゲームオブジェクト
-Camera* g_pGameOverCamera;									// ゲームカメラ
+GameObject		g_pGameOverObject[MAX_GAMEOVER_TEX];				// ゲームオブジェクト
+Camera*			g_pGameOverCamera;									// ゲームカメラ
+
+static int g_nTimer;				// タイマー
 
 const char* g_pGameOverTexFName[MAX_GAMEOVER_TEX] = {		// テクスチャデータ
 	"Assets/Texture/Scene/GameOver.png",

@@ -1,11 +1,13 @@
 #pragma once
 
+//========================= インクルード部 ===========================
 #include "Texture.h"
 
+//========================= クラス定義 ===========================
 class Timer
 {
+	//---関数
 public:
-
 	Timer();
 	~Timer();
 
@@ -13,7 +15,8 @@ public:
 	void Uninit();
 	bool Update();
 	void Draw();
-
+	
+	//---変数
 private:
 	int m_nCount;
 
