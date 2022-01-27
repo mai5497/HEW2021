@@ -46,6 +46,7 @@ public:
 			bool GetRBFlg();
 
 			void SetColFlg(bool flg);
+			bool GetColFlg();
 			bool GetLandingFlg();
 
 			void SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 centerPos,float ThrowTimer);		// ベジェ曲線による算出を行うための座標を取得

@@ -425,7 +425,7 @@ SCENE GameScene::Update()
 	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
 		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
 			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 40 - 20.0f);	//-10.0 ~ 10.0の間の乱数
+			randomPos.x = (float)(rand() % 40 - 20.0f);	//-20.0 ~ 20.0の間の乱数
 			randomPos.z = (float)(rand() % 40 - 20.0f);
 			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
 			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
@@ -461,9 +461,6 @@ SCENE GameScene::Update()
 				}
 			}
 		}
-
-
-
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
@@ -472,24 +469,34 @@ SCENE GameScene::Update()
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {
-			g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
-			if (g_pBullet[j]->use) {									// 最後の指示を通す
-				g_LastBulletNun = j;
-			}
-			if (!g_pBullet[j]->use) {								// 弾未用ならスキップ
+			//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
+			//if (g_pBullet[j]->use) {									// 最後の指示を通す
+			//	g_LastBulletNun = j;
+			//}
+			if (!g_pBulletManger->GetBullet(j)->use) {					// 弾未用ならスキップ
 				continue;
 			}
 			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
 			//	continue;
 			//}
-			if (g_pBulletManger->GetBullet(j)->GetLandingFlg()) {		// 弾が着地した瞬間にその座標を保存する
-				g_recBulletPos = g_pBullet[g_LastBulletNun]->GetPos();	// 最後の指示位置を保存
+			//if (g_pBulletManger->GetBullet(j)->GetRBFlg() != g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {	// 投げた弾と小人の色が違ったら
+			//	g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
+			//	g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+			//	continue;
+			//}
+			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
+				continue;
+			}
+			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
+				continue;
 			}
 			//---ピクミンの弾への追尾
+			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
 			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
 		}
 
 	}
+
 	//----- ゲームクリア -----
 	if (g_pDwarfManager->GetCollectionSum() == g_pDwarfManager->GetDwarfNum()) {		// 小人全回収でクリア
 		if (!m_IsGameOver) {

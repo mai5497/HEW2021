@@ -121,6 +121,8 @@ void BlueDwarf::Update()
 	} else if (GetrunFlg()) {	// 弾から逃げるとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
 		SetMoveFlg(true);
+	} else if (GetColFlg()) {		// ぶつかって反転するとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_REVERSE_SPEED);
 	} else {	// 徘徊時
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
 		SetMoveFlg(true);
@@ -154,12 +156,17 @@ void BlueDwarf::Update()
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
 	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
+		//SetMoveFlg(false);
+	}
+	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
+		SetColFlg(false);
 		SetMoveFlg(false);
 	}
 	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
 		SetFollowFlg(false);
 		SetMoveFlg(false);
 	}
+
 
 	if (!GetLiftFlg()) {
 		// 重力をかける

@@ -124,6 +124,8 @@ void RedDwarf::Update()
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_FOLLOW_SPEED);
 	} else if (GetrunFlg()) {	// 弾から逃げるとき
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_RUN_SPEED);
+	}else if(GetColFlg()){		// ぶつかって反転するとき
+		vDirection = XMVectorScale(vDirection, (1.0f / 60) * -DWARF_REVERSE_SPEED);
 	} else {
 		vDirection = XMVectorScale(vDirection, (1.0f / 60) * DWARF_DEFAULT_SPEED);
 	}
@@ -137,8 +139,12 @@ void RedDwarf::Update()
 	//}
 
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+	if (GetrunFlg() && Differ > 25.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
+		//SetMoveFlg(false);
+	}
+	if (Differ < 0.05f && GetFollowFlg() && GetColFlg()) {
+		SetColFlg(false);
 		SetMoveFlg(false);
 	}
 	if (Differ < 0.025f && GetFollowFlg()) {	// なんとなく近くにいるとき。マジックナンバーでごめん。
