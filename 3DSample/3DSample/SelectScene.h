@@ -20,6 +20,7 @@ public:
 
 private:
 	int m_StageNum;
+
 };
 
 

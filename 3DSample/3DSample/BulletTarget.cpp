@@ -26,7 +26,7 @@
 
 //---座標系
 #define TARGET_POS_X		(0.0f)			
-#define TARGET_POS_Y		(5.0f)
+#define TARGET_POS_Y		(2.0f)
 #define TARGET_POS_Z		(-20.0f)
 
 //---サイズ系
