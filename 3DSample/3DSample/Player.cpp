@@ -170,7 +170,7 @@ void Player::Draw()
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			*DirectX::XMMatrixRotationY(-m_DrawAngle)
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
+		//SHADER->SetAnimation(m_pFBX->GetAnimeMatrix(i), m_pFBX->GetAnimeMatrixNum(i));
 		SHADER->SetTexture(m_pPlayerTex);
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

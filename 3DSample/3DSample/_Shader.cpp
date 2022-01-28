@@ -5,29 +5,26 @@
 
 #pragma comment(lib, "d3dcompiler.lib")
 
-
 Shader g_shader;
-
-
 
 //----------------------------------------
 // 頂点レイアウト
 //----------------------------------------
 const D3D11_INPUT_ELEMENT_DESC LayoutWorld[] =
 {
-	{ "POSITION",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,							 D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR",			0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",		0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL",			0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "POSITION",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,							 D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "COLOR",			0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "TEXCOORD",		0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "NORMAL",			0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 const D3D11_INPUT_ELEMENT_DESC LayoutAnime[] =
 {
 	{ "POSITION",		0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 0,							 D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR",			0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD",		0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL",			0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "BLENDWEIGHT",	0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "BLENDINDICES",	0, DXGI_FORMAT_R32G32B32A32_UINT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+{ "COLOR",			0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "TEXCOORD",		0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "NORMAL",			0, DXGI_FORMAT_R32G32B32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "BLENDWEIGHT",	0, DXGI_FORMAT_R32G32B32A32_FLOAT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+{ "BLENDINDICES",	0, DXGI_FORMAT_R32G32B32A32_UINT,	0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 
 //----------------------------------------
@@ -67,45 +64,6 @@ VS_OUT main(VS_IN VIN) {\
 	VOUT.normal = mul(VIN.normal, (float3x3)World);\
 	return VOUT;\
 }";
-//----- テクスチャ -----
-const char VSCodeTexAnime[] = "\
-struct VS_IN {\
-	float3 pos : POSITION0;\
-	float4 color : COLOR0;\
-	float2 uv : TEXCOORD0;\
-	float3 normal : NORMAL0;\
-};\
-struct VS_OUT {\
-	float4 pos : SV_POSITION;\
-	float4 color : TEXCOORD0;\
-	float2 uv : TEXCOORD1;\
-	float3 normal : TEXCOORD2;\
-	float3 wPos : TEXCOORD3;\
-};\
-cbuffer ConstantBuffer : register(b0) {\
-	float4x4 World;\
-};\
-cbuffer ConstantBuffer : register(b1) {\
-	float4x4 View;\
-	float4x4 Proj;\
-};\
-cbuffer ConstantBuffer : register(b2) {\
-	float2 TexScale;\
-	float2 TexOffset;\
-};\
-VS_OUT main(VS_IN VIN) {\
-	VS_OUT VOUT;\
-	VOUT.pos = float4(VIN.pos, 1);\
-	VOUT.pos = mul(VOUT.pos, World);\
-	VOUT.wPos = VOUT.pos;\
-	VOUT.pos = mul(VOUT.pos, View);\
-	VOUT.pos = mul(VOUT.pos, Proj);\
-	VOUT.uv = VIN.uv;\
-	VOUT.uv = VOUT.uv * TexScale + TexOffset;\
-	VOUT.color = VIN.color;\
-	VOUT.normal = mul(VIN.normal, (float3x3)World);\
-	return VOUT;\
-}";
 //----- アニメーション -----
 const char VSCodeAnime[] = "\
 struct VS_IN {\
@@ -130,7 +88,7 @@ cbuffer ConstantBuffer : register(b1) {\
 	float4x4 View;\
 	float4x4 Proj;\
 };\
-cbuffer ConstantBuffer : register(b3) {\
+cbuffer ConstantBuffer : register(b2) {\
 	float4x4 Bone[150];\
 };\
 VS_OUT main(VS_IN VIN) {\
@@ -163,20 +121,10 @@ struct PS_IN {\
 	float2 uv : TEXCOORD1;\
 	float3 normal : TEXCOORD2;\
 };\
-struct Material {\
-	float4 diffuse;\
-	float4 ambient;\
-	float4 specular;\
-	float4 emissive;\
-};\
-cbuffer ConstantBuffer : register(b0) {\
-	Material objMat;\
-};\
 Texture2D tex : register(t0);\
 SamplerState samp : register(s0);\
 float4 main(PS_IN PIN) : SV_Target {\
 	float4 color = tex.Sample(samp, PIN.uv) * PIN.color;\
-	color *= objMat.diffuse;\
 	return color;\
 }";
 //----- Toon -----
@@ -204,10 +152,10 @@ Texture2D tex : register(t0);\
 SamplerState samp : register(s0);\
 float4 main(PS_IN PIN) : SV_Target {\
 	float4 color = tex.Sample(samp, PIN.uv) * PIN.color;\
-	float d = dot(normalize(PIN.normal), -lightDir);\
-	float4 diffuse = objMat.diffuse * lightMat.diffuse * step(-0.2f, d);\
-	float4 ambient = objMat.ambient * lightMat.ambient * (step(-0.8f, d) * 0.2f + 0.8f) * step(0.2f, -d);\
-	color.rgb *= diffuse + ambient;\
+	float4 diffuse = objMat.diffuse * lightMat.diffuse *\
+					 max(dot(normalize(PIN.normal), -lightDir), 0);\
+	float4 ambient = objMat.ambient * lightMat.ambient;\
+	color.rgb *= step(0.01f, diffuse + ambient);\
 	return color;\
 }";
 //----- Lambert -----
@@ -277,7 +225,7 @@ float4 main(PS_IN PIN) : SV_Target {\
 					 max(dot(N, L), 0);\
 	float4 ambient = objMat.ambient * lightMat.ambient;\
 	float4 specular = objMat.specular * lightMat.specular *\
-					  pow(max(dot(N, normalize(L + V)), 0), objMat.specular.a);\
+					  pow(max(dot(N, normalize(L + V)), 0), lightMat.specular.a);\
 	color.rgb *= diffuse + ambient + specular;\
 	return color;\
 }";
@@ -294,8 +242,6 @@ Shader::Shader()
 	m_world._22 = m_vsCamera.view._22 = m_vsCamera.proj._22 = 1.0f;
 	m_world._33 = m_vsCamera.view._33 = m_vsCamera.proj._33 = 1.0f;
 	m_world._44 = m_vsCamera.view._44 = m_vsCamera.proj._44 = 1.0f;
-	m_vsTexture.scale = DirectX::XMFLOAT2(1, 1);
-	m_vsTexture.offset = DirectX::XMFLOAT2(0, 0);
 	m_material.diffuse = DirectX::XMFLOAT4(1, 1, 1, 1);
 	m_material.ambient = DirectX::XMFLOAT4(1, 1, 1, 1);
 	m_material.specular = DirectX::XMFLOAT4(1, 1, 1, 1);
@@ -323,14 +269,9 @@ HRESULT Shader::Init()
 	ID3D11DeviceContext* pContext = GetContext();
 
 	//--- 頂点シェーダ作成
-	const char* pVSCode[] = { VSCodeWorld, VSCodeTexAnime, VSCodeAnime };
-	const D3D11_INPUT_ELEMENT_DESC* pLayout[] = { LayoutWorld, LayoutWorld, LayoutAnime };
-	UINT pLayoutNum[] = { _countof(LayoutWorld), _countof(LayoutWorld), _countof(LayoutAnime) };
-	static_assert(
-		_countof(pVSCode) == VS_KIND_MAX &&
-		_countof(pLayout) == VS_KIND_MAX &&
-		_countof(pLayoutNum) == VS_KIND_MAX,
-		"VS code error.");
+	const char* pVSCode[] = { VSCodeWorld, VSCodeAnime };
+	const D3D11_INPUT_ELEMENT_DESC* pLayout[] = { LayoutWorld, LayoutAnime };
+	UINT pLayoutNum[] = { _countof(LayoutWorld), _countof(LayoutAnime) };
 	for (int i = 0; i < VS_KIND_MAX; ++i)
 	{
 		// シェーダコンパイル
@@ -350,9 +291,6 @@ HRESULT Shader::Init()
 
 	//--- ピクセルシェーダ作成
 	const char* pPSCode[] = { PSCodeUnlit, PSCodeToon, PSCodeLambert, PSCodePhong };
-	static_assert(
-		_countof(pPSCode) == PS_KIND_MAX,
-		"PS code error.");
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 	{
 		// シェーダコンパイル
@@ -376,7 +314,7 @@ HRESULT Shader::Init()
 	texDesc.SampleDesc.Count = 1;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	// テクスチャデータ
+	 //テクスチャデータ
 	BYTE color[TexSize * TexSize][4] = {};
 	for (int j = 0; j < TexSize; ++j)
 	{
@@ -384,7 +322,6 @@ HRESULT Shader::Init()
 		{
 			int idx = (TexSize * j) + i;
 			color[idx][0] = color[idx][1] = color[idx][2] = 0xff * ((i + j) % 2);
-			//color[idx][0] = color[idx][1] = color[idx][2] = 0xff;
 			color[idx][3] = 0xff;
 		}
 	}
@@ -411,18 +348,14 @@ HRESULT Shader::Init()
 	shaderBufDesc.Usage = D3D11_USAGE_DEFAULT;
 	shaderBufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	UINT BufferSize[] = {
-		sizeof(m_world), sizeof(m_vsCamera), sizeof(m_vsTexture), sizeof(m_anime),
+		sizeof(m_world), sizeof(m_vsCamera), sizeof(m_anime),
 		sizeof(m_material), sizeof(m_light), sizeof(m_psCamera)
 	};
 	void* BufferData[] = {
-		&m_world, &m_vsCamera, &m_vsTexture, m_anime,
+		&m_world, &m_vsCamera, m_anime,
 		&m_material, &m_light, &m_psCamera
 	};
-	static_assert(
-		_countof(BufferSize) == SHADER_BUFFER_MAX &&
-		_countof(BufferData) == SHADER_BUFFER_MAX,
-		"Shader define error.");
-	for (int i = 0; i < SHADER_BUFFER_MAX; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		shaderBufDesc.ByteWidth = BufferSize[i];
 		shaderSubResource.pSysMem = BufferData[i];
@@ -436,7 +369,7 @@ HRESULT Shader::Init()
 void Shader::Uninit()
 {
 	SAFE_RELEASE(m_pTexture);
-	for (int i = 0; i < SHADER_BUFFER_MAX; ++i)
+	for (int i = 0; i < 6; ++i)
 		SAFE_RELEASE(m_pBuffers[i]);
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 		SAFE_RELEASE(m_pPixelShader[i]);
@@ -453,32 +386,24 @@ void Shader::Bind(VertexShaderKind vs, PixelShaderKind ps)
 	pContext->IASetInputLayout(m_pInputLayout[vs]);
 	pContext->VSSetShader(m_pVertexShader[vs], nullptr, 0);
 	pContext->PSSetShader(m_pPixelShader[ps], nullptr, 0);
-	pContext->VSSetConstantBuffers(0, VS_BUF_MAX, &m_pBuffers[VS_BUF_START]);
-	pContext->PSSetConstantBuffers(0, PS_BUF_MAX, &m_pBuffers[PS_BUF_START]);
+	pContext->VSSetConstantBuffers(0, 3, &m_pBuffers[0]);
+	pContext->PSSetConstantBuffers(0, 3, &m_pBuffers[3]);
 }
 
 void Shader::SetWorld(const DirectX::XMMATRIX& world)
 {
 	DirectX::XMStoreFloat4x4(&m_world, DirectX::XMMatrixTranspose(world));
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_WORLD], 0, NULL, &m_world, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[0], 0, NULL, &m_world, 0, 0);
 }
 void Shader::SetView(const DirectX::XMMATRIX& view)
 {
 	DirectX::XMStoreFloat4x4(&m_vsCamera.view, DirectX::XMMatrixTranspose(view));
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_VS_CAMERA], 0, NULL, &m_vsCamera, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[1], 0, NULL, &m_vsCamera, 0, 0);
 }
 void Shader::SetProjection(const DirectX::XMMATRIX& proj)
 {
 	DirectX::XMStoreFloat4x4(&m_vsCamera.proj, DirectX::XMMatrixTranspose(proj));
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_VS_CAMERA], 0, NULL, &m_vsCamera, 0, 0);
-}
-void Shader::SetAnimation(const DirectX::XMMATRIX* pMatrix, int num)
-{
-	for (int i = 0; i < num && i < 150; ++i)
-	{
-		DirectX::XMStoreFloat4x4(&m_anime[i], DirectX::XMMatrixTranspose(pMatrix[i]));
-	}
-	GetContext()->UpdateSubresource(m_pBuffers[2], 0, NULL, &m_anime, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[1], 0, NULL, &m_vsCamera, 0, 0);
 }
 void Shader::SetTexture(ID3D11ShaderResourceView* pTexture)
 {
@@ -486,63 +411,53 @@ void Shader::SetTexture(ID3D11ShaderResourceView* pTexture)
 	if (pTexture == nullptr) { pTexture = m_pTexture; }
 	pContext->PSSetShaderResources(0, 1, &pTexture);
 }
-void Shader::SetTextureScale(const DirectX::XMFLOAT2& scale)
-{
-	m_vsTexture.scale = scale;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_VS_TEXTURE], 0, NULL, &m_vsTexture, 0, 0);
-}
-void Shader::SetTextureOffset(const DirectX::XMFLOAT2& offset)
-{
-	m_vsTexture.offset = offset;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_VS_TEXTURE], 0, NULL, &m_vsTexture, 0, 0);
-}
 void Shader::SetDiffuse(const DirectX::XMFLOAT4& diffuse)
 {
 	m_material.diffuse = diffuse;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_MATERIAL], 0, NULL, &m_material, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[3], 0, NULL, &m_material, 0, 0);
 }
 void Shader::SetAmbient(const DirectX::XMFLOAT4& ambient)
 {
 	m_material.ambient = ambient;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_MATERIAL], 0, NULL, &m_material, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[3], 0, NULL, &m_material, 0, 0);
 }
-void Shader::SetSpecular(const DirectX::XMFLOAT4& specular, float exp)
+void Shader::SetSpecular(const DirectX::XMFLOAT4& specular)
 {
 	m_material.specular = specular;
-	m_material.specular.w = exp;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_MATERIAL], 0, NULL, &m_material, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[3], 0, NULL, &m_material, 0, 0);
 }
 void Shader::SetEmissive(const DirectX::XMFLOAT4& emissive)
 {
 	m_material.emissive = emissive;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_MATERIAL], 0, NULL, &m_material, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[3], 0, NULL, &m_material, 0, 0);
 }
 void Shader::SetLightDir(const DirectX::XMFLOAT4& dir)
 {
 	DirectX::XMStoreFloat4(
 		&m_light.dir,
 		DirectX::XMVector3Normalize(DirectX::XMLoadFloat4(&dir)));
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_LIGHT], 0, NULL, &m_light, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[4], 0, NULL, &m_light, 0, 0);
 }
 void Shader::SetLightDiffuse(const DirectX::XMFLOAT4& diffuse)
 {
 	m_light.material.diffuse = diffuse;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_LIGHT], 0, NULL, &m_light, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[4], 0, NULL, &m_light, 0, 0);
 }
 void Shader::SetLightAmbient(const DirectX::XMFLOAT4& ambient)
 {
 	m_light.material.ambient = ambient;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_LIGHT], 0, NULL, &m_light, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[4], 0, NULL, &m_light, 0, 0);
 }
-void Shader::SetLightSpecular(const DirectX::XMFLOAT4& specular)
+void Shader::SetLightSpecular(const DirectX::XMFLOAT4& specular, float exp)
 {
 	m_light.material.specular = specular;
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_LIGHT], 0, NULL, &m_light, 0, 0);
+	m_light.material.specular.w = exp;
+	GetContext()->UpdateSubresource(m_pBuffers[4], 0, NULL, &m_light, 0, 0);
 }
 void Shader::SetPSCameraPos(const DirectX::XMFLOAT3& pos)
 {
 	m_psCamera.pos = DirectX::XMFLOAT4(pos.x, pos.y, pos.z, 1);
-	GetContext()->UpdateSubresource(m_pBuffers[BUF_PS_CAMERA], 0, NULL, &m_psCamera, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[5], 0, NULL, &m_psCamera, 0, 0);
 }
 
 Shader* GetShader()

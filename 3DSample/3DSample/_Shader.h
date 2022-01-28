@@ -1,15 +1,3 @@
-/*
- * @brief シェーダ処理全般
- * @author sasaki.ryota
- * @par History
- *	[2020.12.04]
- *		更新履歴をつけ始める
- *		SetTextureOffset追加
- *		 -UVの読み取り開始位置指定
- *		SetTextureScale追加
- *		 -UVの横幅、縦幅を設定
- *		PS_UNLIT設定時、SetDiffuseで色が変更できるように修正
- */
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
@@ -28,7 +16,6 @@
 enum VertexShaderKind
 {
 	VS_WORLD,
-	VS_TEXANIME,
 	VS_ANIMATION,
 
 	VS_KIND_MAX
@@ -43,24 +30,6 @@ enum PixelShaderKind
 
 	PS_KIND_MAX
 };
-// バッファ
-enum ShaderBufferKind
-{
-	BUF_WORLD,
-	BUF_VS_CAMERA,
-	BUF_VS_TEXTURE,
-	BUF_VS_ANIME,
-
-	BUF_MATERIAL,
-	BUF_LIGHT,
-	BUF_PS_CAMERA,
-	
-	SHADER_BUFFER_MAX,
-	VS_BUF_START = BUF_WORLD,
-	PS_BUF_START = BUF_MATERIAL,
-	VS_BUF_MAX = PS_BUF_START,
-	PS_BUF_MAX = SHADER_BUFFER_MAX - PS_BUF_START
-};
 
 //----------------------------------------
 // クラス/構造体
@@ -70,12 +39,6 @@ struct VSBufferCamera
 {
 	DirectX::XMFLOAT4X4 view;
 	DirectX::XMFLOAT4X4 proj;
-};
-/// @brief テクスチャ変換
-struct VSBufferTexture
-{
-	DirectX::XMFLOAT2 scale;
-	DirectX::XMFLOAT2 offset;
 };
 /// @brief マテリアル
 struct PSBufferMaterial
@@ -112,32 +75,28 @@ public:
 	void SetWorld(const DirectX::XMMATRIX& world);
 	void SetView(const DirectX::XMMATRIX& view);
 	void SetProjection(const DirectX::XMMATRIX& proj);
-	void SetAnimation(const DirectX::XMMATRIX* pMatrix, int num);
 	void SetTexture(ID3D11ShaderResourceView* pTexture);
-	void SetTextureScale(const DirectX::XMFLOAT2& scale);
-	void SetTextureOffset(const DirectX::XMFLOAT2& offset);
 	void SetDiffuse(const DirectX::XMFLOAT4& diffuse);
 	void SetAmbient(const DirectX::XMFLOAT4& ambient);
-	void SetSpecular(const DirectX::XMFLOAT4& specular, float exp);
+	void SetSpecular(const DirectX::XMFLOAT4& specular);
 	void SetEmissive(const DirectX::XMFLOAT4& emissive);
 	void SetLightDir(const DirectX::XMFLOAT4& dir);
 	void SetLightDiffuse(const DirectX::XMFLOAT4& diffuse);
 	void SetLightAmbient(const DirectX::XMFLOAT4& ambient);
-	void SetLightSpecular(const DirectX::XMFLOAT4& specular);
+	void SetLightSpecular(const DirectX::XMFLOAT4& specular, float exp);
 	void SetPSCameraPos(const DirectX::XMFLOAT3& pos);
 
 private:
-	ID3D11InputLayout* m_pInputLayout[VS_KIND_MAX];
+	ID3D11InputLayout * m_pInputLayout[VS_KIND_MAX];
 	ID3D11VertexShader* m_pVertexShader[VS_KIND_MAX];
 	ID3D11PixelShader* m_pPixelShader[PS_KIND_MAX];
-	ID3D11Buffer* m_pBuffers[SHADER_BUFFER_MAX];
+	ID3D11Buffer* m_pBuffers[6];
 
 	ID3D11ShaderResourceView* m_pTexture;
 
 	DirectX::XMFLOAT4X4 m_world;		// b0
 	VSBufferCamera		m_vsCamera;		// b1
-	VSBufferTexture		m_vsTexture;	// b2
-	DirectX::XMFLOAT4X4 m_anime[150];	// b3
+	DirectX::XMFLOAT4X4 m_anime[150];	// b2
 	PSBufferMaterial	m_material;		// b0
 	PSBufferLight		m_light;		// b1
 	PSBufferCamera		m_psCamera;		// b2

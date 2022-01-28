@@ -52,6 +52,7 @@ Collector::Collector()
 	m_pos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_Radius = XMFLOAT3(5.0f, 0.1f, 5.0f);
+	//m_Angle = XMFLOAT3(360.0f, 0.0f, 0.0f);
 	m_Angle = XMFLOAT3(15.0f, 0.0f, 0.0f);
 	//m_Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f);
 

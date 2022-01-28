@@ -754,7 +754,7 @@ void GameScene::Draw()
 	g_pStageManager->Draw();
 #ifdef _DEBUG
 	// 小人のステージの当たり判定ようブロック描画
-	g_pDwarfStageCollision->Draw();
+	//g_pDwarfStageCollision->Draw();
 #endif 
 
 
