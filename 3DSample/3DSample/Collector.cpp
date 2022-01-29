@@ -45,7 +45,9 @@
 //====================================================================
 Collector::Collector()
 {
-	LoadTextureFromFile("Assets/Model/ufo.png", &m_pCollectorTex);
+	LoadTextureFromFile("Assets/Model/ufored.png", &m_pCollectorTex[RED_UFO]);
+	LoadTextureFromFile("Assets/Model/ufoblue.png", &m_pCollectorTex[BLUE_UFO]);
+	LoadTextureFromFile("Assets/Model/ufopurple.png", &m_pCollectorTex[REDBLUE_UFO]);
 
 	m_pos = XMFLOAT3(START_POS_X, START_POS_Y, START_POS_Z);
 	m_move = XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -63,8 +65,10 @@ Collector::Collector()
 	m_moveFlg = false;
 
 
-	m_pBuffer = nullptr;
-	m_pfbx = nullptr;
+	for (int i = 0; i < MAX_UFO; i++) {
+		m_pBuffer[i] = nullptr;
+		m_pfbx[i] = nullptr;
+	}
 
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -85,30 +89,29 @@ Collector::~Collector()
 //		FBX読込
 //
 //====================================================================
-bool Collector::LoadFBX(const char* pFilePath)
+bool Collector::LoadFBX(const char* pFilePath,int index)
 {
 	HRESULT hr;
-	m_pfbx = new FBXPlayer;
-	hr = m_pfbx->LoadModel(pFilePath);
+	hr = m_pfbx[index]->LoadModel(pFilePath);
 	if (FAILED(hr)) {
 		return false;
 	}
 
 	//モデルのメッシュの数だけ頂点バッファ作成
-	int meshNum = m_pfbx->GetMeshNum();
-	m_pBuffer = new DrawBuffer[meshNum];
+	int meshNum = m_pfbx[index]->GetMeshNum();
+	m_pBuffer[index] = new DrawBuffer[meshNum];
 	for (int i = 0; i < meshNum; i++)
 	{
 		//メッシュごとに頂点バッファ作成
-		m_pBuffer[i].CreateVertexBuffer(
-			m_pfbx->GetVertexData(i),
-			m_pfbx->GetVertexSize(i),
-			m_pfbx->GetVertexCount(i)
+		m_pBuffer[index][i].CreateVertexBuffer(
+			m_pfbx[index]->GetVertexData(i),
+			m_pfbx[index]->GetVertexSize(i),
+			m_pfbx[index]->GetVertexCount(i)
 		);
 		//インデックスバッファ作成
-		m_pBuffer[i].CreateIndexBuffer(
-			m_pfbx->GetIndexData(i),
-			m_pfbx->GetIndexCount(i)
+		m_pBuffer[index][i].CreateIndexBuffer(
+			m_pfbx[index]->GetIndexData(i),
+			m_pfbx[index]->GetIndexCount(i)
 		);
 
 	}
@@ -123,10 +126,14 @@ bool Collector::LoadFBX(const char* pFilePath)
 //====================================================================
 bool Collector::Init()
 {
-	if (m_pBuffer == nullptr)
-	{
-		Collector::LoadFBX("Assets/Model/ufo.fbx");
+	for (int i = 0; i < MAX_UFO; i++) {
+		m_pfbx[i] = new FBXPlayer;
 	}
+
+	LoadFBX("Assets/Model/ufored.fbx",RED_UFO);
+	LoadFBX("Assets/Model/ufoblue.fbx",BLUE_UFO);
+	LoadFBX("Assets/Model/ufopurple.fbx",REDBLUE_UFO);
+
 	return true;
 }
 
@@ -139,13 +146,18 @@ bool Collector::Init()
 void Collector::Uninit()
 {
 	if (m_pBuffer != nullptr) {
-		delete[] m_pBuffer;
-		m_pBuffer = nullptr;
-		/*メモリリーク？*/
-		delete m_pfbx;
-		m_pfbx = nullptr;
+		for (int i = 0; i < MAX_UFO; i++) {
+			delete[] m_pBuffer[i];
+			m_pBuffer[i] = nullptr;
+		}		
 	}
-	SAFE_RELEASE(m_pCollectorTex);
+	for (int i = 0; i < MAX_UFO; i++) {
+		delete m_pfbx[i];
+		m_pfbx[i] = nullptr;
+	}
+	for (int i = 0; i < MAX_UFO; i++) {
+		SAFE_RELEASE(m_pCollectorTex[i]);
+	}
 }
 
 
@@ -238,7 +250,7 @@ void Collector::Update()
 //====================================================================
 void Collector::Draw()
 {
-	int meshNum = m_pfbx->GetMeshNum();
+	int meshNum = m_pfbx[RED_UFO]->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i)
 	{
 		SHADER->SetWorld(
@@ -249,9 +261,9 @@ void Collector::Draw()
 				XMConvertToRadians(m_Angle.z))
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-		SHADER->SetTexture(m_pCollectorTex);
+		SHADER->SetTexture(m_pCollectorTex[RED_UFO]);
 
-		m_pBuffer[i].Draw(
+		m_pBuffer[RED_UFO][i].Draw(
 			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 		);
 	}
