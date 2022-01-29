@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "TPSCamera.h"
 #include "Defines.h"
+#include "Timer.h"
 
 
 //============== íËêîíËã` ======================
@@ -45,6 +46,7 @@ typedef enum
 ID3D11ShaderResourceView*	g_pSelectTex[SELECT_MAX_TEX];
 Camera*		g_pSelectCamera;
 GameObject	g_pSelectObject[SELECT_MAX];
+
 
 const char* g_pTexFName[SELECT_MAX_TEX] = {
 	"Assets/Texture/Scene/Select_BG.png",
@@ -178,6 +180,7 @@ SCENE SelectScene::Update()
 
 	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
 		CSound::Play(SE_ENTER_1);
+
 
 		switch (m_StageNum) {
 		case 1:
@@ -339,3 +342,4 @@ void SelectScene::SetScore(int stageNum, int score)
 		break;
 	}
 }
+

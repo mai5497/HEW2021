@@ -256,6 +256,9 @@ void GameScene::Init(int StageNum)
 		}
 	}
 
+	// タイマーフレームの色をステージに応じて変更
+	g_pTimer->SetColor(m_StageNum);
+
 
 	// BGM再生
 	CSound::Play(GAME_BGM);
@@ -587,6 +590,7 @@ SCENE GameScene::Update()
 	if (m_IsClear) {
 		g_pScore->SetScore(1);
 		g_pSelectScene->SetScore(m_StageNum, 1);
+
 
 		sceneState = UpdateClear();
 		if (sceneState == STATE_NEXT) {

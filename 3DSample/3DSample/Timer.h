@@ -15,7 +15,9 @@ public:
 	void Uninit();
 	bool Update();
 	void Draw();
-	
+
+	void SetColor(int nColor);
+
 	//---•Ï”
 private:
 	int m_nCount;
