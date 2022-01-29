@@ -59,16 +59,20 @@ void SceneManager::Uninit()
 	{
 	case SCENE_TITLE:
 		m_pTitle->Uninit();
+		delete m_pTitle;
 		break;
 	case SCENE_SELECT:
 		m_StageNum = m_pSelect->GetStageNum();
 		m_pSelect->Uninit();
+		delete m_pSelect;
 		break;
 	case SCENE_GAME: 
 		m_pGame->Uninit();
+		delete m_pGame;
 		break;
 	case SCENE_RESULT:
 		m_pResult->Uninit();
+		delete m_pResult;
 		break;
 	/*case SCENE_LOSE_RESULT1:
 		m_loseresult1.Uninit();

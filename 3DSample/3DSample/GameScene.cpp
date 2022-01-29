@@ -83,7 +83,7 @@
 Camera				*g_pCamera;
 //TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
-GamePolygon			*g_pPolygon;
+//GamePolygon			*g_pPolygon;
 
 StageManager		*g_pStageManager;
 StageObjectManager* g_pStageObjectManager;
@@ -107,12 +107,10 @@ Shadow				*g_pShadow;
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
 
-XMFLOAT3 g_recPlayerPos;
+//XMFLOAT3 g_recPlayerPos;
 XMFLOAT3 g_recBulletPos;
 XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
 
-int g_LastBulletNun = -1;
-BulletBase *g_pBullet[MAX_BULLET];
 
 //==============================================================
 //
@@ -156,8 +154,8 @@ void GameScene::Init(int StageNum)
 	g_pCamera->Init();
 
 	//---ポリゴンクラス
-	g_pPolygon = new GamePolygon;
-	g_pPolygon->Init();
+	//g_pPolygon = new GamePolygon;
+	//g_pPolygon->Init();
 
 	//---影
 	g_pShadow = new Shadow;
@@ -275,8 +273,8 @@ void GameScene::Init(int StageNum)
 void GameScene::Uninit()
 {
 	// ポリゴン
-	g_pPolygon->Uninit();
-	delete g_pPolygon;
+	//g_pPolygon->Uninit();
+	//delete g_pPolygon;
 
 	// 影
 	g_pShadow->Uninit();
@@ -364,7 +362,7 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// ポリゴン
-	g_pPolygon->Update();
+	//g_pPolygon->Update();
 	
 	// 影
 	g_pShadow->Update();
@@ -410,7 +408,7 @@ SCENE GameScene::Update()
 
 
 	//----- プレイヤーの座標を取得 -----
-	g_recPlayerPos = g_pPlayer->GetPos();
+	//g_recPlayerPos = g_pPlayer->GetPos();
 	//g_pEnemy->TargetPos(g_recPlayerPos);
 	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
@@ -476,20 +474,13 @@ SCENE GameScene::Update()
 
 		//----- 小人の追跡処理 -----
 		for (int j = 0; j < MAX_BULLET; j++) {
-			//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
-			//if (g_pBullet[j]->use) {									// 最後の指示を通す
-			//	g_LastBulletNun = j;
-			//}
-			if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
+			if (!g_pBulletManger->GetBullet(j)->use) {				// 弾未用ならスキップ
 				continue;
 			}
-			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
-			//	continue;
-			//}
 			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
 				continue;
 			}
-			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
+			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {	// 境界球の当たり半径
 				continue;
 			}
 			//---小人の弾への追尾
@@ -714,7 +705,7 @@ void GameScene::Draw()
 	));
 	*/
 
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
 
 	//g_pTPSCamera->Bind();

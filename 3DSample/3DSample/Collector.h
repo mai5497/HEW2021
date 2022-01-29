@@ -33,8 +33,8 @@ public:
 	ID3D11ShaderResourceView* m_pCollectorTex;
 
 private:
-	static DrawBuffer* m_pBuffer;
-	static FBXPlayer* m_pfbx;		//FBXファイル操作クラス
+	DrawBuffer* m_pBuffer;
+	FBXPlayer* m_pfbx;		//FBXファイル操作クラス
 
 	XMFLOAT3	m_dir;
 

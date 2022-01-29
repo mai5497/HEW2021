@@ -118,7 +118,6 @@ void BulletBase::Update()
 		m_AliveTime--;					// 生存時間のカウントダウン
 		if (m_AliveTime < 0) {			// 0以下になったら
 			use = false;					// 使用フラグを変更
-
 			Uninit();
 		}
 	}

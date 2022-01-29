@@ -53,12 +53,10 @@ bool BulletBlue::Init()
 	}
 	//m_floweAnim[0] = m_pFBX->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
 
-	GameObject::Init();
-
 	return true;
 }
 
-//void BulletBlue::AnimUpdate() {
+//void BulletBlue::Update() {
 //	m_pFBX->Play(0);
 //	m_pFBX->Step();
 //}
@@ -78,7 +76,6 @@ void BulletBlue::Unint()
 		m_pFBX = NULL;
 	}
 
-	GameObject::Uninit();
 }
 
 //==============================================================
@@ -98,8 +95,9 @@ void BulletBlue::Draw()
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
+		SHADER->SetAnimation(m_pFBX->GetAnimeMatrix(i), m_pFBX->GetAnimeMatrixNum(i));
 		SHADER->SetTexture(m_pBulletBlueTex);
+
 		/*
 		SHADER->SetTexture(m_fbx.GetTexture(i));
 		*/

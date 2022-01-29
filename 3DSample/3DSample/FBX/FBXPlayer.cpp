@@ -389,10 +389,12 @@ FBXPlayer::FBXPlayer()
 	for (int i = 0; i < BLEND_NUM; ++i)
 	{
 		InitPlayInfo(&m_blendSet[i]);
+		m_blendSet[i].pPlayAnime = nullptr;
 	}
 	for (int i = 0; i < PARAMETRIC_NUM; ++i)
 	{
 		InitPlayInfo(&m_parametricSet[i]);
+		m_parametricSet[i].pPlayAnime = nullptr;
 	}
 }
 FBXPlayer::~FBXPlayer()

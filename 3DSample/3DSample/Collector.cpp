@@ -36,8 +36,6 @@
 //*******************************************************************************
 // グローバル宣言
 //*******************************************************************************
-DrawBuffer* Collector::m_pBuffer = NULL;
-FBXPlayer* Collector::m_pfbx = NULL;
 
 
 //====================================================================
@@ -63,6 +61,10 @@ Collector::Collector()
 	m_nowCollectFlg = false;
 
 	m_moveFlg = false;
+
+
+	m_pBuffer = nullptr;
+	m_pfbx = nullptr;
 
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -121,7 +123,7 @@ bool Collector::LoadFBX(const char* pFilePath)
 //====================================================================
 bool Collector::Init()
 {
-	if (m_pBuffer == NULL)
+	if (m_pBuffer == nullptr)
 	{
 		Collector::LoadFBX("Assets/Model/ufo.fbx");
 	}
@@ -136,11 +138,12 @@ bool Collector::Init()
 //====================================================================
 void Collector::Uninit()
 {
-	if (m_pBuffer != NULL) {
+	if (m_pBuffer != nullptr) {
 		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
+		/*メモリリーク？*/
 		delete m_pfbx;
-		m_pfbx = NULL;
+		m_pfbx = nullptr;
 	}
 	SAFE_RELEASE(m_pCollectorTex);
 }

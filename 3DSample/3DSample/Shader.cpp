@@ -478,7 +478,7 @@ void Shader::SetAnimation(const DirectX::XMMATRIX* pMatrix, int num)
 	{
 		DirectX::XMStoreFloat4x4(&m_anime[i], DirectX::XMMatrixTranspose(pMatrix[i]));
 	}
-	GetContext()->UpdateSubresource(m_pBuffers[2], 0, NULL, &m_anime, 0, 0);
+	GetContext()->UpdateSubresource(m_pBuffers[BUF_VS_ANIME], 0, NULL, &m_anime, 0, 0);
 }
 void Shader::SetTexture(ID3D11ShaderResourceView* pTexture)
 {

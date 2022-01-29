@@ -95,10 +95,10 @@ void BulletManager::Uninit()
 	{
 		m_ppBullets[i]->Uninit();
 		delete m_ppBullets[i];
-		m_ppBullets[i] = NULL;
+		m_ppBullets[i] = nullptr;
 	}
 	delete[] m_ppBullets;
-	m_ppBullets = NULL;
+	m_ppBullets = nullptr;
 }
 //==============================================================
 //
