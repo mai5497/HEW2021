@@ -24,6 +24,10 @@
 //*******************************************************************************
 #define MAX_TEX_TIMER	(10)
 
+// 現在のタイマー挙動
+// 回収地点に到着時０になり、すぐに次の回収地点へ到着するまでの時間をセット
+// その為、回収地点での待機時間( ADD_TIME )を追加している。
+
 #define WAIT_TIME		(720)		// 基本待機時間
 #define ADD_TIME		(180)		// 2回目以降の追加待機時間
 
@@ -64,7 +68,7 @@ void Timer::Init()
 	LoadTextureFromFile("Assets/Texture/UI/Number/7.png", &g_pTimerTex[7]);
 	LoadTextureFromFile("Assets/Texture/UI/Number/8.png", &g_pTimerTex[8]);
 	LoadTextureFromFile("Assets/Texture/UI/Number/9.png", &g_pTimerTex[9]);
-	LoadTextureFromFile("Assets/Texture/UI/time_ufo2.png", &g_pTimerFlameTex);
+	LoadTextureFromFile("Assets/Texture/UI/time_ufo1.png", &g_pTimerFlameTex);
 
 	// 秒
 	g_pTimerObj[0] = new GameObject;
