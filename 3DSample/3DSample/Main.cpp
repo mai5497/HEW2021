@@ -125,6 +125,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 void Uninit()
 {
 	g_pSceneManager->Uninit();
+	delete g_pSceneManager;
 	CSound::Fin();
 	SHADER->Uninit();
 	UninitDX();

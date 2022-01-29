@@ -108,11 +108,12 @@ void Timer::Uninit()
 	}
 	SAFE_RELEASE(g_pTimerFlameTex);
 
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	g_pTimerObj[i]->Uninit();
-	//	delete g_pTimerObj[i];
-	//}
+	for (int i = 0; i < 4; i++)
+	{
+		g_pTimerObj[i]->Uninit();
+		delete g_pTimerObj[i];
+	}
+	
 	g_pTimerFlame->Uninit();
 	delete g_pTimerFlame;
 

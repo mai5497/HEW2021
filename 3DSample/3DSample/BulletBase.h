@@ -71,5 +71,4 @@ private:
 	bool m_rbFlg;					// true　→　赤			false　→　青
 	bool m_ColFlg;					// true　→　地面と接している	false → 地面と接していない
 	bool m_LandingFlg;				// 着地フラグ（着地した瞬間）
-
 };

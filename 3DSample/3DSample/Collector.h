@@ -5,6 +5,14 @@
 #include "FBX/FBXPlayer.h"
 #include "DrawBuffer.h"
 
+enum UFOCOLLOR {
+	RED_UFO = 0,
+	BLUE_UFO,
+	REDBLUE_UFO,
+
+	MAX_UFO
+};
+
 //========================= クラス定義 ===========================
 class Collector : public GameObject
 {
@@ -26,15 +34,15 @@ public:
 
 
 private:
-	bool LoadFBX(const char* pFilePath);
+	bool LoadFBX(const char* pFilePath,int index);
 
 	//---変数
 public:
-	ID3D11ShaderResourceView* m_pCollectorTex;
+	ID3D11ShaderResourceView* m_pCollectorTex[MAX_UFO];
 
 private:
-	static DrawBuffer* m_pBuffer;
-	static FBXPlayer* m_pfbx;		//FBXファイル操作クラス
+	DrawBuffer *m_pBuffer[MAX_UFO];
+	FBXPlayer *m_pfbx[MAX_UFO];		//FBXファイル操作クラス
 
 	XMFLOAT3	m_dir;
 

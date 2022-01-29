@@ -17,7 +17,7 @@ ID3D11ShaderResourceView*	g_pClearTex[MAX_CLAER_SCENE_TEX];		// テクスチャ
 Camera*			g_pClearCamera;									// カメラ
 GameObject		g_pClearObject[MAX_CLAER_SCENE_TEX];			// ゲームオブジェクト
 float			g_ArrowPosY;									// カーソル座標
-static int		g_nTimer;										// タイマー
+//static int		g_nTimer;										// タイマー
 static int		g_SelectState;									// シーンの値
 
 
@@ -36,7 +36,7 @@ const char* g_pClearTexFName[MAX_CLAER_SCENE_TEX] = {
 //=========================================================
 void InitClear() {
 	// タイマー初期化
-	g_nTimer = CLEAR_CNT;
+	//g_nTimer = CLEAR_CNT;
 
 	// オブジェクト・テクスチャ読み込み
 	for (int i = 0; i < MAX_CLAER_SCENE_TEX; i++){
@@ -105,10 +105,10 @@ void UninitClear() {
 int	UpdateClear() 
 {
 	// タイマーカウントダウン
-	g_nTimer--;
-	if (g_nTimer < 0) {
-		return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
-	}
+	//g_nTimer--;
+	//if (g_nTimer < 0) {
+	//	return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
+	//}
 
 
 	//---カーソル移動

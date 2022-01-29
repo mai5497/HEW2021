@@ -17,8 +17,6 @@
 
 ID3D11ShaderResourceView *m_pStageTex[3];
 
-DrawBuffer *StageManager::m_pBuffer = NULL;
-FBXPlayer *StageManager::m_pfbx = NULL;
 
 
 //====================================================================
@@ -32,6 +30,9 @@ StageManager::StageManager():m_ppStages(NULL),m_nStageNum(0)
 	LoadTextureFromFile("Assets/Model/base1.jpg", &m_pStageTex[0]);
 	LoadTextureFromFile("Assets/Model/ground.png", &m_pStageTex[1]);
 	LoadTextureFromFile("Assets/Model/base2.jpg", &m_pStageTex[2]);
+
+	m_pBuffer = nullptr;
+	m_pfbx = nullptr;
 }
 
 
@@ -190,25 +191,26 @@ bool StageManager::Init(int SelectStageNum)
 //====================================================================
 void StageManager::Uninit()
 {
-	if (m_pBuffer != NULL) {
+	if (m_pBuffer != nullptr) {
 		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
 		delete m_pfbx;
-		m_pfbx = NULL;
+		m_pfbx = nullptr;
 	}
 
-	for (int i = 0; i < m_nStageNum; i++) {
+	for (int i = 0; i < 3; i++) {
 		SAFE_RELEASE(m_pStageTex[i]);
 	}
 
-	if (m_ppStages != NULL){
+	if (m_ppStages != nullptr){
 		for (int i = 0; i < m_nStageNum; i++){
 			//ŒÂ•Ê‚Éíœ
 			delete m_ppStages[i];
+			m_ppStages[i] = nullptr;
 		}
 		//”z—ñ‚ðíœ
 		delete[] m_ppStages;
-		m_ppStages = NULL;
+		m_ppStages = nullptr;
 	}
 }
 

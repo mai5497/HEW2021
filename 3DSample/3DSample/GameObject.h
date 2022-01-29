@@ -62,7 +62,7 @@ protected:
 	DirectX::XMFLOAT3 m_pos;				// 座標
 	DirectX::XMFLOAT3 m_size;				// サイズ
 	DirectX::XMFLOAT3 m_move;				// 速さ
-	DirectX::XMFLOAT3 m_Radius;				// 半径
+	DirectX::XMFLOAT3 m_Radius;			// 半径
 	DirectX::XMFLOAT3 m_Angle;				// 角度
 	DirectX::XMFLOAT4 m_Color;				// 色
 

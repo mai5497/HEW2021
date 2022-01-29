@@ -32,7 +32,7 @@ public:
 	bool Init();
 	virtual void Unint();
 	void Draw();
-	void AnimUpdate();
+	//void Update();
 
 	//---•Ï”
 	ID3D11ShaderResourceView* m_pBulletBlueTex;

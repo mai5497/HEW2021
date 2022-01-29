@@ -45,18 +45,18 @@ public:
 	ID3D11ShaderResourceView *m_pPlayerTex;			
 	XMFLOAT3 GetPlayerPos();
 	XMFLOAT3 GetPlayerAngle();
-
+	float GetPlayerDrawAngle();							// プレイヤーの向く角度を取得
 
 	void SetBulletTargetPos(XMFLOAT3 pos);
-
+	
 	void SetThrowFlg(bool flg);
 
 private:
 	bool LoadPlayer(const char *pFilePath);
 
 	Camera * m_pControllCamera;				// カメラ座標操作
-	static DrawBuffer *m_pBuffer;			// バッファ情報操作
-	static FBXPlayer *m_pFBX;				// FBXファイル操作クラス
+	DrawBuffer *m_pBuffer;			// バッファ情報操作
+	FBXPlayer *m_pFBX;				// FBXファイル操作クラス
 	float m_DrawAngle;						// 描画角度
 	XMFLOAT3 m_BulletTargetPos;
 	ANIME_INDEX m_playerAnim[MAX_ANIME];

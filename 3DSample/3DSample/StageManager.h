@@ -21,8 +21,8 @@ public:
 
 private:
 	bool LoadStage(const char* pFilePath);
-	static DrawBuffer * m_pBuffer;
-	static FBXPlayer *m_pfbx;	//FBXファイル操作クラス
+	DrawBuffer * m_pBuffer;
+	FBXPlayer *m_pfbx;	//FBXファイル操作クラス
 
 
 	Stage **m_ppStages;

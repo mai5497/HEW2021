@@ -161,7 +161,9 @@ SCENE SelectScene::Update()
 
 	if (IsTrigger(VK_RIGHT) || IsRelease(JPadButton::DPAD_RIGHT)) {
 		CSound::Play(SE_SELECT_1);
+
 		m_StageNum++;
+
 		if (m_StageNum > 3) {
 			m_StageNum = 3;
 		}
@@ -189,6 +191,32 @@ SCENE SelectScene::Update()
 		}
 	}
 
+	// ---力技のセレクト動かした(2021/01/28時点)
+	switch (m_StageNum)
+	{
+	case 1:
+		g_pSelectObject[SELECT_BLOCK_1].SetPos(XMFLOAT3(-0.3f, 0.0f, 1.0f));
+		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.05f, 1));
+		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, -0.1f, 1));
+
+		break;
+	case 2:
+		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, 0.00f, 1));
+		g_pSelectObject[SELECT_BLOCK_1].SetPos(DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
+		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, -0.1f, 1));
+
+
+		break;
+	case 3:
+		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, 0.0f, 1));
+		g_pSelectObject[SELECT_BLOCK_1].SetPos(DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
+		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.05f, 1));
+
+		break;
+
+	default: 
+		break;
+	}
 	return SCENE_SELECT;
 }
 
