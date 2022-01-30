@@ -30,8 +30,6 @@
 // グローバル宣言
 //*******************************************************************************
 XMFLOAT3 pOldCameraPos;
-DrawBuffer *Player::m_pBuffer = NULL;
-FBXPlayer *Player::m_pFBX = NULL;
 
 
 //==============================================================
@@ -55,8 +53,10 @@ Player::Player():
 	m_pos.z = -25.0f;
 	m_Angle = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	m_DrawAngle = XM_PI;
-
 	m_size = XMFLOAT3(PLAYER_SIZE_X, PLAYER_SIZE_Y, PLAYER_SIZE_Z);
+
+	m_pBuffer = nullptr;
+	m_pFBX = nullptr;
 
 	m_collisionType = COLLISION_DYNAMIC;
 }
@@ -88,11 +88,11 @@ Player::~Player()
 bool Player::Init()
 {
 	//----- プレイヤー処理 -----
-	GameObject::Init();	// プレイヤー用初期化？
-	if (m_pBuffer == NULL) {
-		LoadPlayer("Assets/Model/player2.fbx");
+	if (m_pBuffer == nullptr) {
+		LoadPlayer("Assets/Model/player.fbx");
 	}
-	//m_playerAnim[0] = m_pFBX->LoadAnimation("Assets/Model/player2.fbx");
+	m_playerAnim[STAND] = m_pFBX->LoadAnimation("Assets/Model/player_standby.fbx");
+	m_playerAnim[THROW] = m_pFBX->LoadAnimation("Assets/Model/player_throw.fbx");
 
 	return true;
 }
@@ -108,16 +108,14 @@ bool Player::Init()
 void Player::Uninit()
 {
 
-	if (m_pBuffer != NULL) {
+	if (m_pBuffer != nullptr) {
 		delete[] m_pBuffer;
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
 
 		delete m_pFBX;
-		m_pFBX = NULL;
+		m_pFBX = nullptr;
 	}
 	SAFE_RELEASE(m_pPlayerTex);
-
-	GameObject::Uninit();
 }
 
 //==============================================================
@@ -130,21 +128,23 @@ void Player::Uninit()
 //==============================================================
 void Player::Update() {
 	//----- 変数初期化 -----
-	XMFLOAT2 Axis = LeftThumbPosition();
-	bool moveFlg = false;
+	//XMFLOAT2 Axis = LeftThumbPosition();
+	//bool moveFlg = false;
 
 	m_move = XMFLOAT3(m_BulletTargetPos.x, m_BulletTargetPos.y, m_BulletTargetPos.z - m_pos.z);
 	
-	//if (IsRelease('E') || IsRelease('Q')) {
-	//	m_pFBX->Play(0);
-	//}
+	if (IsRelease('E') || IsRelease('Q')) {
+		m_pFBX->Play(m_playerAnim[THROW]);
+	} 
+		//m_pFBX->Play(m_playerAnim[STAND]);
+
 
 
 	//描画用角度設定
 	m_DrawAngle = atan2(m_move.z, m_move.x);
 	m_DrawAngle -= XM_PI * 0.5f;
 
-	//m_pFBX->Step();
+	m_pFBX->Step();
 }
 
 //==============================================================
@@ -157,7 +157,7 @@ void Player::Update() {
 //==============================================================
 void Player::Draw()
 {
-	//SHADER->Bind(VS_ANIMATION,PS_UNLIT);
+	SHADER->Bind(VS_ANIMATION,PS_UNLIT);
 
 
 	XMFLOAT3 pPos = m_pos;
@@ -170,7 +170,7 @@ void Player::Draw()
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			*DirectX::XMMatrixRotationY(-m_DrawAngle)
 			*DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
+		SHADER->SetAnimation(m_pFBX->GetAnimeMatrix(i), m_pFBX->GetAnimeMatrixNum(i));
 		SHADER->SetTexture(m_pPlayerTex);
 
 		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

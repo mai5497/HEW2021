@@ -27,6 +27,11 @@ public:
 	void AddCollectionSum();
 	void SubCollectionSum();
 	int GetCollectionSum();
+	void SubRedSum();
+	void SubBlueSum();
+	int GetRedSum();
+	int GetBlueSum();
+
 	//---ïœêî
 
 private:
@@ -36,7 +41,9 @@ private:
 	DwarfBase **m_ppDwarf;
 	int m_DwarfNum;
 	BulletManager *m_pBullet;
-	 int m_collectionSum;
+	int m_collectionSum;
+	int m_redSum;
+	int m_blueSum;
 };
 
 #endif

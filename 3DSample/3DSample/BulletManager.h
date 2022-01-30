@@ -23,8 +23,8 @@ class Player;
 class BulletTarget;
 class Camera;
 
-#define	MAX_RED_BULLET		(5)									// 赤弾の最大値
-#define	MAX_BLUE_BULLET		(5)									// 青弾の最大値
+#define	MAX_RED_BULLET		(15)									// 赤弾の最大値
+#define	MAX_BLUE_BULLET		(15)									// 青弾の最大値
 #define	MAX_BULLET			(MAX_RED_BULLET + MAX_BLUE_BULLET)	// 弾の最大値(赤弾 + 青弾)
 
 //*******************************************************************************
@@ -57,7 +57,7 @@ public:
 	void SetPlayerAngle(XMFLOAT3 Angle);					// プレイヤーの角度を設定
 
 private:
-	BulletBase** m_ppBullets;					// 弾の情報を扱う(ベース)
+	BulletBase* m_ppBullets[MAX_BULLET];					// 弾の情報を扱う(ベース)
 	//BulletTarget* m_pBulletTarget;				// 弾の落下地点
 
 

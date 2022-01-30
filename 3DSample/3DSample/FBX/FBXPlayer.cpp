@@ -389,24 +389,26 @@ FBXPlayer::FBXPlayer()
 	for (int i = 0; i < BLEND_NUM; ++i)
 	{
 		InitPlayInfo(&m_blendSet[i]);
+		m_blendSet[i].pPlayAnime = nullptr;
 	}
 	for (int i = 0; i < PARAMETRIC_NUM; ++i)
 	{
 		InitPlayInfo(&m_parametricSet[i]);
+		m_parametricSet[i].pPlayAnime = nullptr;
 	}
 }
 FBXPlayer::~FBXPlayer()
 {
 	for (int i = 0; i < PARAMETRIC_NUM; ++i)
 	{
-		delete[] m_parametricSet[i].pPlayAnime;
+		SAFE_DELETE_ARRAY(m_parametricSet[i].pPlayAnime);
 	}
 	for (int i = 0; i < BLEND_NUM; ++i)
 	{
-		delete[] m_blendSet[i].pPlayAnime;
+		SAFE_DELETE_ARRAY(m_blendSet[i].pPlayAnime);
 	}
-	delete[] m_pBones;
-	delete[] m_pAnimes;
+	SAFE_DELETE_ARRAY(m_pBones);
+	SAFE_DELETE_ARRAY(m_pAnimes);
 }
 
 
@@ -771,7 +773,6 @@ void FBXPlayer::InitPlayInfo(FBXPlayInfo* pInfo)
 	pInfo->speed = 1.f;
 	pInfo->frame = 0;
 	pInfo->loop = false;
-	pInfo->pPlayAnime = nullptr;
 }
 void FBXPlayer::CopyPlayInfo(FBXPlayInfo* pA, FBXPlayInfo* pB)
 {

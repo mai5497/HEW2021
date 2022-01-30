@@ -46,21 +46,17 @@ DwarfManager::~DwarfManager()
 //
 //====================================================================
 bool DwarfManager::Init(int stagenum) {
-	//----- ローカル変数初期化 -----
-	int rednum;
-	int bluenum;
-
 	if (stagenum == 1) {
-		rednum = MAX_RED_DWARF_1;
-		bluenum = MAX_BLUE_DWARF_1;
+		m_redSum = MAX_RED_DWARF_1;
+		m_blueSum = MAX_BLUE_DWARF_1;
 		m_DwarfNum = MAX_DWARF_1;
 	} else if (stagenum == 2) {
-		rednum = MAX_RED_DWARF_2;
-		bluenum = MAX_BLUE_DWARF_2;
+		m_redSum = MAX_RED_DWARF_2;
+		m_blueSum = MAX_BLUE_DWARF_2;
 		m_DwarfNum = MAX_DWARF_2;
 	} else if (stagenum == 3) {
-		rednum = MAX_RED_DWARF_3;
-		bluenum = MAX_BLUE_DWARF_3;
+		m_redSum = MAX_RED_DWARF_3;
+		m_blueSum = MAX_BLUE_DWARF_3;
 		m_DwarfNum = MAX_DWARF_3;
 	}
 
@@ -82,7 +78,7 @@ bool DwarfManager::Init(int stagenum) {
 		// ランダムで算出した値を基準位置に加算して代入
 		XMFLOAT3(basePos.x + randomPos.x, 5.0f, basePos.z + randomPos.z);
 		// それぞれの配列に小人をメモリ確保
-		if (i < rednum) {
+		if (i < m_redSum) {
 			m_ppDwarf[i] = new RedDwarf;
 		} else {
 			m_ppDwarf[i] = new BlueDwarf;
@@ -108,11 +104,11 @@ void DwarfManager::Uninit()
 	for (int i = 0; i < m_DwarfNum; i++)
 	{
 		m_ppDwarf[i]->Uninit();
-		delete m_ppDwarf[i];
-		m_ppDwarf[i] = NULL;
+		delete[] m_ppDwarf[i];
+		m_ppDwarf[i] = nullptr;
 	}
 	delete[] m_ppDwarf;
-	m_ppDwarf = NULL;
+	m_ppDwarf = nullptr;
 
 }
 
@@ -291,4 +287,20 @@ void DwarfManager::SubCollectionSum() {
 int DwarfManager::GetCollectionSum()
 {
 	return m_collectionSum;
+}
+
+
+void DwarfManager::SubRedSum() {
+	m_redSum--;
+}
+
+void DwarfManager::SubBlueSum() {
+	m_blueSum--;
+}
+
+int DwarfManager::GetRedSum() {
+	return m_redSum;
+}
+int DwarfManager::GetBlueSum() {
+	return m_blueSum;
 }

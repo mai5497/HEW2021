@@ -12,10 +12,7 @@
 #include "BulletRed.h"
 #include "MyVector.h"
 #include "Texture.h"
-
-//========================= グローバル変数定義 ===========================
-DrawBuffer* BulletRed::m_pBuffer = NULL;
-FBXPlayer* BulletRed::m_pFBX = NULL;
+#include "Sound.h"
 
 
 //==============================================================
@@ -26,8 +23,11 @@ FBXPlayer* BulletRed::m_pFBX = NULL;
 BulletRed::BulletRed()
 {
 	//----- 変数初期化 -----
-	LoadTextureFromFile("Assets/Texture/flowerred.png", &m_pBulletRedTex);
 	SetRBFlg(true);	// 赤弾
+	m_pRedModel = m_pBulletModel[RED_BULLET];
+	//m_floweAnim[0] = m_pBlueModel->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
+	m_pRedBuffer = m_pBuffer[RED_BULLET];
+
 }
 
 //==============================================================
@@ -47,12 +47,8 @@ BulletRed::~BulletRed()
 //==============================================================
 bool BulletRed::Init()
 {
-	/* 以下はモデルが来たら使用 */
-	if (m_pBuffer == NULL) {
-		BulletRed::LoadBullet("Assets/Model/flowerred.fbx");
-	}
+	m_AliveTime = BULLET_DESTOROY_CNT;		// 生存時間
 
-	GameObject::Init();
 	return true;
 
 }
@@ -64,15 +60,47 @@ bool BulletRed::Init()
 //==============================================================
 void BulletRed::Unint()
 {
-	SAFE_RELEASE(m_pBulletRedTex);
-	if (m_pBuffer != NULL) {
-		delete[] m_pBuffer;
-		m_pBuffer = NULL;
-		delete m_pFBX;
-		m_pFBX = NULL;
-	}
 
-	GameObject::Uninit();
+}
+
+//==============================================================
+//
+//	BulletRed::更新
+// 
+//==============================================================
+void BulletRed::Update() {
+
+	// 弾の投擲時間を進める(定数で投げ終わる時間を決めれる)
+	m_ThrowTimer += 1.3f / BULLET_THROW_CNT;
+
+
+	if (m_ThrowTimer <= 1.0f) {
+
+		m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x + m_ThrowTimer * m_ThrowTimer * m_EndPos.x;
+
+		m_pos.y = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.y + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.y + m_ThrowTimer * m_ThrowTimer * m_EndPos.y;
+
+		m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z + m_ThrowTimer * m_ThrowTimer * m_EndPos.z;
+	} else {
+		m_ColFlg = true;
+	}
+	if (m_ColFlg) {
+		if (m_AliveTime == BULLET_DESTOROY_CNT) {
+			// サウンド
+			CSound::Play(SE_BULLET_2);
+			//m_pFBX->Play(0);
+			m_LandingFlg = true;	// 弾が地面についた瞬間
+		} else {
+			m_LandingFlg = false;
+		}
+
+		// 弾の時間経過での破壊処理
+		m_AliveTime--;					// 生存時間のカウントダウン
+		if (m_AliveTime < 0) {			// 0以下になったら
+			use = false;					// 使用フラグを変更
+			Uninit();
+		}
+	}
 
 }
 
@@ -84,57 +112,19 @@ void BulletRed::Unint()
 void BulletRed::Draw()
 {
 	// 弾のテクスチャ
-	int meshNum = m_pFBX->GetMeshNum();
+	int meshNum = m_pRedModel->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-		SHADER->SetTexture(m_pBulletRedTex);
+		SHADER->SetTexture(m_pBulletTex[RED_BULLET]);
 		/*
 		SHADER->SetTexture(m_fbx.GetTexture(i));
 		*/
 
-		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_pRedBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-}
-
-
-//====================================================================
-//
-//		テクスチャ読み込み
-//
-//====================================================================
-bool BulletRed::LoadBullet(const char* pFilePath)
-{
-	/* 以下はモデルが来たら使用 */
-	HRESULT hr;
-	m_pFBX = new FBXPlayer;
-	hr = m_pFBX->LoadModel(pFilePath);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	//モデルのメッシュの数だけ頂点バッファ作成
-	int meshNum = m_pFBX->GetMeshNum();
-	m_pBuffer = new DrawBuffer[meshNum];
-	for (int i = 0; i < meshNum; i++)
-	{
-		//メッシュごとに頂点バッファ作成
-		m_pBuffer[i].CreateVertexBuffer(
-			m_pFBX->GetVertexData(i),
-			m_pFBX->GetVertexSize(i),
-			m_pFBX->GetVertexCount(i)
-		);
-		//インデックスバッファ作成
-		m_pBuffer[i].CreateIndexBuffer(
-			m_pFBX->GetIndexData(i),
-			m_pFBX->GetIndexCount(i)
-		);
-
-	}
-	return true;
 }

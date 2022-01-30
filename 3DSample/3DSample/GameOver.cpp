@@ -40,7 +40,7 @@ static DrawBuffer			g_pBuffer;								// 頂点バッファ
 GameObject		g_pGameOverObject[MAX_GAMEOVER_TEX];				// ゲームオブジェクト
 Camera*			g_pGameOverCamera;									// ゲームカメラ
 
-static int g_nTimer;				// タイマー
+//static int g_nTimer;				// タイマー
 
 const char* g_pGameOverTexFName[MAX_GAMEOVER_TEX] = {		// テクスチャデータ
 	"Assets/Texture/Scene/SeceneBG.png",
@@ -60,7 +60,7 @@ int		g_GO_SelectState;									// シーンの値
 void InitGameOver()
 {
 	//---タイマー初期化
-	g_nTimer = CHANGE_STATE_CNT;
+	//g_nTimer = CHANGE_STATE_CNT;
 
 	//---オブジェクト・テクスチャ読み込み
 	for (int i = 0; i < MAX_GAMEOVER_TEX; i++){

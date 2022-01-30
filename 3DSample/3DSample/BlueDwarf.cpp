@@ -39,7 +39,7 @@ BlueDwarf::BlueDwarf()
 
 
 	SetRBFlg(false);	// 青小人
-	m_CircumferenceTimer = TARGETSET_TIME;
+	m_CircumferenceTimer = 0;
 	m_BulletAliveTimer = 0;
 }
 
@@ -141,7 +141,7 @@ void BlueDwarf::Update()
 
 	//----- 弾の近くにいるときの処理 -----
 	Differ = fabsf(m_targetPos.x - m_pos.x) + fabsf(m_targetPos.z - m_pos.z);
-	if (GetrunFlg() && Differ > 15.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
+	if (GetrunFlg() && Differ > 25.0f) {	// なんとなく離れたとき。マジックナンバーでごめん。
 		SetrunFlg(false);
 		SetMoveFlg(false);
 	}

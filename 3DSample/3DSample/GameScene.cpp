@@ -84,7 +84,7 @@
 Camera				*g_pCamera;
 //TPSCamera			*g_pTPSCamera;
 Player				*g_pPlayer;
-GamePolygon			*g_pPolygon;
+//GamePolygon			*g_pPolygon;
 
 StageManager		*g_pStageManager;
 StageObjectManager* g_pStageObjectManager;
@@ -109,12 +109,10 @@ Shadow				*g_pShadow;
 //Enemy				*g_pEnemy;
 //EnemyManager		*g_pEnemyManager;
 
-XMFLOAT3 g_recPlayerPos;
+//XMFLOAT3 g_recPlayerPos;
 XMFLOAT3 g_recBulletPos;
 XMFLOAT3 g_recordPos[CONTROL_NUM * RECORD_MARGIN];
 
-int g_LastBulletNun = -1;
-BulletBase *g_pBullet[MAX_BULLET];
 
 //==============================================================
 //
@@ -157,6 +155,10 @@ void GameScene::Init(int StageNum)
 	//---カメラ
 	g_pCamera = new Camera();
 	g_pCamera->Init();
+
+	//---ポリゴンクラス
+	//g_pPolygon = new GamePolygon;
+	//g_pPolygon->Init();
 
 	//---影
 	g_pShadow = new Shadow;
@@ -203,7 +205,7 @@ void GameScene::Init(int StageNum)
 	
 	// 回収車
 	g_pCollector = new Collector();
-	g_pCollector->Init();
+	g_pCollector->Init(StageNum);
 	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 
 
@@ -265,10 +267,13 @@ void GameScene::Init(int StageNum)
 		}
 	}
 
-	#pragma endregion
+	// タイマーフレームの色をステージに応じて変更
+	g_pTimer->SetColor(m_StageNum);
+
 
 	// BGM再生
 	CSound::Play(GAME_BGM);
+	CSound::SetVolume(GAME_BGM,0.5);
 }
 
 //==============================================================
@@ -281,7 +286,10 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
-	#pragma region 各オブジェクトの終了処理
+	// ポリゴン
+	//g_pPolygon->Uninit();
+	//delete g_pPolygon;
+
 	// 影
 	g_pShadow->Uninit();
 	delete g_pShadow;
@@ -411,15 +419,30 @@ SCENE GameScene::Update()
 		g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
 		g_pBulletManger->Update();
 
-		// 小人更新処理
-		g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
-		g_pDwarfManager->Update();
+	// 小人更新処理
+	g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
+	g_pDwarfManager->Update();
+	
+	// 回収者
+	//色配列前詰め
+	if ((m_StageNum == 2 || m_StageNum == 3) && g_pCollectionPoint->GetColorNum(3) == MAX_COLOR) {	// 何も消されていない
+		if (g_pDwarfManager->GetRedSum() < 1) {
+			if (g_pCollectionPoint->GetColorNum(0) == RED) {
+				g_pCollectionPoint->SqueezeFront(0);
+			}
+		}
+		if (g_pDwarfManager->GetBlueSum() < 1) {
+			if (g_pCollectionPoint->GetColorNum(1) == BLUE) {
+				g_pCollectionPoint->SqueezeFront(1);
+			}
+		}
+	}
 
-		// 回収者
-		g_pCollector->Update();
-		g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
-		g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
-		g_pCollectionPoint->Update();
+	g_pCollector->Update();
+	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
+	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
+	g_pCollectionPoint->Update();
+	g_pCollector->SetUFOColor(g_pCollectionPoint->GetColorNum());
 
 
 		// エネミー更新
@@ -433,10 +456,10 @@ SCENE GameScene::Update()
 		g_pStageObjectManager->Update();
 
 
-		//----- プレイヤーの座標を取得 -----
-		g_recPlayerPos = g_pPlayer->GetPos();
-		//g_pEnemy->TargetPos(g_recPlayerPos);
-		//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
+	//----- プレイヤーの座標を取得 -----
+	//g_recPlayerPos = g_pPlayer->GetPos();
+	//g_pEnemy->TargetPos(g_recPlayerPos);
+	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
 		// チュートリアル表示更新
 		g_pTutorial->Update();
@@ -475,58 +498,51 @@ SCENE GameScene::Update()
 				continue;
 			}
 
-#pragma region <小人の回収処理>
-			//----- 小人回収処理 -----
-			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
-				if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-					if (g_pCollector->GetNowCollectFlg()) {
-						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-					}
+		//----- 小人回収処理 -----
+		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+			if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
 				}
-				else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-					if (g_pCollector->GetNowCollectFlg()) {
-						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-					}
+			}else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
 				}
-				else  if ((g_pCollectionPoint->GetColorNum()) == REDBLUE) {
-					if (g_pCollector->GetNowCollectFlg()) {
-						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-					}
+			}else  if((g_pCollectionPoint->GetColorNum()) == REDBLUE){
+				if (g_pCollector->GetNowCollectFlg()) {
+					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
 				}
 			}
+		}
+		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
+			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+			if (g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				g_pDwarfManager->SubRedSum();
+			}
+			if (!g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				g_pDwarfManager->SubBlueSum();
+			}
+			CSound::Play(SE_Dwarf_1);
+			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+			g_pDwarfManager->AddCollectionSum();
+		}
 
-			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
-				g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-				//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
-				g_pDwarfManager->AddCollectionSum();
+		//----- 小人の追跡処理 -----
+		for (int j = 0; j < MAX_BULLET; j++) {
+			if (!g_pBulletManger->GetBullet(j)->use) {				// 弾未用ならスキップ
+				continue;
 			}
-#pragma	endregion
-
-#pragma region	<小人の追跡処理>
-			//----- 小人の追跡処理 -----
-			for (int j = 0; j < MAX_BULLET; j++) {
-				//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
-				//if (g_pBullet[j]->use) {									// 最後の指示を通す
-				//	g_LastBulletNun = j;
-				//}
-				if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
-					continue;
-				}
-				//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
-				//	continue;
-				//}
-				if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
-					continue;
-				}
-				if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
-					continue;
-				}
-				//---小人の弾への追尾
-				g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
-				g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
-				g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
+			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
+				continue;
 			}
-#pragma endregion
+			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {	// 境界球の当たり半径
+				continue;
+			}
+			//---小人の弾への追尾
+			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
+			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+			g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
+		}
 
 		}
 #pragma endregion
@@ -625,41 +641,33 @@ SCENE GameScene::Update()
 		}
 		#pragma endregion
 
-		#pragma region シーン遷移
-		//***************************************************************
-		// シーン遷移
-		//***************************************************************	
-		int sceneState = -1;
+	//***************************************************************
+	// シーン遷移
+	//***************************************************************	
+	int sceneState = -1;
+	if (m_IsClear) {
+		g_pScore->SetScore(1);
+		g_pSelectScene->SetScore(m_StageNum, 1);
 
-		// クリア画面
-		if (m_IsClear) {
-			g_pScore->SetScore(1);
-			g_pSelectScene->SetScore(m_StageNum, 1);
-			sceneState = UpdateClear();
 
-			if (sceneState == STATE_NEXT) {
-				GameScene::Uninit();
-				GameScene::Init(m_StageNum + 1);
-			}
-			if (sceneState == STATE_SELECT) {
-				return SCENE_SELECT;
-			}
+		sceneState = UpdateClear();
+		if (sceneState == STATE_NEXT) {
+			GameScene::Uninit();
+			GameScene::Init(m_StageNum + 1);
 		}
-
-
-		// ゲームオーバー画面
-		if (m_IsGameOver) {
-			sceneState = UpdateGameOver();
-			if (sceneState == STATE_RETRY) {
-				GameScene::Uninit();
-				GameScene::Init(m_StageNum);
-			}
-			if (sceneState == STATE_SELECT) {
-				return SCENE_SELECT;
-			}
+		if (sceneState == STATE_SELECT) {
+			return SCENE_SELECT;
 		}
-		#pragma endregion
-
+	}
+	if (m_IsGameOver) {
+		sceneState = UpdateGameOver();
+		if (sceneState == STATE_RETRY){
+			GameScene::Uninit();
+			GameScene::Init(m_StageNum);
+		}
+		if (sceneState == STATE_SELECT) {
+			return SCENE_SELECT;
+		}
 	}
 	else {
 
@@ -794,10 +802,7 @@ void GameScene::Draw()
 	));
 	*/
 
-#pragma endregion 
-
-
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
@@ -837,8 +842,8 @@ void GameScene::Draw()
 
 	#ifdef _DEBUG
 	// 小人のステージの当たり判定ようブロック描画
-	g_pDwarfStageCollision->Draw();
-	#endif 
+	//g_pDwarfStageCollision->Draw();
+#endif 
 
 
 	// ステージオブジェクト描画

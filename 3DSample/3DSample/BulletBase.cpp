@@ -13,16 +13,13 @@
  // インクルード部
  //*******************************************************************************
 #include	"BulletBase.h"
-
-#include	"Player.h"
+//#include	"Player.h"
 #include	"Sound.h"
 
-//*******************************************************************************
-// 定数・マクロ定義
-//*******************************************************************************
-#define BULLET_GRAVITY				(0.1f / FPS)
-#define BULLET_DESTOROY_CNT			(300)							// 弾が消えるまでの時間
-#define BULLET_THROW_CNT			(30)
+//========================= グローバル変数定義 ===========================
+DrawBuffer* BulletBase::m_pBuffer[MAX_BULLET_COLOR] = { nullptr, nullptr };
+FBXPlayer* BulletBase::m_pBulletModel[MAX_BULLET_COLOR] = { nullptr, nullptr };
+
 
 //==============================================================
 //
@@ -45,9 +42,19 @@ BulletBase::BulletBase() :
 	m_sleep2 = 0;
 	m_Radius = XMFLOAT3(10.0f, 0.1f, 10.0f);
 
-	m_BulletAngle = 0.0f;								// 角度の初期化
-	m_dir = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 向き
-	m_AliveTime = BULLET_DESTOROY_CNT;	// 生存時間
+	m_BulletAngle = 0.0f;					// 角度の初期化
+	m_dir = XMFLOAT3(0.0f, 0.0f, 0.0f);		// 向き
+	m_AliveTime = BULLET_DESTOROY_CNT;		// 生存時間
+
+	//----- モデル・テクスチャ一括読込 -----
+	LoadTextureFromFile("Assets/Texture/flowerblue.png", &m_pBulletTex[BLUE_BULLET]);
+	LoadTextureFromFile("Assets/Texture/flowerred.png", &m_pBulletTex[RED_BULLET]);
+
+	for (int i = 0; i < MAX_BULLET_COLOR; i++) {
+		m_pBulletModel[i] = new FBXPlayer;
+	}
+	LoadModel("Assets/Model/flowerblue.fbx", BLUE_BULLET);
+	LoadModel("Assets/Model/flowerred.fbx", RED_BULLET);
 }
 
 
@@ -58,7 +65,19 @@ BulletBase::BulletBase() :
 //==============================================================
 BulletBase::~BulletBase()
 {
-
+	for (int i = 0; i < MAX_BULLET_COLOR; i++) {
+		SAFE_RELEASE(m_pBulletTex[i]);
+	}
+	for (int i = 0; i < MAX_BULLET_COLOR; i++) {
+		delete m_pBulletModel[i];
+		m_pBulletModel[i] = nullptr;
+	}
+	if (m_pBuffer != nullptr) {
+		for (int i = 0; i < MAX_BULLET_COLOR; i++) {
+			delete[] m_pBuffer[i];
+			m_pBuffer[i] = nullptr;
+		}
+	}
 }
 
 //==============================================================
@@ -68,8 +87,6 @@ BulletBase::~BulletBase()
 //==============================================================
 void BulletBase::Update()
 {
-
-
 	// 重力追加
 	//m_move.y -= BULLET_GRAVITY;
 
@@ -118,7 +135,6 @@ void BulletBase::Update()
 		m_AliveTime--;					// 生存時間のカウントダウン
 		if (m_AliveTime < 0) {			// 0以下になったら
 			use = false;					// 使用フラグを変更
-
 			Uninit();
 		}
 	}
@@ -137,6 +153,39 @@ void BulletBase::Draw()
 					DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
 	m_pCube->Draw();
+}
+
+//====================================================================
+//
+//		モデル読み込み
+//
+//====================================================================
+bool BulletBase::LoadModel(const char* pFilePath,int index) {
+	/* 以下はモデルが来たら使用 */
+	HRESULT hr;
+	hr = m_pBulletModel[index]->LoadModel(pFilePath);
+	if (FAILED(hr)) {
+		return false;
+	}
+
+	//モデルのメッシュの数だけ頂点バッファ作成
+	int meshNum = m_pBulletModel[index]->GetMeshNum();
+	m_pBuffer[index] = new DrawBuffer[meshNum];
+	for (int i = 0; i < meshNum; i++) {
+		//メッシュごとに頂点バッファ作成
+		m_pBuffer[index][i].CreateVertexBuffer(
+			m_pBulletModel[index]->GetVertexData(i),
+			m_pBulletModel[index]->GetVertexSize(i),
+			m_pBulletModel[index]->GetVertexCount(i)
+		);
+		//インデックスバッファ作成
+		m_pBuffer[index][i].CreateIndexBuffer(
+			m_pBulletModel[index]->GetIndexData(i),
+			m_pBulletModel[index]->GetIndexCount(i)
+		);
+
+	}
+	return true;
 }
 
 //=============================================================
