@@ -183,7 +183,7 @@ void Timer::Draw()
 			}
 			a--;
 		}
-
+  
 	}
 	
 	SHADER->SetTexture(NULL);

@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BFDA2DF7-0AD0-4925-8152-0319C59E1BCF}</ProjectGuid>
     <RootNamespace>My3DSample</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -75,8 +75,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\lib\vs2019\x64\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2.1\include;$(IncludePath)</IncludePath>
@@ -144,6 +144,7 @@
     <ClCompile Include="DwarfStageCollision.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GamePolygon.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Squre.cpp" />
     <ClCompile Include="StageObjectBase.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="DwarfStageCollision.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GamePolygon.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="Squre.h" />
     <ClInclude Include="StageObjectBase.h" />

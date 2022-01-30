@@ -14,6 +14,8 @@ typedef enum
 	SCENE_SELECT,
 	SCENE_GAME,
 	SCENE_RESULT,
+	SCENE_PAUSE,
+
 	SCENE_MAX,
 
 }SCENE;
@@ -21,9 +23,11 @@ typedef enum
 // ゲームシーン上のステート
 typedef enum
 {
+	STATE_CONTINUE,
 	STATE_NEXT,
 	STATE_SELECT,
 	STATE_RETRY,
+	STATE_END,
 
 	STATE_MAX
 }GAMESCENE_STATE;

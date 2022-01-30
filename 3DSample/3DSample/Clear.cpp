@@ -8,7 +8,7 @@
 
 //============== 定数定義 ======================
 #define CLEAR_CNT			(600)
-#define MAX_CLAER_SCENE_TEX	(4)			// テクスチャの数
+#define MAX_CLAER_SCENE_TEX	(5)			// テクスチャの数
 
 //============== グローバル変数定義 ======================
 static DrawBuffer			g_pBuffer;								// 頂点バッファ
@@ -22,6 +22,7 @@ static int		g_SelectState;									// シーンの値
 
 
 const char* g_pClearTexFName[MAX_CLAER_SCENE_TEX] = {
+	"Assets/Texture/Scene/SeceneBG.png",
 	"Assets/Texture/Scene/GameClear.png",
 	"Assets/Texture/Scene/NextStage.png",
 	"Assets/Texture/Scene/StageSelect.png",
@@ -44,22 +45,27 @@ void InitClear() {
 		g_pClearObject[i].Init();
 	}
 
+	//---半透明背景
+	g_pClearObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 8));
+	g_pClearObject[0].SetSize(XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 1));
+	g_pClearObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));
+
 	//---ゲームクリアテクスチャ
-	g_pClearObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 4));			// 座標
-	g_pClearObject[0].SetSize(XMFLOAT3(0.45f, 0.3f, 1));			// サイズ
+	g_pClearObject[1].SetPos(XMFLOAT3(0.0f, 0.15f, 4));			// 座標
+	g_pClearObject[1].SetSize(XMFLOAT3(0.45f, 0.3f, 1));			// サイズ
 	//g_pClearObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.2f));	// 半透明
 
 	//---次のステージ
-	g_pClearObject[1].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
-	g_pClearObject[1].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
+	g_pClearObject[2].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
+	g_pClearObject[2].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
 
 	//---ステージセレクト
-	g_pClearObject[2].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
-	g_pClearObject[2].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
+	g_pClearObject[3].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
+	g_pClearObject[3].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
 
 	//---カーソル
-	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
-	g_pClearObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
+	g_pClearObject[4].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
+	g_pClearObject[4].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
 
 	//g_pClearObject = new GameObject;
 	//g_pClearObject->Init();
@@ -131,13 +137,13 @@ int	UpdateClear()
 
 		g_SelectState = STATE_SELECT;
 		if (g_ArrowPosY < -0.15f) {
-			g_ArrowPosY = 0.15f;
+			g_ArrowPosY = 0.0f;
 			g_SelectState = STATE_SELECT;
 		}
 	}
 
 	//---カーソルのオブジェクト再表示
-	g_pClearObject[3].SetPos(XMFLOAT3(-0.35f, g_ArrowPosY, 0.9f));
+	g_pClearObject[4].SetPos(XMFLOAT3(-0.35f, g_ArrowPosY, 0.9f));
 
 	//---決定
 	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
@@ -152,7 +158,10 @@ int	UpdateClear()
 	//if (IsRelease('2') || IsRelease(JPadButton::A)) {
 	//	return STATE_SELECT;
 	//}
-	//g_pClearObject->Update();
+	 
+	 
+	// 色の変更のためオブジェクトの更新処理を記述
+	g_pClearObject->Update();
 
 	return -1;
 }

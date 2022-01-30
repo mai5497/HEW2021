@@ -38,6 +38,7 @@
 #include "SelectScene.h"
 #include "Clear.h"
 #include "GameOver.h"
+#include "Pause.h"
 
 
 // ---ステージ関連
@@ -100,8 +101,9 @@ BulletTarget			* g_pBulletTarget;
 
 Tutorial			*g_pTutorial;
 Score				*g_pScore;
-Timer*				g_pTimer;
+Timer				*g_pTimer;
 
+Pause				*g_pPause;
 Shadow				*g_pShadow;
 
 //Enemy				*g_pEnemy;
@@ -150,14 +152,11 @@ GameScene::~GameScene(void)
 //==============================================================
 void GameScene::Init(int StageNum)
 {
+	#pragma region 各オブジェクトの初期化
 
 	//---カメラ
 	g_pCamera = new Camera();
 	g_pCamera->Init();
-
-	//---ポリゴンクラス
-	g_pPolygon = new GamePolygon;
-	g_pPolygon->Init();
 
 	//---影
 	g_pShadow = new Shadow;
@@ -168,6 +167,7 @@ void GameScene::Init(int StageNum)
 	m_NextStageNum = m_StageNum;			// 次のステージ番号保存（現在と次が一致しなかった場合次のステージへ移行）
 	m_IsClear = false;						// クリアフラグ
 	m_IsGameOver = false;					// ゲームオーバーフラグ
+	m_IsPause = false;						// ポーズ画面フラグ
 	
 	// 弾の管理クラス
 	g_pBulletManger = new BulletManager();
@@ -207,6 +207,7 @@ void GameScene::Init(int StageNum)
 	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 
 
+	#pragma region エネミー関連
 	// 敵クラス実体化
 	//g_pEnemy = new Enemy();
 	//g_pEnemy->LoadEnemy("Assets/Model/tyoutinobake.fbx");
@@ -215,6 +216,8 @@ void GameScene::Init(int StageNum)
 	// 敵の管理クラスの実体
 	//g_pEnemyManager = new EnemyManager();
 	//g_pEnemyManager->Init();
+#pragma endregion
+
 
 	// ステージクラスの実体化
 	g_pStageManager = new StageManager();
@@ -248,6 +251,10 @@ void GameScene::Init(int StageNum)
 	// ゲームオーバー初期化
 	InitGameOver();
 
+	// ポーズ初期化
+	g_pPause = new Pause;
+	g_pPause->Init();
+
 	// 当たり判定配列にデータを入れる
 	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) {
 		for (int j = 0; j < g_pDwarfStageCollision->GetStageNum(); j++) {
@@ -258,6 +265,7 @@ void GameScene::Init(int StageNum)
 		}
 	}
 
+	#pragma endregion
 
 	// BGM再生
 	CSound::Play(GAME_BGM);
@@ -273,10 +281,7 @@ void GameScene::Init(int StageNum)
 //==============================================================
 void GameScene::Uninit()
 {
-	// ポリゴン
-	g_pPolygon->Uninit();
-	delete g_pPolygon;
-
+	#pragma region 各オブジェクトの終了処理
 	// 影
 	g_pShadow->Uninit();
 	delete g_pShadow;
@@ -348,6 +353,12 @@ void GameScene::Uninit()
 	// ゲームオーバー終了
 	UninitGameOver();
 
+	// ポーズ終了
+	g_pPause->Uninit();
+	delete g_pPause;
+
+	#pragma endregion
+
 	// BGM停止
 	CSound::Stop(GAME_BGM);
 }
@@ -362,259 +373,325 @@ void GameScene::Uninit()
 //==============================================================
 SCENE GameScene::Update()
 {
-	// ポリゴン
-	g_pPolygon->Update();
-	
-	// 影
-	g_pShadow->Update();
-
-	// プレイヤー更新
-	g_pPlayer->SetBulletTargetPos(g_pBulletTarget->GetBulletTargetPos());
-	g_pPlayer->Update();
-
-	// プレイヤーの向きをBulletTargetに取得
-	g_pBulletTarget->SetPlayerDrawAngle(g_pPlayer->GetPlayerDrawAngle());
-
-	// 落下地点の更新
-	g_pBulletTarget->Update();
-	g_pBulletTarget->SetPlayerPos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定(バレットターゲット内で使用)
-
-
-	// 弾更新
-	g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
-	g_pBulletManger->SetTargetPos(g_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
-	g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
-	g_pBulletManger->Update();
-
-	// 小人更新処理
-	g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
-	g_pDwarfManager->Update();
-	
-	// 回収者
-	g_pCollector->Update();
-	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
-	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
-	g_pCollectionPoint->Update();
-
-
-	// エネミー更新
-	//g_pEnemy->Update();
-	//g_pEnemyManager->Update();
-
-	// ステージ更新
-	g_pStageManager->Update();
-
-	// ステージオブジェクト更新
-	g_pStageObjectManager->Update();
-
-
-	//----- プレイヤーの座標を取得 -----
-	g_recPlayerPos = g_pPlayer->GetPos();
-	//g_pEnemy->TargetPos(g_recPlayerPos);
-	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
-
-	// チュートリアル表示更新
-	g_pTutorial->Update();
-
-	// スコア更新
-	g_pScore->Update();
-
-	// タイマー更新
-	g_pTimer->Update();
-
-
-	//***************************************************************
-	// 小人処理
-	//***************************************************************
-	XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
-	for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
-		if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
-			//----- 乱数で目的地を設定 -----
-			randomPos.x = (float)(rand() % 40 - 20.0f);	//-20.0 ~ 20.0の間の乱数
-			randomPos.z = (float)(rand() % 40 - 20.0f);
-			g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
-			g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
-		}
+	// Pキーでポーズフラグを立てる
+	if (IsPress('P')) {
+		m_IsPause = true;
 	}
 
+	// ポーズフラグが経っていない間各オブジェクトの更新処理を行う
+	if (m_IsPause == false) {
 
-	for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++) 
-	{
-		if (!g_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {		// 生存してなかったらやらない
+
+		#pragma region 各オブジェクトの更新
+		// カメラ更新
+		//g_pTPSCamera->Update();
+		//if (IsPress(VK_TAB)); {
+		//	g_pCamera->Update();
+		//}
+
+
+		// 影
+		g_pShadow->Update();
+
+		// プレイヤー更新
+		g_pPlayer->SetBulletTargetPos(g_pBulletTarget->GetBulletTargetPos());
+		g_pPlayer->Update();
+
+		// プレイヤーの向きをBulletTargetに取得
+		g_pBulletTarget->SetPlayerDrawAngle(g_pPlayer->GetPlayerDrawAngle());
+
+		// 落下地点の更新
+		g_pBulletTarget->Update();
+		g_pBulletTarget->SetPlayerPos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定(バレットターゲット内で使用)
+
+
+		// 弾更新
+		g_pBulletManger->SetPlayePos(g_pPlayer->GetPlayerPos());				// プレイヤーの座標を設定
+		g_pBulletManger->SetTargetPos(g_pBulletTarget->GetBulletTargetPos());	// ターゲットの座標を設定
+		g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
+		g_pBulletManger->Update();
+
+		// 小人更新処理
+		g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
+		g_pDwarfManager->Update();
+
+		// 回収者
+		g_pCollector->Update();
+		g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
+		g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
+		g_pCollectionPoint->Update();
+
+
+		// エネミー更新
+		//g_pEnemy->Update();
+		//g_pEnemyManager->Update();
+
+		// ステージ更新
+		g_pStageManager->Update();
+
+		// ステージオブジェクト更新
+		g_pStageObjectManager->Update();
+
+
+		//----- プレイヤーの座標を取得 -----
+		g_recPlayerPos = g_pPlayer->GetPos();
+		//g_pEnemy->TargetPos(g_recPlayerPos);
+		//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
+
+		// チュートリアル表示更新
+		g_pTutorial->Update();
+
+		// スコア更新
+		g_pScore->Update();
+
+		// タイマー更新
+		g_pTimer->Update();
+		#pragma endregion 
+
+		#pragma region 小人処理
+		//***************************************************************
+		// 小人処理
+		//***************************************************************
+		XMFLOAT3 randomPos = XMFLOAT3(0.0f, 1.5f + DWARF_SIZE, 0.0f);	// ランダム
+		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) {
+			if (g_pDwarfManager->GetDwarf(j)->GetCircumferenceFlg() && !g_pDwarfManager->GetDwarf(j)->GetLiftFlg()) {
+				//----- 乱数で目的地を設定 -----
+				randomPos.x = (float)(rand() % 40 - 20.0f);	//-20.0 ~ 20.0の間の乱数
+				randomPos.z = (float)(rand() % 40 - 20.0f);
+				g_pDwarfManager->GetDwarf(j)->TargetPos(randomPos);
+				g_pDwarfManager->GetDwarf(j)->SetCircumferenceFlg(false);
+			}
+		}
+
+		for (int i = 0; i < g_pDwarfManager->GetDwarfNum(); i++)
+		{
+			if (!g_pDwarfManager->GetDwarf(i)->GetAliveFlg()) {		// 生存してなかったらやらない
+				if (!m_IsClear) {
+					m_IsGameOver = true;
+				}
+				break;
+			}
+			if (g_pDwarfManager->GetDwarf(i)->GetCollectionFlg()) {	// すでに回収済みならやらない
+				continue;
+			}
+
+#pragma region <小人の回収処理>
+			//----- 小人回収処理 -----
+			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+				if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
+				}
+				else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
+				}
+				else  if ((g_pCollectionPoint->GetColorNum()) == REDBLUE) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
+				}
+			}
+
+			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
+				g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+				//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+				g_pDwarfManager->AddCollectionSum();
+			}
+#pragma	endregion
+
+#pragma region	<小人の追跡処理>
+			//----- 小人の追跡処理 -----
+			for (int j = 0; j < MAX_BULLET; j++) {
+				//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
+				//if (g_pBullet[j]->use) {									// 最後の指示を通す
+				//	g_LastBulletNun = j;
+				//}
+				if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
+					continue;
+				}
+				//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
+				//	continue;
+				//}
+				if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
+					continue;
+				}
+				if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
+					continue;
+				}
+				//---小人の弾への追尾
+				g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
+				g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+				g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
+			}
+#pragma endregion
+
+		}
+#pragma endregion
+
+		#pragma region ゲームのクリア処理
+		//----- ゲームクリア -----
+		if (g_pDwarfManager->GetCollectionSum() == g_pDwarfManager->GetDwarfNum()) {		// 小人全回収でクリア
+			if (!m_IsGameOver) {
+				m_IsClear = true;
+			}
+		}
+
+#pragma endregion
+
+
+		#pragma region	エネミーの追跡処理
+		//***************************************************************
+		// エネミーがプレイヤーを追跡
+		//***************************************************************
+		/*for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
+		{
+			if (!g_pEnemyManager->GetEnemy(i)->use) {
+				continue;
+			}
+			for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++)
+			{
+				if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
+					continue;
+				}
+				g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
+
+				if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
+					g_pEnemyManager->DestroyEnemy(i);
+				}
+			}
+			if (&PlayerToEnemy::isHitSphere){
+				g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
+				//---ここで一番近いやつにターゲットを移したい
+				//g_pEnemyManager->SetEnemyTarget();
+			}
+			//g_pEnemy->EnemyStop();
+		} */
+
+		#pragma endregion
+
+		#ifdef _DEBUG
+		//*******************************************************************************
+		//	デバッグ用キー処理
+		//*******************************************************************************
+		//if (IsRelease('X')){				// Xキーで弾消去
+		//	g_pBulletManger->DestroyBullet();
+		//}
+		if (IsRelease('0') || IsRelease(JPadButton::R_SHOULDER)) {				// 0キーでゲームクリア
+			if (!m_IsGameOver) {
+				m_IsClear = true;
+			}
+		}
+		if (IsRelease('9') || IsRelease(JPadButton::L_SHOULDER)) {				// ９キーでゲームオーバー
 			if (!m_IsClear) {
 				m_IsGameOver = true;
 			}
-			break;
 		}
-		if (g_pDwarfManager->GetDwarf(i)->GetCollectionFlg()) {	// すでに回収済みならやらない
-			continue;
-		}
+		#endif
 
-		//----- 小人回収処理 -----
-		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
-			if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-				}
-			}else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-				}
-			}else  if((g_pCollectionPoint->GetColorNum()) == REDBLUE){
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
-				}
-			}
-		}
-		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
-			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
-			g_pDwarfManager->AddCollectionSum();
-		}
+		#pragma region 当たり判定
+		//***************************************************************
+		// すべての移動(更新処理)がすんでから
+		// すべてのオブジェクトの当たり判定を行う
+		//*************************************************************+*
+		g_pCollision->Update();
+		#pragma endregion
 
-		//----- 小人の追跡処理 -----
-		for (int j = 0; j < MAX_BULLET; j++) {
-			//g_pBullet[j] = g_pBulletManger->GetBullet(j);						// 弾情報取得
-			//if (g_pBullet[j]->use) {									// 最後の指示を通す
-			//	g_LastBulletNun = j;
-			//}
-			if (!g_pBulletManger->GetBullet(j)->use) {								// 弾未用ならスキップ
-				continue;
-			}
-			//if (!g_pDwarfManager->GetDwarf(i)->GetMoveFlg()) {
-			//	continue;
-			//}
-			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
-				continue;
-			}
-			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {
-				continue;
-			}
-			//---小人の弾への追尾
-			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
-			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
-			g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
-		}
-
-	}
-
-	//----- ゲームクリア -----
-	if (g_pDwarfManager->GetCollectionSum() == g_pDwarfManager->GetDwarfNum()) {		// 小人全回収でクリア
-		if (!m_IsGameOver) {
-			m_IsClear = true;
-		}
-	}
-
-	//***************************************************************
-	// エネミーがプレイヤーを追跡
-	//***************************************************************
-	/*for (int i = 0; i < g_pEnemyManager->GetEnemyNum(); i++)
-	{
-		if (!g_pEnemyManager->GetEnemy(i)->use) {
-			continue;
-		}
-		for (int j = 0; j < g_pDwarfManager->GetDwarfNum(); j++) 
+		#pragma region 軌跡の処理（使ってないけどね）
+		//***************************************************************
+		//	軌跡の更新
+		//***************************************************************		//軌跡の更新
+		for (int i = CONTROL_NUM * RECORD_MARGIN - 1; i > 0; i--)
 		{
-			if (!g_pCollision->CollisionSphere(g_pEnemyManager->GetEnemy(i), g_pDwarfManager->GetDwarf(j),0.3f)) {
-				continue;
+			g_recordPos[i] = g_recordPos[i - 1];
+		}
+		g_recordPos[0] = g_pPlayer->GetPos();
+
+		//***************************************************************
+		//	軌跡の計算
+		//***************************************************************	
+		for (int i = 0; i < CONTROL_NUM; i++)
+		{
+			//制御点が対応しているレコードの番号を計算
+			int idx = i * RECORD_MARGIN;
+			//制御点の座標
+			DirectX::XMFLOAT3 recPos =
+				g_recordPos[idx];
+
+			//軌跡を表示するときはここに
+			//->SetVerTex(
+		}
+		#pragma endregion
+
+		#pragma region シーン遷移
+		//***************************************************************
+		// シーン遷移
+		//***************************************************************	
+		int sceneState = -1;
+
+		// クリア画面
+		if (m_IsClear) {
+			g_pScore->SetScore(1);
+			g_pSelectScene->SetScore(m_StageNum, 1);
+			sceneState = UpdateClear();
+
+			if (sceneState == STATE_NEXT) {
+				GameScene::Uninit();
+				GameScene::Init(m_StageNum + 1);
 			}
-			g_pEnemyManager->GetEnemy(i)->SetAttackFlg(true);
-
-			if (g_pDwarfManager->GetDwarf(j)->GetAttackFlg()) {
-				g_pEnemyManager->DestroyEnemy(i);
+			if (sceneState == STATE_SELECT) {
+				return SCENE_SELECT;
 			}
 		}
-		if (&PlayerToEnemy::isHitSphere){
-	 		g_pPlayerToEnemy->PlayerToEnemyRegister(g_pPlayer, g_pEnemyManager->GetEnemy(i));
-			//---ここで一番近いやつにターゲットを移したい
-			//g_pEnemyManager->SetEnemyTarget();
+
+
+		// ゲームオーバー画面
+		if (m_IsGameOver) {
+			sceneState = UpdateGameOver();
+			if (sceneState == STATE_RETRY) {
+				GameScene::Uninit();
+				GameScene::Init(m_StageNum);
+			}
+			if (sceneState == STATE_SELECT) {
+				return SCENE_SELECT;
+			}
 		}
-	 	//g_pEnemy->EnemyStop();
-	} */	
-#ifdef _DEBUG
-	//*******************************************************************************
-	//	デバッグ用キー処理
-	//*******************************************************************************
-	//if (IsRelease('X')){				// Xキーで弾消去
-	//	g_pBulletManger->DestroyBullet();
-	//}
-	if (IsRelease('0') || IsRelease(JPadButton::R_SHOULDER)) {				// 0キーでゲームクリア
-		if (!m_IsGameOver) {
-			m_IsClear = true;
-		}
+		#pragma endregion
+
 	}
-	if (IsRelease('9') || IsRelease(JPadButton::L_SHOULDER)) {				// ９キーでゲームオーバー
-		if (!m_IsClear) {
-			m_IsGameOver = true;
-		}
-	}
-#endif
+	else {
 
-	//***************************************************************
-	//	カメラ更新
-	//***************************************************************	
-	//g_pTPSCamera->Update();
-	g_pCamera->Update();
+		int PauseReturnNum;						// ポーズの戻り値を格納
+		PauseReturnNum = g_pPause->Update();
 
+		// ポーズ画面	
+		switch (PauseReturnNum)
+		{
+		case 1:						// ゲームを続ける
+			m_IsPause = false;
+			break;
 
-	//***************************************************************
-	// すべての移動(更新処理)がすんでから
-	// すべてのオブジェクトの当たり判定を行う
-	//*************************************************************+*
-	g_pCollision->Update();
-
-	//***************************************************************
-	//	軌跡の更新
-	//***************************************************************		//軌跡の更新
-	for (int i = CONTROL_NUM * RECORD_MARGIN - 1; i > 0; i--)
-	{
-		g_recordPos[i] = g_recordPos[i - 1];
-	}
-	g_recordPos[0] = g_pPlayer->GetPos();
-
-	//***************************************************************
-	//	軌跡の計算
-	//***************************************************************	
-	for (int i = 0; i < CONTROL_NUM; i++)
-	{
-		//制御点が対応しているレコードの番号を計算
-		int idx = i * RECORD_MARGIN;
-		//制御点の座標
-		DirectX::XMFLOAT3 recPos =
-			g_recordPos[idx];
-
-		//軌跡を表示するときはここに
-		//->SetVerTex(
-	}
-
-	//***************************************************************
-	// シーン遷移
-	//***************************************************************	
-	int sceneState = -1;
-	if (m_IsClear) {
-		g_pScore->SetScore(1);
-		g_pSelectScene->SetScore(m_StageNum, 1);
-
-		sceneState = UpdateClear();
-		if (sceneState == STATE_NEXT) {
-			GameScene::Uninit();
-			GameScene::Init(m_StageNum + 1);
-		}
-		if (sceneState == STATE_SELECT) {
-			return SCENE_SELECT;
-		}
-	}
-	if (m_IsGameOver) {
-		sceneState = UpdateGameOver();
-		if (sceneState == STATE_RETRY){
+		case 2:						// リトライ
 			GameScene::Uninit();
 			GameScene::Init(m_StageNum);
-		}
-		if (sceneState == STATE_SELECT) {
+			break;
+
+		case 3:						// ステージセレクト
 			return SCENE_SELECT;
+			break;
+
+		case 4:						// ゲーム終了
+			PostQuitMessage(0);
+			break;
+
+		default:
+			break;
 		}
+
 	}
-	
+
 
 	return SCENE_GAME;
 }
@@ -629,6 +706,8 @@ SCENE GameScene::Update()
 //==============================================================
 void GameScene::Draw()
 {
+
+#pragma region メモ：シェーダー解説
 	//SHADER->Bind(
 		//頂点シェーダで使用する計算の種類
 	//	VS_WORLD,
@@ -669,6 +748,9 @@ void GameScene::Draw()
 	//SHADER->SetAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 	//SHADER->SetLightAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 	//SHADER->SetLightSpecular(XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),0.0f);
+#pragma endregion
+
+#pragma region メモ：カメラ解説
 
 	//①オブジェクトごとに
 	//　ローカル座標を持つ(頂点)
@@ -712,14 +794,14 @@ void GameScene::Draw()
 	));
 	*/
 
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+#pragma endregion 
 
+
+	SHADER->Bind(VS_WORLD, PS_PHONG);
 
 	//g_pTPSCamera->Bind();
 	g_pCamera->Bind();
 	
-
-
 	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	//とりあえずキューブは画面の奥に移動
@@ -728,6 +810,8 @@ void GameScene::Draw()
 	//モデルが大きいので小さくする
 	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
 
+
+	#pragma region 各オブジェクトの描画処理
 
 	// 回収者の描画
 	g_pCollector->Draw();
@@ -750,10 +834,11 @@ void GameScene::Draw()
 
 	// ステージ描画
 	g_pStageManager->Draw();
-#ifdef _DEBUG
+
+	#ifdef _DEBUG
 	// 小人のステージの当たり判定ようブロック描画
 	g_pDwarfStageCollision->Draw();
-#endif 
+	#endif 
 
 
 	// ステージオブジェクト描画
@@ -791,6 +876,11 @@ void GameScene::Draw()
 	if (m_IsClear) {
 		DrawClear();
 	}
+
+	// ポーズフラグが経っていいるときにポーズ画面の描画
+	if (m_IsPause == true) {
+		g_pPause->Draw();
+	}
 	
 	// チュートリアル描画
 	g_pTutorial->Draw();
@@ -800,5 +890,7 @@ void GameScene::Draw()
 
 	// タイマー描画
 	g_pTimer->Draw();
+
+	#pragma endregion 
 }
 
