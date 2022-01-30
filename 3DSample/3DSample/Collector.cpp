@@ -124,7 +124,7 @@ bool Collector::LoadFBX(const char* pFilePath,int index)
 //		初期化
 //
 //====================================================================
-bool Collector::Init()
+bool Collector::Init(int stagenum)
 {
 	for (int i = 0; i < MAX_UFO; i++) {
 		m_pfbx[i] = new FBXPlayer;
@@ -133,6 +133,16 @@ bool Collector::Init()
 	LoadFBX("Assets/Model/ufored.fbx",RED_UFO);
 	LoadFBX("Assets/Model/ufoblue.fbx",BLUE_UFO);
 	LoadFBX("Assets/Model/ufopurple.fbx",REDBLUE_UFO);
+
+	if (stagenum == 1) {
+		m_nowColorNum = BLUE_UFO;
+	}
+	if (stagenum == 2 || stagenum == 3) {
+		m_nowColorNum = RED_UFO;
+	}
+
+	m_nextColorNum = m_nowCollectFlg;
+
 
 	return true;
 }
@@ -169,6 +179,7 @@ void Collector::Uninit()
 void Collector::Update()
 {
 	XMFLOAT3 targetpos;
+
 
 	//----- 回収中待機タイマーカウントダウン -----
 	if (m_nowCollectFlg) {
@@ -207,6 +218,9 @@ void Collector::Update()
 			m_moveFlg = false;				// 移動許可をおろす
 			m_collectFlg = true;			// 次は回収に向かうのでture
 			m_timer = START_WAIT_TIME * FPS + 59;	// スタート位置での待機タイマーの初期化
+			if (m_nextColorNum != m_nowColorNum) {
+				m_nowColorNum = m_nextColorNum;
+			}
 		}
 	}
 
@@ -250,7 +264,7 @@ void Collector::Update()
 //====================================================================
 void Collector::Draw()
 {
-	int meshNum = m_pfbx[RED_UFO]->GetMeshNum();
+	int meshNum = m_pfbx[m_nowColorNum]->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i)
 	{
 		SHADER->SetWorld(
@@ -261,9 +275,9 @@ void Collector::Draw()
 				XMConvertToRadians(m_Angle.z))
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
 
-		SHADER->SetTexture(m_pCollectorTex[RED_UFO]);
+		SHADER->SetTexture(m_pCollectorTex[m_nowColorNum]);
 
-		m_pBuffer[RED_UFO][i].Draw(
+		m_pBuffer[m_nowColorNum][i].Draw(
 			D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 		);
 	}
@@ -305,4 +319,8 @@ bool Collector::GetNowCollectFlg() {
 //====================================================================
 void Collector::SetTargetPos(XMFLOAT3 pos) {
 	m_targetPos = pos;
+}
+
+void Collector::SetUFOColor(int color) {
+	m_nextColorNum = color;
 }

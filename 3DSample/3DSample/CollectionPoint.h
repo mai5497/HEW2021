@@ -31,6 +31,8 @@ public:
 
 	XMFLOAT3 GetTargetPos();
 	int GetColorNum();
+	int GetColorNum(int index);
+	void SqueezeFront(int index);
 
 private:
 	int m_PosSetTime;
@@ -40,6 +42,7 @@ private:
 	XMFLOAT4 m_ColorVal[MAX_COLOR];
 	int m_colorNum;
 	int m_stageNum;
-	int m_colorInfo[MAX_COLOR];
+	int m_colorInfo[MAX_COLOR + 1];
+
 };
 

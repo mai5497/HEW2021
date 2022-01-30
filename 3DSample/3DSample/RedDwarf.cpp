@@ -45,7 +45,7 @@ RedDwarf::RedDwarf()
 
 	SetRBFlg(true);	// ê‘è¨êl
 	use = true;
-	m_CircumferenceTimer = TARGETSET_TIME;
+	m_CircumferenceTimer = 0;
 	m_BulletAliveTimer = 0;
 }
 

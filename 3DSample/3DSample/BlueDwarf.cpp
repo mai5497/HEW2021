@@ -39,7 +39,7 @@ BlueDwarf::BlueDwarf()
 
 
 	SetRBFlg(false);	// ê¬è¨êl
-	m_CircumferenceTimer = TARGETSET_TIME;
+	m_CircumferenceTimer = 0;
 	m_BulletAliveTimer = 0;
 }
 

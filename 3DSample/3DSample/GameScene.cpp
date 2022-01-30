@@ -201,7 +201,7 @@ void GameScene::Init(int StageNum)
 	
 	// 回収車
 	g_pCollector = new Collector();
-	g_pCollector->Init();
+	g_pCollector->Init(StageNum);
 	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 
 
@@ -390,10 +390,25 @@ SCENE GameScene::Update()
 	g_pDwarfManager->Update();
 	
 	// 回収者
+	//色配列前詰め
+	if ((m_StageNum == 2 || m_StageNum == 3) && g_pCollectionPoint->GetColorNum(3) == MAX_COLOR) {	// 何も消されていない
+		if (g_pDwarfManager->GetRedSum() < 1) {
+			if (g_pCollectionPoint->GetColorNum(0) == RED) {
+				g_pCollectionPoint->SqueezeFront(0);
+			}
+		}
+		if (g_pDwarfManager->GetBlueSum() < 1) {
+			if (g_pCollectionPoint->GetColorNum(1) == BLUE) {
+				g_pCollectionPoint->SqueezeFront(1);
+			}
+		}
+	}
+
 	g_pCollector->Update();
 	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
 	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
 	g_pCollectionPoint->Update();
+	g_pCollector->SetUFOColor(g_pCollectionPoint->GetColorNum());
 
 
 	// エネミー更新
@@ -467,6 +482,12 @@ SCENE GameScene::Update()
 		}
 		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
 			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+			if (g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				g_pDwarfManager->SubRedSum();
+			}
+			if (!g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+				g_pDwarfManager->SubBlueSum();
+			}
 			CSound::Play(SE_Dwarf_1);
 			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
 			g_pDwarfManager->AddCollectionSum();

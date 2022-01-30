@@ -21,17 +21,16 @@ public:
 	Collector();
 	~Collector();
 
-	bool Init();
+	bool Init(int stagenum);
 	void Uninit();
 	void Update();
 	void Draw();
 
 	int GetTimer();
 	int GetnowCollectTimer();
-
 	bool GetNowCollectFlg();
 	void SetTargetPos(XMFLOAT3 pos);
-
+	void SetUFOColor(int color);
 
 private:
 	bool LoadFBX(const char* pFilePath,int index);
@@ -53,5 +52,7 @@ private:
 	bool	m_nowCollectFlg;	// 回収中かどうか
 	bool	m_moveFlg;			// 移動許可フラグ
 	XMFLOAT3 m_targetPos;		// 目的地座標
+	int m_nowColorNum;				// ゆーふぉーの今の色
+	int m_nextColorNum;				// ゆーふぉーの前の色
 };
 
