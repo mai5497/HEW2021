@@ -19,18 +19,18 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
-#define COLLECTOR_SIZE		(1.0f)
-#define FPS					(60)					// フレーム数
-#define START_WAIT_TIME			(5)					// 待機時間
-#define COLLECT_WAIT_TIME			(2)					// 待機時間
+#define COLLECTOR_SIZE		(1.0f)				// モデル拡縮率
+#define FPS					(60)				// フレーム数
+#define START_WAIT_TIME		(5)					// 待機時間
+#define COLLECT_WAIT_TIME	(2)					// 待機時間
 
-#define START_POS_X			(46.0f)					// 開始地点 X
-#define START_POS_Z			(26.0f)					// 開始地点 
-#define START_POS_Y			(17.0f)					// 開始地点 Y
-#define COLLECT_POS_X		(0.0f)					// 回収地点 X
-#define COLLECT_POS_Y		(1.0f)					// 回収地点 Y
+#define START_POS_X			(46.0f)				// 開始地点 X(この位置をいじるときは今の値より大きくするだけにすること)
+#define START_POS_Z			(26.0f)				// 開始地点 Z(この位置をいじるときは今の値より大きくするだけにすること)
+#define START_POS_Y			(17.0f)				// 開始地点 Y
+#define COLLECT_POS_X		(0.0f)				// 回収地点 X
+#define COLLECT_POS_Y		(1.0f)				// 回収地点 Y
 
-#define MOVE_SPEED			(1.5f)					// 移動速度
+#define MOVE_SPEED			(1.5f)				// 移動速度
 
 
 //*******************************************************************************

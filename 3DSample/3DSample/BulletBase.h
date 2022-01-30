@@ -21,7 +21,16 @@
 //*******************************************************************************
 // 定数・マクロ定義
 //*******************************************************************************
+#define BULLET_GRAVITY				(0.1f / FPS)
+#define BULLET_DESTOROY_CNT			(300)							// 弾が消えるまでの時間
+#define BULLET_THROW_CNT			(30)
 
+enum BULLETCOLOR {
+	RED_BULLET = 0,
+	BLUE_BULLET,
+
+	MAX_BULLET_COLOR
+};
 
  //*******************************************************************************
  // クラス定義
@@ -33,8 +42,10 @@ public:
 	virtual ~BulletBase();
 
 	//---関数
+	virtual bool Init() {return true;}
 	virtual void Update();  
 	virtual void Draw();
+	bool LoadModel(const char* pFilePath,int index);
 
 	//virtual void CreateBullet(XMFLOAT3 SPos, bool rbFlg);
 	//		void CreateBullet(bool rbFlg);
@@ -51,10 +62,14 @@ public:
 
 			void SetBezierInfo(XMFLOAT3 startPos, XMFLOAT3 endPos, XMFLOAT3 centerPos,float ThrowTimer);		// ベジェ曲線による算出を行うための座標を取得
 			int GetAliveTime();
-private:
+protected:
 	//---関数
 
 	//---変数
+	static DrawBuffer* m_pBuffer[MAX_BULLET_COLOR];
+	static FBXPlayer* m_pBulletModel[MAX_BULLET_COLOR];		// FBXファイル操作クラス
+	ID3D11ShaderResourceView* m_pBulletTex[MAX_BULLET_COLOR];
+
 	int m_sleep;
 	int m_sleep2;
 	float m_BulletAngle;			// 角度

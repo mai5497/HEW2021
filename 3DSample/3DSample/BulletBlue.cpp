@@ -12,10 +12,8 @@
 #include	"BulletBlue.h"
 #include	"MyVector.h"
 #include	"Texture.h"
+#include	"Sound.h"
 
-//========================= グローバル変数定義 ===========================
-DrawBuffer* BulletBlue::m_pBuffer = NULL;
-FBXPlayer* BulletBlue::m_pFBX = NULL;
 
 //==============================================================
 //
@@ -24,10 +22,12 @@ FBXPlayer* BulletBlue::m_pFBX = NULL;
 //==============================================================
 BulletBlue::BulletBlue()
 {
-	/* テクスチャ読み込み */
-	LoadTextureFromFile("Assets/Texture/flowerblue.png", &m_pBulletBlueTex);
+	/* モデル読み込み */
+	m_pBlueModel = m_pBulletModel[BLUE_BULLET];
+	//m_floweAnim[0] = m_pBlueModel->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
+	m_pBlueBuffer = m_pBuffer[BLUE_BULLET];
+
 	SetRBFlg(false);	// 青弾
-	
 }
 
 //==============================================================
@@ -47,19 +47,11 @@ BulletBlue::~BulletBlue()
 //====================================================================
 bool BulletBlue::Init()
 {
-	/* モデル読み込み */
-	if (m_pBuffer == NULL) {
-		LoadBullet("Assets/Model/flowerblue.fbx");
-	}
-	//m_floweAnim[0] = m_pFBX->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
+	m_AliveTime = BULLET_DESTOROY_CNT;		// 生存時間
 
 	return true;
 }
 
-//void BulletBlue::Update() {
-//	m_pFBX->Play(0);
-//	m_pFBX->Step();
-//}
 
 //==============================================================
 //
@@ -68,12 +60,46 @@ bool BulletBlue::Init()
 //==============================================================
 void BulletBlue::Unint()
 {
-	SAFE_RELEASE(m_pBulletBlueTex);
-	if (m_pBuffer != NULL) {
-		delete[] m_pBuffer;
-		m_pBuffer = NULL;
-		delete m_pFBX;
-		m_pFBX = NULL;
+
+}
+
+//==============================================================
+//
+//	BlueBullet::更新
+// 
+//==============================================================
+void BulletBlue::Update() {
+
+	// 弾の投擲時間を進める(定数で投げ終わる時間を決めれる)
+	m_ThrowTimer += 1.3f / BULLET_THROW_CNT;
+
+
+	if (m_ThrowTimer <= 1.0f) {
+
+		m_pos.x = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.x + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.x + m_ThrowTimer * m_ThrowTimer * m_EndPos.x;
+
+		m_pos.y = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.y + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.y + m_ThrowTimer * m_ThrowTimer * m_EndPos.y;
+
+		m_pos.z = (1.0f - m_ThrowTimer) * (1.0f - m_ThrowTimer) * m_StarPos.z + 2 * (1.0f - m_ThrowTimer) * m_ThrowTimer * m_CenterPos.z + m_ThrowTimer * m_ThrowTimer * m_EndPos.z;
+	} else {
+		m_ColFlg = true;
+	}
+	if (m_ColFlg) {
+		if (m_AliveTime == BULLET_DESTOROY_CNT) {
+			// サウンド
+			CSound::Play(SE_BULLET_2);
+			//m_pFBX->Play(0);
+			m_LandingFlg = true;	// 弾が地面についた瞬間
+		} else {
+			m_LandingFlg = false;
+		}
+
+		// 弾の時間経過での破壊処理
+		m_AliveTime--;					// 生存時間のカウントダウン
+		if (m_AliveTime < 0) {			// 0以下になったら
+			use = false;					// 使用フラグを変更
+			Uninit();
+		}
 	}
 
 }
@@ -89,56 +115,19 @@ void BulletBlue::Draw()
 	//m_pFBX->Step();
 
 	// 弾のテクスチャ
-	int meshNum = m_pFBX->GetMeshNum();
+	int meshNum = m_pBlueModel->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-		SHADER->SetAnimation(m_pFBX->GetAnimeMatrix(i), m_pFBX->GetAnimeMatrixNum(i));
-		SHADER->SetTexture(m_pBulletBlueTex);
+		//SHADER->SetAnimation(m_pBlueModel->GetAnimeMatrix(i), m_pBlueModel->GetAnimeMatrixNum(i));
+		SHADER->SetTexture(m_pBulletTex[BLUE_BULLET]);
 
 		/*
 		SHADER->SetTexture(m_fbx.GetTexture(i));
 		*/
 
-		m_pBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		m_pBlueBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
-}
-
-//====================================================================
-//
-//		テクスチャ読み込み
-//
-//====================================================================
-bool BulletBlue::LoadBullet(const char* pFilePath)
-{
-	/* 以下はモデルが来たら使用 */
-	HRESULT hr;
-	m_pFBX = new FBXPlayer;
-	hr = m_pFBX->LoadModel(pFilePath);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	//モデルのメッシュの数だけ頂点バッファ作成
-	int meshNum = m_pFBX->GetMeshNum();
-	m_pBuffer = new DrawBuffer[meshNum];
-	for (int i = 0; i < meshNum; i++)
-	{
-		//メッシュごとに頂点バッファ作成
-		m_pBuffer[i].CreateVertexBuffer(
-			m_pFBX->GetVertexData(i),
-			m_pFBX->GetVertexSize(i),
-			m_pFBX->GetVertexCount(i)
-		);
-		//インデックスバッファ作成
-		m_pBuffer[i].CreateIndexBuffer(
-			m_pFBX->GetIndexData(i),
-			m_pFBX->GetIndexCount(i)
-		);
-
-	}
-	return true;
 }

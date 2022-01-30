@@ -35,7 +35,7 @@ float g_ThrowTimer = 0.0f;				// 投げる時間
 //	BulletManager::コンストラクタ
 // 
 //==============================================================
-BulletManager::BulletManager():m_ppBullets(nullptr),m_BulletNum(MAX_BULLET)
+BulletManager::BulletManager():m_BulletNum(MAX_BULLET)
 {
 
 }
@@ -58,24 +58,22 @@ BulletManager::~BulletManager()
 bool BulletManager::Init()
 {
 	/* ---弾の情報の構造体---- */
-	typedef struct
-	{
-		XMFLOAT3 pos;
-	}BulletSettings;
+	//typedef struct
+	//{
+	//	XMFLOAT3 pos;
+	//}BulletSettings;
 
 	// 弾の初期化...BulletBaseのコンストラクタで行うためここではとりあえず行わない。-2021/01/09時点
 	// ポインタを格納する配列を作成
-	m_ppBullets = new BulletBase * [MAX_BULLET];
 
 
 	// 弾の最大数分メモリ確保
-	for (int i = 0; i < MAX_BULLET; ++i){
+	for (int i = 0; i < MAX_BULLET;i++) {
 		// それぞれの配列に弾をメモリ確保
-		if (i < MAX_RED_BULLET){						// 赤弾のメモリ確保
+		if (i < MAX_RED_BULLET) {						// 赤弾のメモリ確保
 			m_ppBullets[i] = new BulletRed;
 		}else{											// 青弾のメモリ確保
 			m_ppBullets[i] = new BulletBlue;
-
 		}
 		m_ppBullets[i]->Init();
 	}
@@ -97,9 +95,8 @@ void BulletManager::Uninit()
 		delete m_ppBullets[i];
 		m_ppBullets[i] = nullptr;
 	}
-	delete[] m_ppBullets;
-	m_ppBullets = nullptr;
 }
+
 //==============================================================
 //
 //	更新処理
@@ -144,7 +141,6 @@ void BulletManager::Draw()
 			continue;
 		}
 		m_ppBullets[i]->Draw();
-
 	}
 }
 
@@ -160,20 +156,34 @@ void BulletManager::Draw()
 //==============================================================
 void BulletManager::CreateBullet(bool rbFlg)
 {
-	for (int i = 0; i < MAX_BULLET; ++i) {
-		if (m_ppBullets[i]->use) {
-			continue;
-		}
-		m_ppBullets[i]->SetRBFlg(rbFlg);
+	int search;
+	//for (int i = 0; i < MAX_BULLET; ++i) {
+		//if (m_ppBullets[i]->use) {
+		//	continue;
+		//}
+		//m_ppBullets[i]->SetRBFlg(rbFlg);
 		if (rbFlg == true) {	// trueが赤
-			m_ppBullets[i] = new BulletRed;
-			//m_ppBullets[i]->Init(); バレットベースいにっとつくてない
+			for (int i = 0; i < MAX_RED_BULLET; i++) {
+				if (m_ppBullets[i]->use) {
+					continue;
+				}
+				search = i;
+				//m_ppBullets[i] = new BulletRed;
+				//m_ppBullets[i]->Init(); バレットベースいにっとつくてない
+			}
+		}else {
+			//m_ppBullets[i] = new BulletBlue;
+			for (int i = MAX_RED_BULLET; i < MAX_BULLET; i++) {
+				if (m_ppBullets[i]->use) {
+					continue;
+				}
+				search = i;
+
+				//m_ppBullets[j] = new BulletBlue;
+			}
 		}
-		else {
-			m_ppBullets[i] = new BulletBlue;
-			//m_ppBullets[i]->Init();
-		}
-		m_ppBullets[i]->use = true;
+		m_ppBullets[search]->use = true;
+		m_ppBullets[search]->Init();
 
 		//m_ppBullets[i]->SetPos(m_PlayerPos);
 
@@ -237,11 +247,11 @@ void BulletManager::CreateBullet(bool rbFlg)
 			2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.z +
 			g_ThrowTimer * g_ThrowTimer * EndPos.z;
 
-		m_ppBullets[i]->SetPos(CurrentPos);
-		m_ppBullets[i]->SetBezierInfo(StartPos, EndPos, CenterPos,g_ThrowTimer);
+		m_ppBullets[search]->SetPos(CurrentPos);
+		m_ppBullets[search]->SetBezierInfo(StartPos, EndPos, CenterPos,g_ThrowTimer);
 
-		break;
-	}
+		//break;
+	//}
 }
 
 //==============================================================

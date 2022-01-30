@@ -28,16 +28,16 @@ public:
 	bool Init();
 	virtual void Unint();
 	void Draw();
-
-	//---変数
-	ID3D11ShaderResourceView* m_pBulletRedTex;
+	void Update();
 
 private:
 	//---関数
 	bool LoadBullet(const char* pFilePath);
 
 	//---変数
-	static DrawBuffer* m_pBuffer;
-	static FBXPlayer* m_pFBX;		// FBXファイル操作クラス
+	ANIME_INDEX m_floweAnim[MAX_ANIME];
+	FBXPlayer *m_pRedModel;
+	DrawBuffer *m_pRedBuffer;
+
 };
 #endif
