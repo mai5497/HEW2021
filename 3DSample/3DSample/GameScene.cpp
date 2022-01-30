@@ -389,14 +389,12 @@ SCENE GameScene::Update()
 	// ポーズフラグが経っていない間各オブジェクトの更新処理を行う
 	if (m_IsPause == false) {
 
-
 		#pragma region 各オブジェクトの更新
 		// カメラ更新
 		//g_pTPSCamera->Update();
 		//if (IsPress(VK_TAB)); {
 		//	g_pCamera->Update();
 		//}
-
 
 		// 影
 		g_pShadow->Update();
@@ -419,30 +417,30 @@ SCENE GameScene::Update()
 		g_pBulletManger->SetPlayerAngle(g_pPlayer->GetPlayerAngle());
 		g_pBulletManger->Update();
 
-	// 小人更新処理
-	g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
-	g_pDwarfManager->Update();
-	
-	// 回収者
-	//色配列前詰め
-	if ((m_StageNum == 2 || m_StageNum == 3) && g_pCollectionPoint->GetColorNum(3) == MAX_COLOR) {	// 何も消されていない
-		if (g_pDwarfManager->GetRedSum() < 1) {
-			if (g_pCollectionPoint->GetColorNum(0) == RED) {
-				g_pCollectionPoint->SqueezeFront(0);
-			}
-		}
-		if (g_pDwarfManager->GetBlueSum() < 1) {
-			if (g_pCollectionPoint->GetColorNum(1) == BLUE) {
-				g_pCollectionPoint->SqueezeFront(1);
-			}
-		}
-	}
+		// 小人更新処理
+		g_pDwarfManager->SetBulletInfo(g_pBulletManger);	// 弾の情報を小人のメンバ変数に渡す
+		g_pDwarfManager->Update();
 
-	g_pCollector->Update();
-	g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
-	g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
-	g_pCollectionPoint->Update();
-	g_pCollector->SetUFOColor(g_pCollectionPoint->GetColorNum());
+		// 回収者
+		//色配列前詰め
+		if ((m_StageNum == 2 || m_StageNum == 3) && g_pCollectionPoint->GetColorNum(3) == MAX_COLOR) {	// 何も消されていない
+			if (g_pDwarfManager->GetRedSum() < 1) {
+				if (g_pCollectionPoint->GetColorNum(0) == RED) {
+					g_pCollectionPoint->SqueezeFront(0);
+				}
+			}
+			if (g_pDwarfManager->GetBlueSum() < 1) {
+				if (g_pCollectionPoint->GetColorNum(1) == BLUE) {
+					g_pCollectionPoint->SqueezeFront(1);
+				}
+			}
+		}
+
+		g_pCollector->Update();
+		g_pCollectionPoint->SetnowCollectTimer(g_pCollector->GetnowCollectTimer());
+		g_pCollector->SetTargetPos(g_pCollectionPoint->GetTargetPos());
+		g_pCollectionPoint->Update();
+		g_pCollector->SetUFOColor(g_pCollectionPoint->GetColorNum());
 
 
 		// エネミー更新
@@ -456,12 +454,12 @@ SCENE GameScene::Update()
 		g_pStageObjectManager->Update();
 
 
-	//----- プレイヤーの座標を取得 -----
-	//g_recPlayerPos = g_pPlayer->GetPos();
-	//g_pEnemy->TargetPos(g_recPlayerPos);
-	//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
+		//----- プレイヤーの座標を取得 -----
+		//g_recPlayerPos = g_pPlayer->GetPos();
+		//g_pEnemy->TargetPos(g_recPlayerPos);
+		//g_pEnemyManager->SetEnemyTarget(g_recPlayerPos);
 
-		// チュートリアル表示更新
+			// チュートリアル表示更新
 		g_pTutorial->Update();
 
 		// スコア更新
@@ -498,51 +496,53 @@ SCENE GameScene::Update()
 				continue;
 			}
 
-		//----- 小人回収処理 -----
-		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
-			if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+			//----- 小人回収処理 -----
+			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollectionPoint)) {
+				if ((g_pCollectionPoint->GetColorNum()) == RED && g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
 				}
-			}else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				else if ((g_pCollectionPoint->GetColorNum()) == BLUE && !g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
 				}
-			}else  if((g_pCollectionPoint->GetColorNum()) == REDBLUE){
-				if (g_pCollector->GetNowCollectFlg()) {
-					g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+				else  if ((g_pCollectionPoint->GetColorNum()) == REDBLUE) {
+					if (g_pCollector->GetNowCollectFlg()) {
+						g_pDwarfManager->GetDwarf(i)->SetLiftFlg(true);
+					}
 				}
 			}
-		}
-		if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
-			g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
-			if (g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				g_pDwarfManager->SubRedSum();
+			if (CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pCollector)) {
+				g_pDwarfManager->GetDwarf(i)->SetCollectionFlg(true);
+				if (g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					g_pDwarfManager->SubRedSum();
+				}
+				if (!g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
+					g_pDwarfManager->SubBlueSum();
+				}
+				CSound::Play(SE_Dwarf_1);
+				//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
+				g_pDwarfManager->AddCollectionSum();
 			}
-			if (!g_pDwarfManager->GetDwarf(i)->GetRBFlg()) {
-				g_pDwarfManager->SubBlueSum();
-			}
-			CSound::Play(SE_Dwarf_1);
-			//g_pScore->SetScore(g_pDwarfManager->GetDwarfNum());
-			g_pDwarfManager->AddCollectionSum();
-		}
 
-		//----- 小人の追跡処理 -----
-		for (int j = 0; j < MAX_BULLET; j++) {
-			if (!g_pBulletManger->GetBullet(j)->use) {				// 弾未用ならスキップ
-				continue;
+			//----- 小人の追跡処理 -----
+			for (int j = 0; j < MAX_BULLET; j++) {
+				if (!g_pBulletManger->GetBullet(j)->use) {				// 弾未用ならスキップ
+					continue;
+				}
+				if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
+					continue;
+				}
+				if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {	// 境界球の当たり半径
+					continue;
+				}
+				//---小人の弾への追尾
+				g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
+				g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
+				g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
 			}
-			if (!g_pBulletManger->GetBullet(j)->GetColFlg()) {		// 弾が着地
-				continue;
-			}
-			if (!CollisionSphere(g_pDwarfManager->GetDwarf(i), g_pBulletManger->GetBullet(j))) {	// 境界球の当たり半径
-				continue;
-			}
-			//---小人の弾への追尾
-			g_recBulletPos = g_pBulletManger->GetBullet(j)->GetPos();
-			g_pDwarfManager->GetDwarf(i)->TargetPos(g_recBulletPos);
-			g_pDwarfManager->GetDwarf(i)->SetBulletAliveTimer(g_pBulletManger->GetBullet(j)->GetAliveTime());
-		}
 
 		}
 #pragma endregion
@@ -555,7 +555,7 @@ SCENE GameScene::Update()
 			}
 		}
 
-#pragma endregion
+		#pragma endregion
 
 
 		#pragma region	エネミーの追跡処理
@@ -588,7 +588,7 @@ SCENE GameScene::Update()
 
 		#pragma endregion
 
-		#ifdef _DEBUG
+#		ifdef _DEBUG
 		//*******************************************************************************
 		//	デバッグ用キー処理
 		//*******************************************************************************
@@ -641,36 +641,35 @@ SCENE GameScene::Update()
 		}
 		#pragma endregion
 
-	//***************************************************************
-	// シーン遷移
-	//***************************************************************	
-	int sceneState = -1;
-	if (m_IsClear) {
-		g_pScore->SetScore(1);
-		g_pSelectScene->SetScore(m_StageNum, 1);
+		//***************************************************************
+		// シーン遷移
+		//***************************************************************	
+		int sceneState = -1;
+		if (m_IsClear) {
+			g_pScore->SetScore(1);
+			g_pSelectScene->SetScore(m_StageNum, 1);
 
 
-		sceneState = UpdateClear();
-		if (sceneState == STATE_NEXT) {
-			GameScene::Uninit();
-			GameScene::Init(m_StageNum + 1);
+			sceneState = UpdateClear();
+			if (sceneState == STATE_NEXT) {
+				GameScene::Uninit();
+				GameScene::Init(m_StageNum + 1);
+			}
+			if (sceneState == STATE_SELECT) {
+				return SCENE_SELECT;
+			}
 		}
-		if (sceneState == STATE_SELECT) {
-			return SCENE_SELECT;
+		if (m_IsGameOver) {
+			sceneState = UpdateGameOver();
+			if (sceneState == STATE_RETRY) {
+				GameScene::Uninit();
+				GameScene::Init(m_StageNum);
+			}
+			if (sceneState == STATE_SELECT) {
+				return SCENE_SELECT;
+			}
 		}
-	}
-	if (m_IsGameOver) {
-		sceneState = UpdateGameOver();
-		if (sceneState == STATE_RETRY){
-			GameScene::Uninit();
-			GameScene::Init(m_StageNum);
-		}
-		if (sceneState == STATE_SELECT) {
-			return SCENE_SELECT;
-		}
-	}
-	else {
-
+	}else {
 		int PauseReturnNum;						// ポーズの戻り値を格納
 		PauseReturnNum = g_pPause->Update();
 
@@ -700,10 +699,8 @@ SCENE GameScene::Update()
 
 	}
 
-
 	return SCENE_GAME;
 }
-
 //==============================================================
 //
 //	GameScene描画処理
@@ -717,7 +714,7 @@ void GameScene::Draw()
 
 #pragma region メモ：シェーダー解説
 	//SHADER->Bind(
-		//頂点シェーダで使用する計算の種類
+	//頂点シェーダで使用する計算の種類
 	//	VS_WORLD,
 		//ピクセルシェーダで使用する計算の種類
 		//PS_UNLIT...影をつけない
@@ -725,37 +722,37 @@ void GameScene::Draw()
 		//			　 金属表現は行わない
 		//PS_PHONG...Lambertに
 		//			 Specularを加える
-	//	PS_PHONG);
-	//3Dの物体に影がつく仕組み
-	//3Dの面に対して垂直な線を考える(法線)
-	//光源からの光の向きと、面の法線が
-	//同じ方向を向いていたら、影が落ちる
-	//面として計算を行う
+		//	PS_PHONG);
+		//3Dの物体に影がつく仕組み
+		//3Dの面に対して垂直な線を考える(法線)
+		//光源からの光の向きと、面の法線が
+		//同じ方向を向いていたら、影が落ちる
+		//面として計算を行う
 
-	//影をつけるときのパラメータ(マテリアル)
-	//Diffuse(拡散光)...物体の色
-	//厳密には人間の目は飛び込んでくる
-	//光の波長で色を認識しているので
-	//物体がどの光を跳ね返しやすいのかを表す
-	//直接物体に当たる光。
+		//影をつけるときのパラメータ(マテリアル)
+		//Diffuse(拡散光)...物体の色
+		//厳密には人間の目は飛び込んでくる
+		//光の波長で色を認識しているので
+		//物体がどの光を跳ね返しやすいのかを表す
+		//直接物体に当たる光。
 
-	//Ambient(環境光)...影の色
-	//周りの物体から跳ね返った光が
-	//物体に当たって反射してきた光
+		//Ambient(環境光)...影の色
+		//周りの物体から跳ね返った光が
+		//物体に当たって反射してきた光
 
-	//Specular(反射光)
-	//反射してめちゃくちゃ光っている部分
-	//金属のような表現を行う
+		//Specular(反射光)
+		//反射してめちゃくちゃ光っている部分
+		//金属のような表現を行う
 
-	//Emissive(発光)
-	//自ら光る物体の光の色
+		//Emissive(発光)
+		//自ら光る物体の光の色
 
-	//SetLight～　光源の色を設定
-	//Set～　光が当たった物体の反射しやすい色
+		//SetLight～　光源の色を設定
+		//Set～　光が当たった物体の反射しやすい色
 
-	//SHADER->SetAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-	//SHADER->SetLightAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-	//SHADER->SetLightSpecular(XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),0.0f);
+		//SHADER->SetAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		//SHADER->SetLightAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		//SHADER->SetLightSpecular(XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),0.0f);
 #pragma endregion
 
 #pragma region メモ：カメラ解説
@@ -770,7 +767,7 @@ void GameScene::Draw()
 
 	//ワールド座標へ変換
 	//XMMatrixTranslation 移動
-	//XMMatrixRotationX X軸で回転
+	//MMatrixRotationX X軸で回転
 	//XMMatrixRotationY Y軸で回転
 	//XMMatrixRotationZ Z軸で回転
 	//XMMatrixScaling 拡縮
@@ -778,124 +775,124 @@ void GameScene::Draw()
 	SHADER->SetWorld(XMMatrixRotationY(a += 3.141592f / 180.0));
 	SHADER->SetWorld(XMMatrixTranslation(0, 0, 0));
 
-	/* 
-	//カメラ座標系に変換
-	//第1引数:カメラの位置
-	//第2引数:カメラの注視点
-	//第3引数:カメラの上方向
-	SHADER->SetView(
-	DirectX::XMMatrixLookAtLH(
-	DirectX::XMVectorSet(0, 10, 0, 0),
-	DirectX::XMVectorSet(0, 1, 0, 0),
-	DirectX::XMVectorSet(0, 1, 0, 0)
-	));
-	//カメラの画角を設定
-	//第1引数:画角(ラジアン角
-	//第2引数:アスペクト比
-	//第3引数:ニアクリップ(近景
-	//第4引数:ファークリップ(遠景
-	SHADER->SetProjection(
-	DirectX::XMMatrixPerspectiveFovLH(
-	3.141592f / 3,
-	(float)SCREEN_WIDTH / SCREEN_HEIGHT,
-	1.0f, 1000.0f
-	));
-	*/
+		/*
+		//カメラ座標系に変換
+		//第1引数:カメラの位置
+		//第2引数:カメラの注視点
+		//第3引数:カメラの上方向
+		SHADER->SetView(
+		DirectX::XMMatrixLookAtLH(
+		DirectX::XMVectorSet(0, 10, 0, 0),
+		DirectX::XMVectorSet(0, 1, 0, 0),
+		DirectX::XMVectorSet(0, 1, 0, 0)
+		));
+		//カメラの画角を設定
+		//第1引数:画角(ラジアン角
+		//第2引数:アスペクト比
+		//第3引数:ニアクリップ(近景
+		//第4引数:ファークリップ(遠景
+		SHADER->SetProjection(
+		DirectX::XMMatrixPerspectiveFovLH(
+		3.141592f / 3,
+		(float)SCREEN_WIDTH / SCREEN_HEIGHT,
+		1.0f, 1000.0f
+		));
+		*/
 
-	SHADER->Bind(VS_WORLD, PS_UNLIT);
+		SHADER->Bind(VS_WORLD, PS_UNLIT);
 
-	//g_pTPSCamera->Bind();
-	g_pCamera->Bind();
-	
-	//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//g_pTPSCamera->Bind();
+		g_pCamera->Bind();
 
-	//とりあえずキューブは画面の奥に移動
-	SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
+		//g_buffer.Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	//モデルが大きいので小さくする
-	SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		//とりあえずキューブは画面の奥に移動
+		SHADER->SetWorld(DirectX::XMMatrixTranslation(sinf(a) * 3, 0, 3));
+
+		//モデルが大きいので小さくする
+		SHADER->SetWorld(DirectX::XMMatrixScaling(0.01f, 0.01f, 0.01f));
 
 
-	#pragma region 各オブジェクトの描画処理
+#pragma region 各オブジェクトの描画処理
 
-	// 回収者の描画
-	g_pCollector->Draw();
-	g_pCollectionPoint->Draw();
+		// 回収者の描画
+		g_pCollector->Draw();
+		g_pCollectionPoint->Draw();
 
-	// 敵の描画
-	//g_pEnemyManager->Draw();
+		// 敵の描画
+		//g_pEnemyManager->Draw();
 
-	// ピクミン描画
-	g_pDwarfManager->Draw();
+		// ピクミン描画
+		g_pDwarfManager->Draw();
 
-	// 弾の描画
-	g_pBulletManger->Draw();
+		// 弾の描画
+		g_pBulletManger->Draw();
 
-	// 落下地点の描画
-	g_pBulletTarget->Draw();
+		// 落下地点の描画
+		g_pBulletTarget->Draw();
 
-	//g_pEnemy->Draw();
-	//SHADER->SetTexture(NULL);
+		//g_pEnemy->Draw();
+		//SHADER->SetTexture(NULL);
 
-	// ステージ描画
-	g_pStageManager->Draw();
+		// ステージ描画
+		g_pStageManager->Draw();
 
-	#ifdef _DEBUG
-	// 小人のステージの当たり判定ようブロック描画
-	//g_pDwarfStageCollision->Draw();
+#ifdef _DEBUG
+		// 小人のステージの当たり判定ようブロック描画
+		//g_pDwarfStageCollision->Draw();
 #endif 
 
 
 	// ステージオブジェクト描画
-	g_pStageObjectManager->Draw();
+		g_pStageObjectManager->Draw();
 
 
-	// プレイヤー描画
-	g_pPlayer->Draw();
+		// プレイヤー描画
+		g_pPlayer->Draw();
 
 
-	//影
-	g_pShadow->Draw();
+		//影
+		g_pShadow->Draw();
 
-	SHADER->Bind(VS_WORLD, PS_PHONG);
+		SHADER->Bind(VS_WORLD, PS_PHONG);
 
 
-	SHADER->SetWorld(DirectX::XMMatrixIdentity());
+		SHADER->SetWorld(DirectX::XMMatrixIdentity());
+
+		//	EnableCulling(false);
+		//	EnableCulling(true);
+
+		//g_pCamera->Bind2D_Z();
+
+
+		g_pCamera->Bind2D();
+
+
+
+		// ゲームクリアフラグが立っているときクリア描画
+		if (m_IsGameOver) {
+			DrawGameOver();
+		}
+
+		// ゲームオーバーフラグが立っているときゲームオーバー描画
+		if (m_IsClear) {
+			DrawClear();
+		}
+
+		// ポーズフラグが経っていいるときにポーズ画面の描画
+		if (m_IsPause == true) {
+			g_pPause->Draw();
+		}
+
+		// チュートリアル描画
+		g_pTutorial->Draw();
+
+		// スコア描画
+		g_pScore->Draw();
+
+		// タイマー描画
+		g_pTimer->Draw();
+		#pragma endregion 
 	
-	//	EnableCulling(false);
-	//	EnableCulling(true);
-
-	//g_pCamera->Bind2D_Z();
-
-
-	g_pCamera->Bind2D();
-
-
-
-	// ゲームクリアフラグが立っているときクリア描画
-	if (m_IsGameOver) {
-		DrawGameOver();
 	}
-
-	// ゲームオーバーフラグが立っているときゲームオーバー描画
-	if (m_IsClear) {
-		DrawClear();
-	}
-
-	// ポーズフラグが経っていいるときにポーズ画面の描画
-	if (m_IsPause == true) {
-		g_pPause->Draw();
-	}
-	
-	// チュートリアル描画
-	g_pTutorial->Draw();
-
-	// スコア描画
-	g_pScore->Draw();
-
-	// タイマー描画
-	g_pTimer->Draw();
-
-	#pragma endregion 
-}
 
