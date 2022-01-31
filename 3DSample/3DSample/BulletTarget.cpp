@@ -40,7 +40,7 @@
 #define	TRANS_RADIAN		(L_PI / L_H_DEG)		// ラジアンに変換
 
 //---弾の調整値
-#define	BULLET_THROEWPOWER	((1.0f / FPS) * 100.0f)	// 弾の飛距離の速度
+#define	BULLET_THROEWPOWER	((1.0f / FPS) * 40.0f)	// 弾の飛距離の速度
 
 //*******************************************************************************
 // グローバル宣言

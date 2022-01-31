@@ -14,6 +14,9 @@ public:
 	SCENE Update();
 	void Draw();
 
+private:
+	int m_SelectState;
+
 };
 
 
