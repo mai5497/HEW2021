@@ -108,7 +108,7 @@ void Tutorial::Draw()
 	SHADER->SetTexture(m_pTexTutorial[0]);
 	if (g_nCnt > 0)
 	{
-		m_pObjectTutorial[0]->Draw();
+		//m_pObjectTutorial[0]->Draw();
 	}
 
 	// ‰Ô
