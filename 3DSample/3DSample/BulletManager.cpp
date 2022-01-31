@@ -61,11 +61,11 @@ bool BulletManager::Init()
 	for (int i = 0; i < MAX_BULLET;i++) {
 		// それぞれの配列に弾をメモリ確保
 		if (i < MAX_RED_BULLET) {						// 赤弾のメモリ確保
-			m_ppBullets[i] = new BulletRed;
+			m_pBullets[i] = new BulletRed;
 		}else{											// 青弾のメモリ確保
-			m_ppBullets[i] = new BulletBlue;
+			m_pBullets[i] = new BulletBlue;
 		}
-		m_ppBullets[i]->Init();
+		m_pBullets[i]->Init();
 	}
 
 	return true;
@@ -81,9 +81,9 @@ void BulletManager::Uninit()
 	// 弾の最大数メモリ開放
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
-		m_ppBullets[i]->Uninit();
-		delete m_ppBullets[i];
-		m_ppBullets[i] = nullptr;
+		m_pBullets[i]->Uninit();
+		delete m_pBullets[i];
+		m_pBullets[i] = nullptr;
 	}
 }
 
@@ -111,10 +111,10 @@ void BulletManager::Update()
 
 	// 弾の最大数更新処理
 	for (int i = 0; i < MAX_BULLET; i++) {
-		if (!m_ppBullets[i]->use) {
+		if (!m_pBullets[i]->use) {
 			continue;
 		}
-		m_ppBullets[i]->Update();
+		m_pBullets[i]->Update();
 	}
 }
 
@@ -127,10 +127,10 @@ void BulletManager::Draw()
 {
 	//　弾の最大数描画処理
 	for (int i = 0; i < MAX_BULLET; i++){
-		if (!m_ppBullets[i]->use){
+		if (!m_pBullets[i]->use){
 			continue;
 		}
-		m_ppBullets[i]->Draw();
+		m_pBullets[i]->Draw();
 	}
 }
 
@@ -148,7 +148,7 @@ void BulletManager::CreateBullet(bool rbFlg) {
 	int search = 999;
 	if (rbFlg == true) {	// trueが赤
 		for (int i = 0; i < MAX_RED_BULLET; i++) {
-			if (m_ppBullets[i]->use) {
+			if (m_pBullets[i]->use) {
 				continue;
 			}
 			search = i;
@@ -158,7 +158,7 @@ void BulletManager::CreateBullet(bool rbFlg) {
 		}
 	} else {
 		for (int i = MAX_RED_BULLET; i < MAX_BULLET; i++) {
-			if (m_ppBullets[i]->use) {
+			if (m_pBullets[i]->use) {
 				continue;
 			}
 			search = i;
@@ -167,8 +167,8 @@ void BulletManager::CreateBullet(bool rbFlg) {
 			return;
 		}
 	}
-	m_ppBullets[search]->use = true;
-	m_ppBullets[search]->Init();
+	m_pBullets[search]->use = true;
+	m_pBullets[search]->Init();
 
 	XMFLOAT3 StartPos = m_PlayerPos;									// 発射地点(プレイヤーの座標)
 	XMFLOAT3 EndPos = m_TargetPos;										// 落下地点(ターゲットの座標)
@@ -196,8 +196,8 @@ void BulletManager::CreateBullet(bool rbFlg) {
 		2 * (1.0f - g_ThrowTimer) * g_ThrowTimer * CenterPos.z +
 		g_ThrowTimer * g_ThrowTimer * EndPos.z;
 
-	m_ppBullets[search]->SetPos(CurrentPos);
-	m_ppBullets[search]->SetBezierInfo(StartPos, EndPos, CenterPos, g_ThrowTimer);
+	m_pBullets[search]->SetPos(CurrentPos);
+	m_pBullets[search]->SetBezierInfo(StartPos, EndPos, CenterPos, g_ThrowTimer);
 
 }
 
@@ -213,11 +213,11 @@ void BulletManager::DestroyBullet()
 {
 	for (int i = 0; i < MAX_BULLET; ++i)
 	{
-		if (!m_ppBullets[i]->use)
+		if (!m_pBullets[i]->use)
 		{
 			continue;
 		}
-		m_ppBullets[i]->use = false;
+		m_pBullets[i]->use = false;
 		break;
 	}
 	
@@ -256,7 +256,7 @@ void BulletManager::SetPlayerAngle(XMFLOAT3 angle)
 //====================================================================
 BulletBase* BulletManager::GetBullet(int index) {
 	if (index < MAX_BULLET) {
-		return m_ppBullets[index];
+		return m_pBullets[index];
 	}
 	return NULL;
 }

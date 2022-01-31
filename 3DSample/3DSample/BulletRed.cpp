@@ -25,7 +25,6 @@ BulletRed::BulletRed()
 	//----- 変数初期化 -----
 	SetRBFlg(true);	// 赤弾
 	m_pRedModel = m_pBulletModel[RED_BULLET];
-	//m_floweAnim[0] = m_pBlueModel->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
 	m_pRedBuffer = m_pBuffer[RED_BULLET];
 
 }
@@ -96,11 +95,20 @@ void BulletRed::Update() {
 
 		// 弾の時間経過での破壊処理
 		m_AliveTime--;					// 生存時間のカウントダウン
+		//if (m_AliveTime < 25) {
+		//	if (!m_pRedModel->IsPlay()) {
+		//		m_pRedModel->Play(m_flowerAnim[BLUE_BLAST]);
+		//	}
+		//}
 		if (m_AliveTime < 0) {			// 0以下になったら
 			use = false;					// 使用フラグを変更
 			Uninit();
 		}
 	}
+
+	//if (m_pRedModel->IsPlay()) {
+	//	m_pRedModel->Step();
+	//}
 
 }
 
@@ -111,6 +119,8 @@ void BulletRed::Update() {
 //==============================================================
 void BulletRed::Draw()
 {
+	//SHADER->Bind(VS_ANIMATION, PS_UNLIT);
+
 	// 弾のテクスチャ
 	int meshNum = m_pRedModel->GetMeshNum();
 	for (int i = 0; i < meshNum; ++i) {
@@ -118,7 +128,7 @@ void BulletRed::Draw()
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
 			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-
+		//SHADER->SetAnimation(m_pRedModel->GetAnimeMatrix(i), m_pRedModel->GetAnimeMatrixNum(i));
 		SHADER->SetTexture(m_pBulletTex[RED_BULLET]);
 		/*
 		SHADER->SetTexture(m_fbx.GetTexture(i));

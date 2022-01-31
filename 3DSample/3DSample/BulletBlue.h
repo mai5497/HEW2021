@@ -14,9 +14,6 @@
 #include "BulletBase.h"
 #include "FBX/FBXPlayer.h"
 
-enum BULLETANIME {
-	BLAST = 0,
-};
 
 
 //*******************************************************************************
@@ -38,7 +35,7 @@ public:
 private:
 
 	//---ïœêî
-	ANIME_INDEX m_floweAnim[MAX_ANIME];
+	ANIME_INDEX m_floweAnim[MAX_BULLET_ANIME];
 	FBXPlayer *m_pBlueModel;
 	DrawBuffer *m_pBlueBuffer;
 

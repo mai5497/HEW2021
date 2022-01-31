@@ -14,7 +14,6 @@
 #include	"Texture.h"
 #include	"Sound.h"
 
-
 //==============================================================
 //
 //	BlueBullet::コンストラクタ
@@ -24,7 +23,6 @@ BulletBlue::BulletBlue()
 {
 	/* モデル読み込み */
 	m_pBlueModel = m_pBulletModel[BLUE_BULLET];
-	//m_floweAnim[0] = m_pBlueModel->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
 	m_pBlueBuffer = m_pBuffer[BLUE_BULLET];
 
 	SetRBFlg(false);	// 青弾
@@ -96,12 +94,20 @@ void BulletBlue::Update() {
 
 		// 弾の時間経過での破壊処理
 		m_AliveTime--;					// 生存時間のカウントダウン
+		//if (m_AliveTime < 25) {
+		//	if (!m_pBlueModel->IsPlay()) {
+		//		m_pBlueModel->Play(m_flowerAnim[BLUE_BLAST]);
+		//	}
+		//}
 		if (m_AliveTime < 0) {			// 0以下になったら
 			use = false;					// 使用フラグを変更
 			Uninit();
 		}
 	}
 
+	//if (m_pBlueModel->IsPlay()) {
+	//	m_pBlueModel->Step();
+	//}
 }
 
 //==============================================================
