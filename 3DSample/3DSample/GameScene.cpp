@@ -382,7 +382,7 @@ void GameScene::Uninit()
 SCENE GameScene::Update()
 {
 	// Pキーでポーズフラグを立てる
-	if (IsPress('P')) {
+	if (!m_IsClear && IsPress('P')) {
 		m_IsPause = true;
 	}
 
@@ -392,9 +392,9 @@ SCENE GameScene::Update()
 		#pragma region 各オブジェクトの更新
 		// カメラ更新
 		//g_pTPSCamera->Update();
-		//if (IsPress(VK_TAB)); {
-		//	g_pCamera->Update();
-		//}
+		if (m_IsClear) {
+			g_pCamera->Update();
+		}
 
 		// 影
 		g_pShadow->Update();

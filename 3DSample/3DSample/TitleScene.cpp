@@ -10,7 +10,6 @@
 
 typedef enum
 {
-
 	TITLE_BG = 0,
 	TITLE_LOGO,
 
