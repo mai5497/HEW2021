@@ -22,9 +22,6 @@ typedef enum
 	TITLE_START,
 	TITLE_END,
 
-	TITLE_START,
-	TITLE_END,
-
 	TITLE_BUTTON,
 
 	TITLE_MAX,
