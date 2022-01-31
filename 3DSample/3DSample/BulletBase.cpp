@@ -13,7 +13,6 @@
  // インクルード部
  //*******************************************************************************
 #include	"BulletBase.h"
-//#include	"Player.h"
 #include	"Sound.h"
 
 //========================= グローバル変数定義 ===========================
@@ -54,7 +53,10 @@ BulletBase::BulletBase() :
 		m_pBulletModel[i] = new FBXPlayer;
 	}
 	LoadModel("Assets/Model/flowerblue.fbx", BLUE_BULLET);
+	m_flowerAnim[BLUE_BLAST] = m_pBulletModel[BLUE_BULLET]->LoadAnimation("Assets/Model/flowerblue_anime.fbx");
 	LoadModel("Assets/Model/flowerred.fbx", RED_BULLET);
+	m_flowerAnim[RED_BLAST] = m_pBulletModel[RED_BULLET]->LoadAnimation("Assets/Model/flowerred_anime.fbx");
+
 }
 
 

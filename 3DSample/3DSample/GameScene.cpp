@@ -571,7 +571,9 @@ SCENE GameScene::Update()
 	//	ƒJƒƒ‰XV
 	//***************************************************************	
 	//g_pTPSCamera->Update();
-	g_pCamera->Update();
+	if (m_IsClear) {
+		g_pCamera->Update();
+	}
 
 
 	//***************************************************************
@@ -730,7 +732,7 @@ void GameScene::Draw()
 	));
 	*/
 
-	SHADER->Bind(VS_WORLD, PS_UNLIT);
+	SHADER->Bind(VS_WORLD, PS_PHONG);
 
 
 	//g_pTPSCamera->Bind();
@@ -750,6 +752,8 @@ void GameScene::Draw()
 	// ‰ñŽûŽÒ‚Ì•`‰æ
 	g_pCollector->Draw();
 	g_pCollectionPoint->Draw();
+
+	SHADER->Bind(VS_WORLD, PS_UNLIT);
 
 	// “G‚Ì•`‰æ
 	//g_pEnemyManager->Draw();

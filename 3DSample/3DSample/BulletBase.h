@@ -32,6 +32,14 @@ enum BULLETCOLOR {
 	MAX_BULLET_COLOR
 };
 
+enum BULLETANIME {
+	BLUE_BLAST = 0,
+	RED_BLAST,
+
+	MAX_BULLET_ANIME
+};
+
+
  //*******************************************************************************
  // クラス定義
  //*******************************************************************************
@@ -69,6 +77,8 @@ protected:
 	static DrawBuffer* m_pBuffer[MAX_BULLET_COLOR];
 	static FBXPlayer* m_pBulletModel[MAX_BULLET_COLOR];		// FBXファイル操作クラス
 	ID3D11ShaderResourceView* m_pBulletTex[MAX_BULLET_COLOR];
+	ANIME_INDEX m_flowerAnim[MAX_BULLET_ANIME];
+
 
 	int m_sleep;
 	int m_sleep2;

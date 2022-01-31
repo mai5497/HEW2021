@@ -57,7 +57,7 @@ public:
 	void SetPlayerAngle(XMFLOAT3 Angle);					// プレイヤーの角度を設定
 
 private:
-	BulletBase* m_ppBullets[MAX_BULLET];					// 弾の情報を扱う(ベース)
+	BulletBase* m_pBullets[MAX_BULLET];					// 弾の情報を扱う(ベース)
 	//BulletTarget* m_pBulletTarget;				// 弾の落下地点
 
 

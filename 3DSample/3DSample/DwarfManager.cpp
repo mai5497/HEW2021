@@ -104,11 +104,11 @@ void DwarfManager::Uninit()
 	for (int i = 0; i < m_DwarfNum; i++)
 	{
 		m_ppDwarf[i]->Uninit();
-		delete[] m_ppDwarf[i];
-		m_ppDwarf[i] = nullptr;
+		delete m_ppDwarf[i];
+		m_ppDwarf[i] = NULL;
 	}
 	delete[] m_ppDwarf;
-	m_ppDwarf = nullptr;
+	m_ppDwarf = NULL;
 
 }
 

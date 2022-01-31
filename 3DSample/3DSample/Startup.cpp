@@ -114,6 +114,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	DWORD countStartTime = timeGetTime();
 	// 前回の実行時間
 	DWORD preExecTime = countStartTime;
+	DWORD frameCount = 0;
 
 	//--- ウィンドウの管理
 	while (1)
@@ -163,7 +164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				g_nMouseWheelDelta = 0;
 				Update();
 				Draw();
-				fpsCount++; // ゲームの処理が一回行われた
+				//fpsCount++; // ゲームの処理が一回行われた
 				preExecTime = nowTime;
 			}
 		}

@@ -35,7 +35,7 @@ private:
 	bool LoadBullet(const char* pFilePath);
 
 	//---ïœêî
-	ANIME_INDEX m_floweAnim[MAX_ANIME];
+	ANIME_INDEX m_RedflowerAnim[MAX_ANIME];
 	FBXPlayer *m_pRedModel;
 	DrawBuffer *m_pRedBuffer;
 

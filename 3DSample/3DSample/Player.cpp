@@ -143,8 +143,9 @@ void Player::Update() {
 	//•`‰æ—pŠp“xÝ’è
 	m_DrawAngle = atan2(m_move.z, m_move.x);
 	m_DrawAngle -= XM_PI * 0.5f;
-
-	m_pFBX->Step();
+	if (m_pFBX->IsPlay()) {
+		m_pFBX->Step();
+	}
 }
 
 //==============================================================
