@@ -106,7 +106,7 @@ void BulletBlue::Update() {
 	}
 
 	//if (m_pBlueModel->IsPlay()) {
-	//	m_pBlueModel->Step();
+		//m_pBlueModel->Step();
 	//}
 }
 
@@ -117,7 +117,7 @@ void BulletBlue::Update() {
 //==============================================================
 void BulletBlue::Draw()
 {
-	//SHADER->Bind(VS_ANIMATION,PS_UNLIT);
+	SHADER->Bind(VS_ANIMATION,PS_UNLIT);
 	//m_pFBX->Step();
 
 	// 弾のテクスチャ
@@ -125,9 +125,9 @@ void BulletBlue::Draw()
 	for (int i = 0; i < meshNum; ++i) {
 
 		SHADER->SetWorld(XMMatrixScaling(m_size.x, m_size.y, m_size.z)
-			//* DirectX::XMMatrixRotationY(-m_DwarfAngle)
+			* DirectX::XMMatrixRotationY(XM_PI)
 			* DirectX::XMMatrixTranslation(m_pos.x, m_pos.y, m_pos.z));
-		//SHADER->SetAnimation(m_pBlueModel->GetAnimeMatrix(i), m_pBlueModel->GetAnimeMatrixNum(i));
+		SHADER->SetAnimation(m_pBlueModel->GetAnimeMatrix(i), m_pBlueModel->GetAnimeMatrixNum(i));
 		SHADER->SetTexture(m_pBulletTex[BLUE_BULLET]);
 
 		/*

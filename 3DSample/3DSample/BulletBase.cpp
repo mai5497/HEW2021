@@ -34,9 +34,9 @@ BulletBase::BulletBase() :
 	m_pos.x = 1000.0f;						//‰ŠúÀ•Wx
 	m_pos.y = 1000.0f;						//‰ŠúÀ•Wy
 	m_pos.z = 1000.0f;						//‰ŠúÀ•Wz
-	m_size.x = 1.0f;
-	m_size.y = 1.0f;
-	m_size.z = 1.0f;
+	m_size.x = 2.0f;
+	m_size.y = 2.0f;
+	m_size.z = 2.0f;
 	m_sleep = 0;
 	m_sleep2 = 0;
 	m_Radius = XMFLOAT3(10.0f, 0.1f, 10.0f);
