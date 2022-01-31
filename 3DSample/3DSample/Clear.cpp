@@ -79,6 +79,8 @@ void InitClear() {
 
 	// シーンの値初期
 	g_SelectState = STATE_NEXT;
+
+
 }
 
 //===========================================================
@@ -100,6 +102,7 @@ void UninitClear() {
 	g_pClearCamera->Uninit();
 	delete g_pClearCamera;
 
+	CSound::Stop(CLEAR_BGM);
 }
 
 //===========================================================
@@ -116,6 +119,7 @@ int	UpdateClear()
 	//	return STATE_SELECT;	// 一定時間たったらステージ選択へ戻る
 	//}
 
+	CSound::Play(CLEAR_BGM);
 
 	//---カーソル移動
 	if (IsTrigger(VK_UP) || IsRelease(JPadButton::DPAD_UP)) {

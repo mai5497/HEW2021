@@ -26,6 +26,7 @@ typedef enum {							// 描画するオブジェクト
 	PAUSE_RETRAY,
 	PAUSE_SELECT,
 	PAUSE_END,
+	PAUSE_TUTORIAL,
 
 	PAUSE_MAX
 }PauseObject;
@@ -42,6 +43,7 @@ const char* g_TexPath[MAX_PAUSE_TEX] = {		// テクスチャパス
 	"Assets/Texture/Pause/Retry.png",			// リトライ
 	"Assets/Texture/Pause/Select.png",			// セレクト
 	"Assets/Texture/Pause/End.png",				// ゲーム終了
+	"Assets/Texture/UI/Tutorial.png",			// 操作説明
 
 };
 
@@ -108,6 +110,10 @@ void Pause::Init()
 	//---ゲーム終了
 	g_PauseObject[PAUSE_END].SetPos(XMFLOAT3(0.0f, -0.2f, 7.0f));
 	g_PauseObject[PAUSE_END].SetSize(XMFLOAT3(0.45f, 0.3, 0.0f));
+
+	//---ゲーム終了
+	g_PauseObject[PAUSE_TUTORIAL].SetPos(XMFLOAT3(0.35f, -0.15f, 7));
+	g_PauseObject[PAUSE_TUTORIAL].SetSize(XMFLOAT3(0.3f, 0.3f, 1));
 
 	//---カメラインスタンス
 	g_pPauseCamra = new Camera;

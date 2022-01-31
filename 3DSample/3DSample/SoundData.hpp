@@ -4,6 +4,10 @@ LPCWSTR g_pszFileBGM[MAX_BGM] = {
 	L"Title.mp3",			// TitleBGM
 	L"Select.mp3",			// SelectBGM
 	L"Game.mp3",			// GameBGM
+	L"clear3.mp3",			// ゲームクリア
+	L"over2.mp3",			// ゲームオーバー
+
+
 };
 
 LPCWSTR g_pszFileSE[MAX_SE] = {
@@ -17,5 +21,5 @@ LPCWSTR g_pszFileSE[MAX_SE] = {
 	L"Enter_01.mp3",		// 決定１
 	L"Player_01.mp3",		// プレイヤー１(足音)
 	L"Select_01.mp3",		// 選択音
-	L"Dwarf_01.mp3",		// 選択音
+	L"Dwarf_01.mp3",		// 回収音しゅぽん
 };

@@ -646,11 +646,14 @@ SCENE GameScene::Update()
 		//***************************************************************	
 		int sceneState = -1;
 		if (m_IsClear) {
+			CSound::Stop(GAME_BGM);
+
 			g_pScore->SetScore(1);
 			g_pSelectScene->SetScore(m_StageNum, 1);
 
 
 			sceneState = UpdateClear();
+
 			if (sceneState == STATE_NEXT) {
 				GameScene::Uninit();
 				GameScene::Init(m_StageNum + 1);
@@ -660,6 +663,8 @@ SCENE GameScene::Update()
 			}
 		}
 		if (m_IsGameOver) {
+			CSound::Stop(GAME_BGM);
+
 			sceneState = UpdateGameOver();
 			if (sceneState == STATE_RETRY) {
 				GameScene::Uninit();

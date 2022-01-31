@@ -116,6 +116,7 @@ void UninitGameOver()
 	g_pGameOverCamera->Uninit();
 	delete g_pGameOverCamera;
 
+	CSound::Stop(OVER_BGM);
 }
 
 //=========================================================
@@ -128,6 +129,9 @@ int UpdateGameOver()
 	//if (g_nTimer < 0) {
 	//	return STATE_SELECT;					// 一定時間後にステージ選択へ
 	//}
+
+	CSound::Play(OVER_BGM);
+
 
 	//---カーソル移動
 	if (IsTrigger(VK_UP) || IsRelease(JPadButton::DPAD_UP)) {

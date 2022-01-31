@@ -189,11 +189,11 @@ bool StageObjectManager::Init(int SelectStageNum)
 	//---ステージ2に配置する
 	StageObjectInfo Stage2ObjectSet[] =
 	{
-		
-		BALL,
-		BULLDOZER,
-		RED_HELMET,
-		BLUE_HELMET,
+		FENCE,
+		//BALL,
+		//BULLDOZER,
+		//RED_HELMET,
+		//BLUE_HELMET,
 
 
 	};

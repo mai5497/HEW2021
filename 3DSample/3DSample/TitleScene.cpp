@@ -1,4 +1,8 @@
 
+
+//*******************************************************************************
+// インクルード部
+//*******************************************************************************
 #include "TitleScene.h"
 #include "Input.h"
 #include "Texture.h"
@@ -8,10 +12,16 @@
 #include "TPSCamera.h"
 #include "Defines.h"
 
+//*******************************************************************************
+// 定数・マクロ定義
+//*******************************************************************************
 typedef enum
 {
 	TITLE_BG = 0,
 	TITLE_LOGO,
+	TITLE_START,
+	TITLE_END,
+
 	TITLE_START,
 	TITLE_END,
 
@@ -35,6 +45,7 @@ const char* g_pTitleTexFName[TITLE_MAX] = {
 	"Assets/Texture/Title/GameEnd.png",				// げーむおわる
 	"Assets/Texture/Scene/Press_A.png",				// Press A
 };
+
 
 
 TitleScene::TitleScene(void)
@@ -193,16 +204,16 @@ SCENE TitleScene::Update()
 		break;
 	}
 #ifdef _DEBUG
-	if (IsRelease(JPadButton::L_SHOULDER) && IsRelease(JPadButton::R_SHOULDER)) {
-		CSound::Play(SE_ENTER_1);
-		return SCENE_GAME;
-	}
+		if (IsRelease(JPadButton::L_SHOULDER) && IsRelease(JPadButton::R_SHOULDER)) {
+			CSound::Play(SE_ENTER_1);
+			return SCENE_GAME;
+		}
 
 #endif // _DEBUG
 
-	return SCENE_TITLE;
-}
+		return SCENE_TITLE;
 
+}
 void TitleScene::Draw()
 {
 	SHADER->Bind(VS_ANIMATION, PS_UNLIT);
@@ -242,6 +253,6 @@ void TitleScene::Draw()
 		SHADER->SetTexture(g_pTitleTex[i]);
 		g_pTitleObject[i].Draw();
 	}
-	
+
 	SHADER->SetTexture(NULL);
 }	
