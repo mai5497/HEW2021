@@ -2,6 +2,7 @@
 #define _SELECT_SCENE_H_
 
 #include "Scene.h"
+#include "GameObject.h"
 
 class SelectScene :public Scene
 {
@@ -20,7 +21,7 @@ public:
 
 private:
 	int m_StageNum;
-
+	DirectX::XMFLOAT3 m_moveAngle;
 };
 
 

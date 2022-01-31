@@ -17,7 +17,6 @@
 #include "Input.h"
 #include "Texture.h"
 #include "DrawBuffer.h"
-#include "GameObject.h"
 #include "Camera.h"
 #include "TPSCamera.h"
 #include "Defines.h"
@@ -25,7 +24,7 @@
 
 
 //============== ’è”’è‹` ======================
-#define SELECT_MAX_TEX 14
+#define SELECT_MAX_TEX	(14)
 
 typedef enum
 {
@@ -76,6 +75,7 @@ int		g_nScore[3] = { 0, 0, 0 };
 //====================================================================
 SelectScene::SelectScene(void) {
 	m_StageNum = 1;
+	m_moveAngle = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 }
 
@@ -113,6 +113,8 @@ void SelectScene::Init()
 	g_pSelectObject[SELECT_BLOCK_1].Init();
 	g_pSelectObject[SELECT_BLOCK_1].SetSize(DirectX::XMFLOAT3( 0.2f, 0.2f, 1));
 	g_pSelectObject[SELECT_BLOCK_1].SetPos (DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
+	g_pSelectObject[SELECT_BLOCK_1].SetAngle(m_moveAngle);
+
 	g_pSelectObject[SELECT_BLOCK_2].Init();
 	g_pSelectObject[SELECT_BLOCK_2].SetSize(DirectX::XMFLOAT3( 0.2f, 0.2f, 1));
 	g_pSelectObject[SELECT_BLOCK_2].SetPos (DirectX::XMFLOAT3( 0.0f, -0.05f, 1));
@@ -122,6 +124,7 @@ void SelectScene::Init()
 
 	g_pSelectCamera = new Camera;
 	g_pSelectCamera->Init();
+
 	m_StageNum = 1;
 
 	CSound::Play(SELECT_BGM);
@@ -159,7 +162,8 @@ void SelectScene::Uninit()
 //====================================================================
 SCENE SelectScene::Update()
 {
-	
+	m_moveAngle.y += 0.05f;
+	//m_moveAngle.y = XMConvertToRadians(m_moveAngle.y);
 
 	if (IsTrigger(VK_RIGHT) || IsRelease(JPadButton::DPAD_RIGHT)) {
 		CSound::Play(SE_SELECT_1);
@@ -199,20 +203,23 @@ SCENE SelectScene::Update()
 	{
 
 	case 1:
-		g_pSelectObject[SELECT_BLOCK_1].SetPos(XMFLOAT3(-0.3f,0.0f, 1.0f));
+		g_pSelectObject[SELECT_BLOCK_1].SetPos(XMFLOAT3(-0.3f, 0.05f * sinf(m_moveAngle.y), 1.0f));
+	
 		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.08f, 1));
 		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, -0.1f, 1));
 
 		break;
 	case 2:
-		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, 0.00f, 1));
+		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, 0.05f * sinf(m_moveAngle.y), 1));
+
 		g_pSelectObject[SELECT_BLOCK_1].SetPos(DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
 		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, -0.1f, 1));
 
 
 		break;
 	case 3:
-		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, 0.0f, 1));
+		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, 0.05f * sinf(m_moveAngle.y), 1));
+
 		g_pSelectObject[SELECT_BLOCK_1].SetPos(DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
 		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.1f, 1));
 
