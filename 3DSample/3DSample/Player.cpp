@@ -136,7 +136,7 @@ void Player::Update() {
 	if (IsRelease('E') || IsRelease('Q')) {
 		m_pFBX->Play(m_playerAnim[THROW]);
 	} 
-		//m_pFBX->Play(m_playerAnim[STAND]);
+	//m_pFBX->Play(m_playerAnim[STAND]);
 
 
 

@@ -167,7 +167,7 @@ public:
 								char fileExt[MAX_PATH];
 								_splitpath(texIt->c_str(), nullptr, nullptr, fileName, fileExt);
 								_splitpath(model, nullptr, modelDir, nullptr, nullptr);
-								std::string path = modelDir;
+								path = modelDir;
 								path += fileName;
 								path += fileExt;
 							}
@@ -182,7 +182,7 @@ public:
 								if (SUCCEEDED(LoadTextureFromFile(path.c_str(), &pTexture)))
 								{
 									m_textureMap.insert(std::pair<std::string, ID3D11ShaderResourceView*>(
-										path.c_str(), pTexture));
+										texIt->c_str(), pTexture));
 								}
 							}
 						}

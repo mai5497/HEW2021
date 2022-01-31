@@ -42,7 +42,6 @@ public:
 	void GetCameraPos(TPSCamera*);
 
 	// ---プレイヤー関連
-	ID3D11ShaderResourceView *m_pPlayerTex;			
 	XMFLOAT3 GetPlayerPos();
 	XMFLOAT3 GetPlayerAngle();
 	float GetPlayerDrawAngle();							// プレイヤーの向く角度を取得
@@ -52,6 +51,7 @@ public:
 	void SetThrowFlg(bool flg);
 
 private:
+	ID3D11ShaderResourceView *m_pPlayerTex;			
 	bool LoadPlayer(const char *pFilePath);
 
 	Camera * m_pControllCamera;				// カメラ座標操作

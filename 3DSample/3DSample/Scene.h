@@ -6,8 +6,7 @@
 #include "Sound.h"
 
 // シーン遷移
-typedef enum
-{
+typedef enum {
 
 	SCENE_NONE,
 	SCENE_TITLE,
@@ -19,7 +18,6 @@ typedef enum
 	SCENE_MAX,
 
 }SCENE;
-
 // ゲームシーン上のステート
 typedef enum
 {
