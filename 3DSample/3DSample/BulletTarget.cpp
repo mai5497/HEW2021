@@ -281,7 +281,7 @@ void BulletTarget::Draw()
 
 	GameObject::Draw();
 
-	//SHADER->SetTexture(NULL);
+	SHADER->SetTexture(NULL);
 
 		//m_pBTBuffer[i].Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//}

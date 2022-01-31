@@ -23,7 +23,7 @@ Camera::Camera()
 	, m_yAngle(80.0f)					// カメラのY軸回転
 	, m_radius(35.0f)					// 焦点までの距離
 
-	// ---まよこ？
+	//---新たな可能性
 	//: m_pos(0.0f, 0.0f, -30.0f)			// カメラの座標
 	//, m_look(0.0f, 0.0f, 0.0f)			// カメラの注視点
 	//, m_up(0.0f, 1.0f, 0.0f)			// カメラの上方向
@@ -179,6 +179,17 @@ void Camera::Update()
 	m_pos.x = cos(yRad) * sin(xzRad) * m_radius;
 	m_pos.z = cos(yRad) * -cos(xzRad) * m_radius;
 	m_pos.y = sin(yRad) * m_radius;
+
+	////---新たな可能性
+	//Camera::m_pos = DirectX::XMFLOAT3(0.0f, 0.0f, -30.0f);
+	//Camera::m_look = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	//Camera::m_up = DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f);
+	//Camera::m_angle = 60.0f;
+	//Camera::m_near = 0.5f;
+	//Camera::m_far = 1000.0f;
+	//Camera::m_xzAngle = 0.0f;					
+	//Camera::m_yAngle = 80.0f;					
+	//Camera::m_radius = 35.0f;					
 
 }
 

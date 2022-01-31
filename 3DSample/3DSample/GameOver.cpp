@@ -20,7 +20,7 @@
 // 定数・マクロ定義
 //*******************************************************************************
 #define	CHANGE_STATE_CNT			(600)				// シーン切り替えまでのタイマー
-#define	MAX_GAMEOVER_TEX			(4)					// テクスチャの数
+#define	MAX_GAMEOVER_TEX			(5)					// テクスチャの数
 
 #define LOGO_POS_X					(0.0f)				// X座標
 #define LOGO_POS_Y					(0.1f)				// Y座標
@@ -43,6 +43,7 @@ Camera*			g_pGameOverCamera;									// ゲームカメラ
 //static int g_nTimer;				// タイマー
 
 const char* g_pGameOverTexFName[MAX_GAMEOVER_TEX] = {		// テクスチャデータ
+	"Assets/Texture/Scene/SeceneBG.png",
 	"Assets/Texture/Scene/GameOver.png",
 	"Assets/Texture/Scene/Retry.png",
 	"Assets/Texture/Scene/StageSelect.png",
@@ -67,21 +68,26 @@ void InitGameOver()
 		g_pGameOverObject[i].Init();
 	}
 
+	//---半透明背景
+	g_pGameOverObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 8));
+	g_pGameOverObject[0].SetSize(XMFLOAT3(SCREEN_WIDTH, SCREEN_HEIGHT, 1));
+	g_pGameOverObject[0].SetCollor(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f));
+
 	//---ゲームオーバー
-	g_pGameOverObject[0].SetPos(XMFLOAT3(0.0f, 0.15f, 4));
-	g_pGameOverObject[0].SetSize(XMFLOAT3(0.45f, 0.3f, 1));
+	g_pGameOverObject[1].SetPos(XMFLOAT3(0.0f, 0.15f, 4));
+	g_pGameOverObject[1].SetSize(XMFLOAT3(0.45f, 0.3f, 1));
 
 	//---リトライ
-	g_pGameOverObject[1].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
-	g_pGameOverObject[1].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
+	g_pGameOverObject[2].SetPos(XMFLOAT3(0.0f, 0.0f, 3));
+	g_pGameOverObject[2].SetSize(XMFLOAT3(0.4f, 0.3f, 1));
 
 	//---ステージセレクト
-	g_pGameOverObject[2].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
-	g_pGameOverObject[2].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
+	g_pGameOverObject[3].SetPos(XMFLOAT3(0.0f, -0.15f, 2));
+	g_pGameOverObject[3].SetSize(XMFLOAT3(0.4f, 0.34f, 1));
 
 	//---カーソル
-	g_pGameOverObject[3].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
-	g_pGameOverObject[3].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
+	g_pGameOverObject[4].SetPos(XMFLOAT3(-0.35f, 0.0f, 1));
+	g_pGameOverObject[4].SetSize(XMFLOAT3(0.2f, 0.1f, 1));
 
 
 	//---クラスメモリ確保
@@ -143,13 +149,13 @@ int UpdateGameOver()
 		g_GO_SelectState = STATE_SELECT;
 
 		if (g_GO_ArrowPosY < -0.15f) {
-			g_GO_ArrowPosY = 0.15f;
+			g_GO_ArrowPosY = 0.0f;
 			g_GO_SelectState = STATE_SELECT;
 		}
 	}
 
 	//---カーソルのオブジェクト再表示
-	g_pGameOverObject[3].SetPos(XMFLOAT3(-0.35f, g_GO_ArrowPosY, 0.9f));
+	g_pGameOverObject[4].SetPos(XMFLOAT3(-0.35f, g_GO_ArrowPosY, 0.9f));
 
 	//---決定
 	if (IsRelease(VK_RETURN) || IsRelease(JPadButton::A)) {
@@ -168,6 +174,8 @@ int UpdateGameOver()
 	//	return STATE_SELECT;
 	//}
 
+	// 色の変更のためオブジェクトの更新処理を記述
+	g_pGameOverObject->Update();
 	return -1;
 }
 

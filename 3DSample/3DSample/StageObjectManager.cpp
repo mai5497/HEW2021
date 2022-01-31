@@ -73,14 +73,6 @@
 									LPCSTR("Assets/Model/hakai_lambert5_BaseColor.png"),\
 									LPCSTR("Assets/Model/helmet2.fbx")\
 
-//---ƒWƒFƒ“ƒK
-#define	JENGA						XMFLOAT3(-10.0f,1.0f,20.0f),\
-									XMFLOAT3(1.0f, 1.0f,1.0f),\
-									XMFLOAT3(1.0f,0.0f,0.0f),\
-									LPCSTR("Assets/Model/jenga1.png"),\
-									LPCSTR("Assets/Model/jenga.fbx")\
-
-
 //---ƒNƒŒƒˆƒ“
 #define KUREYON						XMFLOAT3(30.0f,1.0f,-8.0f),\
 									XMFLOAT3(1.0f, 1.0f,1.0f),\
