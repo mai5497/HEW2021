@@ -187,14 +187,14 @@ void BulletTarget::Update()
 
 	// ターゲットオブジェクト移動
 	//if (m_move.x != 0.0f && m_move.y != 0.0f) {
-	if (IsPress('A')) {			// 左
+	if (IsPress('A') || IsPress(VK_LEFT)) {			// 左
 		m_move.x -= Move;
 		
 		if (m_pos.x < -40.0f){
 			m_pos.x = -40.0f;
 		}
 	}
-	if (IsPress('D')) {		// 右
+	if (IsPress('D') || IsPress(VK_RIGHT)) {		// 右
 		m_move.x += Move;
 		
 		if (m_pos.x > 40.0f) {

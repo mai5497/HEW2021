@@ -21,9 +21,9 @@ public:
 
 	//---ïœêî
 private:
-	ID3D11ShaderResourceView*	m_pTexTutorial[3];
+	ID3D11ShaderResourceView*	m_pTexTutorial[4];
 
-	GameObject*		m_pObjectTutorial[3];
+	GameObject*		m_pObjectTutorial[4];
 	Camera*			m_pCameraTutorial;
 
 };

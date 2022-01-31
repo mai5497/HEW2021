@@ -214,7 +214,7 @@ SCENE SelectScene::Update()
 	case 3:
 		g_pSelectObject[SELECT_BLOCK_3].SetPos(DirectX::XMFLOAT3(0.3f, 0.0f, 1));
 		g_pSelectObject[SELECT_BLOCK_1].SetPos(DirectX::XMFLOAT3(-0.3f, -0.08f, 1));
-		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.05f, 1));
+		g_pSelectObject[SELECT_BLOCK_2].SetPos(DirectX::XMFLOAT3(0.0f, -0.1f, 1));
 
 		break;
 
